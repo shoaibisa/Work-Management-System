@@ -1,15 +1,24 @@
 import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
-import { userColumns, userRows } from "../../datatablesource";
+import { userColumns } from "../../datatablesource";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { listEmployee } from "../../actions/employeeAction";
+import Spinner from "../spinner/spinner";
 
 const Datatable = () => {
-  const [data, setData] = useState(userRows);
+  const dispatch = useDispatch();
+  const employeeList = useSelector((state) => state.employeeList);
+  const { loading, error, employees } = employeeList;
+  useEffect(() => {
+    dispatch(listEmployee());
+  }, []);
 
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
-  };
+  // for delete
+  // const handleDelete = (id) => {
+  //   setData(data.filter((item) => item.id !== id));
+  // };
 
   const actionColumn = [
     {
@@ -41,14 +50,20 @@ const Datatable = () => {
           Add New
         </Link> */}
       </div>
-      <DataGrid
-        className="datagrid"
-        rows={data}
-        columns={userColumns.concat(actionColumn)}
-        pageSize={9}
-        rowsPerPageOptions={[9]}
-        checkboxSelection
-      />
+      {loading ? (
+        <Spinner />
+      ) : error ? (
+        { error }
+      ) : (
+        <DataGrid
+          className="datagrid"
+          rows={employees}
+          columns={userColumns.concat(actionColumn)}
+          pageSize={9}
+          rowsPerPageOptions={[9]}
+          checkboxSelection
+        />
+      )}
     </div>
   );
 };
