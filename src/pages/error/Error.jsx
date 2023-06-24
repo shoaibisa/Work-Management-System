@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+
+/* eslint-disable jsx-a11y/anchor-is-valid */
 const Error = () => {
   return (
     <div className="h-screen w-screen">
@@ -13,18 +16,19 @@ const Error = () => {
             Sorry, we couldn’t find the page you’re looking for.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <a
-              href="#"
+            <Link
+              to="/"
               className="rounded-md bg-[#6439FF] px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#8160f7] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
             >
               Go back home
-            </a>
-            <a
+            </Link>
+
+            {/* <a
               href="#"
               className="text-lg sm:text-base font-semibold text-gray-900 mt-2 sm:mt-0"
             >
               Contact support <span aria-hidden="true">&rarr;</span>
-            </a>
+            </a> */}
           </div>
         </div>
       </main>
