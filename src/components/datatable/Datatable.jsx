@@ -13,8 +13,9 @@ const Datatable = () => {
   const { loading, error, employees } = employeeList;
   useEffect(() => {
     dispatch(listEmployee());
-  }, []);
+  }, [dispatch]);
 
+  //console.log(employees);
   // for delete
   // const handleDelete = (id) => {
   //   setData(data.filter((item) => item.id !== id));

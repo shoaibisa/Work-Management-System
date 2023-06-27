@@ -7,10 +7,13 @@ import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNone
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import ListOutlinedIcon from "@mui/icons-material/ListOutlined";
 import { DarkModeContext } from "../../context/darkModeContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 const Navbar = () => {
   const { dispatch } = useContext(DarkModeContext);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const toggle = () => setIsOpen(!isOpen);
 
   return (
     <div className="navbar">
@@ -18,6 +21,7 @@ const Navbar = () => {
         <div className="search">
           {/* <input type="text" placeholder="Search..." />
           <SearchOutlinedIcon /> */}
+          {/* <li onClick={toggle}>Click</li> */}
         </div>
         <div className="items">
           {/* <div className="item">

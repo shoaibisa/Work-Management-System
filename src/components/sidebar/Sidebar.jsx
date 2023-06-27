@@ -14,19 +14,20 @@ import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link } from "react-router-dom";
 import { DarkModeContext } from "../../context/darkModeContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
-const Sidebar = () => {
+const Sidebar = ({ open }) => {
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
 
   const { dispatch } = useContext(DarkModeContext);
+
   return (
-    <div className="sidebar">
+    <div className="sidebar  ">
       <div className="top">
         <Link to="/" style={{ textDecoration: "none" }}>
           <span className="logo">EMS</span>
@@ -43,7 +44,7 @@ const Sidebar = () => {
             </Link>
           </li>
           <p className="title">Employee</p>
-          <Link to="/users" style={{ textDecoration: "none" }}>
+          <Link to="/employee" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
               <span>Employee Request</span>
@@ -83,8 +84,8 @@ const Sidebar = () => {
                     <Menu.Item>
                       {({ active }) => (
                         // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                        <a
-                          href="#"
+                        <Link
+                          to="/allproject"
                           className={classNames(
                             active
                               ? "bg-gray-100 text-gray-900"
@@ -92,8 +93,8 @@ const Sidebar = () => {
                             "block px-4 py-2 text-sm"
                           )}
                         >
-                          Edit
-                        </a>
+                          Project List
+                        </Link>
                       )}
                     </Menu.Item>
                     <Menu.Item>

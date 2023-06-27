@@ -1,6 +1,6 @@
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
-import List from "./pages/list/List";
+import Employee from "./pages/list/employee";
 import Single from "./pages/single/Single";
 import New from "./pages/new/New";
 import Signup from "./pages/signup/signup";
@@ -8,9 +8,9 @@ import Error from "./pages/error/Error";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { productInputs, userInputs } from "./formSource";
 import "./style/dark.scss";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
-
+import AllProject from "./Views/Admin/AllProject.jsx";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
 
@@ -23,9 +23,10 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/profile" element={<Single />} />
-            <Route path="users">
-              <Route index element={<List />} />
+            <Route path="/allproject" element={<AllProject />} />
 
+            <Route path="employee">
+              <Route index element={<Employee />} />
               <Route path=":userId" element={<Single />} />
               <Route
                 path="new"
@@ -33,7 +34,7 @@ function App() {
               />
             </Route>
             <Route path="products">
-              <Route index element={<List />} />
+              {/* <Route index element={<List />} /> */}
               <Route path=":productId" element={<Single />} />
               <Route
                 path="new"
