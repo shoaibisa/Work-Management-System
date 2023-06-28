@@ -85,6 +85,22 @@ const Sidebar = ({ open }) => {
                       {({ active }) => (
                         // eslint-disable-next-line jsx-a11y/anchor-is-valid
                         <Link
+                          to="/createproject"
+                          className={classNames(
+                            active
+                              ? "bg-gray-100 text-gray-900"
+                              : "text-gray-700",
+                            "block px-4 py-2 text-sm"
+                          )}
+                        >
+                          Create Project
+                        </Link>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                        <Link
                           to="/allproject"
                           className={classNames(
                             active

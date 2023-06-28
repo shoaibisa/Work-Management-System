@@ -95,9 +95,9 @@ const AllProject = () => {
         <div className="datatable">
           <div className="datatableTitle">
             Employee Request
-            {/* <Link to="/users/new" className="link">
-          Add New
-        </Link> */}
+            <Link to="/createproject" className="link">
+              Add New
+            </Link>
           </div>
           {loading ? (
             <Spinner />

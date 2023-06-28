@@ -11,6 +11,7 @@ import "./style/dark.scss";
 import { useContext, useState } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import AllProject from "./Views/Admin/AllProject.jsx";
+import Createproject from "./pages/createProject/Createproject";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
 
@@ -24,6 +25,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/profile" element={<Single />} />
             <Route path="/allproject" element={<AllProject />} />
+            <Route path="/createproject" element={<Createproject />} />
 
             <Route path="employee">
               <Route index element={<Employee />} />
@@ -42,6 +44,7 @@ function App() {
               />
             </Route>
           </Route>
+          
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>
