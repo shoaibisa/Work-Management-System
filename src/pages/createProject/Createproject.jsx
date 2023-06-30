@@ -47,7 +47,7 @@ const Createproject = () => {
       <Sidebar />
       <div className="homeContainer">
         <Navbar />
-        <form action="" className=" w-3/4 ml-20 mt-10 ">
+        <form action="" className=" w-3/4 ml-20 mt-10 create_Project ">
           <div className="space-y-18">
             <div className="border-b border-gray-900/10 pb-12">
               <div className="text-base font-semibold leading-7 text-gray-900">
@@ -122,12 +122,18 @@ const Createproject = () => {
                       id="country"
                       name="country"
                       autoComplete="country-name"
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                      className=" country block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                     >
-                      <option value="">Choose Type</option>
+                      <option className="country" value="">
+                        Choose Type
+                      </option>
 
-                      <option value="Normal">Normal</option>
-                      <option value="Urgent">Urgent</option>
+                      <option className="country" value="Normal">
+                        Normal
+                      </option>
+                      <option className="country" value="Urgent">
+                        Urgent
+                      </option>
                     </select>
                   </div>
                 </div>

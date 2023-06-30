@@ -72,4 +72,31 @@
       color: gray;
     }
   }
+  .create_Project{
+
+    input ,p ,label ,button,svg {
+      color: #999;
+    } 
+    .about{
+       color: white;
+    }
+    .react-date-picker__wrapper{
+      color: #999;
+    }
+
+    textarea {
+       background-color: transparent;
+       color: #999;
+       border: 1px solid  white !important;
+      
+
+    }
+    // .country{
+    //     background-color: transparent;
+    //     color: #999;
+    // }
+
+    
+  }
 }
+
