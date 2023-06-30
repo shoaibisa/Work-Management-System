@@ -1,3 +1,5 @@
+import "./createProject.scss";
+import React, { useEffect } from "react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Forweb from "../../components/forweb/Forweb";
@@ -10,20 +12,22 @@ import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { Select, initTE } from "tw-elements";
 
-import { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
-import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { AiFillPlusCircle, AiOutlinePlusCircle } from "react-icons/ai";
-import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import { useState } from "react";
+// import { Link } from "react-router-dom";
+// import { Menu, Transition } from "@headlessui/react";
+// import { ChevronDownIcon } from "@heroicons/react/20/solid";
+// import { AiFillPlusCircle, AiOutlinePlusCircle } from "react-icons/ai";
+// import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 
 const Createproject = () => {
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(" ");
-  }
-  
+  // function classNames(...classes) {
+  //   return classes.filter(Boolean).join(" ");
+  // }
 
-  initTE({ Select });
+  // initTE({ Select });
+  useEffect(() => {
+    initTE({ Select });
+  }, []);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   const handleOptionSelect = (event) => {
@@ -36,7 +40,7 @@ const Createproject = () => {
 
   const [value, onChange] = useState(null);
 
-  const [isHovered, setIsHovered] = useState(false);
+  // const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div className="home">
@@ -68,14 +72,13 @@ const Createproject = () => {
                   </div>
                 </div>
 
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-4 text-black-700">
                   <label
                     htmlFor="username"
                     className="block mb-6 text-sm font-medium leading-6 text-gray-900"
                   >
                     Project Type :
                   </label>
-
 
                   <select
                     data-te-select-init
@@ -88,8 +91,7 @@ const Createproject = () => {
                     <option value="4">For Mobile</option>
                     <option value="5">For Grc</option>
                   </select>
-                  <label data-te-select-label-ref>Choose Type</label> 
-                
+                  <label data-te-select-label-ref>Choose Type</label>
                 </div>
 
                 {selectedOptions.includes("1") && <Forweb />}
@@ -97,7 +99,7 @@ const Createproject = () => {
                 {selectedOptions.includes("3") && <Fornetwork />}
                 {selectedOptions.includes("4") && <Formobile />}
                 {selectedOptions.includes("5") && <Forgrc />}
-                <Formobile />
+                {/* <Formobile /> */}
 
                 <div className="mt-16 flex mb-6 flex-row">
                   <p className="block text-lg font-medium leading-6 text-gray-900">
