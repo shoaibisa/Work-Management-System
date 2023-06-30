@@ -2,86 +2,28 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import {
-  AiFillPlusCircle,
-  AiOutlinePlusCircle,
-  AiFillMinusCircle,
-  AiOutlineMinusCircle,
-} from "react-icons/ai";
+import { AiFillPlusCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
-// import "./spinner.css";
-const Forweb = () => {
-  const [isHoveredplus, setIsHoveredplus] = useState(false);
-  const [isHoveredminus, setIsHoveredminus] = useState(false);
 
-  const [h1Tags, setH1Tags] = useState([]);
+const Formobile = () => {
+  const [showandroid, setandroid] = useState(false);
+  const [showios, setios] = useState(false);
 
-  const handleClickminus = () => {
-    setH1Tags((prevTags) => {
-      const newTags = [...prevTags];
-      newTags.shift();
-      return newTags;
-    });
+  const knot = () => {
+    setandroid(!showandroid);
   };
 
-  const handleClickplus = (e) => {
-    e.preventDefault();
-    setH1Tags((prevTags) => [
-      ...prevTags,
-      //   <h1 key={prevTags.length}>New H1 Tag</h1>,
-      <div className="flex flex-row" key={prevTags.length}>
-        <div className="sm:col-span-4 mb-10 w-[240px] mr-6">
-          <label
-            htmlFor="username"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Lable
-          </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                type="text"
-                name="username"
-                id="username"
-                autoComplete="username"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="Enter Lable"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="sm:col-span-4 mb-10 w-[240px]">
-          <label
-            htmlFor="username"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Link
-          </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                type="text"
-                name="username"
-                id="username"
-                autoComplete="username"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="Enter Link"
-              />
-            </div>
-          </div>
-        </div>
-      </div>,
-    ]);
+  const knotios = () => {
+    setios(!showios);
   };
 
   return (
-    <div className="col-span-full mt-6">
+    <div className="col-span-full mt-12">
       <label
         htmlFor="cover-photo"
         className="block text-sm font-medium leading-6 text-gray-900"
       >
-        For Web
+        For Mobile
       </label>
       <div className="mt-2 flex flex-col rounded-lg border border-dashed border-gray-900/25 p-4">
         {/* 3 input fields  */}
@@ -150,39 +92,77 @@ const Forweb = () => {
             </div>
           </div>
         </div>
-        {/* target url vala section  */}
-        <div className="mb-6">
-          <div className="flex flex-row">
-            <p className="block text-md font-medium leading-6 text-gray-900">
-              Target Url
-            </p>
-            {/* + icon  */}
-            <div
-              onClick={handleClickplus}
-              className="flex items-center text-2xl cursor-pointer ml-6"
-              onMouseEnter={() => setIsHoveredplus(true)}
-              onMouseLeave={() => setIsHoveredplus(false)}
-            >
-              {isHoveredplus ? <AiFillPlusCircle /> : <AiOutlinePlusCircle />}
+        {/* os url input field wala section  */}
+        <div>
+          <label
+            htmlFor="username"
+            className="block pb-6 text-sm font-medium leading-6 text-gray-900"
+          >
+            Paste Application Url
+          </label>
+          {/* 1 */}
+          <div className="relative mb-4 flex gap-x-3">
+            <div className="flex h-6 items-center">
+              <input
+                id="comments"
+                name="comments"
+                onChange={knot}
+                type="checkbox"
+                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+              />
             </div>
+            <div className="text-sm leading-6">
+              <label htmlFor="comments" className="font-medium text-gray-900">
+                Android
+              </label>
 
-            <div
-              className="flex items-center text-2xl cursor-pointer ml-6"
-              onMouseEnter={() => setIsHoveredminus(true)}
-              onMouseLeave={() => setIsHoveredminus(false)}
-              onClick={handleClickminus} // Call handleClickminus without passing any parameters
-            >
-              {isHoveredminus ? (
-                <AiFillMinusCircle />
-              ) : (
-                <AiOutlineMinusCircle />
+              {showandroid && (
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="url"
+                    name="username"
+                    id="username"
+                    autoComplete="username"
+                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="Enter url"
+                  />
+                </div>
               )}
             </div>
           </div>
 
-          <div>
-            {/* multiple input fields and labels */}
-            {h1Tags.map((tag) => tag)}
+          {/* 2 */}
+
+          <div className="relative mb-4 flex gap-x-3">
+            <div className="flex h-6 items-center">
+              <input
+                onChange={knotios}
+                id="comments"
+                name="comments"
+                type="checkbox"
+                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+              />
+            </div>
+            <div className="text-sm leading-6">
+              <label htmlFor="comments" className="font-medium text-gray-900">
+                Ios
+              </label>
+
+              <div>
+                {showios && (
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                    <input
+                      type="url"
+                      name="username"
+                      id="username"
+                      autoComplete="username"
+                      className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      placeholder="Enter url"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -208,4 +188,4 @@ const Forweb = () => {
   );
 };
 
-export default Forweb;
+export default Formobile;

@@ -3,9 +3,13 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Forweb from "../../components/forweb/Forweb";
 import Forapi from "../../components/forapi/Forapi";
 import Fornetwork from "../../components/fornetwork/Fornetwork";
+import Formobile from "../../components/formobile/Formobile";
+import Forgrc from "../../components/forgrc/Forgrc";
 import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
+import { Select, initTE } from "tw-elements";
+
 import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
@@ -17,6 +21,18 @@ const Createproject = () => {
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
+  
+
+  initTE({ Select });
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
+  const handleOptionSelect = (event) => {
+    const selectedValues = Array.from(
+      event.target.selectedOptions,
+      (option) => option.value
+    );
+    setSelectedOptions(selectedValues);
+  };
 
   const [value, onChange] = useState(null);
 
@@ -55,100 +71,33 @@ const Createproject = () => {
                 <div className="sm:col-span-4">
                   <label
                     htmlFor="username"
-                    className="block text-sm font-medium leading-6 text-gray-900"
+                    className="block mb-6 text-sm font-medium leading-6 text-gray-900"
                   >
                     Project Type :
                   </label>
 
-                  <div className="mt-4 mb-4 w-[300px]">
-                    <li className="dropdown">
-                      <Menu
-                        as="div"
-                        className="relative display:inline  bg-transparent text-left"
-                      >
-                        <div>
-                          <Menu.Button className="flex max-w-[150px]  bg-transparent justify-around border-none outline-none w-full justify-center gap-x-1.5 rounded-md   text-sm font-semibold text-gray-900   ">
-                            {/* <PersonOutlineIcon className="icon" /> */}
-                            <span> Choose Type</span>
-                            <span>
-                              <ChevronDownIcon
-                                className="-mr-1 ml-15 h-5 w-5 text-gray-400"
-                                aria-hidden="true"
-                              />
-                            </span>
-                          </Menu.Button>
-                        </div>
 
-                        <Transition
-                          as={Fragment}
-                          enter="transition ease-out duration-100"
-                          enterFrom="transform opacity-0 scale-95"
-                          enterTo="transform opacity-100 scale-100"
-                          leave="transition ease-in duration-75"
-                          leaveFrom="transform opacity-100 scale-100"
-                          leaveTo="transform opacity-0 scale-95"
-                        >
-                          <Menu.Items className=" menu-item bg-transparent relative  right-0 z-10  origin-top-right divide-y divide-gray-100 rounded-md  ring-black ring-opacity-5 focus:outline-none">
-                            <div className="py-1">
-                              <Menu.Item>
-                                {({ active }) => (
-                                  // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                                  <Link
-                                    to="/createproject"
-                                    className={classNames(
-                                      active
-                                        ? "bg-gray-100 text-gray-900"
-                                        : "text-gray-700",
-                                      "block px-4 py-2 text-sm"
-                                    )}
-                                  >
-                                    For Web
-                                  </Link>
-                                )}
-                              </Menu.Item>
-                              <Menu.Item>
-                                {({ active }) => (
-                                  // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                                  <Link
-                                    to="/allproject"
-                                    className={classNames(
-                                      active
-                                        ? "bg-gray-100 text-gray-900"
-                                        : "text-gray-700",
-                                      "block px-4 py-2 text-sm"
-                                    )}
-                                  >
-                                    For Network
-                                  </Link>
-                                )}
-                              </Menu.Item>
-                              <Menu.Item>
-                                {({ active }) => (
-                                  // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                                  <a
-                                    href="#"
-                                    className={classNames(
-                                      active
-                                        ? "bg-gray-100 text-gray-900"
-                                        : "text-gray-700",
-                                      "block px-4 py-2 text-sm"
-                                    )}
-                                  >
-                                    For Api
-                                  </a>
-                                )}
-                              </Menu.Item>
-                            </div>
-                          </Menu.Items>
-                        </Transition>
-                      </Menu>
-                    </li>
-                  </div>
+                  <select
+                    data-te-select-init
+                    multiple
+                    onChange={(e) => handleOptionSelect(e)}
+                  >
+                    <option value="1">For web</option>
+                    <option value="2">For API</option>
+                    <option value="3">For Network</option>
+                    <option value="4">For Mobile</option>
+                    <option value="5">For Grc</option>
+                  </select>
+                  <label data-te-select-label-ref>Choose Type</label> 
+                
                 </div>
 
-                <Forweb />
-                <Fornetwork />
-                <Forapi />
+                {selectedOptions.includes("1") && <Forweb />}
+                {selectedOptions.includes("2") && <Forapi />}
+                {selectedOptions.includes("3") && <Fornetwork />}
+                {selectedOptions.includes("4") && <Formobile />}
+                {selectedOptions.includes("5") && <Forgrc />}
+                <Formobile />
 
                 <div className="mt-16 flex mb-6 flex-row">
                   <p className="block text-lg font-medium leading-6 text-gray-900">
