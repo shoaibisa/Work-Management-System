@@ -18,13 +18,19 @@ import { useContext, useState } from "react";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../actions/employeeAction";
 const Sidebar = ({ open }) => {
+  const dispatch = useDispatch();
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
+
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
 
-  const { dispatch } = useContext(DarkModeContext);
+  const { dispatchs } = useContext(DarkModeContext);
 
   return (
     <div className="sidebar  ">
@@ -261,7 +267,7 @@ const Sidebar = ({ open }) => {
               <span>Profile</span>
             </Link>
           </li>
-          <li>
+          <li onClick={logoutHandler}>
             <ExitToAppIcon className="icon" />
             <span>Logout</span>
           </li>
@@ -270,11 +276,11 @@ const Sidebar = ({ open }) => {
       <div className="bottom">
         <div
           className="colorOption"
-          onClick={() => dispatch({ type: "LIGHT" })}
+          onClick={() => dispatchs({ type: "LIGHT" })}
         ></div>
         <div
           className="colorOption"
-          onClick={() => dispatch({ type: "DARK" })}
+          onClick={() => dispatchs({ type: "DARK" })}
         ></div>
       </div>
     </div>

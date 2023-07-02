@@ -1,6 +1,47 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "../../actions/employeeAction";
+import Spinner from "../../components/spinner/spinner";
+
 const Signup = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassWord] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+
+  const location = useLocation();
+  const Navigate = useNavigate();
+
+  const redirect = location.search ? location.search.split("=")[1] : "/";
+  const dispatch = useDispatch();
+
+  const employeeregister = useSelector((state) => state.employeeregister);
+  const { loading, error, employeeInfo } = employeeregister;
+  useEffect(() => {
+    if (employeeInfo) {
+      if (!employeeInfo.isError) {
+        Navigate(redirect);
+      } else {
+        setMessage(employeeInfo.message);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [employeeInfo, redirect]);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      console.log("Confirm Password  do not Match");
+      setMessage("Confirm Password  do not Match");
+    } else {
+      dispatch(register(name, email, password, phone));
+      // setMessage("Sucessfully Register");
+    }
+  };
   return (
     <>
       <div className="min-h-full h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -26,14 +67,26 @@ const Signup = () => {
               </Link>
             </p>
           </div>
-          <form className="mt-8 space-y-6">
+          {error && <div className=" text-red-600">{employeeInfo.message}</div>}
+          {message && <div className=" text-red-600">{message} </div>}
+          <form
+            className="mt-8 space-y-6"
+            autoComplete="off"
+            onSubmit={submitHandler}
+          >
             <div className="-space-y-1px">
               <div className="my-5">
                 <label htmlFor="Name" className="sr-only"></label>
                 <input
                   className="rounded-md appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
-                  placeholder="Name"
+                  placeholder="John Doe"
+                  required
+                  type="text"
                   isRequired="true"
+                  id="name"
+                  autoComplete="false"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </div>
               <div className="my-5">
@@ -42,9 +95,13 @@ const Signup = () => {
                 </label>
                 <input
                   className="rounded-md appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
-                  placeholder="Email address"
-                  isRequired="true"
+                  required
                   type="email"
+                  placeholder="your-email@gmail.com"
+                  id="username"
+                  autocomplete="off"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>{" "}
               <div className="my-5">
@@ -53,18 +110,26 @@ const Signup = () => {
                 </label>
                 <input
                   className="rounded-md appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
-                  placeholder="Phone No"
-                  isRequired="true"
+                  required
                   type="phone"
+                  placeholder="Mobile No"
+                  id="mobileno"
+                  autoComplete="false"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
               </div>
               <div className="my-5">
                 <label htmlFor="Password" className="sr-only"></label>
                 <input
                   className="rounded-md appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
-                  placeholder="Password"
-                  isRequired="true"
-                  type="pasword"
+                  required
+                  type="password"
+                  placeholder="Your Password"
+                  id="password"
+                  autoComplete="false"
+                  value={password}
+                  onChange={(e) => setPassWord(e.target.value)}
                 />
               </div>
               <div className="my-5">
@@ -73,9 +138,12 @@ const Signup = () => {
                 </label>
                 <input
                   className="rounded-md appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
-                  placeholder="Confirm Password"
-                  isRequired="true"
-                  type="pasword"
+                  required
+                  type="password"
+                  placeholder="Re-type Your Password"
+                  id="re-password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                 />
               </div>
             </div>
