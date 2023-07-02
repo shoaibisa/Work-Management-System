@@ -20,7 +20,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../actions/employeeAction";
-const Sidebar = ({ open }) => {
+const Sidebar = () => {
   const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(logout());
