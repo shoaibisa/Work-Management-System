@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../actions/employeeAction";
 import Spinner from "../../components/spinner/spinner";
+import { Select, initTE } from "tw-elements";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -42,6 +43,13 @@ const Signup = () => {
       // setMessage("Sucessfully Register");
     }
   };
+
+  // Initialization for ES Users
+
+  useEffect(() => {
+    initTE({ Select });
+  }, []);
+
   return (
     <>
       <div className="min-h-full h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -145,6 +153,18 @@ const Signup = () => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
+              </div>
+              <div className="my-5">
+                <select data-te-select-init>
+                  <option disabled selected>
+                    Choose Department
+                  </option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                  <option value="4">Four</option>
+                  <option value="5">Five</option>
+                </select>
               </div>
             </div>
             <button
