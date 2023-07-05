@@ -12,6 +12,7 @@ import { useContext, useState } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import AllProject from "./Views/Admin/AllProject.jsx";
 import Createproject from "./pages/createProject/Createproject";
+import Taskassign from "./pages/taskassign/Taskassign";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
 
@@ -44,7 +45,7 @@ function App() {
               />
             </Route>
           </Route>
-          
+          <Route path="/taskassign" element={<Taskassign />} />
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>

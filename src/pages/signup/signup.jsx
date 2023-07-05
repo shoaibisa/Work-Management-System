@@ -159,11 +159,12 @@ const Signup = () => {
                   <option disabled selected>
                     Choose Department
                   </option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                  <option value="4">Four</option>
-                  <option value="5">Five</option>
+                  <option value="1">HR Tram</option>
+                  <option value="2">GRC Team</option>
+                  <option value="3">Account Team</option>
+                  <option value="4">Technical Team</option>
+                  <option value="5">Marketing Team</option>
+                  <option value="6">Management Team</option>
                 </select>
               </div>
             </div>

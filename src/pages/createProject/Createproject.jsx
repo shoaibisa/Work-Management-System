@@ -11,7 +11,6 @@ import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { Select, initTE } from "tw-elements";
-
 import { useState } from "react";
 // import { Link } from "react-router-dom";
 // import { Menu, Transition } from "@headlessui/react";
@@ -139,7 +138,7 @@ const Createproject = () => {
                 </div>
 
                 {/* final cancel and submit buttons */}
-                <div className="mt-6 mt-4 flex items-center justify-end gap-x-6">
+                <div className=" mt-4 flex items-center justify-end gap-x-6">
                   <button
                     type="button"
                     className="text-sm font-semibold leading-6 text-gray-900"
