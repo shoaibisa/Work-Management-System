@@ -6,7 +6,10 @@ import {
   employeeRegisterReducer,
   employeeLoginReducer,
 } from "./reducers/employeeReducer";
-import { projectListReducer } from "./reducers/projectListReducer";
+import {
+  projectListReducer,
+  projectCreatedReducer,
+} from "./reducers/projectListReducer";
 
 const employeenfoFromStroge = localStorage.getItem("employeeInfo")
   ? JSON.parse(localStorage.getItem("employeeInfo"))
@@ -17,6 +20,7 @@ const reducer = combineReducers({
   projectList: projectListReducer,
   employeeLogin: employeeLoginReducer,
   employeeregister: employeeRegisterReducer,
+  projectCreated: projectCreatedReducer,
 });
 const initialState = {
   employeeLogin: { employeeInfo: employeenfoFromStroge },

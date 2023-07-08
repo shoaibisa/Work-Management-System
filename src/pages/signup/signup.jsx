@@ -45,7 +45,6 @@ const Signup = () => {
   };
 
   // Initialization for ES Users
-
   useEffect(() => {
     initTE({ Select });
   }, []);
@@ -84,7 +83,7 @@ const Signup = () => {
           >
             <div className="-space-y-1px">
               <div className="my-5">
-                <label htmlFor="Name" className="sr-only"></label>
+                <label for="Name" className="sr-only"></label>
                 <input
                   className="rounded-md appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
                   placeholder="John Doe"
@@ -98,7 +97,7 @@ const Signup = () => {
                 />
               </div>
               <div className="my-5">
-                <label htmlFor="Email address" className="sr-only">
+                <label for="Email address" className="sr-only">
                   Email
                 </label>
                 <input
@@ -113,7 +112,7 @@ const Signup = () => {
                 />
               </div>{" "}
               <div className="my-5">
-                <label htmlFor="phone" className="sr-only">
+                <label for="phone" className="sr-only">
                   Phone
                 </label>
                 <input
@@ -128,7 +127,7 @@ const Signup = () => {
                 />
               </div>
               <div className="my-5">
-                <label htmlFor="Password" className="sr-only"></label>
+                <label for="Password" className="sr-only"></label>
                 <input
                   className="rounded-md appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
                   required
@@ -141,7 +140,7 @@ const Signup = () => {
                 />
               </div>
               <div className="my-5">
-                <label htmlFor="Confirm Password" className="sr-only">
+                <label for="Confirm Password" className="sr-only">
                   Email
                 </label>
                 <input

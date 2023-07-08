@@ -26,6 +26,7 @@ export const logout = () => (dispatch) => {
 
 //Register
 export const register = (name, email, password, phone) => async (dispatch) => {
+  console.log(password);
   try {
     dispatch({ type: EMPLOYEE_REGISTER_REQUEST });
     const config = { headers: { "Contnet-Type": "application/json" } };

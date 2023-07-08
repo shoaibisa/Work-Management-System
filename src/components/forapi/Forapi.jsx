@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { AiFillPlusCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 
-const Forapi = () => {
+const Forapi = ({ apiData, setApiData }) => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setApiData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
   return (
     <div className="col-span-full mt-12">
       <label
-        htmlFor="cover-photo"
+        for="cover-photo"
         className="block text-sm font-medium leading-6 text-gray-900"
       >
         For APIs
@@ -20,7 +27,7 @@ const Forapi = () => {
           {/* 1 */}
           <div className="sm:col-span-4 w-1/3 mr-10 mb-10">
             <label
-              htmlFor="username"
+              for="CompanyName"
               className="block text-sm font-medium leading-6 text-gray-900"
             >
               Company Name
@@ -29,8 +36,10 @@ const Forapi = () => {
               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                 <input
                   type="text"
-                  name="username"
-                  id="username"
+                  name="apicompanyName"
+                  id="apicompanyName"
+                  value={apiData.apicompanyName}
+                  onChange={handleInputChange}
                   autoComplete="username"
                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="Enter Company Name"
@@ -41,7 +50,7 @@ const Forapi = () => {
           {/* 2 */}
           <div className="sm:col-span-4 w-1/3 mr-10 mb-10">
             <label
-              htmlFor="username"
+              for="username"
               className="block text-sm font-medium leading-6 text-gray-900"
             >
               Client Name
@@ -50,8 +59,10 @@ const Forapi = () => {
               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                 <input
                   type="text"
-                  name="username"
-                  id="username"
+                  name="apiclientName"
+                  id="apiclientName"
+                  value={apiData.apiclientName}
+                  onChange={handleInputChange}
                   autoComplete="username"
                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="Enter Client Name"
@@ -62,7 +73,7 @@ const Forapi = () => {
           {/* 3 */}
           <div className="sm:col-span-4 w-1/3 mr-10 mb-10">
             <label
-              htmlFor="username"
+              for="username"
               className="block text-sm font-medium leading-6 text-gray-900"
             >
               Client email
@@ -71,11 +82,13 @@ const Forapi = () => {
               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                 <input
                   type="mail"
-                  name="username"
-                  id="username"
+                  name="apiclientEmail"
+                  id="apiclientEmail"
                   autoComplete="username"
                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="Enter Client email"
+                  value={apiData.apiclientEmail}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -84,7 +97,7 @@ const Forapi = () => {
         {/* target url vala section  */}
         <div className=" flex flex row mb-6 mt-2 ">
           <label
-            htmlFor=""
+            for=""
             className="block text-sm font-medium leading-6 text-gray-900"
           >
             Target APIs -
@@ -92,15 +105,18 @@ const Forapi = () => {
           <label class="flex ml-8 flex-col items-center justify-center">
             {/* <span class="sr-only">Choose profile photo</span> */}
             <input
-             accept=".xls, .xlsx, text/plain"
+              accept=".xls, .xlsx, text/plain"
               type="file"
+              name="apifile"
+              value={apiData.apifile}
+              onChange={handleInputChange}
               class="block cursor-pointer w-full text-sm text-slate-500
-      file:mr-4 file:py-2 file:px-4
-      file:rounded-full file:border-0
-      file:text-sm file:font-semibold
-      file:bg-violet-50 file:text-violet-700
-      hover:file:bg-violet-100
-    "
+                file:mr-4 file:py-2 file:px-4
+                file:rounded-full file:border-0
+                file:text-sm file:font-semibold
+                file:bg-violet-50 file:text-violet-700
+                hover:file:bg-violet-100
+              "
             />
           </label>
         </div>
@@ -116,12 +132,13 @@ const Forapi = () => {
           <div class="mt-2">
             <textarea
               id="about"
-              name="about"
+              name="apiotherRemarks"
               rows="3"
+              value={apiData.apiotherRemarks}
+              onChange={handleInputChange}
               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             ></textarea>
           </div>
-          
         </div>
       </div>
     </div>

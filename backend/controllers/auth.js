@@ -13,6 +13,7 @@ const createToken = (id, role) => {
 };
 
 const signUp = async (req, res) => {
+  console.log(req);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(201).send({
@@ -60,6 +61,7 @@ const signUp = async (req, res) => {
   }
 
   const employee = new Employee(payLoad);
+  //  const uri = `http://localhost:3000/auth/verifyUser/${token}`;
 
   try {
     const token = crypto.randomBytes(32).toString("hex");

@@ -1,6 +1,7 @@
 import { check } from "express-validator";
 import Express from "express";
 import { signUp, signIn } from "../controllers/auth.js";
+import { abc, createProject } from "../controllers/project.js";
 
 const router = Express.Router();
 
@@ -28,5 +29,5 @@ router.post(
   ],
   signIn
 );
-
+router.post("/createproject", createProject);
 export default router;

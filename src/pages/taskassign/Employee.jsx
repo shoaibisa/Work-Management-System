@@ -3,14 +3,11 @@ import { userRows } from "../../employessdata";
 import { Select, initTE } from "tw-elements";
 
 const Employee = (props) => {
-
-    const { departments } = props;
+  const { departments } = props;
 
   useEffect(() => {
     initTE({ Select });
   }, []);
-
- 
 
   const optionelements = userRows
     .filter((option) => {
@@ -27,10 +24,10 @@ const Employee = (props) => {
       </option>
     ));
 
-//   console.log(optionelements);
+  //   console.log(optionelements);
 
   return (
-    <div class="flex flex-col mx-5 mt-4">
+    <div className="flex flex-col mx-5 mt-4">
       <select
         id="multiSelection"
         multiple

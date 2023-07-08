@@ -5,11 +5,18 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { AiFillPlusCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 
-const Forgrc = () => {
+const Forgrc = ({ grcData, setGRCData }) => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setGRCData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
   return (
     <div className="col-span-full mt-12">
       <label
-        htmlFor="cover-photo"
+        for="cover-photo"
         className="block text-sm font-medium leading-6 text-gray-900"
       >
         For Grc
@@ -20,7 +27,7 @@ const Forgrc = () => {
           {/* 1 */}
           <div className="sm:col-span-4 w-1/3 mr-10 mb-10">
             <label
-              htmlFor="username"
+              for="username"
               className="block text-sm font-medium leading-6 text-gray-900"
             >
               Company Name
@@ -29,11 +36,12 @@ const Forgrc = () => {
               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                 <input
                   type="text"
-                  name="username"
-                  id="username"
+                  name="grccompanyName"
                   autoComplete="username"
                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="Enter Company Name"
+                  value={grcData.grccompanyName}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -41,7 +49,7 @@ const Forgrc = () => {
           {/* 2 */}
           <div className="sm:col-span-4 w-1/3 mr-10 mb-10">
             <label
-              htmlFor="username"
+              for="username"
               className="block text-sm font-medium leading-6 text-gray-900"
             >
               Client Name
@@ -50,11 +58,12 @@ const Forgrc = () => {
               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                 <input
                   type="text"
-                  name="username"
-                  id="username"
-                  autoComplete="username"
+                  name="grcclientName"
+                  autoComplete="=ClientName"
                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="Enter Client Name"
+                  value={grcData.grcclientName}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -62,7 +71,7 @@ const Forgrc = () => {
           {/* 3 */}
           <div className="sm:col-span-4 w-1/3 mr-10 mb-10">
             <label
-              htmlFor="username"
+              for="Clientemail"
               className="block text-sm font-medium leading-6 text-gray-900"
             >
               Client email
@@ -71,18 +80,17 @@ const Forgrc = () => {
               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                 <input
                   type="mail"
-                  name="username"
-                  id="username"
-                  autoComplete="username"
+                  name="grcclientEmail"
+                  autoComplete="Clientemail"
                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="Enter Client email"
+                  value={grcData.grcclientEmail}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
           </div>
         </div>
-       
-        
 
         {/* remarks section  */}
         <div class="col-span-full">
@@ -94,13 +102,13 @@ const Forgrc = () => {
           </label>
           <div class="mt-2">
             <textarea
-              id="about"
-              name="about"
+              name="grcotherRemarks"
               rows="3"
+              value={grcData.grcotherRemarks}
+              onChange={handleInputChange}
               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             ></textarea>
           </div>
-          
         </div>
       </div>
     </div>

@@ -2,8 +2,26 @@ import {
   PROJECT_LIST_FAILS,
   PROJECT_LIST_SUCCESS,
   PROJECT_LIST_REQUEST,
+  PROJECT_CREATED_REQUEST,
+  PROJECT_CREATED_SUCCESS,
+  PROJECT_CREATED_FAILS,
 } from "../constants/projectList.js";
 
+export const projectCreatedReducer = (state = { project: [] }, action) => {
+  switch (action.type) {
+    case PROJECT_CREATED_REQUEST:
+      return { loading: true, project: [] };
+
+    case PROJECT_CREATED_SUCCESS:
+      return { loading: false, project: action.payload };
+
+    case PROJECT_CREATED_FAILS:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
 export const projectListReducer = (state = { project: [] }, action) => {
   switch (action.type) {
     case PROJECT_LIST_REQUEST:

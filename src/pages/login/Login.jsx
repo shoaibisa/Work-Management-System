@@ -64,7 +64,7 @@ const Login = () => {
           <form className="mt-8 space-y-6" onSubmit={submitHandler}>
             <div className="-space-y-1px">
               <div className="my-5">
-                <label htmlFor="Email address" className="sr-only">
+                <label for="Email address" className="sr-only">
                   Email
                 </label>
                 <input
@@ -77,7 +77,7 @@ const Login = () => {
                 />
               </div>
               <div className="my-5">
-                <label htmlFor="Email address" className="sr-only">
+                <label for="Email address" className="sr-only">
                   Password
                 </label>
                 <input
@@ -99,7 +99,7 @@ const Login = () => {
                   className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
                 />
                 <label
-                  htmlFor="remember-me"
+                  for="remember-me"
                   className="ml-2 block text-sm text-gray-900"
                 >
                   Remember me
