@@ -1,10 +1,11 @@
 import "./datatable.scss";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridSortModel } from "@mui/x-data-grid";
 import { userColumns } from "../../datatablesource";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 import { listEmployee } from "../../actions/employeeAction";
+
 import Spinner from "../spinner/spinner";
 
 const Datatable = () => {
@@ -15,7 +16,7 @@ const Datatable = () => {
     dispatch(listEmployee());
   }, [dispatch]);
 
-  //console.log(employees);
+  console.log(employees);
   // for delete
   // const handleDelete = (id) => {
   //   setData(data.filter((item) => item.id !== id));
@@ -25,19 +26,19 @@ const Datatable = () => {
     {
       field: "action",
       headerName: "Action",
-      width: 300,
+      width: 150,
       renderCell: (params) => {
         return (
           <div className="cellAction">
             <Link to="/users/test" style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
-            <Link to="" style={{ textDecoration: "none" }}>
+            {/* <Link to="" style={{ textDecoration: "none" }}>
               <div className="approveButton">Approve</div>
             </Link>
             <Link to="" style={{ textDecoration: "none" }}>
               <div className="deleteButton">Disapprove</div>
-            </Link>
+            </Link> */}
           </div>
         );
       },
@@ -45,12 +46,7 @@ const Datatable = () => {
   ];
   return (
     <div className="datatable">
-      <div className="datatableTitle">
-        Employee Request
-        {/* <Link to="/users/new" className="link">
-          Add New
-        </Link> */}
-      </div>
+      <div className="datatableTitle">All Employee</div>
       {loading ? (
         <Spinner />
       ) : error ? (
@@ -61,6 +57,7 @@ const Datatable = () => {
           rows={employees}
           columns={userColumns.concat(actionColumn)}
           pageSize={9}
+          getRowId={(row) => row._id}
           rowsPerPageOptions={[9]}
           checkboxSelection
         />

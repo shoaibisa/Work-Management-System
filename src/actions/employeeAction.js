@@ -25,36 +25,36 @@ export const logout = () => (dispatch) => {
 };
 
 //Register
-export const register = (name, email, password, phone) => async (dispatch) => {
-  console.log(password);
-  try {
-    dispatch({ type: EMPLOYEE_REGISTER_REQUEST });
-    const config = { headers: { "Contnet-Type": "application/json" } };
-    const { data } = await axios.post(
-      "http://localhost:5000/auth/sign-up",
-      { name, email, password, phone },
-      config
-    );
+export const register =
+  (name, email, password, phone, selectedDepartment) => async (dispatch) => {
+    try {
+      dispatch({ type: EMPLOYEE_REGISTER_REQUEST });
+      const config = { headers: { "Contnet-Type": "application/json" } };
+      const { data } = await axios.post(
+        "http://localhost:5000/auth/sign-up",
+        { name, email, password, phone, selectedDepartment },
+        config
+      );
 
-    dispatch({
-      type: EMPLOYEE_REGISTER_SUCCESS,
-      payload: data,
-    });
-    dispatch({
-      type: EMPLOYEE_LOGIN_SUCCESS,
-      payload: data,
-    });
-    localStorage.setItem("employeeInfo", JSON.stringify(data));
-  } catch (error) {
-    dispatch({
-      type: EMPLOYEE_REGISTER_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      dispatch({
+        type: EMPLOYEE_REGISTER_SUCCESS,
+        payload: data,
+      });
+      dispatch({
+        type: EMPLOYEE_LOGIN_SUCCESS,
+        payload: data,
+      });
+      //localStorage.setItem("employeeInfo", JSON.stringify(data));
+    } catch (error) {
+      dispatch({
+        type: EMPLOYEE_REGISTER_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -86,7 +86,7 @@ export const login = (email, password) => async (dispatch) => {
 export const listEmployee = () => async (dispatch) => {
   try {
     dispatch({ type: EMPLOYEE_LIST_REQUEST });
-    const { data } = await axios.get(API_URL);
+    const { data } = await axios.get("http://localhost:5000/auth/allemployees");
     dispatch({
       type: EMPLOYEE_LIST_SUCCESS,
       payload: data,

@@ -1,39 +1,126 @@
+import React, { useState } from "react";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+
+function RoleCellRenderer(props) {
+  console.log(props);
+  var { value, api, id, field } = props;
+  const [editing, setEditing] = useState(false);
+  const [selectedRole, setSelectedRole] = useState(value);
+  console.log(typeof value);
+  const handleRoleClick = () => {
+    setEditing(true);
+  };
+
+  const handleRoleChange = (event) => {
+    const newRole = event.target.value;
+    setSelectedRole(newRole);
+    setEditing(false);
+    api.setCellValue(id, field, newRole);
+  };
+
+  return (
+    <div onClick={handleRoleClick}>
+      {editing ? (
+        <Select
+          className="p-2 bg-yellow-400 text-white  rounded-md "
+          value={selectedRole}
+          onChange={handleRoleChange}
+        >
+          <MenuItem value="Employee">Employee</MenuItem>
+          <MenuItem value="Project Manager">Project Manager</MenuItem>
+          <MenuItem value="Admin">Admin</MenuItem>
+        </Select>
+      ) : (
+        <span className="role  p-2 bg-yellow-400 text-white  rounded-md ">
+          {value}
+          <svg
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiSelect-icon MuiSelect-iconOutlined css-hfutr2-MuiSvgIcon-root-MuiSelect-icon"
+            focusable="false"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            data-testid="ArrowDropDownIcon"
+          >
+            <path d="M7 10l5 5 5-5z"></path>
+          </svg>
+        </span>
+      )}
+    </div>
+  );
+}
+
+function StatusCellRenderer(props) {
+  const { value, api, id, field } = props;
+  const [status, setStatus] = useState(value);
+
+  const handleStatusToggle = () => {
+    const newStatus = !status;
+    setStatus(newStatus);
+    api.setCellValue(id, field, newStatus);
+  };
+
+  const buttonColor = status ? "rgb(56, 219, 81)" : "crimson";
+  return (
+    <div style={{ padding: "5px" }}>
+      <button
+        className="statusBtn"
+        onClick={handleStatusToggle}
+        style={{
+          backgroundColor: buttonColor,
+          color: "white",
+          border: "none",
+          padding: "5px 10px",
+        }}
+      >
+        {status ? "Active" : "Deactivate"}
+      </button>
+    </div>
+  );
+}
 export const userColumns = [
-  { field: "id", headerName: "ID", width: 70 },
+  { field: "userId", headerName: "Employee Id", width: 150 },
   {
-    field: "firstName",
-    headerName: "User",
-    width: 230,
-    renderCell: (params) => {
-      return (
-        <div className="cellWithImg">
-          <img className="cellImg" src={params.row.imageUrl} alt="avatar" />
-          {params.row.firstName}
-        </div>
-      );
-    },
+    field: "name",
+    headerName: "Name",
+    width: 120,
+    // renderCell: (params) => {
+    //   return (
+    //     <div className="cellWithImg">
+    //       <img className="cellImg" src={params.row.imageUrl} alt="avatar" />
+    //       {params.row.Name}
+    //     </div>
+    //   );
+    // },
   },
   {
     field: "email",
     headerName: "Email",
-    width: 230,
+    width: 250,
   },
 
   {
-    field: "age",
-    headerName: "Age",
-    width: 100,
+    field: "phone",
+    headerName: "phone",
+    width: 110,
   },
   {
-    field: "status",
+    field: "department",
+    headerName: "Department",
+    width: 120,
+  },
+
+  {
+    field: "role",
+    headerName: "Role",
+    width: 200,
+    renderCell: RoleCellRenderer,
+  },
+
+  {
+    field: "isVerified",
     headerName: "Status",
-    width: 160,
-    renderCell: (params) => {
-      return (
-        <div className={`cellWithStatus ${params.row.status}`}>
-          {params.row.status}
-        </div>
-      );
-    },
+    width: 150,
+    renderCell: StatusCellRenderer,
+    sortable: true,
   },
 ];

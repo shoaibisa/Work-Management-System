@@ -12,17 +12,18 @@ const Signup = () => {
   const [password, setPassWord] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [phone, setPhone] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState("");
   const [message, setMessage] = useState("");
 
   const location = useLocation();
   const Navigate = useNavigate();
 
-  const redirect = location.search ? location.search.split("=")[1] : "/";
+  const redirect = location.search ? location.search.split("=")[1] : "/login";
   const dispatch = useDispatch();
 
   const employeeregister = useSelector((state) => state.employeeregister);
   const { loading, error, employeeInfo } = employeeregister;
-  console.log(employeeregister);
+  console.log(redirect);
   useEffect(() => {
     if (employeeInfo) {
       if (!employeeInfo.isError) {
@@ -40,8 +41,7 @@ const Signup = () => {
       console.log("Confirm Password  do not Match");
       setMessage("Confirm Password  do not Match");
     } else {
-      dispatch(register(name, email, password, phone));
-      // setMessage("Sucessfully Register");
+      dispatch(register(name, email, password, phone, selectedDepartment));
     }
   };
 
@@ -155,16 +155,18 @@ const Signup = () => {
                 />
               </div>
               <div className="my-5">
-                <select data-te-select-init>
-                  <option disabled selected>
-                    Choose Department
-                  </option>
-                  <option value="1">HR Tram</option>
-                  <option value="2">GRC Team</option>
-                  <option value="3">Account Team</option>
-                  <option value="4">Technical Team</option>
-                  <option value="5">Marketing Team</option>
-                  <option value="6">Management Team</option>
+                <select
+                  data-te-select-init
+                  value={selectedDepartment}
+                  onChange={(e) => setSelectedDepartment(e.target.value)}
+                >
+                  <option selected>Choose Department</option>
+                  <option value="HR">HR Tram</option>
+                  <option value="GRC">GRC Team</option>
+                  <option value="Account">Account Team</option>
+                  <option value="Technical">Technical Team</option>
+                  <option value="Marketing">Marketing Team</option>
+                  <option value="Management">Management Team</option>
                 </select>
               </div>
             </div>

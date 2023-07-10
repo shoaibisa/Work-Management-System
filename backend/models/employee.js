@@ -37,8 +37,11 @@ const employeeSchema = new Schema(
       default: false,
     },
     role: {
-      type: Number,
-      default: 0,
+      type: String,
+      default: "Employee",
+    },
+    department: {
+      type: String,
     },
   },
   { timestamps: true }

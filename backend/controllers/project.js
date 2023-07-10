@@ -3,7 +3,6 @@ import Project from "../models/project.js";
 
 const createProject = async (req, res) => {
   const projectData = req.body;
-  //const filename = req.file.filename;
   console.log(req.body.apiData.apifile);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -14,8 +13,6 @@ const createProject = async (req, res) => {
     });
   }
   const project = new Project(projectData);
-  //  console.log(project);
-
   project
     .save()
     .then(() => {
@@ -33,4 +30,5 @@ const createProject = async (req, res) => {
       });
     });
 };
+
 export { createProject };

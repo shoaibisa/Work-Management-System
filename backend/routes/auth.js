@@ -1,6 +1,6 @@
 import { check } from "express-validator";
 import Express from "express";
-import { signUp, signIn } from "../controllers/auth.js";
+import { signUp, signIn, getAllEmployees } from "../controllers/auth.js";
 import { createProject } from "../controllers/project.js";
 
 const router = Express.Router();
@@ -30,4 +30,5 @@ router.post(
   signIn
 );
 router.post("/createproject", createProject);
+router.get("/allemployees", getAllEmployees);
 export default router;
