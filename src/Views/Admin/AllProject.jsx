@@ -47,7 +47,7 @@ const AllProject = () => {
   ];
 
   const userColumns = [
-    { field: "id", headerName: "ID", width: 70 },
+    { field: "id", headerName: "ID", width: 71 },
     {
       field: "firstName",
       headerName: "User",
