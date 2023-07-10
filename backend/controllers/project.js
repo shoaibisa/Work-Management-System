@@ -1,13 +1,10 @@
 import { validationResult } from "express-validator";
 import Project from "../models/project.js";
 
-const abc = async (req, res) => {
-  console.log(req.body);
-};
-
 const createProject = async (req, res) => {
   const projectData = req.body;
-
+  //const filename = req.file.filename;
+  console.log(req.body.apiData.apifile);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(201).send({
@@ -17,7 +14,7 @@ const createProject = async (req, res) => {
     });
   }
   const project = new Project(projectData);
-  console.log(project);
+  //  console.log(project);
 
   project
     .save()
@@ -25,7 +22,7 @@ const createProject = async (req, res) => {
       console.log("Project  save to db!");
       return res.status(200).send({
         title: "Success",
-        message: "Redirecting to gmail in 3s...",
+        message: "project created sucessfully",
       });
     })
     .catch((err) => {
@@ -36,4 +33,4 @@ const createProject = async (req, res) => {
       });
     });
 };
-export { abc, createProject };
+export { createProject };

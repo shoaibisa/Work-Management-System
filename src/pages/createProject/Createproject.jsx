@@ -31,6 +31,7 @@ const Createproject = () => {
     webtargetUrls: [{ lable: "", link: "" }],
     webotherRemarks: "",
   });
+
   const [apiData, setApiData] = useState({
     apicompanyName: "",
     apiclientName: "",
@@ -38,6 +39,7 @@ const Createproject = () => {
     apifile: "",
     apiotherRemarks: "",
   });
+  console.log(apiData);
   const [networkData, setNetworkData] = useState({
     networkcompanyName: "",
     networkclientName: "",
@@ -49,7 +51,7 @@ const Createproject = () => {
     mobilecompanyName: "",
     mobileclientName: "",
     mobileclientEmail: "",
-    mobilefile: "",
+    mobiletargetUrls: [{ lable: "", link: "" }],
     mobileotherRemarks: "",
   });
   const [grcData, setGRCData] = useState({
@@ -60,22 +62,20 @@ const Createproject = () => {
   });
   const [submissionDate, setSubmissionDate] = useState(null);
   const [projectPriority, setProjectPriority] = useState("");
-
   const [message, setMessage] = useState("");
+
   const location = useLocation();
   const Navigate = useNavigate();
-
-  const redirect = location.search
-    ? location.search.split("=")[1]
-    : "/projectlist";
   const dispatch = useDispatch();
+
+  const redirect = location.search ? location.search.split("=")[1] : "/";
+
   const projectCreated = useSelector((state) => state.projectCreated);
   const { loading, error, project } = projectCreated;
-  //console.log(projectCreated);
   useEffect(() => {
     if (project) {
       if (!project.isError) {
-        // Navigate(redirect);
+        //Navigate(redirect);
       } else {
         setMessage(project.message);
       }
@@ -116,7 +116,7 @@ const Createproject = () => {
         projectPriority
       )
     );
-    // setMessage("Sucessfully Register")
+    setMessage("Sucessfully Register");
   };
   useEffect(() => {
     initTE({ Select });
@@ -261,6 +261,7 @@ const Createproject = () => {
             </div>
           </div>
         </form>
+        <div className=" text-green-600 ">{message}</div>
       </div>
     </div>
   );
