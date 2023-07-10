@@ -6,11 +6,21 @@ import { AiFillPlusCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 
 const Forapi = ({ apiData, setApiData }) => {
+  const [selectedFile, setSelectedFile] = useState("");
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    const timestamp = Date.now();
+    const fileName = `${file.name}_${timestamp}`;
+    setSelectedFile(fileName);
+  };
+  console.log(selectedFile);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setApiData((prevData) => ({
       ...prevData,
       [name]: value,
+      apifile: selectedFile,
     }));
   };
   return (
@@ -108,8 +118,7 @@ const Forapi = ({ apiData, setApiData }) => {
               accept=".xls, .xlsx, text/plain"
               type="file"
               name="apifile"
-              value={apiData.apifile}
-              onChange={handleInputChange}
+              onChange={handleFileChange}
               class="block cursor-pointer w-full text-sm text-slate-500
                 file:mr-4 file:py-2 file:px-4
                 file:rounded-full file:border-0

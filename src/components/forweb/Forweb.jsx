@@ -20,10 +20,14 @@ const Forweb = ({ webData, setWebData }) => {
     const list = [...targetURL];
     list[index][name] = value;
     setTargetURL(list);
+    setWebData((prevData) => ({
+      ...prevData,
+      [name]: value,
+      webtargetUrls: list,
+    }));
   };
 
   // console.log(targetURL);
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setWebData((prevData) => ({

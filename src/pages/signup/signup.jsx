@@ -22,6 +22,7 @@ const Signup = () => {
 
   const employeeregister = useSelector((state) => state.employeeregister);
   const { loading, error, employeeInfo } = employeeregister;
+  console.log(employeeregister);
   useEffect(() => {
     if (employeeInfo) {
       if (!employeeInfo.isError) {

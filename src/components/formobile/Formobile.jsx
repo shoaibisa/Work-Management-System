@@ -6,8 +6,24 @@ import { AiFillPlusCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 
 const Formobile = ({ mobileData, setMobileData }) => {
+  const [targetURL, setTargetURL] = useState([{ lable: "", link: "" }]);
+
   const [showandroid, setandroid] = useState(false);
   const [showios, setios] = useState(false);
+  // handle input change
+  const handleInputChanges = (e) => {
+    const { name, value } = e.target;
+    const list = [...targetURL];
+    console.log(list);
+    list[name] = value;
+    setTargetURL(list);
+    setMobileData((prevData) => ({
+      ...prevData,
+      [name]: value,
+      //mobilwtargetUrls: list,
+    }));
+  };
+  console.log(showios);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -147,7 +163,8 @@ const Formobile = ({ mobileData, setMobileData }) => {
             <div className="flex h-6 items-center">
               <input
                 onChange={knotios}
-                name="comments"
+                name="lable"
+                value="ios"
                 type="checkbox"
                 className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
               />
@@ -162,7 +179,9 @@ const Formobile = ({ mobileData, setMobileData }) => {
                   <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                     <input
                       type="url"
-                      name="mobile_ios_link"
+                      name="link"
+                      value={targetURL.link}
+                      onChange={(e) => handleInputChanges(e)}
                       autoComplete="username"
                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                       placeholder="Enter url"

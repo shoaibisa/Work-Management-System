@@ -4,11 +4,11 @@ const projectSchema = new mongoose.Schema(
   {
     projectName: {
       type: String,
-      //required: true,
+      required: true,
     },
     selectedOptions: {
       type: [String],
-      // required: true,
+      required: true,
     },
     webData: {
       webclientName: {
