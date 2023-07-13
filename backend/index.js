@@ -4,6 +4,7 @@ import morgen from "morgan";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import authRoute from "./routes/auth.js";
+import userRoute from "./routes/user.js";
 import cors from "cors";
 
 dotenv.config();
@@ -22,6 +23,7 @@ app.get("/", async (req, resq, next) => {
 });
 
 app.use("/auth", authRoute);
+app.use("/user", userRoute);
 
 app.use(async (req, resq, next) => {
   next(createError.NotFound());
