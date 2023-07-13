@@ -32,6 +32,10 @@ const employeeSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    status: {
+      type: Boolean,
+      default: false,
+    },
     isProfileComplete: {
       type: Boolean,
       default: false,
