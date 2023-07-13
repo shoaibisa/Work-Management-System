@@ -53,4 +53,23 @@ const getUserById = async (req, res) => {
   }
 };
 
-export { statusToggle, roleSet, getUserById };
+const getAllUsers = async (req, res) => {
+  try {
+    const employees = await Employee.find({}).exec();
+    if (!employees) {
+      return res.status(208).send({
+        isError: true,
+        title: "Error",
+        message: "No employee found",
+      });
+    }
+    return res.status(200).send({
+      employees: employees,
+      isError: false,
+    });
+  } catch (error) {
+    return res.status(500);
+  }
+};
+
+export { statusToggle, roleSet, getUserById, getAllUsers };
