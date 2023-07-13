@@ -25,7 +25,7 @@ function generateEmployeeId(fullname, department) {
   return employeeId;
 }
 const signUp = async (req, res) => {
-  console.log(req);
+  console.log(req.body);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(201).send({
