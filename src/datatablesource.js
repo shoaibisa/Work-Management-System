@@ -48,6 +48,23 @@ function RoleCellRenderer(props) {
   );
 }
 
+const updateStatus = (id, newStatus) => {
+  fetch(`your-api-endpoint/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ status: newStatus }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Status updated successfully:", data);
+    })
+    .catch((error) => {
+      console.error("Error updating status:", error);
+    });
+};
+
 function StatusCellRenderer(props) {
   const { value, api, id, field } = props;
   const [status, setStatus] = useState(value);
@@ -55,6 +72,8 @@ function StatusCellRenderer(props) {
   const handleStatusToggle = () => {
     const newStatus = !status;
     setStatus(newStatus);
+    console.log(newStatus);
+    //updateStatus(id, newStatus);
     api.setCellValue(id, field, newStatus);
   };
 
@@ -120,6 +139,5 @@ export const userColumns = [
     headerName: "Status",
     width: 150,
     renderCell: StatusCellRenderer,
-    sortable: true,
   },
 ];
