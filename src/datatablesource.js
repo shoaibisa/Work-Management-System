@@ -14,6 +14,7 @@ function RoleCellRenderer(props) {
   const handleRoleChange = (event) => {
     const newRole = event.target.value;
     setSelectedRole(newRole);
+    updateRole(id, newRole);
     setEditing(false);
     api.setCellValue(id, field, newRole);
   };
@@ -48,13 +49,30 @@ function RoleCellRenderer(props) {
   );
 }
 
-const updateStatus = (id, newStatus) => {
-  fetch(`your-api-endpoint/${id}`, {
-    method: "PUT",
+const updateRole = (id, role) => {
+  fetch(`http://localhost:5000/user/role`, {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ status: newStatus }),
+    body: JSON.stringify({ role: role, id: id }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Status updated successfully:", data);
+    })
+    .catch((error) => {
+      console.error("Error updating status:", error);
+    });
+};
+
+const updateStatus = (id, newStatus) => {
+  fetch(`http://localhost:5000/user/status`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ status: newStatus, id: id }),
   })
     .then((response) => response.json())
     .then((data) => {
@@ -73,7 +91,7 @@ function StatusCellRenderer(props) {
     const newStatus = !status;
     setStatus(newStatus);
     console.log(newStatus);
-    //updateStatus(id, newStatus);
+    updateStatus(id, newStatus);
     api.setCellValue(id, field, newStatus);
   };
 
@@ -135,7 +153,7 @@ export const userColumns = [
   },
 
   {
-    field: "isVerified",
+    field: "status",
     headerName: "Status",
     width: 150,
     renderCell: StatusCellRenderer,

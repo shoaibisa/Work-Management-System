@@ -70,7 +70,7 @@ const signUp = async (req, res) => {
       password: encryptedPassword,
       role: req.body.role,
       phone: req.body.phone,
-      department: req.body.selectedDepartment,
+      department: req.body.selectedDepartment.toLowerCase(),
     };
   } catch (error) {
     return res

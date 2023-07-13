@@ -11,7 +11,6 @@ import { useState } from "react";
 
 const Taskassign = () => {
   const [departments, setdepartments] = useState([]);
-  console.log(departments);
 
   const handlecheck = (e) => {
     const { value, checked } = e.target;
