@@ -3,11 +3,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
 function RoleCellRenderer(props) {
-  console.log(props);
   var { value, api, id, field } = props;
   const [editing, setEditing] = useState(false);
   const [selectedRole, setSelectedRole] = useState(value);
-  console.log(typeof value);
+
   const handleRoleClick = () => {
     setEditing(true);
   };

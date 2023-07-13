@@ -40,10 +40,10 @@ export const register =
         type: EMPLOYEE_REGISTER_SUCCESS,
         payload: data,
       });
-      dispatch({
-        type: EMPLOYEE_LOGIN_SUCCESS,
-        payload: data,
-      });
+      // dispatch({
+      //   type: EMPLOYEE_LOGIN_SUCCESS,
+      //   payload: data,
+      // });
       //localStorage.setItem("employeeInfo", JSON.stringify(data));
     } catch (error) {
       dispatch({
@@ -66,13 +66,14 @@ export const login = (email, password) => async (dispatch) => {
       { email, password },
       config
     );
-    console.log(data);
+    console.log(data.isError);
     dispatch({
       type: EMPLOYEE_LOGIN_SUCCESS,
       payload: data,
     });
-
-    localStorage.setItem("employeeInfo", JSON.stringify(data));
+    if (!data.isError) {
+      localStorage.setItem("employeeInfo", JSON.stringify(data));
+    }
   } catch (error) {
     dispatch({
       type: EMPLOYEE_LOGIN_FAIL,

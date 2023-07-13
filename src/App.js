@@ -8,11 +8,12 @@ import Error from "./pages/error/Error";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { productInputs, userInputs } from "./formSource";
 import "./style/dark.scss";
-import { useContext, useState} from "react";
+import { useContext, useState } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import AllProject from "./Views/Admin/AllProject.jsx";
 import Createproject from "./pages/createProject/Createproject";
 import Taskassign from "./pages/taskassign/Taskassign";
+import { AuthorizedUser } from "./middleware/auth";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
 
@@ -20,16 +21,52 @@ function App() {
     <div className={darkMode ? "app dark" : "app"}>
       <BrowserRouter>
         <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+
           <Route path="/">
-            <Route index element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/profile" element={<Single />} />
-            <Route path="/allproject" element={<AllProject />} />
-            <Route path="/createproject" element={<Createproject />} />
+            <Route
+              index
+              element={
+                <AuthorizedUser>
+                  <Home />
+                </AuthorizedUser>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <AuthorizedUser>
+                  <Single />
+                </AuthorizedUser>
+              }
+            />
+            <Route
+              path="/allproject"
+              element={
+                <AuthorizedUser>
+                  <AllProject />
+                </AuthorizedUser>
+              }
+            />
+            <Route
+              path="/createproject"
+              element={
+                <AuthorizedUser>
+                  <Createproject />
+                </AuthorizedUser>
+              }
+            />
 
             <Route path="employee">
-              <Route index element={<Employee />} />
+              <Route
+                index
+                element={
+                  <AuthorizedUser>
+                    <Employee />
+                  </AuthorizedUser>
+                }
+              />
               <Route path=":userId" element={<Single />} />
               <Route
                 path="new"
@@ -45,7 +82,14 @@ function App() {
               />
             </Route>
           </Route>
-          <Route path="/taskassign" element={<Taskassign />} />
+          <Route
+            path="/taskassign"
+            element={
+              <AuthorizedUser>
+                <Taskassign />
+              </AuthorizedUser>
+            }
+          />
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>

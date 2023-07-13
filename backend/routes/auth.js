@@ -1,7 +1,13 @@
 import { check } from "express-validator";
 import Express from "express";
-import { signUp, signIn, getAllEmployees } from "../controllers/auth.js";
+import {
+  signUp,
+  signIn,
+  getAllEmployees,
+  profile,
+} from "../controllers/auth.js";
 import { createProject } from "../controllers/project.js";
+import { protect } from "../middleware/employeeMiddleware.js";
 
 const router = Express.Router();
 
@@ -31,4 +37,6 @@ router.post(
 );
 router.post("/createproject", createProject);
 router.get("/allemployees", getAllEmployees);
+router.get("/profile", protect, profile);
+
 export default router;

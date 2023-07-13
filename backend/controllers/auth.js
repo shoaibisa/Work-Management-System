@@ -24,6 +24,8 @@ function generateEmployeeId(fullname, department) {
 
   return employeeId;
 }
+
+// for Signup
 const signUp = async (req, res) => {
   console.log(req);
   const errors = validationResult(req);
@@ -167,5 +169,8 @@ const getAllEmployees = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+const profile = async (req, res) => {
+  res.send("Sucess");
+};
 
-export { signUp, signIn, getAllEmployees };
+export { signUp, signIn, getAllEmployees, profile };
