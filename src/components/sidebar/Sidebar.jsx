@@ -32,12 +32,15 @@ const Sidebar = () => {
   }
 
   const { dispatchs } = useContext(DarkModeContext);
+  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+  const role = userData?.userRole;
+  const isAdmin = role === "admin";
 
   return (
     <div className="sidebar  ">
       <div className="top">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <span className="logo">EMS</span>
+          <span className="logo">PMS</span>
         </Link>
       </div>
       <hr />
@@ -50,15 +53,20 @@ const Sidebar = () => {
               <span>Dashboard</span>
             </Link>
           </li>
-          <p className="title">Employee</p>
-          <Link to="/employee" style={{ textDecoration: "none" }}>
-            <li>
-              <PersonOutlineIcon className="icon" />
-              <span>Employee Request</span>
-            </li>
-          </Link>
 
-          <p className="title bg-transparent">Dropdown Sample</p>
+          {isAdmin && (
+            <>
+              <p className="title">Employee</p>
+              <Link to="/employee" style={{ textDecoration: "none" }}>
+                <li>
+                  <PersonOutlineIcon className="icon" />
+                  <span>Employee Request</span>
+                </li>
+              </Link>
+            </>
+          )}
+
+          <p className="title bg-transparent">Project</p>
           <li className="dropdown">
             <Menu
               as="div"
@@ -67,7 +75,7 @@ const Sidebar = () => {
               <div>
                 <Menu.Button className="flex max-w-[150px] bg-transparent justify-around border-none outline-none w-full justify-center gap-x-1.5 rounded-md   text-sm font-semibold text-gray-900   ">
                   <PersonOutlineIcon className="icon" />
-                  <span> Options</span>
+                  <span>Project</span>
                   <span>
                     <ChevronDownIcon
                       className="-mr-1 ml-10 h-5 w-5 text-gray-400"
@@ -118,22 +126,6 @@ const Sidebar = () => {
                         >
                           Project List
                         </Link>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                        <a
-                          href="#"
-                          className={classNames(
-                            active
-                              ? "bg-gray-100 text-gray-900"
-                              : "text-gray-700",
-                            "block px-4 py-2 text-sm"
-                          )}
-                        >
-                          Duplicate
-                        </a>
                       )}
                     </Menu.Item>
                   </div>
