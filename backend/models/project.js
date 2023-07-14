@@ -123,6 +123,17 @@ const projectSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    submittedProjects: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "SubmitProject",
+      },
+    ],
+    employee: {
+      type: Schema.Types.ObjectId,
+      ref: "Employee",
+    },
+
     isApproved: {
       type: Boolean,
       default: false,

@@ -47,6 +47,30 @@ const employeeSchema = new Schema(
     department: {
       type: String,
     },
+    assignedProjects: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Project",
+      },
+    ],
+    submittedProjects: [
+      {
+        project: {
+          type: Schema.Types.ObjectId,
+          ref: "Project",
+        },
+        submitProject: {
+          type: Schema.Types.ObjectId,
+          ref: "SubmitProject",
+        },
+      },
+    ],
+    completedProjects: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Project",
+      },
+    ],
   },
   { timestamps: true }
 );

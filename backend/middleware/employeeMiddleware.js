@@ -4,7 +4,7 @@ import asyncHandler from "express-async-handler";
 
 export const protect = asyncHandler(async (request, response, next) => {
   // console.log(request.header.authorization);
-  console.log("g");
+
   let token;
   if (
     request.headers.authorization &&

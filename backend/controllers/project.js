@@ -1,5 +1,7 @@
 import { validationResult } from "express-validator";
 import Project from "../models/project.js";
+import SubmitProject from "../models/submitproject.js";
+import fs from "fs";
 
 const createProject = async (req, res) => {
   const projectData = req.body;
@@ -68,4 +70,36 @@ const actionProject = async (req, res) => {
   }
 };
 
-export { createProject, actionProject };
+const submitProject = async (req, res) => {
+  const { pid } = req.body;
+
+  const file_fields = {
+    filename: req.file.filename,
+    contentType: req.file.mimetype,
+    data: fs.readFileSync(req.file.path),
+  };
+  // console.log(file_fields, pid);
+
+  const files = [];
+  files.push(file_fields);
+
+  const submitProject = new SubmitProject({
+    project: pid,
+    files: files,
+    employee: req.user._id,
+  });
+  await submitProject.save();
+  await Project.findByIdAndUpdate(
+    pid,
+    { $push: { submitProject: submitProject._id } },
+    { new: true }
+  );
+
+  fs.unlinkSync(req.file.path);
+  res.status(200).send({
+    title: "Success",
+    message: "project created sucessfully",
+  });
+};
+
+export { createProject, actionProject, submitProject };
