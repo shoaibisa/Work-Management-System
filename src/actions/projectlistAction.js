@@ -12,31 +12,59 @@ import axios from "axios";
 export const createProject =
   (
     projectName,
-    selectedOptions,
-    webData,
-    apiData,
-    networkData,
-    mobileData,
-    grcData,
+    companyName,
+    clientName,
+    clientEmail,
+    createdBy,
     submissionDate,
     projectPriority
   ) =>
   async (dispatch) => {
-    //console.log(password);
+    console.log(createdBy);
     try {
       dispatch({ type: PROJECT_CREATED_REQUEST });
       const { data } = await axios.post(
         "http://localhost:5000/auth/createproject",
         {
           projectName,
+          companyName,
+          clientName,
+          clientEmail,
+          createdBy,
+
+          submissionDate,
+          projectPriority,
+        }
+      );
+      dispatch({
+        type: PROJECT_CREATED_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: PROJECT_CREATED_FAILS,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+export const createTask =
+  (selectedOptions, webData, apiData, networkData, mobileData, grcData) =>
+  async (dispatch) => {
+    console.log(selectedOptions);
+    try {
+      dispatch({ type: PROJECT_CREATED_REQUEST });
+      const { data } = await axios.post(
+        "http://localhost:5000/auth/createtask",
+        {
           selectedOptions,
           webData,
           apiData,
           networkData,
           mobileData,
           grcData,
-          submissionDate,
-          projectPriority,
         }
       );
       dispatch({

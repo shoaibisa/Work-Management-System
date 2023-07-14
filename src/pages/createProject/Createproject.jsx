@@ -23,43 +23,47 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const Createproject = () => {
   const [projectName, setProjectName] = useState("");
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [webData, setWebData] = useState({
-    webcompanyName: "",
-    webclientName: "",
-    webclientEmail: "",
-    webtargetUrls: [{ lable: "", link: "" }],
-    webotherRemarks: "",
-  });
+  const [companyName, setCompanyName] = useState("");
+  const [clientName, setclientName] = useState("");
+  const [clientEmail, setclientEmail] = useState("");
 
-  const [apiData, setApiData] = useState({
-    apicompanyName: "",
-    apiclientName: "",
-    apiclientEmail: "",
-    apifile: "",
-    apiotherRemarks: "",
-  });
-  console.log(apiData);
-  const [networkData, setNetworkData] = useState({
-    networkcompanyName: "",
-    networkclientName: "",
-    networkclientEmail: "",
-    networkfile: "",
-    networkotherRemarks: "",
-  });
-  const [mobileData, setMobileData] = useState({
-    mobilecompanyName: "",
-    mobileclientName: "",
-    mobileclientEmail: "",
-    mobiletargetUrls: [{ lable: "", link: "" }],
-    mobileotherRemarks: "",
-  });
-  const [grcData, setGRCData] = useState({
-    grccompanyName: "",
-    grcclientName: "",
-    grcclientEmail: "",
-    grcotherRemarks: "",
-  });
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  // const [webData, setWebData] = useState({
+  //   webcompanyName: "",
+  //   webclientName: "",
+  //   webclientEmail: "",
+  //   webtargetUrls: [{ lable: "", link: "" }],
+  //   webotherRemarks: "",
+  // });
+
+  // const [apiData, setApiData] = useState({
+  //   apicompanyName: "",
+  //   apiclientName: "",
+  //   apiclientEmail: "",
+  //   apifile: "",
+  //   apiotherRemarks: "",
+  // });
+  // console.log(apiData);
+  // const [networkData, setNetworkData] = useState({
+  //   networkcompanyName: "",
+  //   networkclientName: "",
+  //   networkclientEmail: "",
+  //   networkfile: "",
+  //   networkotherRemarks: "",
+  // });
+  // const [mobileData, setMobileData] = useState({
+  //   mobilecompanyName: "",
+  //   mobileclientName: "",
+  //   mobileclientEmail: "",
+  //   mobiletargetUrls: [{ lable: "", link: "" }],
+  //   mobileotherRemarks: "",
+  // });
+  // const [grcData, setGRCData] = useState({
+  //   grccompanyName: "",
+  //   grcclientName: "",
+  //   grcclientEmail: "",
+  //   grcotherRemarks: "",
+  // });
   const [submissionDate, setSubmissionDate] = useState(null);
   const [projectPriority, setProjectPriority] = useState("");
   const [message, setMessage] = useState("");
@@ -67,8 +71,16 @@ const Createproject = () => {
   const location = useLocation();
   const Navigate = useNavigate();
   const dispatch = useDispatch();
-
+  console.log(
+    projectName,
+    companyName,
+    clientEmail,
+    clientName,
+    submissionDate
+  );
   const redirect = location.search ? location.search.split("=")[1] : "/";
+  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+  const createdBY = userData?.id;
 
   const projectCreated = useSelector((state) => state.projectCreated);
   const { loading, error, project } = projectCreated;
@@ -106,18 +118,22 @@ const Createproject = () => {
     dispatch(
       createProject(
         projectName,
-        selectedOptions,
-        webData,
-        apiData,
-        networkData,
-        mobileData,
-        grcData,
+        companyName,
+        clientName,
+        clientEmail,
+        createdBY,
+        // webData,
+        // apiData,
+        // networkData,
+        // mobileData,
+        // grcData,
         submissionDate,
         projectPriority
       )
     );
     setMessage("Sucessfully Register");
   };
+
   useEffect(() => {
     initTE({ Select });
   }, []);
@@ -127,141 +143,177 @@ const Createproject = () => {
       <Sidebar />
       <div className="homeContainer">
         <Navbar />
+        <h1 className="m-6  text-gray-900"> Create Project</h1>
         <form
           onSubmit={submitHandler}
-          className=" w-3/4 ml-20 mt-10 create_Project "
+          className=" w-4/4 ml-20 mt-10 create_Project "
         >
           <div className="space-y-18">
             <div className="border-b border-gray-900/10 pb-12">
               <div className="text-base font-semibold leading-7 text-gray-900">
-                <div className="sm:col-span-4 mb-10">
-                  <label
-                    for="username"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Project Name
-                  </label>
-                  <div className="mt-2">
-                    <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                      <input
-                        type="text"
-                        name="Ptojectname"
-                        id="username"
-                        autoComplete="username"
-                        className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                        placeholder="Enter project name"
-                        value={projectName}
-                        onChange={(e) => setProjectName(e.target.value)}
-                      />
+                <div className="flex w-full">
+                  {/* 0 */}
+                  <div className="sm:col-span-4 w-1/2 mr-10 mb-10">
+                    <label
+                      for="username"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Project Name
+                    </label>
+                    <div className="mt-2">
+                      <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        <input
+                          type="text"
+                          name="webcompanyName"
+                          autoComplete="username"
+                          className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                          placeholder="Enter Project name"
+                          required="true"
+                          value={projectName}
+                          onChange={(e) => setProjectName(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  {/* 1 */}
+                  <div className="sm:col-span-4 w-1/2 mr-10 mb-10">
+                    <label
+                      for="username"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Company Name
+                    </label>
+                    <div className="mt-2">
+                      <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        <input
+                          type="text"
+                          name="webcompanyName"
+                          autoComplete="username"
+                          className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                          placeholder="Enter Company Name"
+                          required="true"
+                          value={companyName}
+                          onChange={(e) => setCompanyName(e.target.value)}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-
-                <div className="sm:col-span-4 text-black-700">
-                  <label
-                    for="username"
-                    className="block mb-6 text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Project Type :
-                  </label>
-
-                  <select
-                    data-te-select-init
-                    multiple
-                    onChange={(e) => handleOptionSelect(e)}
-                  >
-                    <option value="web">For web</option>
-                    <option value="api">For API</option>
-                    <option value="network">For Network</option>
-                    <option value="mobile">For Mobile</option>
-                    <option value="grc">For Grc</option>
-                  </select>
-                  <label data-te-select-label-ref>Choose Type</label>
-                </div>
-
-                {selectedOptions.includes("web") && (
-                  <Forweb webData={webData} setWebData={setWebData} />
-                )}
-                {selectedOptions.includes("api") && (
-                  <Forapi apiData={apiData} setApiData={setApiData} />
-                )}
-                {selectedOptions.includes("network") && (
-                  <Fornetwork
-                    networkData={networkData}
-                    setNetworkData={setNetworkData}
-                  />
-                )}
-                {selectedOptions.includes("mobile") && (
-                  <Formobile
-                    mobileData={mobileData}
-                    setMobileData={setMobileData}
-                  />
-                )}
-                {selectedOptions.includes("grc") && (
-                  <Forgrc grcData={grcData} setGRCData={setGRCData} />
-                )}
-
-                <div className="mt-16 flex mb-6 flex-row">
-                  <p className="block text-lg font-medium leading-6 text-gray-900">
-                    Project submission date -
-                  </p>
-                  <div className="ml-10">
-                    <DatePicker
-                      onChange={handleDateChange}
-                      value={submissionDate}
-                    />
-                  </div>
-                </div>
-
-                <div className="sm:col-span-3 mt-6 mb-4">
-                  <label
-                    for="country"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Project priority
-                  </label>
-                  <div className="mt-2">
-                    <select
-                      value={projectPriority}
-                      onChange={(e) => setProjectPriority(e.target.value)}
-                      name="Project_priority"
-                      autoComplete="country-name"
-                      className=" country block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                <div className="flex w-full">
+                  {/* 2 */}
+                  <div className="sm:col-span-4 w-1/2 mr-10 mb-10">
+                    <label
+                      for="username"
+                      className="block text-sm font-medium leading-6 text-gray-900"
                     >
-                      <option className="country" value="">
-                        Choose Type
-                      </option>
+                      Client Name
+                    </label>
+                    <div className="mt-2">
+                      <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        <input
+                          type="text"
+                          name="webclientName"
+                          autoComplete="username"
+                          className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                          placeholder="Enter Client Name"
+                          required="true"
+                          value={clientName}
+                          onChange={(e) => setclientName(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  {/* 3 */}
+                  <div className="sm:col-span-4 w-1/2 mr-10 mb-10">
+                    <label
+                      for="username"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Client email
+                    </label>
+                    <div className="mt-2">
+                      <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        <input
+                          type="email"
+                          name="webclientEmail"
+                          autoComplete="username"
+                          className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                          placeholder="Enter Client email"
+                          required="true"
+                          value={clientEmail}
+                          onChange={(e) => setclientEmail(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex w-full">
+                  <div className=" sm:col-span-4 w-1/2 mr-10  mt-6  mb-6 flex">
+                    <p className="block text-lg font-medium leading-6 text-gray-900">
+                      Project submission date -
+                    </p>
+                    <div className="ml-10">
+                      <DatePicker
+                        onChange={handleDateChange}
+                        value={submissionDate}
+                        //   required="true"
+                      />
+                    </div>
+                  </div>
 
-                      <option className="country" value="Normal">
-                        Normal
-                      </option>
-                      <option className="country" value="Urgent">
-                        Urgent
-                      </option>
-                    </select>
+                  <div className="  sm:col-span-4 w-1/2 mr-10   mb-4">
+                    <label
+                      for="country"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Project priority
+                    </label>
+                    <div className="mt-2">
+                      <select
+                        value={projectPriority}
+                        onChange={(e) => setProjectPriority(e.target.value)}
+                        name="Project_priority"
+                        autoComplete="country-name"
+                        required="true"
+                        className=" country block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600  sm:text-sm sm:leading-6"
+                      >
+                        <option className="country" value="">
+                          Choose Type
+                        </option>
+
+                        <option className="country" value="Normal">
+                          Normal
+                        </option>
+                        <option className="country" value="Urgent">
+                          Urgent
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <input name="createdBy" value={createdBY} hidden></input>
+                <div className="flex w-full">
+                  <div className="w-11/12  mt-4 flex items-center justify-end gap-x-6">
+                    <button
+                      type="button"
+                      className="text-sm font-semibold leading-6 text-gray-900"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                      Save
+                    </button>
                   </div>
                 </div>
 
-                <div className=" mt-4 flex items-center justify-end gap-x-6">
-                  <button
-                    type="button"
-                    className="text-sm font-semibold leading-6 text-gray-900"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    Save
-                  </button>
-                </div>
-                <div className="col-span-full"></div>
+                <div className=" text-green-600 ">{message}</div>
               </div>
             </div>
           </div>
         </form>
-        <div className=" text-green-600 ">{message}</div>
       </div>
     </div>
   );

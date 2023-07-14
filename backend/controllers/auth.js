@@ -144,6 +144,7 @@ const signIn = async (req, res) => {
       const token = createToken(employee._id, employee.role);
       return res.status(200).send({
         token: token,
+        id: employee._id,
         name: employee.name,
         userId: employee.userId,
         userRole: employee.role,

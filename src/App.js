@@ -12,8 +12,9 @@ import { useContext, useState } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import AllProject from "./Views/Admin/AllProject.jsx";
 import Createproject from "./pages/createProject/Createproject";
+import CreateTask from "./pages/createProject/createTask";
 import Taskassign from "./pages/taskassign/Taskassign";
-import { AuthorizedUser } from "./middleware/auth";
+import { AuthorizedUser, AuthorizedAdmin } from "./middleware/auth";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
 
@@ -57,14 +58,22 @@ function App() {
                 </AuthorizedUser>
               }
             />
+            <Route
+              path="/createtask"
+              element={
+                <AuthorizedUser>
+                  <CreateTask />
+                </AuthorizedUser>
+              }
+            />
 
             <Route path="employee">
               <Route
                 index
                 element={
-                  <AuthorizedUser>
+                  <AuthorizedAdmin>
                     <Employee />
-                  </AuthorizedUser>
+                  </AuthorizedAdmin>
                 }
               />
               <Route path=":userId" element={<Single />} />

@@ -51,8 +51,8 @@ const Formobile = ({ mobileData, setMobileData }) => {
       </label>
       <div className="mt-2 flex flex-col rounded-lg border border-dashed border-gray-900/25 p-4">
         {/* 3 input fields  */}
-        <div className="flex w-full">
-          {/* 1 */}
+        {/* <div className="flex w-full">
+        
           <div className="sm:col-span-4 w-1/3 mr-10 mb-10">
             <label
               for="username"
@@ -74,7 +74,7 @@ const Formobile = ({ mobileData, setMobileData }) => {
               </div>
             </div>
           </div>
-          {/* 2 */}
+         
           <div className="sm:col-span-4 w-1/3 mr-10 mb-10">
             <label
               for="username"
@@ -96,7 +96,7 @@ const Formobile = ({ mobileData, setMobileData }) => {
               </div>
             </div>
           </div>
-          {/* 3 */}
+          
           <div className="sm:col-span-4 w-1/3 mr-10 mb-10">
             <label
               for="username"
@@ -118,7 +118,7 @@ const Formobile = ({ mobileData, setMobileData }) => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         {/* os url input field wala section  */}
         <div>
           <label

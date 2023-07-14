@@ -6,7 +6,7 @@ import {
   getAllEmployees,
   profile,
 } from "../controllers/auth.js";
-import { createProject } from "../controllers/project.js";
+import { createProject, createTask } from "../controllers/project.js";
 import { protect } from "../middleware/employeeMiddleware.js";
 
 const router = Express.Router();
@@ -36,6 +36,7 @@ router.post(
   signIn
 );
 router.post("/createproject", createProject);
+router.post("/createtask", createTask);
 router.get("/allemployees", getAllEmployees);
 router.get("/profile", protect, profile);
 
