@@ -13,6 +13,8 @@ import { DarkModeContext } from "./context/darkModeContext";
 import AllProject from "./Views/Admin/AllProject.jsx";
 import Createproject from "./pages/createProject/Createproject";
 import Taskassign from "./pages/taskassign/Taskassign";
+import Projectlist from "./pages/projectList/Projectlist";
+import Reportsubmit from "./pages/reportSubmit/Reportsubmit";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
 
@@ -46,6 +48,8 @@ function App() {
             </Route>
           </Route>
           <Route path="/taskassign" element={<Taskassign />} />
+          <Route path="/projectlist" element={<Projectlist />} />
+          <Route path="/reportsubmit" element={<Reportsubmit />} />
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>
