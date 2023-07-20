@@ -218,6 +218,12 @@ const createTask = async (req, res) => {
   }
 
   const task = new Task(taskLoady);
+  await Project.findByIdAndUpdate(
+    req.body.project,
+    { $push: { task: task._id } },
+    { new: true }
+  );
+
   task
     .save()
     .then(() => {
@@ -272,6 +278,12 @@ const creatReport = async (req, res) => {
   const images = req.files.map((f) => f.filename);
   payload.files = images;
   const report = new Report(payload);
+  const task = await Task.findById(payload.task).exec();
+  task.assignEmployee.push({
+    employee: payload.employee,
+    report: report._id,
+  });
+  await task.save();
 
   report
     .save()
@@ -291,6 +303,132 @@ const creatReport = async (req, res) => {
     });
 };
 
+const addRemark = async (req, res) => {
+  const { id, remark } = req.body;
+  try {
+    const report = await Report.findById(id).exec();
+    if (!report) {
+      return res.status(208).send({
+        isError: true,
+        title: "Error",
+        message: "This report is not registered ",
+      });
+    }
+    report.remarks.push(remark);
+    report
+
+      .save()
+      .then(() => {
+        console.log("Report  save to db!");
+        return res.status(200).send({
+          title: "Success",
+          message: "Report created sucessfully",
+        });
+      })
+      .catch((err) => {
+        return res.status(400).json({
+          isError: true,
+          title: "Error",
+          message: err,
+        });
+      });
+  } catch (error) {
+    return res.status(500);
+  }
+};
+
+const editReport = async (req, res) => {
+  const { id } = req.body;
+  const payload = req.body;
+  //  images
+  const images = req.files.map((f) => f.filename);
+  payload.files = images;
+  const report = await Report.findById(id).exec();
+  if (!report) {
+    return res.status(208).send({
+      isError: true,
+      title: "Error",
+
+      message: "This report is not registered ",
+    });
+  }
+
+  report.vulnerability = payload.vulnerability;
+  report.risk = payload.risk;
+  report.affectedUrl = payload.affectedUrl;
+  report.observation = payload.observation;
+  report.attributingFactor = payload.attributingFactor;
+
+  report.cwe = payload.cwe;
+  report.impact = payload.impact;
+  report.mitigation = payload.mitigation;
+  report.brief = payload.brief;
+  report.files = payload.files;
+  report
+    .save()
+    .then(() => {
+      console.log("Report  save to db!");
+      return res.status(200).send({
+        title: "Success",
+        message: "Report created sucessfully",
+      });
+    })
+    .catch((err) => {
+      return res.status(400).json({
+        isError: true,
+        title: "Error",
+        message: err,
+      });
+    });
+};
+
+const getReport = async (req, res) => {
+  const { id } = req.body;
+  try {
+    const report = await Report.findById(id).exec();
+    if (!report) {
+      return res.status(208).send({
+        isError: true,
+        title: "Error",
+        message: "This report is not registered ",
+      });
+    }
+    return res.status(200).send({
+      title: "Success",
+      message: "project get sucessfully",
+      data: report,
+    });
+  } catch (error) {
+    return res.status(500);
+  }
+};
+const complteReport = async (req, res) => {
+  const { id } = req.body;
+  try {
+    const report = await Report.findById(id).exec();
+    report.isCompleted = true;
+    report
+
+      .save()
+      .then(() => {
+        console.log("Report  save to db!");
+        return res.status(200).send({
+          title: "Success",
+          message: "Report created sucessfully",
+        });
+      })
+      .catch((err) => {
+        return res.status(400).json({
+          isError: true,
+          title: "Error",
+          message: err,
+        });
+      });
+  } catch (error) {
+    return res.status(500);
+  }
+};
+
 export {
   createProject,
   actionProject,
@@ -300,4 +438,8 @@ export {
   getAllProject,
   getTask,
   creatReport,
+  addRemark,
+  editReport,
+  getReport,
+  complteReport,
 };
