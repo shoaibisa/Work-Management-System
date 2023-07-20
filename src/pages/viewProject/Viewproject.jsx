@@ -7,7 +7,7 @@ import { dummyProjectList } from "../../dummyprojectlist";
 
 function Viewproject() {
   const { projectId } = useParams();
-  console.log(projectId);
+  //console.log(projectId);
   const projectIdNumber = parseInt(projectId);
   const project = dummyProjectList.find(
     (project) => project.id === projectIdNumber
@@ -89,8 +89,6 @@ function Viewproject() {
                 Project Status :
               </div>
               <ProgressBar completed={60} />
-                
-              
             </div>
           </div>
         </div>
