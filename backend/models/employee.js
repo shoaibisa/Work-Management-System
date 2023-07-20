@@ -47,25 +47,25 @@ const employeeSchema = new Schema(
     department: {
       type: String,
     },
-    assignedProjects: [
+    managerProjects: [
       {
         type: Schema.Types.ObjectId,
         ref: "Project",
       },
     ],
-    submittedProjects: [
+    employeeProjects: [
       {
         project: {
           type: Schema.Types.ObjectId,
           ref: "Project",
         },
-        submitProject: {
+        task: {
           type: Schema.Types.ObjectId,
-          ref: "SubmitProject",
+          ref: "Task",
         },
       },
     ],
-    completedProjects: [
+    clientProjects: [
       {
         type: Schema.Types.ObjectId,
         ref: "Project",
