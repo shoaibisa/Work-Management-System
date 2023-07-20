@@ -16,6 +16,8 @@ import CreateTask from "./pages/createProject/createTask";
 import Taskassign from "./pages/taskassign/Taskassign";
 import Projectlist from "./pages/projectList/Projectlist";
 import Viewproject from "./pages/viewProject/Viewproject";
+import Reportsubmit from "./pages/reportSubmit/Reportsubmit";
+
 import { AuthorizedUser, AuthorizedAdmin } from "./middleware/auth";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -104,6 +106,7 @@ function App() {
           <Route path="/projectlist" element={<Projectlist />} />
           {/* <Route path="/viewproject" element={<Viewproject />} /> */}
           <Route path="/viewproject/:projectId" element={<Viewproject />} />
+          <Route path="/reportsubmit" element={<Reportsubmit />} />
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>
