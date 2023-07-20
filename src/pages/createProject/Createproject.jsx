@@ -28,42 +28,7 @@ const Createproject = () => {
   const [clientEmail, setclientEmail] = useState("");
 
   const [selectedOptions, setSelectedOptions] = useState([]);
-  // const [webData, setWebData] = useState({
-  //   webcompanyName: "",
-  //   webclientName: "",
-  //   webclientEmail: "",
-  //   webtargetUrls: [{ lable: "", link: "" }],
-  //   webotherRemarks: "",
-  // });
 
-  // const [apiData, setApiData] = useState({
-  //   apicompanyName: "",
-  //   apiclientName: "",
-  //   apiclientEmail: "",
-  //   apifile: "",
-  //   apiotherRemarks: "",
-  // });
-  // console.log(apiData);
-  // const [networkData, setNetworkData] = useState({
-  //   networkcompanyName: "",
-  //   networkclientName: "",
-  //   networkclientEmail: "",
-  //   networkfile: "",
-  //   networkotherRemarks: "",
-  // });
-  // const [mobileData, setMobileData] = useState({
-  //   mobilecompanyName: "",
-  //   mobileclientName: "",
-  //   mobileclientEmail: "",
-  //   mobiletargetUrls: [{ lable: "", link: "" }],
-  //   mobileotherRemarks: "",
-  // });
-  // const [grcData, setGRCData] = useState({
-  //   grccompanyName: "",
-  //   grcclientName: "",
-  //   grcclientEmail: "",
-  //   grcotherRemarks: "",
-  // });
   const [submissionDate, setSubmissionDate] = useState(null);
   const [projectPriority, setProjectPriority] = useState("");
   const [message, setMessage] = useState("");
@@ -71,16 +36,9 @@ const Createproject = () => {
   const location = useLocation();
   const Navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log(
-    projectName,
-    companyName,
-    clientEmail,
-    clientName,
-    submissionDate
-  );
   const redirect = location.search ? location.search.split("=")[1] : "/";
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
-  const createdBY = userData?.id;
+  const manager = userData?.id;
 
   const projectCreated = useSelector((state) => state.projectCreated);
   const { loading, error, project } = projectCreated;
@@ -121,7 +79,7 @@ const Createproject = () => {
         companyName,
         clientName,
         clientEmail,
-        createdBY,
+        manager,
         // webData,
         // apiData,
         // networkData,
@@ -291,7 +249,7 @@ const Createproject = () => {
                     </div>
                   </div>
                 </div>
-                <input name="createdBy" value={createdBY} hidden></input>
+                <input name="createdBy" value={manager} hidden></input>
                 <div className="flex w-full">
                   <div className="w-11/12  mt-4 flex items-center justify-end gap-x-6">
                     <button

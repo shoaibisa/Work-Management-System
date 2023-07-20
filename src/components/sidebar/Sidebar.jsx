@@ -116,7 +116,7 @@ const Sidebar = () => {
                       {({ active }) => (
                         // eslint-disable-next-line jsx-a11y/anchor-is-valid
                         <Link
-                          to="/allproject"
+                          to="/projectlist"
                           className={classNames(
                             active
                               ? "bg-gray-100 text-gray-900"

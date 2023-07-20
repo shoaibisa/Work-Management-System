@@ -5,6 +5,9 @@ import {
   PROJECT_CREATED_REQUEST,
   PROJECT_CREATED_SUCCESS,
   PROJECT_CREATED_FAILS,
+  PROJECT_DETAILS_FAILS,
+  PROJECT_DETAILS_SUCCESS,
+  PROJECT_DETAILS_REQUEST,
   TASK_CREATED_REQUEST,
   TASK_CREATED_SUCCESS,
   TASK_CREATED_FAILS,
@@ -34,6 +37,21 @@ export const taskCreatedReducer = (state = { task: [] }, action) => {
       return { loading: false, task: action.payload };
 
     case TASK_CREATED_FAILS:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+export const projectViewReducer = (state = { project: [] }, action) => {
+  switch (action.type) {
+    case PROJECT_DETAILS_REQUEST:
+      return { loading: true, project: [] };
+
+    case PROJECT_DETAILS_SUCCESS:
+      return { loading: false, project: action.payload };
+
+    case PROJECT_DETAILS_FAILS:
       return { loading: false, error: action.payload };
 
     default:

@@ -127,10 +127,10 @@ const projectSchema = new mongoose.Schema(
     //     type: String,
     //   },
     // },
-    createdBy: {
-      type: Schema.Types.ObjectId,
-      require: true,
-    },
+    // createdBy: {
+    //   type: Schema.Types.ObjectId,
+    //   require: true,
+    // },
     projectPriority: {
       type: String,
       required: true,

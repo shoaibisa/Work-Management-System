@@ -1,18 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { dummyProjectList } from "../../dummyprojectlist";
-
+import { viewProject } from "../../actions/projectlistAction";
+import { useDispatch, useSelector } from "react-redux";
 function Viewproject() {
   const { projectId } = useParams();
-  //console.log(projectId);
-  const projectIdNumber = parseInt(projectId);
-  const project = dummyProjectList.find(
-    (project) => project.id === projectIdNumber
-  );
-  // console.log(project);
+  const dispatch = useDispatch();
+  const projectView = useSelector((state) => state.projectView);
+  const { loading, error, project } = projectView;
+  useEffect(() => {
+    dispatch(viewProject(projectId));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, projectId]);
 
   return (
     <div className="App">
@@ -41,7 +43,13 @@ function Viewproject() {
                 {project.id}
               </div>
             </div>
-
+            <Link
+              type="submit"
+              to={`/viewproject/${projectId}/c`}
+              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              add Task
+            </Link>
             {/* 3 cards */}
             <div>
               <div className=" flex flex-row ">
@@ -73,12 +81,6 @@ function Viewproject() {
                       className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                       Assign
-                    </button>
-                    <button
-                      type="submit"
-                      className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                      Submit
                     </button>
                   </div>
                 </div>
@@ -112,12 +114,6 @@ function Viewproject() {
                     >
                       Assign
                     </button>
-                    <button
-                      type="submit"
-                      className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                      Submit
-                    </button>
                   </div>
                 </div>
 
@@ -150,12 +146,6 @@ function Viewproject() {
                     >
                       Assign
                     </button>
-                    <button
-                      type="submit"
-                      className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                      Submit
-                    </button>
                   </div>
                 </div>
               </div>
@@ -166,7 +156,7 @@ function Viewproject() {
                 Project Assigned Date :
               </div>
               <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {project.createdAt.split("T")[0]}
+                {/* {project.createdAt.split("T")[0]} */}
               </div>
             </div>
 
@@ -175,7 +165,7 @@ function Viewproject() {
                 Project Submission Date :
               </div>
               <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {project.submissionDate}
+                {/* {project.submissionDate} */}
               </div>
             </div>
 
@@ -184,7 +174,7 @@ function Viewproject() {
                 Project Assigned To :
               </div>
               <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {project.clientName}
+                {/* {project.clientName} */}
               </div>
             </div>
 

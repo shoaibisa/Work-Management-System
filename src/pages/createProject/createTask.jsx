@@ -15,43 +15,28 @@ import { createTask } from "../../actions/projectlistAction";
 const CreateTask = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [webData, setWebData] = useState({
-    // webcompanyName: "",
-    // webclientName: "",
-    // webclientEmail: "",
     webtargetUrls: [{ lable: "", link: "" }],
     webotherRemarks: "",
   });
 
   const [apiData, setApiData] = useState({
-    // apicompanyName: "",
-    // apiclientName: "",
-    // apiclientEmail: "",
     apifile: "",
     apiotherRemarks: "",
   });
 
   const [networkData, setNetworkData] = useState({
-    // networkcompanyName: "",
-    // networkclientName: "",
-    // networkclientEmail: "",
     networkfile: "",
     networkotherRemarks: "",
   });
   const [mobileData, setMobileData] = useState({
-    // mobilecompanyName: "",
-    // mobileclientName: "",
-    // mobileclientEmail: "",
     mobiletargetUrls: [{ lable: "", link: "" }],
     mobileotherRemarks: "",
   });
   const [grcData, setGRCData] = useState({
-    // grccompanyName: "",
-    // grcclientName: "",
-    // grcclientEmail: "",
     grcotherRemarks: "",
   });
 
-  console.log(selectedOptions);
+  console.log(apiData);
   const [message, setMessage] = useState("");
 
   const location = useLocation();

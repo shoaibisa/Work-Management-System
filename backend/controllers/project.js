@@ -139,7 +139,6 @@ const submitProject = async (req, res) => {
 
 const getProject = async (req, res) => {
   // return console.log(req.user);
-
   const { id } = req.body;
   try {
     const project = await Project.findById(id).exec();
@@ -150,6 +149,7 @@ const getProject = async (req, res) => {
         message: "This project is not registered ",
       });
     }
+    console.log("no");
     return res.status(200).send({
       title: "Success",
       message: "project get sucessfully",
@@ -162,8 +162,10 @@ const getProject = async (req, res) => {
 
 const getAllProject = async (req, res) => {
   // based on the role of the employee, we will get the project
+  //console.log(req.user._id);
   try {
     const project = await Project.find({ manager: req.user._id }).exec();
+    //   console.log(project);
     if (!project) {
       return res.status(208).send({
         isError: true,
@@ -185,6 +187,8 @@ const createTask = async (req, res) => {
   const taskLoady = {
     project: req.body.project,
     selectedOption: req.body.selectedOptions,
+    mobileData: req.body.mobileData,
+    grcData: req.body.grcData,
   };
   // return console.log(req.body);
   for (var t = 0; t < req.body.selectedOptions.length; t++) {
@@ -202,7 +206,6 @@ const createTask = async (req, res) => {
     }
     if (req.body.selectedOptions[t] === "api") {
       var file_fields = {};
-      return console.log(req.files);
       if (req.files) {
         file_fields = {
           filename: req.file.filename,
@@ -228,18 +231,12 @@ const createTask = async (req, res) => {
     .save()
     .then(() => {
       console.log("Task  save to db!");
-      if (req.file) {
-        fs.unlinkSync(req.file.path);
-      }
       return res.status(200).send({
         title: "Success",
         message: "task created sucessfully",
       });
     })
     .catch((err) => {
-      if (req.file) {
-        fs.unlinkSync(req.file.path);
-      }
       return res.status(400).json({
         isError: true,
         title: "Error",

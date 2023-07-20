@@ -1,5 +1,8 @@
 import { check } from "express-validator";
 import Express from "express";
+import { protect } from "../middleware/employeeMiddleware.js";
+import multer from "multer";
+
 import {
   signUp,
   signIn,
@@ -7,7 +10,6 @@ import {
   profile,
 } from "../controllers/auth.js";
 import { createProject, createTask } from "../controllers/project.js";
-import { protect } from "../middleware/employeeMiddleware.js";
 
 const router = Express.Router();
 
@@ -35,8 +37,11 @@ router.post(
   ],
   signIn
 );
-router.post("/createproject", createProject);
-router.post("/createtask", createTask);
+
+const upload = multer({ dest: "uploads/" }); // Set the destination folder for storing the uploaded files
+
+router.post("/createproject", protect, createProject);
+router.post("/createtask", upload.single("file"), protect, createTask);
 router.get("/allemployees", getAllEmployees);
 router.get("/profile", protect, profile);
 

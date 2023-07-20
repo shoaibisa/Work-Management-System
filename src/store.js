@@ -9,9 +9,10 @@ import {
 import {
   projectListReducer,
   projectCreatedReducer,
+  projectViewReducer,
   taskCreatedReducer,
 } from "./reducers/projectListReducer";
-
+import { reportCreatedReducer } from "./reducers/reportReducer";
 const employeenfoFromStroge = localStorage.getItem("employeeInfo")
   ? JSON.parse(localStorage.getItem("employeeInfo"))
   : null;
@@ -23,9 +24,12 @@ const reducer = combineReducers({
   employeeregister: employeeRegisterReducer,
   projectCreated: projectCreatedReducer,
   taskCreated: taskCreatedReducer,
+  reportCreated: reportCreatedReducer,
+  projectView: projectViewReducer,
 });
 const initialState = {
   employeeLogin: { employeeInfo: employeenfoFromStroge },
+  // project: { data: [] },
 };
 const middlewares = [thunk];
 const store = createStore(

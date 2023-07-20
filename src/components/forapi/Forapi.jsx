@@ -14,7 +14,7 @@ const Forapi = ({ apiData, setApiData }) => {
     const fileName = `${file.name}_${timestamp}`;
     setSelectedFile(fileName);
   };
-  console.log(selectedFile);
+  // console.log(selectedFile);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setApiData((prevData) => ({
@@ -117,7 +117,7 @@ const Forapi = ({ apiData, setApiData }) => {
             <input
               accept=".xls, .xlsx, text/plain"
               type="file"
-              name="apifile"
+              name="file"
               onChange={handleFileChange}
               class="block cursor-pointer w-full text-sm text-slate-500
                 file:mr-4 file:py-2 file:px-4
