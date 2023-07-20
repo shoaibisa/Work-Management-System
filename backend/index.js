@@ -20,7 +20,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.get("/", async (req, resq, next) => {
-  resq.send("Hello From Express");
+  resq.send("Hello From Express default route");
 });
 
 // routes
@@ -28,19 +28,19 @@ app.use("/auth", authRoute);
 app.use("/user", userRoute);
 app.use("/project", projectRoute);
 
-app.use(async (req, resq, next) => {
-  next(createError.NotFound());
-});
+// app.use(async (req, resq, next) => {
+//   next(createError.NotFound());
+// });
 
-app.use((err, req, resq, next) => {
-  resq.status(err.status || 500);
-  resq.send({
-    error: {
-      status: err.status || 500,
-      message: err.message,
-    },
-  });
-});
+// app.use((err, req, resq, next) => {
+//   resq.status(err.status || 500);
+//   resq.send({
+//     error: {
+//       status: err.status || 500,
+//       message: err.message,
+//     },
+//   });
+// });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

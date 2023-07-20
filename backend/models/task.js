@@ -1,11 +1,10 @@
 import mongoose, { Schema } from "mongoose";
-const fileTypes = ["application/pdf", "application/vnd.ms-excel"];
 const taskSchema = new mongoose.Schema(
   {
-    // projectName: {
-    //   type: Schema.Types.ObjectId,
-    //   // required: true,
-    // },
+    project: {
+      type: Schema.Types.ObjectId,
+      ref: "Project",
+    },
     selectedOptions: {
       type: [String],
       //  required: true,
@@ -19,6 +18,20 @@ const taskSchema = new mongoose.Schema(
           link: {
             type: String,
           },
+          assignEmployee: [
+            {
+              employee: {
+                type: Schema.Types.ObjectId,
+                ref: "Employee",
+              },
+              report: [
+                {
+                  type: Schema.Types.ObjectId,
+                  ref: "Report",
+                },
+              ],
+            },
+          ],
         },
       ],
       webotherRemarks: {
@@ -39,20 +52,44 @@ const taskSchema = new mongoose.Schema(
       networkotherRemarks: {
         type: String,
       },
+      assignEmployee: [
+        {
+          employee: {
+            type: Schema.Types.ObjectId,
+            ref: "Employee",
+          },
+          report: [
+            {
+              type: Schema.Types.ObjectId,
+              ref: "Report",
+            },
+          ],
+        },
+      ],
     },
     apiData: {
       apifile: {
-        type: String,
-        // validate: {
-        //   validator: function (value) {
-        //     return fileTypes.includes(value);
-        //   },
-        //   message: "Invalid file format. Only PDF and Excel files are allowed.",
-        // },
+        filename: String,
+        contentType: String,
+        data: Buffer,
       },
       apiotherRemarks: {
         type: String,
       },
+      assignEmployee: [
+        {
+          employee: {
+            type: Schema.Types.ObjectId,
+            ref: "Employee",
+          },
+          report: [
+            {
+              type: Schema.Types.ObjectId,
+              ref: "Report",
+            },
+          ],
+        },
+      ],
     },
     mobileData: {
       android: {
@@ -64,26 +101,64 @@ const taskSchema = new mongoose.Schema(
       mobileData: {
         type: String,
       },
+      forAndroid: {
+        assignEmployee: [
+          {
+            employee: {
+              type: Schema.Types.ObjectId,
+              ref: "Employee",
+            },
+            report: [
+              {
+                type: Schema.Types.ObjectId,
+                ref: "Report",
+              },
+            ],
+          },
+        ],
+      },
+      forIos: {
+        assignEmployee: [
+          {
+            employee: {
+              type: Schema.Types.ObjectId,
+              ref: "Employee",
+            },
+            report: [
+              {
+                type: Schema.Types.ObjectId,
+                ref: "Report",
+              },
+            ],
+          },
+        ],
+      },
     },
     grcData: {
       grcotherRemarks: {
         type: String,
       },
+      assignEmployee: [
+        {
+          employee: {
+            type: Schema.Types.ObjectId,
+            ref: "Employee",
+          },
+          report: [
+            {
+              type: Schema.Types.ObjectId,
+              ref: "Report",
+            },
+          ],
+        },
+      ],
     },
-    createdBy: {
-      type: Schema.Types.ObjectId,
-      require: true,
-    },
+
     submissionDate: {
       type: String,
       //required: true,
     },
-    submittedProjects: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "SubmitProject",
-      },
-    ],
+
     employee: {
       type: Schema.Types.ObjectId,
       ref: "Employee",
