@@ -125,7 +125,6 @@ const CreateTask = () => {
       formData.append("mobileotherRemarks", mobileotherRemarks);
     }
 
-    // Check if "grc" is selected
     if (selectedOptions.includes("grc")) {
       // Add grc-related data to formData
       formData.append("grcotherRemarks", grcotherRemarks);
@@ -153,12 +152,6 @@ const CreateTask = () => {
       console.error("Error submitting form:", error);
       setMessage("An error occurred while creating the task");
     }
-    // console.log(formData);
-    // console.log("Selected Options:", selectedOptions);
-    // console.log("Target URL:", targetURL);
-    // console.log("Web Other Remarks:", webotherRemarks);
-    // console.log("API Other Remarks:", apiotherRemarks);
-    // console.log("Network Other Remarks:", networkselectedFile);
     setMessage("Sucessfully Task Created");
   };
 

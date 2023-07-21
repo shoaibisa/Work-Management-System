@@ -16,8 +16,11 @@ import CreateTask from "./pages/createProject/createTask";
 import Taskassign from "./pages/taskassign/Taskassign";
 import Projectlist from "./pages/projectList/Projectlist";
 import Viewproject from "./pages/viewProject/Viewproject";
-import Reportsubmit from "./pages/reportSubmit/Reportsubmit";
+import Reportsubmit from "./pages/reportsubmit/reportsubmit.jsx";
 import Taskview from "./pages/taskview/Taskview";
+import ClientDashboard from "./pages/client/dashboard";
+import ClientProjectlist from "./pages/client/pages/allproject";
+import ClientProjectView from "./pages/client/pages/projectdetail";
 import { AuthorizedUser, AuthorizedAdmin } from "./middleware/auth";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -113,6 +116,9 @@ function App() {
           />
           <Route path="/reportsubmit" element={<Reportsubmit />} />
           <Route path="/viewtask" element={<Taskview />} />
+          <Route path="/clentdashboard" element={<ClientDashboard />} />
+          <Route path="/clientProject" element={<ClientProjectlist />} />
+          <Route path="/clientprojectview" element={<ClientProjectView />} />
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>
