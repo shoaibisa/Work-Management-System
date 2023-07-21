@@ -61,36 +61,39 @@ export const createProject =
   };
 export const createTask =
   (
-    selectedOptions,
-    webData,
-    apiData,
-    networkData,
-    mobileData,
-    grcData,
-    projectId
+    // selectedOptions,
+    // webData,
+    // apiData,
+    // networkData,
+    // mobileData,
+    // grcData,
+    // projectId
+    formData
   ) =>
   async (dispatch) => {
     const userData = JSON.parse(localStorage.getItem("employeeInfo"));
     const token = userData?.token;
     const employee = userData?.id;
-    console.log(apiData);
+
     try {
       dispatch({ type: PROJECT_CREATED_REQUEST });
       const { data } = await axios.post(
         "http://localhost:5000/auth/createtask",
         {
-          selectedOptions,
-          webData,
-          apiData,
-          networkData,
-          mobileData,
-          grcData,
-          project: projectId,
-          employee,
+          // selectedOptions,
+          // webData,
+          // apiData,
+          // networkData,
+          // mobileData,
+          // grcData,
+          // project: projectId,
+          formData,
+          // employee,
         },
         {
           headers: {
             Authorization: "Bearer " + token,
+            "Content-Type": "multipart/form-data",
           },
         }
       );

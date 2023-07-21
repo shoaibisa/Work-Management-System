@@ -15,6 +15,7 @@ const Forweb = ({ webData, setWebData }) => {
   const [targetURL, setTargetURL] = useState([{ lable: "", link: "" }]);
   const [isHoveredplus, setIsHoveredplus] = useState(false);
   const [isHoveredminus, setIsHoveredminus] = useState(false);
+
   // handle input change
   const handleInputChanges = (e, index) => {
     const { name, value } = e.target;

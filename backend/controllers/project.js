@@ -184,48 +184,54 @@ const getAllProject = async (req, res) => {
 };
 
 const createTask = async (req, res) => {
+  const formData = req.body;
+  console.log(formData);
   const taskLoady = {
-    project: req.body.project0k,
-    selectedOption: req.body.selectedOptions,
-    mobileData: req.body.mobileData,
-    grcData: req.body.grcData,
-    webData: req.body.webData,
-    networkData: req.body.networkData,
-    apiData: req.body.apiData,
-    employee: req.body.employee,
+    project: req.body.project,
+    selectedOptions: formData.selectedOptions,
+    // mobileData: req.body.mobileData,
+    // grcData: req.body.grcData,
+    // webData: req.body.webData,
+    // networkData: req.body.networkData,
+    // apiData: req.body.apiData,
+    // employee: req.body.employee,
   };
 
-  //console.log(taskLoady);
-  for (var t = 0; t < req.body.selectedOptions.length; t++) {
-    // if (req.body.selectedOptions[t] === "web") {
-    //   taskLoady.webData = {
-    //     webfileUpload: req.body["webData.webfileUpload"],
-    //     webotherRemarks: req.body["webData.webotherRemarks"],
-    //   };
-    // }
-    // if (req.body.selectedOptions[t] === "network") {
-    //   taskLoady.networkData = {
-    //     networkfileUpload: req.body["networkData.networkfileUpload"],
-    //     networkotherRemarks: req.body["networkData.networkotherRemarks"],
-    //   };
-    // }
-    // if (req.body.selectedOptions[t] === "network") {
-    //   var file_fields = {};
-    //   if (req.files) {
-    //     file_fields = {
-    //       filename: req.file.filename,
-    //       contentType: req.file.mimetype,
-    //       data: fs.readFileSync(req.file.path),
-    //     };
-    //   }
-    //   taskLoady["networkData"] = {
-    //     networkfileUpload: file_fields,
-    //     networkotherRemarks: req.body["networkData.networkotherRemarks"],
-    //   };
-    // }
+  // console.log(req.files);
+  if (formData && Array.isArray(formData.selectedOptions)) {
+    for (var t = 0; t < formData.selectedOptions.length; t++) {
+      if (req.body.selectedOptions[t] === "web") {
+        taskLoady.webData = {
+          webtargetUrls: req.body["webtargetUrls"],
+          webotherRemarks: req.body["webotherRemarks"],
+        };
+      }
+      // if (req.body.selectedOptions[t] === "network") {
+      //   taskLoady.networkData = {
+      //     networkfileUpload: req.body["networkData.networkfileUpload"],
+      //     networkotherRemarks: req.body["networkData.networkotherRemarks"],
+      //   };
+      // }
+      // if (req.body.selectedOptions[t] === "network") {
+      //   var file_fields = {};
+      //   if (req.files) {
+      //     file_fields = {
+      //       filename: req.file.filename,
+      //       contentType: req.file.mimetype,
+      //       data: fs.readFileSync(req.file.path),
+      //     };
+      //   }
+      //   taskLoady["networkData"] = {
+      //     networkfileUpload: file_fields,
+      //     networkotherRemarks: req.body["networkData.networkotherRemarks"],
+      //   };
+      // }
+    }
   }
+
+  // console.log(taskLoady);
   const task = new Task(taskLoady);
-  console.log(task);
+  //console.log(task);
 
   await Project.findByIdAndUpdate(
     req.body.project,

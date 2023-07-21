@@ -37,7 +37,7 @@ const Fornetwork = ({ networkData, setNetworkData }) => {
               type="file"
               value={networkData.networkfile}
               onChange={handleInputChange}
-              name="file_network"
+              name="networkfile"
               class="block cursor-pointer w-full text-sm text-slate-500
       file:mr-4 file:py-2 file:px-4
       file:rounded-full file:border-0
