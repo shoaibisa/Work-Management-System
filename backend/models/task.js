@@ -98,9 +98,10 @@ const taskSchema = new mongoose.Schema(
       ios: {
         type: String,
       },
-      mobileData: {
+      mobileotherRemarks: {
         type: String,
       },
+
       forAndroid: {
         assignEmployee: [
           {

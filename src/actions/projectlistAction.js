@@ -23,6 +23,8 @@ export const createProject =
     projectPriority
   ) =>
   async (dispatch) => {
+    const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+    const token = userData?.token;
     try {
       dispatch({ type: PROJECT_CREATED_REQUEST });
       const { data } = await axios.post(
@@ -35,6 +37,11 @@ export const createProject =
           manager,
           submissionDate,
           projectPriority,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
         }
       );
 
@@ -60,11 +67,12 @@ export const createTask =
     networkData,
     mobileData,
     grcData,
-    project
+    projectId
   ) =>
   async (dispatch) => {
     const userData = JSON.parse(localStorage.getItem("employeeInfo"));
     const token = userData?.token;
+    const employee = userData?.id;
     console.log(apiData);
     try {
       dispatch({ type: PROJECT_CREATED_REQUEST });
@@ -77,7 +85,8 @@ export const createTask =
           networkData,
           mobileData,
           grcData,
-          project,
+          project: projectId,
+          employee,
         },
         {
           headers: {

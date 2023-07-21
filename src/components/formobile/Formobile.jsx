@@ -7,14 +7,12 @@ import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 
 const Formobile = ({ mobileData, setMobileData }) => {
   const [targetURL, setTargetURL] = useState([{ lable: "", link: "" }]);
-
   const [showandroid, setandroid] = useState(false);
   const [showios, setios] = useState(false);
   // handle input change
   const handleInputChanges = (e) => {
     const { name, value } = e.target;
     const list = [...targetURL];
-    console.log(list);
     list[name] = value;
     setTargetURL(list);
     setMobileData((prevData) => ({
@@ -23,7 +21,7 @@ const Formobile = ({ mobileData, setMobileData }) => {
       //mobilwtargetUrls: list,
     }));
   };
-  console.log(showios);
+  // console.log(showios);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -50,75 +48,6 @@ const Formobile = ({ mobileData, setMobileData }) => {
         For Mobile
       </label>
       <div className="mt-2 flex flex-col rounded-lg border border-dashed border-gray-900/25 p-4">
-        {/* 3 input fields  */}
-        {/* <div className="flex w-full">
-        
-          <div className="sm:col-span-4 w-1/3 mr-10 mb-10">
-            <label
-              for="username"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Company Name
-            </label>
-            <div className="mt-2">
-              <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                <input
-                  type="text"
-                  name="mobilecompanyName"
-                  autoComplete="username"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                  placeholder="Enter Company Name"
-                  value={mobileData.mobilecompanyName}
-                  onChange={handleInputChange}
-                />
-              </div>
-            </div>
-          </div>
-         
-          <div className="sm:col-span-4 w-1/3 mr-10 mb-10">
-            <label
-              for="username"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Client Name
-            </label>
-            <div className="mt-2">
-              <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                <input
-                  type="text"
-                  name="mobileclientName"
-                  autoComplete="username"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                  placeholder="Enter Client Name"
-                  value={mobileData.mobileclientName}
-                  onChange={handleInputChange}
-                />
-              </div>
-            </div>
-          </div>
-          
-          <div className="sm:col-span-4 w-1/3 mr-10 mb-10">
-            <label
-              for="username"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Client email
-            </label>
-            <div className="mt-2">
-              <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                <input
-                  type="mail"
-                  name="mobileclientEmail"
-                  autoComplete="username"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                  placeholder="Enter Client email"
-                  value={mobileData.mobileclientEmail}
-                  onChange={handleInputChange}
-                />
-              </div>
-            </div>
-          </div>
-        </div> */}
         {/* os url input field wala section  */}
         <div>
           <label

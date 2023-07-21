@@ -55,7 +55,7 @@ function Projectlist() {
                     </div>
                     <div className="flex my-2">
                       <p className="font-semibold">Assigned To -</p>
-                      <p>{item.clientName}</p>
+                      {/* <p>{item.clientName}</p> */}
                     </div>
 
                     <Link to={`/viewproject/${item._id}`}>

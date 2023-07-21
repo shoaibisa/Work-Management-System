@@ -11,6 +11,8 @@ function Viewproject() {
   const dispatch = useDispatch();
   const projectView = useSelector((state) => state.projectView);
   const { loading, error, project } = projectView;
+  const { data } = project;
+  console.log(data);
   useEffect(() => {
     dispatch(viewProject(projectId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -31,7 +33,7 @@ function Viewproject() {
                 Project name :
               </div>
               <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {project.projectName}
+                {data && data.projectName}
               </div>
             </div>
 
@@ -40,7 +42,34 @@ function Viewproject() {
                 Project Id :
               </div>
               <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {project.id}
+                {data && data._id}
+              </div>
+            </div>
+
+            <div className=" sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="text-md font-medium leading-6 text-gray-900">
+                Client Name :
+              </div>
+              <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                {data && data.clientName}
+              </div>
+            </div>
+
+            <div className=" sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="text-md font-medium leading-6 text-gray-900">
+                Client Email :
+              </div>
+              <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                {data && data.clientEmail}
+              </div>
+            </div>
+
+            <div className=" sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="text-md font-medium leading-6 text-gray-900">
+                Company Name:
+              </div>
+              <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                {data && data.companyName}
               </div>
             </div>
             <Link
@@ -80,7 +109,7 @@ function Viewproject() {
                       type="submit"
                       className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                      Assign
+                      View
                     </button>
                   </div>
                 </div>
@@ -112,7 +141,7 @@ function Viewproject() {
                       type="submit"
                       className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                      Assign
+                      View
                     </button>
                   </div>
                 </div>
@@ -144,7 +173,7 @@ function Viewproject() {
                       type="submit"
                       className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                      Assign
+                      View
                     </button>
                   </div>
                 </div>
@@ -165,7 +194,7 @@ function Viewproject() {
                 Project Submission Date :
               </div>
               <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {/* {project.submissionDate} */}
+                {data && data.submissionDate}
               </div>
             </div>
 
@@ -174,7 +203,15 @@ function Viewproject() {
                 Project Assigned To :
               </div>
               <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {/* {project.clientName} */}
+                {/* {data && data.clientName} */}
+              </div>
+            </div>
+            <div className="   sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="text-md font-medium leading-6 text-gray-900">
+                Project Type :
+              </div>
+              <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                {data && data.projectPriority}
               </div>
             </div>
 

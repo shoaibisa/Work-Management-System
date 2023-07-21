@@ -17,6 +17,7 @@ import Taskassign from "./pages/taskassign/Taskassign";
 import Projectlist from "./pages/projectList/Projectlist";
 import Viewproject from "./pages/viewProject/Viewproject";
 import Reportsubmit from "./pages/reportsubmit/reportsubmit";
+import CreateTask1 from "./pages/createProject/createTask1";
 
 import { AuthorizedUser, AuthorizedAdmin } from "./middleware/auth";
 function App() {
@@ -106,6 +107,7 @@ function App() {
           <Route path="/projectlist" element={<Projectlist />} />
           {/* <Route path="/viewproject" element={<Viewproject />} /> */}
           <Route path="/viewproject/:projectId" element={<Viewproject />} />
+          <Route path="/createtask1" element={<CreateTask1 />} />
           <Route
             path="/viewproject/:projectId/createtask"
             element={<Viewproject />}

@@ -10,7 +10,7 @@ import Forgrc from "../../components/forgrc/Forgrc";
 import { Select, initTE } from "tw-elements";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { createTask } from "../../actions/projectlistAction";
 const CreateTask = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -36,7 +36,7 @@ const CreateTask = () => {
     grcotherRemarks: "",
   });
 
-  console.log(apiData);
+  console.log(mobileData);
   const [message, setMessage] = useState("");
 
   const location = useLocation();
@@ -48,6 +48,7 @@ const CreateTask = () => {
 
   const projectCreated = useSelector((state) => state.projectCreated);
   const { loading, error, project } = projectCreated;
+  const { projectId } = useParams();
   useEffect(() => {
     if (project) {
       if (!project.isError) {
@@ -72,15 +73,15 @@ const CreateTask = () => {
     dispatch(
       createTask(
         selectedOptions,
-        //createdBY
         webData,
         apiData,
         networkData,
         mobileData,
-        grcData
+        grcData,
+        projectId
       )
     );
-    setMessage("Sucessfully Register");
+    setMessage("Sucessfully Task Created");
   };
 
   useEffect(() => {
@@ -96,6 +97,7 @@ const CreateTask = () => {
         <form
           onSubmit={submitHandler}
           className=" w-4/4 ml-20 mt-10 create_Project "
+          enctype="multipart/form-data"
         >
           <div className="space-y-18">
             <div className="border-b border-gray-900/10 pb-12">
@@ -106,7 +108,7 @@ const CreateTask = () => {
                       for="username"
                       className="block text-sm leading-6 text-gray-900  font-bold"
                     >
-                      Project Name : Birla (Id:68585)
+                      Project Name : Birla (Id:{projectId})
                     </label>
                   </div>
                   <div className=" sm:col-span-4 mt-6 text-black-700">
