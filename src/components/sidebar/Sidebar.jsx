@@ -116,7 +116,7 @@ const Sidebar = () => {
                       {({ active }) => (
                         // eslint-disable-next-line jsx-a11y/anchor-is-valid
                         <Link
-                          to="/projectlist"
+                          to="/projectlist1"
                           className={classNames(
                             active
                               ? "bg-gray-100 text-gray-900"
@@ -132,7 +132,23 @@ const Sidebar = () => {
                       {({ active }) => (
                         // eslint-disable-next-line jsx-a11y/anchor-is-valid
                         <Link
-                          to="/createtask"
+                          to="/viewproject"
+                          className={classNames(
+                            active
+                              ? "bg-gray-100 text-gray-900"
+                              : "text-gray-700",
+                            "block px-4 py-2 text-sm"
+                          )}
+                        >
+                          Project view
+                        </Link>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                        <Link
+                          to="/createtask1"
                           className={classNames(
                             active
                               ? "bg-gray-100 text-gray-900"
@@ -141,6 +157,54 @@ const Sidebar = () => {
                           )}
                         >
                           Create Task
+                        </Link>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                        <Link
+                          to="/taskassign"
+                          className={classNames(
+                            active
+                              ? "bg-gray-100 text-gray-900"
+                              : "text-gray-700",
+                            "block px-4 py-2 text-sm"
+                          )}
+                        >
+                          Task assign
+                        </Link>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                        <Link
+                          to="/reportsubmit"
+                          className={classNames(
+                            active
+                              ? "bg-gray-100 text-gray-900"
+                              : "text-gray-700",
+                            "block px-4 py-2 text-sm"
+                          )}
+                        >
+                          Submit Report
+                        </Link>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                        <Link
+                          to="/viewtask"
+                          className={classNames(
+                            active
+                              ? "bg-gray-100 text-gray-900"
+                              : "text-gray-700",
+                            "block px-4 py-2 text-sm"
+                          )}
+                        >
+                          View Report
                         </Link>
                       )}
                     </Menu.Item>
