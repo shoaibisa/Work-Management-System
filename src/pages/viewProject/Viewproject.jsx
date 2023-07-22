@@ -7,16 +7,16 @@ import { dummyProjectList } from "../../dummyprojectlist";
 import { viewProject } from "../../actions/projectlistAction";
 import { useDispatch, useSelector } from "react-redux";
 function Viewproject() {
-  const { projectId } = useParams();
-  const dispatch = useDispatch();
-  const projectView = useSelector((state) => state.projectView);
-  const { loading, error, project } = projectView;
-  const { data } = project;
-  console.log(data);
-  useEffect(() => {
-    dispatch(viewProject(projectId));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, projectId]);
+  // const { projectId } = useParams();
+  // const dispatch = useDispatch();
+  // const projectView = useSelector((state) => state.projectView);
+  // const { loading, error, project } = projectView;
+  // const { data } = project;
+  // console.log(data);
+  // useEffect(() => {
+  //   dispatch(viewProject(projectId));
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [dispatch, projectId]);
 
   return (
     <div className="App">
@@ -33,7 +33,7 @@ function Viewproject() {
                 Project name :
               </div>
               <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {data && data.projectName}
+                {dummyProjectList && dummyProjectList.projectName}
               </div>
             </div>
 
@@ -42,7 +42,7 @@ function Viewproject() {
                 Project Id :
               </div>
               <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {data && data._id}
+                {dummyProjectList && dummyProjectList.id}
               </div>
             </div>
 
@@ -51,7 +51,7 @@ function Viewproject() {
                 Client Name :
               </div>
               <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {data && data.clientName}
+                {dummyProjectList && dummyProjectList.clientName}
               </div>
             </div>
 
@@ -60,7 +60,7 @@ function Viewproject() {
                 Client Email :
               </div>
               <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {data && data.clientEmail}
+                {dummyProjectList && dummyProjectList.clientEmail}
               </div>
             </div>
 
@@ -69,16 +69,16 @@ function Viewproject() {
                 Company Name:
               </div>
               <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {data && data.companyName}
+                {dummyProjectList && dummyProjectList.companyName}
               </div>
             </div>
-            <Link
+            {/* <Link
               type="submit"
               to={`/viewproject/${projectId}/c`}
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               add Task
-            </Link>
+            </Link> */}
             {/* 3 cards */}
             <div>
               <div className=" flex flex-row ">
@@ -194,7 +194,7 @@ function Viewproject() {
                 Project Submission Date :
               </div>
               <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {data && data.submissionDate}
+                {dummyProjectList && dummyProjectList.submissionDate}
               </div>
             </div>
 
@@ -211,7 +211,7 @@ function Viewproject() {
                 Project Type :
               </div>
               <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {data && data.projectPriority}
+                {dummyProjectList && dummyProjectList.projectPriority}
               </div>
             </div>
 

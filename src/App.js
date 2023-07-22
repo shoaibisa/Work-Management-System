@@ -38,51 +38,51 @@ function App() {
             <Route
               index
               element={
-                <AuthorizedUser>
-                  <Home />
-                </AuthorizedUser>
+                // <AuthorizedUser>
+                <Home />
+                // </AuthorizedUser>
               }
             />
             <Route
               path="/profile"
               element={
-                <AuthorizedUser>
-                  <Single />
-                </AuthorizedUser>
+                // <AuthorizedUser>
+                <Single />
+                // </AuthorizedUser>
               }
             />
             <Route
               path="/allproject"
               element={
-                <AuthorizedUser>
-                  <AllProject />
-                </AuthorizedUser>
+                // <AuthorizedUser>
+                <AllProject />
+                // </AuthorizedUser>
               }
             />
             <Route
               path="/createproject"
               element={
-                <AuthorizedUser>
-                  <Createproject />
-                </AuthorizedUser>
+                // <AuthorizedUser>
+                <Createproject />
+                // </AuthorizedUser>
               }
             />
             <Route
               path="/viewproject/:projectId/:createtask"
               element={
-                <AuthorizedUser>
-                  <CreateTask />
-                </AuthorizedUser>
+                // <AuthorizedUser>
+                <CreateTask />
+                // </AuthorizedUser>
               }
             />
 
-            <Route path="employee">
+            <Route path="/employee">
               <Route
                 index
                 element={
-                  <AuthorizedAdmin>
-                    <Employee />
-                  </AuthorizedAdmin>
+                  // <AuthorizedAdmin>
+                  <Employee />
+                  // </AuthorizedAdmin>
                 }
               />
               <Route path=":userId" element={<Single />} />
@@ -103,9 +103,9 @@ function App() {
           <Route
             path="/taskassign"
             element={
-              <AuthorizedUser>
+              // <AuthorizedUser>
                 <Taskassign />
-              </AuthorizedUser>
+              // </AuthorizedUser>
             }
           />
           <Route path="/projectlist" element={<Projectlist />} />

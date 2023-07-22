@@ -24,43 +24,43 @@ const Reportsubmit = () => {
 
   const [message, setMessage] = useState("");
 
-  //const location = useLocation();
-  //const Navigate = useNavigate();
-  const dispatch = useDispatch();
-  //const redirect = location.search ? location.search.split("=")[1] : "/";
-  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
-  const employee = userData?.id;
-  console.log(employee);
-  const reportCreated = useSelector((state) => state.reportCreated);
-  const { loading, error, report } = reportCreated;
-  useEffect(() => {
-    if (report) {
-      if (!report.isError) {
-        //Navigate(redirect);
-      } else {
-        setMessage(report.message);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [report]);
+  // //const location = useLocation();
+  // //const Navigate = useNavigate();
+  // const dispatch = useDispatch();
+  // //const redirect = location.search ? location.search.split("=")[1] : "/";
+  // const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+  // const employee = userData?.id;
+  // console.log(employee);
+  // const reportCreated = useSelector((state) => state.reportCreated);
+  // const { loading, error, report } = reportCreated;
+  // useEffect(() => {
+  //   if (report) {
+  //     if (!report.isError) {
+  //       //Navigate(redirect);
+  //     } else {
+  //       setMessage(report.message);
+  //     }
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [report]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(
-      reportCreate(
-        vulnerability,
-        risk,
-        attributingFactor,
-        affectedUrl,
-        observation,
-        cwe,
-        impact,
-        mitigation,
-        pocFile,
-        brief,
-        employee
-      )
-    );
+    // dispatch(
+    //   reportCreate(
+    //     vulnerability,
+    //     risk,
+    //     attributingFactor,
+    //     affectedUrl,
+    //     observation,
+    //     cwe,
+    //     impact,
+    //     mitigation,
+    //     pocFile,
+    //     brief,
+    //     employee
+    //   )
+    // );
   };
 
   return (

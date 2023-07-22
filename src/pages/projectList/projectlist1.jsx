@@ -3,17 +3,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import { Link } from "react-router-dom";
 import { dummyProjectList } from "../../dummyprojectlist";
-import { listProject } from "../../actions/projectlistAction";
-import { useDispatch, useSelector } from "react-redux";
-
 function Projectlist1() {
-  const dispatch = useDispatch();
-  const projectList = useSelector((state) => state.projectList);
-  const { loading, error, project } = projectList;
-  const { data } = project;
-  useEffect(() => {
-    dispatch(listProject());
-  }, [dispatch]);
   return (
     <div className="App">
       <div className="home">
