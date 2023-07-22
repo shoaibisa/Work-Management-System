@@ -16,7 +16,7 @@ import CreateTask from "./pages/createProject/createTask";
 import Taskassign from "./pages/taskassign/Taskassign";
 import Projectlist from "./pages/projectList/Projectlist";
 import Viewproject from "./pages/viewProject/Viewproject";
-import Reportsubmit from "./pages/reportsubmit/reportsubmit.jsx";
+// import Reportsubmit from "./pages/reportsubmit/reportsubmit.jsx";
 import Taskview from "./pages/taskview/Taskview";
 import ClientDashboard from "./pages/client/dashboard";
 import ClientProjectlist from "./pages/client/pages/allproject";
@@ -114,7 +114,7 @@ function App() {
             path="/viewproject/:projectId/createtask"
             element={<Viewproject />}
           />
-          <Route path="/reportsubmit" element={<Reportsubmit />} />
+          {/* <Route path="/reportsubmit" element={<Reportsubmit />} /> */}
           <Route path="/viewtask" element={<Taskview />} />
           <Route path="/clentdashboard" element={<ClientDashboard />} />
           <Route path="/clientProject" element={<ClientProjectlist />} />
