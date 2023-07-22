@@ -16,7 +16,7 @@ function Projectlist1() {
             {dummyProjectList &&
               dummyProjectList.map((item) => (
                 <div key={item._id}>
-                  <div className="block w-[320px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                  <div className="block w-[320px] rounded-lg bg-white p-6 m-2  dark:bg-neutral-700">
                     <div className="flex my-2 justify-between">
                       <p className="font-semibold pr-4">{item.companyName}</p>
                       <p>
