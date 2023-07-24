@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
     cb(null, "uploads/"); // Specify the destination folder where files will be saved.
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname); // Use the original file name for storing the file.
+    cb(null, `${Date.now()}_${file.originalname}`); // Use the original file name for storing the file.
   },
 });
 

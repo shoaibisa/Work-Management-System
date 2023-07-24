@@ -95,11 +95,12 @@ const CreateTask = () => {
 
     // Add selectedOptions to formData as an array
     formData.append("selectedOptions", JSON.stringify(selectedOptions));
+    formData.append("project", projectId);
 
     // Check if "web" is selected
     if (selectedOptions.includes("web")) {
       // Add web-related data to formData
-      formData.append("targetURL", JSON.stringify(targetURL));
+      formData.append("webtargetUrls", JSON.stringify(targetURL));
       formData.append("webotherRemarks", webotherRemarks);
     }
 
@@ -152,6 +153,7 @@ const CreateTask = () => {
       setMessage("An error occurred while creating the task");
     }
     setMessage("Sucessfully Task Created");
+    Navigate("/projectlist");
   };
 
   useEffect(() => {
@@ -369,7 +371,6 @@ const CreateTask = () => {
                             <label class="flex ml-8 flex-col items-center justify-center">
                               {/* <span class="sr-only">Choose profile photo</span> */}
                               <input
-                                accept=".xls, .xlsx, text/plain"
                                 type="file"
                                 name="apiselectedFile"
                                 onChange={handleFileChange}
@@ -430,7 +431,6 @@ const CreateTask = () => {
                             <label class="flex ml-8 flex-col items-center justify-center">
                               {/* <span class="sr-only">Choose profile photo</span> */}
                               <input
-                                accept=".xls, .xlsx, text/plain"
                                 type="file"
                                 onChange={handleFileChange_network}
                                 name="networkselectedFile"

@@ -149,7 +149,6 @@ const getProject = async (req, res) => {
         message: "This project is not registered ",
       });
     }
-    console.log("no");
     return res.status(200).send({
       title: "Success",
       message: "project get sucessfully",
@@ -184,57 +183,58 @@ const getAllProject = async (req, res) => {
 };
 
 const createTask = async (req, res) => {
-  const formData = req.body;
-  console.log(formData);
-  //console.log(file1);
-  const taskLoady = {
+  const selectedOptions = JSON.parse(req.body.selectedOptions);
+
+  var taskLoady = {
     project: req.body.project,
-    selectedOptions: formData.selectedOptions,
-    // mobileData: req.body.mobileData,
-    // grcData: req.body.grcData,
-    // webData: req.body.webData,
-    // networkData: req.body.networkData,
-    // apiData: req.body.apiData,
-    // employee: req.body.employee,
+    selectedOptions: selectedOptions,
   };
 
-  // console.log(req.file);
-  const file1 = req.files["apiselectedFile"][0];
-  const file2 = req.files["networkselectedFile"][0];
-  console.log(file1);
-  console.log(file2);
-  if (formData && Array.isArray(formData.selectedOptions)) {
-    for (var t = 0; t < formData.selectedOptions.length; t++) {
-      if (req.body.selectedOptions[t] === "web") {
+  var file1;
+  if (req.files["apiselectedFile"]) {
+    file1 = req.files["apiselectedFile"][0];
+  }
+
+  var file2;
+  if (req.files["networkselectedFile"]) {
+    file2 = req.files["networkselectedFile"][0];
+  }
+  if (Array.isArray(selectedOptions)) {
+    for (var t = 0; t < selectedOptions.length; t++) {
+      if (selectedOptions[t] === "web") {
         taskLoady.webData = {
-          webtargetUrls: req.body["webtargetUrls"],
+          webtargetUrls: JSON.parse(req.body.webtargetUrls),
           webotherRemarks: req.body["webotherRemarks"],
         };
       }
-      // if (req.body.selectedOptions[t] === "network") {
-      //   taskLoady.networkData = {
-      //     networkfileUpload: req.body["networkData.networkfileUpload"],
-      //     networkotherRemarks: req.body["networkData.networkotherRemarks"],
-      //   };
-      // }
-      // if (req.body.selectedOptions[t] === "network") {
-      //   var file_fields = {};
-      //   if (req.files) {
-      //     file_fields = {
-      //       filename: req.file.filename,
-      //       contentType: req.file.mimetype,
-      //       data: fs.readFileSync(req.file.path),
-      //     };
-      //   }
-      //   taskLoady["networkData"] = {
-      //     networkfileUpload: file_fields,
-      //     networkotherRemarks: req.body["networkData.networkotherRemarks"],
-      //   };
-      // }
+      if (selectedOptions[t] === "api") {
+        taskLoady.apiData = {
+          apifile: file1.filename,
+          apiotherRemarks: req.body["apiotherRemarks"],
+        };
+      }
+      if (selectedOptions[t] === "network") {
+        taskLoady["networkData"] = {
+          networkfileUpload: file2.filename,
+          networkotherRemarks: req.body["networkotherRemarks"],
+        };
+      }
+      if (selectedOptions[t] === "mobile") {
+        taskLoady.mobileData = {
+          android: req.body["mobile_anoride_link"],
+          ios: req.body["ios_link"],
+          mobileotherRemarks: req.body["mobileotherRemarks"],
+        };
+      }
+      if (selectedOptions[t] === "grc") {
+        taskLoady.grcData = {
+          grcotherRemarks: req.body["grcotherRemarks"],
+        };
+      }
     }
   }
 
-  // console.log(taskLoady);
+  // return console.log(taskLoady);
   const task = new Task(taskLoady);
   //console.log(task);
 
@@ -255,6 +255,7 @@ const createTask = async (req, res) => {
       });
     })
     .catch((err) => {
+      console.log(err);
       return res.status(400).json({
         isError: true,
         title: "Error",
@@ -444,6 +445,45 @@ const complteReport = async (req, res) => {
   }
 };
 
+const assignEmployee = async (req, res) => {
+  const { id, taskid, employee, selectedOption } = req.body;
+  const employeeArray = JSON.parse(employee);
+
+  const assignEmployee = employeeArray.map((e) => {
+    employee: e;
+    report: [];
+  });
+  const task = await Task.findById(taskid).exec();
+  if (assignEmployee === "web") {
+    // find in webData webtargetUrls._id in task
+    const webtargetUrls = task.webData.webtargetUrls;
+    for (var i = 0; i < webtargetUrls.length; i++) {
+      if (webtargetUrls[i]._id === req.body.webtargetUrlsId) {
+        webtargetUrls[i].assignEmployee = assignEmployee;
+      }
+    }
+  }
+  if (selectedOption === "api") {
+    task.apiData.assignEmployee = assignEmployee;
+  }
+  if (selectedOption === "network") {
+    task.networkData.assignEmployee = assignEmployee;
+  }
+  if (selectedOption === "mobile") {
+    task.mobileData.assignEmployee = assignEmployee;
+  }
+  if (selectedOption === "grc") {
+    task.grcData.assignEmployee = assignEmployee;
+  }
+  await task.save();
+
+  return res.status(200).send({
+    title: "Success",
+    message: "project get sucessfully",
+    data: task,
+  });
+};
+
 export {
   createProject,
   actionProject,
@@ -457,4 +497,5 @@ export {
   editReport,
   getReport,
   complteReport,
+  assignEmployee,
 };

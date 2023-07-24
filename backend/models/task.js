@@ -42,12 +42,6 @@ const taskSchema = new mongoose.Schema(
     networkData: {
       networkfileUpload: {
         type: String,
-        // validate: {
-        //   validator: function (value) {
-        //     return fileTypes.includes(value);
-        //   },
-        //   message: "Invalid file format. Only PDF and Excel files are allowed.",
-        // },
       },
       networkotherRemarks: {
         type: String,
@@ -69,9 +63,7 @@ const taskSchema = new mongoose.Schema(
     },
     apiData: {
       apifile: {
-        filename: String,
-        contentType: String,
-        data: Buffer,
+        type: String,
       },
       apiotherRemarks: {
         type: String,
