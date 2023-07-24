@@ -138,7 +138,6 @@ const CreateTask = () => {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`, // Pass token in the "Authorization" header
-          "Content-Type": "multipart/form-data", // Set the content type for formData
         },
         body: formData,
       });
@@ -168,7 +167,8 @@ const CreateTask = () => {
         <form
           onSubmit={submitHandler}
           className=" w-4/4 ml-20 mt-10 create_Project "
-          encType="multipart/form-data"
+          method="post"
+          enctype="multipart/form-data"
         >
           <div className="space-y-18">
             <div className="border-b border-gray-900/10 pb-12">
@@ -371,7 +371,7 @@ const CreateTask = () => {
                               <input
                                 accept=".xls, .xlsx, text/plain"
                                 type="file"
-                                name="file"
+                                name="apiselectedFile"
                                 onChange={handleFileChange}
                                 class="block cursor-pointer w-full text-sm text-slate-500
                 file:mr-4 file:py-2 file:px-4
@@ -433,7 +433,7 @@ const CreateTask = () => {
                                 accept=".xls, .xlsx, text/plain"
                                 type="file"
                                 onChange={handleFileChange_network}
-                                name="file"
+                                name="networkselectedFile"
                                 class="block cursor-pointer w-full text-sm text-slate-500
                                   file:mr-4 file:py-2 file:px-4
                                   file:rounded-full file:border-0

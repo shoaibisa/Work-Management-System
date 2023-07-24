@@ -29,7 +29,17 @@ router.post("/action", actionProject);
 router.post("/submit", upload.single("file"), protect, submitProject);
 router.post("/getbyid", protect, getProject);
 router.post("/all", protect, getAllProject);
-router.post("/createTask", upload.array("file"), protect, createTask);
+router.post(
+  "/createTask",
+  protect,
+  // upload.single("apiselectedFile"),
+
+  upload.fields([
+    { name: "apiselectedFile", maxCount: 1 },
+    { name: "networkselectedFile", maxCount: 1 },
+  ]),
+  createTask
+);
 router.post("/getTask", getTask);
 router.post("/createReport", upload.array("files"), protect, creatReport);
 

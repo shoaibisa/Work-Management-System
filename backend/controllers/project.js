@@ -186,6 +186,7 @@ const getAllProject = async (req, res) => {
 const createTask = async (req, res) => {
   const formData = req.body;
   console.log(formData);
+  //console.log(file1);
   const taskLoady = {
     project: req.body.project,
     selectedOptions: formData.selectedOptions,
@@ -197,7 +198,11 @@ const createTask = async (req, res) => {
     // employee: req.body.employee,
   };
 
-  // console.log(req.files);
+  // console.log(req.file);
+  const file1 = req.files["apiselectedFile"][0];
+  const file2 = req.files["networkselectedFile"][0];
+  console.log(file1);
+  console.log(file2);
   if (formData && Array.isArray(formData.selectedOptions)) {
     for (var t = 0; t < formData.selectedOptions.length; t++) {
       if (req.body.selectedOptions[t] === "web") {
