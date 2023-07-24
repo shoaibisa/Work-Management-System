@@ -491,7 +491,12 @@ const assignEmployee = async (req, res) => {
     task.networkData.assignEmployee = assignEmployee;
   }
   if (selectedOption === "mobile") {
-    task.mobileData.assignEmployee = assignEmployee;
+    if (req.body.mobileType === "android") {
+      task.mobileData.forAndroid.assignEmployee = assignEmployee;
+    }
+    if (req.body.mobileType === "ios") {
+      task.mobileData.forIos.assignEmployee = assignEmployee;
+    }
   }
   if (selectedOption === "grc") {
     task.grcData.assignEmployee = assignEmployee;
