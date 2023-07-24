@@ -6,6 +6,7 @@ import {
   getAllProject,
   createTask,
   getTask,
+  getTaskByProject,
   creatReport,
 } from "../controllers/project.js";
 import { protect } from "../middleware/employeeMiddleware.js";
@@ -42,5 +43,6 @@ router.post(
 );
 router.post("/getTask", getTask);
 router.post("/createReport", upload.array("files"), protect, creatReport);
+router.post("/gettaskbyproject", protect, getTaskByProject);
 
 export default router;

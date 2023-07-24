@@ -288,6 +288,27 @@ const getTask = async (req, res) => {
     return res.status(500);
   }
 };
+const getTaskByProject = async (req, res) => {
+  const { project } = req.body;
+  try {
+    const task = await Task.find({ project: project }).exec();
+    if (!task) {
+      return res.status(208).send({
+        isError: true,
+        title: "Error",
+        message: "This project is not registered ",
+      });
+    }
+    return res.status(200).send({
+      title: "Success",
+      message: "project get sucessfully",
+      data: task,
+    });
+  } catch (error) {
+    return res.status(500);
+  }
+};
+
 const creatReport = async (req, res) => {
   const payload = req.body;
   //  images
@@ -446,7 +467,7 @@ const complteReport = async (req, res) => {
 };
 
 const assignEmployee = async (req, res) => {
-  const { id, taskid, employee, selectedOption } = req.body;
+  const { taskid, employee, selectedOption } = req.body;
   const employeeArray = JSON.parse(employee);
 
   const assignEmployee = employeeArray.map((e) => {
@@ -498,4 +519,5 @@ export {
   getReport,
   complteReport,
   assignEmployee,
+  getTaskByProject,
 };
