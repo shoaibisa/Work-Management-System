@@ -11,6 +11,9 @@ import {
   TASK_CREATED_REQUEST,
   TASK_CREATED_SUCCESS,
   TASK_CREATED_FAILS,
+  TASK_VIEW_FAILS,
+  TASK_VIEW_REQUEST,
+  TASK_VIEW_SUCCESS,
 } from "../constants/projectList.js";
 
 export const projectCreatedReducer = (state = { project: [] }, action) => {
@@ -58,6 +61,7 @@ export const projectViewReducer = (state = { project: [] }, action) => {
       return state;
   }
 };
+
 export const projectListReducer = (state = { project: [] }, action) => {
   switch (action.type) {
     case PROJECT_LIST_REQUEST:
@@ -67,6 +71,22 @@ export const projectListReducer = (state = { project: [] }, action) => {
       return { loading: false, project: action.payload };
 
     case PROJECT_LIST_FAILS:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const taskViewReducer = (state = { task: [] }, action) => {
+  switch (action.type) {
+    case TASK_VIEW_REQUEST:
+      return { loading: true, task: [] };
+
+    case TASK_VIEW_SUCCESS:
+      return { loading: false, task: action.payload };
+
+    case TASK_VIEW_FAILS:
       return { loading: false, error: action.payload };
 
     default:

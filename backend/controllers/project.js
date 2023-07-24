@@ -138,7 +138,6 @@ const submitProject = async (req, res) => {
 };
 
 const getProject = async (req, res) => {
-  // return console.log(req.user);
   const { id } = req.body;
   try {
     const project = await Project.findById(id).exec();
@@ -302,7 +301,7 @@ const getTaskByProject = async (req, res) => {
     return res.status(200).send({
       title: "Success",
       message: "project get sucessfully",
-      data: task,
+      data1: task,
     });
   } catch (error) {
     return res.status(500);

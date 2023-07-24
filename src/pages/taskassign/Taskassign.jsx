@@ -40,6 +40,10 @@ const Taskassign = () => {
             Deadline Date - <div className="pl-2">5/Aug/2023</div>
           </p>
 
+          <select>
+            <option> Web</option>
+          </select>
+
           {/* checkbox */}
           <div className="my-4 mx-5 flex rounded-lg border border-dashed border-gray-900/25 p-4">
             <div>

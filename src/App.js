@@ -23,7 +23,11 @@ import Taskview from "./pages/taskview/Taskview";
 import ClientDashboard from "./pages/client/dashboard";
 import ClientProjectlist from "./pages/client/pages/allproject";
 import ClientProjectView from "./pages/client/pages/projectdetail";
-import { AuthorizedUser, AuthorizedAdmin } from "./middleware/auth";
+import {
+  AuthorizedUser,
+  AuthorizedAdmin,
+  AuthorizedPM,
+} from "./middleware/auth";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
 
@@ -54,25 +58,25 @@ function App() {
             <Route
               path="/allproject"
               element={
-                <AuthorizedUser>
+                <AuthorizedPM>
                   <AllProject />
-                </AuthorizedUser>
+                </AuthorizedPM>
               }
             />
             <Route
               path="/createproject"
               element={
-                <AuthorizedUser>
+                <AuthorizedPM>
                   <Createproject />
-                </AuthorizedUser>
+                </AuthorizedPM>
               }
             />
             <Route
               path="/viewproject/:projectId/:createtask"
               element={
-                <AuthorizedUser>
+                <AuthorizedPM>
                   <CreateTask />
-                </AuthorizedUser>
+                </AuthorizedPM>
               }
             />
 
@@ -103,9 +107,9 @@ function App() {
           <Route
             path="/taskassign"
             element={
-              <AuthorizedUser>
+              <AuthorizedPM>
                 <Taskassign />
-              </AuthorizedUser>
+              </AuthorizedPM>
             }
           />
           <Route path="/projectlist" element={<Projectlist />} />
@@ -118,11 +122,11 @@ function App() {
             element={<Viewproject />}
           />
           {/* <Route path="/createtask" element={<CreateTask1 />} /> */}
-          <Route path="/reportsubmit" element={<Reportsubmit />} />
+          {/* <Route path="/reportsubmit" element={<Reportsubmit />} />
           <Route path="/viewtask" element={<Taskview />} />
           <Route path="/clentdashboard" element={<ClientDashboard />} />
           <Route path="/clientProject" element={<ClientProjectlist />} />
-          <Route path="/clientprojectview" element={<ClientProjectView />} />
+          <Route path="/clientprojectview" element={<ClientProjectView />} /> */}
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>

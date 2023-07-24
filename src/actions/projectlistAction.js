@@ -8,6 +8,9 @@ import {
   PROJECT_DETAILS_FAILS,
   PROJECT_DETAILS_REQUEST,
   PROJECT_DETAILS_SUCCESS,
+  TASK_VIEW_REQUEST,
+  TASK_VIEW_SUCCESS,
+  TASK_VIEW_FAILS,
 } from "../constants/projectList.js";
 
 import axios from "axios";
@@ -59,58 +62,37 @@ export const createProject =
       });
     }
   };
-export const createTask =
-  (
-    // selectedOptions,
-    // webData,
-    // apiData,
-    // networkData,
-    // mobileData,
-    // grcData,
-    // projectId
-    formData
-  ) =>
-  async (dispatch) => {
-    const userData = JSON.parse(localStorage.getItem("employeeInfo"));
-    const token = userData?.token;
-    const employee = userData?.id;
+export const createTask = (formData) => async (dispatch) => {
+  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+  const token = userData?.token;
+  const employee = userData?.id;
 
-    try {
-      dispatch({ type: PROJECT_CREATED_REQUEST });
-      const { data } = await axios.post(
-        "http://localhost:5000/auth/createtask",
-        {
-          // selectedOptions,
-          // webData,
-          // apiData,
-          // networkData,
-          // mobileData,
-          // grcData,
-          // project: projectId,
-          formData,
-          // employee,
+  try {
+    dispatch({ type: PROJECT_CREATED_REQUEST });
+    const { data } = await axios.post(
+      "http://localhost:5000/auth/createtask",
+      { formData },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "multipart/form-data",
         },
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      dispatch({
-        type: PROJECT_CREATED_SUCCESS,
-        payload: data,
-      });
-    } catch (error) {
-      dispatch({
-        type: PROJECT_CREATED_FAILS,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
-    }
-  };
+      }
+    );
+    dispatch({
+      type: PROJECT_CREATED_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PROJECT_CREATED_FAILS,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
 
 export const viewProject = (projectId) => async (dispatch) => {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
@@ -140,6 +122,7 @@ export const viewProject = (projectId) => async (dispatch) => {
     });
   }
 };
+
 export const listProject = () => async (dispatch) => {
   //onst config = { headers: { "Contnet-Type": "application/json" } };
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
@@ -164,6 +147,35 @@ export const listProject = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PROJECT_LIST_FAILS,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const viewTask = (projectId) => async (dispatch) => {
+  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+  const token = userData?.token;
+  try {
+    dispatch({ type: TASK_VIEW_REQUEST });
+    const { data } = await axios.post(
+      "http://localhost:5000/project/gettaskbyproject",
+      { project: projectId },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    dispatch({
+      type: TASK_VIEW_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: TASK_VIEW_FAILS,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
