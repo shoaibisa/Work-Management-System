@@ -4,27 +4,27 @@ import { Select, initTE } from "tw-elements";
 
 const Employee = (props) => {
   const { departments } = props;
-  // const [employee, setEmployee] = useState([]);
+  const [employee, setEmployee] = useState([]);
 
   useEffect(() => {
     initTE({ Select });
-    // fetch(`http://localhost:5000/user/department`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
+    fetch(`http://localhost:5000/user/department`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
 
-    //     Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-    //   },
-    // })
-    // .then((res) => res.json())
-    // .then((data) => {
-    //   console.log(data);
-    //   setEmployee(data.employees);
-    //   return data;
-    // });
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setEmployee(data.employees);
+        return data;
+      });
   }, []);
 
-  const optionelements = userRows
+  const optionelements = employee
     .filter((option) => {
       return departments.includes(option.department);
     })
@@ -34,8 +34,8 @@ const Employee = (props) => {
         key={option._id}
         value={option._id}
       >
-        {`ID.${option.id} `}
-        {` ${option.username}`}
+        {` ${option.name}`}
+        {`(ID.${option.userId} )`}
       </option>
     ));
 
