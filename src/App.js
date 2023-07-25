@@ -13,10 +13,8 @@ import { DarkModeContext } from "./context/darkModeContext";
 import AllProject from "./Views/Admin/AllProject.jsx";
 import Createproject from "./pages/createProject/Createproject";
 import CreateTask from "./pages/createProject/createTask";
-import CreateTask1 from "./pages/createProject/createTask1";
 import Taskassign from "./pages/taskassign/Taskassign";
 import Projectlist from "./pages/projectList/projectlist";
-import Projectlist1 from "./pages/projectList/projectlist1";
 import Viewproject from "./pages/viewProject/Viewproject";
 import Reportsubmit from "./pages/reportsubmit/reportsubmit.jsx";
 import Taskview from "./pages/taskview/Taskview";
@@ -115,8 +113,7 @@ function App() {
           <Route path="/projectlist" element={<Projectlist />} />
           {/* <Route path="/viewproject" element={<Viewproject />} /> */}
           <Route path="/viewproject/:projectId" element={<Viewproject />} />
-          <Route path="/viewproject" element={<Viewproject />} />
-          <Route path="/createtask1" element={<CreateTask1 />} />
+
           <Route
             path="/viewproject/:projectId/createtask"
             element={<Viewproject />}

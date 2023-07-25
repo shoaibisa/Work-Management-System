@@ -178,39 +178,6 @@ function Viewproject() {
                     </div>
                   </div>
                 ) : null}
-
-                {Array.isArray(data1) && data1[0].apiData ? (
-                  <div className="block w-[300px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-                    <h1>For Api</h1>
-                    <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                      <span
-                        className="font-medium text-indigo-600 hover:text-indigo-500"
-                        onClick={handleDownloadClick}
-                      >
-                        {" "}
-                        FILE
-                      </span>
-                    </div>
-
-                    <div className=" mt-4 flex flex-col">
-                      <div className="text-md font-medium leading-6 text-gray-900">
-                        Remarks :
-                      </div>
-                      <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                        {data1[0].apiData && data1[0].apiData.apiotherRemarks}
-                      </div>
-                    </div>
-
-                    <div className=" mt-2 flex justify-end gap-x-6">
-                      <button
-                        type="submit"
-                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                      >
-                        View
-                      </button>
-                    </div>
-                  </div>
-                ) : null}
                 {Array.isArray(data1) && data1[0].mobileData ? (
                   <div className="block w-[300px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                     <h1>For Mobile</h1>
@@ -273,6 +240,40 @@ function Viewproject() {
                     </div>
                   </div>
                 ) : null}
+
+                {Array.isArray(data1) && data1[0].apiData ? (
+                  <div className="block w-[300px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                    <h1>For Api</h1>
+                    <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <span
+                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                        onClick={handleDownloadClick}
+                      >
+                        {" "}
+                        FILE
+                      </span>
+                    </div>
+
+                    <div className=" mt-4 flex flex-col">
+                      <div className="text-md font-medium leading-6 text-gray-900">
+                        Remarks :
+                      </div>
+                      <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        {data1[0].apiData && data1[0].apiData.apiotherRemarks}
+                      </div>
+                    </div>
+
+                    <div className=" mt-2 flex justify-end gap-x-6">
+                      <button
+                        type="submit"
+                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      >
+                        View
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+
                 {Array.isArray(data1) && data1[0].networkData ? (
                   <div className="block w-[300px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                     <h1>For Network</h1>

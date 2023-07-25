@@ -8,9 +8,16 @@ import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { PaperClipIcon } from "@heroicons/react/20/solid";
 
 const Taskassign = () => {
   const [departments, setdepartments] = useState([]);
+  const [selectedOption, setSelectedOption] = useState("");
+
+  function handleDropdownChange(event) {
+    const selectedValue = event.target.value;
+    setSelectedOption(selectedValue);
+  }
 
   const handlecheck = (e) => {
     const { value, checked } = e.target;
@@ -40,12 +47,144 @@ const Taskassign = () => {
             Deadline Date - <div className="pl-2">5/Aug/2023</div>
           </p>
 
-          <select>
-            <option> Web</option>
-          </select>
-
           {/* checkbox */}
-          <div className="my-4 mx-5 flex rounded-lg border border-dashed border-gray-900/25 p-4">
+          <div className="my-4 mx-5  flex-row  rounded-lg border border-dashed border-gray-900/25 p-4">
+            <div className="w-full mt-5 flex   items-center">
+              <label
+                htmlFor="dropdown"
+                className="block font-medium text-gray-700"
+              >
+                Select Task:
+              </label>
+              <select
+                id="dropdown"
+                name="dropdown"
+                onChange={handleDropdownChange}
+                className="mt-1 ml-5 block px-4 py-2 border border-gray-300 bg-white text-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              >
+                <option disabled selected value="">
+                  Select an option
+                </option>
+                <option value="webapp">Web App</option>
+                <option value="mobile">Mobile</option>
+                <option value="API">API</option>
+                <option value="Network">Network</option>
+                <option value="GRC">GRC</option>
+              </select>
+            </div>
+
+            {
+              <div>
+                {selectedOption === "webapp" && (
+                  <div>
+                    <div className=" pt-6 flex justify-between">
+                      <div className="flex  flex-1 items-center">
+                        <PaperClipIcon
+                          className="h-5 w-5 flex-shrink-0 text-gray-400"
+                          aria-hidden="true"
+                        />
+                        Label
+                      </div>
+                      <div className="ml-4 flex-shrink-0">
+                        <button
+                          type="submit"
+                          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        >
+                          Assign
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {selectedOption === "mobile" && (
+                  <div>
+                    <div className=" pt-6 flex justify-between">
+                      <div className="flex  flex-1 items-center">
+                        <PaperClipIcon
+                          className="h-5 w-5 flex-shrink-0 text-gray-400"
+                          aria-hidden="true"
+                        />
+                        Android
+                      </div>
+                      <div className="ml-4 flex-shrink-0">
+                        <button
+                          type="submit"
+                          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        >
+                          Assign
+                        </button>
+                      </div>
+                    </div>
+                    <div className=" pt-6 flex justify-between">
+                      <div className="flex  flex-1 items-center">
+                        <PaperClipIcon
+                          className="h-5 w-5 flex-shrink-0 text-gray-400"
+                          aria-hidden="true"
+                        />
+                        Ios
+                      </div>
+                      <div className="ml-4 flex-shrink-0">
+                        <button
+                          type="submit"
+                          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        >
+                          Assign
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {selectedOption === "API" && (
+                  <div className=" pt-6 flex justify-between">
+                    <div className="flex  flex-1 items-center">
+                      <PaperClipIcon
+                        className="h-5 w-5 flex-shrink-0 text-gray-400"
+                        aria-hidden="true"
+                      />
+                      <button
+                        type="submit"
+                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      >
+                        Assign
+                      </button>
+                    </div>
+                  </div>
+                )}
+                {selectedOption === "Network" && (
+                  <div className=" pt-6 flex justify-between">
+                    <div className="flex  flex-1 items-center">
+                      <PaperClipIcon
+                        className="h-5 w-5 flex-shrink-0 text-gray-400"
+                        aria-hidden="true"
+                      />
+                      <button
+                        type="submit"
+                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      >
+                        Assign
+                      </button>
+                    </div>
+                  </div>
+                )}
+                {selectedOption === "GRC" && (
+                  <div className=" pt-6 flex justify-between">
+                    <div className="flex  flex-1 items-center">
+                      <PaperClipIcon
+                        className="h-5 w-5 flex-shrink-0 text-gray-400"
+                        aria-hidden="true"
+                      />
+                      <button
+                        type="submit"
+                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      >
+                        Assign
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            }
+
             <div>
               <p className="text-lg m-2 flex font-semibold leading-2 text-gray-900 sm:truncate sm:text-lg sm:tracking-tight">
                 Choose Department
