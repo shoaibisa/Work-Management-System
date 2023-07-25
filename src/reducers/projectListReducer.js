@@ -14,6 +14,9 @@ import {
   TASK_VIEW_FAILS,
   TASK_VIEW_REQUEST,
   TASK_VIEW_SUCCESS,
+  TASK_ASSIGN_REQUEST,
+  TASK_ASSIGN_SUCCESS,
+  TASK_ASSIGN_FAILS,
 } from "../constants/projectList.js";
 
 export const projectCreatedReducer = (state = { project: [] }, action) => {
@@ -87,6 +90,21 @@ export const taskViewReducer = (state = { tasks: [] }, action) => {
       return { loading: false, tasks: action.payload };
 
     case TASK_VIEW_FAILS:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+export const taskAssignReducer = (state = { employees: [] }, action) => {
+  switch (action.type) {
+    case TASK_ASSIGN_REQUEST:
+      return { loading: true, employees: [] };
+
+    case TASK_ASSIGN_SUCCESS:
+      return { loading: false, employees: action.payload };
+
+    case TASK_ASSIGN_FAILS:
       return { loading: false, error: action.payload };
 
     default:

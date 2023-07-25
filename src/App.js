@@ -126,10 +126,16 @@ function App() {
             path="/viewproject/:projectId/viewtask/:taskID/detailedtask/:type"
             element={<DetailedViewtask />}
           />
+
           <Route
             path="/viewproject/:projectId/viewtask/:taskID/assign/:type/webtargetUrlsId/:url_id"
             element={<Taskassign />}
           />
+          <Route
+            path="/viewproject/:projectId/viewtask/:taskID/:type/assignsingle"
+            element={<Taskassign />}
+          />
+
           {/* <Route path="/createtask" element={<CreateTask1 />} /> */}
           {/* <Route path="/reportsubmit" element={<Reportsubmit />} />
           <Route path="/viewtask" element={<Taskview />} />

@@ -467,8 +467,8 @@ const complteReport = async (req, res) => {
 
 const assignEmployee = async (req, res) => {
   const { taskid, employee, selectedOption } = req.body;
-  const employeeArray = JSON.parse(employee);
-
+  return console.log(employee);
+  // const employeeArray = JSON.parse(employee);
   const assignEmployee = employeeArray.map((e) => {
     employee: e;
     report: [];

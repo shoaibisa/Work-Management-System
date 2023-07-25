@@ -11,6 +11,9 @@ import {
   TASK_VIEW_REQUEST,
   TASK_VIEW_SUCCESS,
   TASK_VIEW_FAILS,
+  TASK_ASSIGN_REQUEST,
+  TASK_ASSIGN_SUCCESS,
+  TASK_ASSIGN_FAILS,
 } from "../constants/projectList.js";
 
 import axios from "axios";
@@ -171,7 +174,7 @@ export const viewTasks = (taskId) => async (dispatch) => {
         },
       }
     );
-    console.log(data);
+
     dispatch({
       type: TASK_VIEW_SUCCESS,
       payload: data,
@@ -186,3 +189,40 @@ export const viewTasks = (taskId) => async (dispatch) => {
     });
   }
 };
+
+export const assignTask =
+  (ProjectId, taskID, type, url_id, employee) => async (dispatch) => {
+    const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+    const token = userData?.token;
+
+    try {
+      dispatch({ type: TASK_ASSIGN_REQUEST });
+      const { data } = await axios.post(
+        "http://localhost:5000/project/assignemployee",
+        {
+          taskid: taskID,
+          selectedOption: type,
+          employee: employee,
+          webtargetUrls: url_id,
+          ProjectId: ProjectId,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      dispatch({
+        type: TASK_ASSIGN_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: TASK_ASSIGN_FAILS,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

@@ -8,6 +8,7 @@ import {
   getTask,
   getTaskByProject,
   creatReport,
+  assignEmployee,
 } from "../controllers/project.js";
 import { protect } from "../middleware/employeeMiddleware.js";
 import multer from "multer";
@@ -44,5 +45,5 @@ router.post(
 router.post("/getTask", protect, getTask);
 router.post("/createReport", upload.array("files"), protect, creatReport);
 router.post("/gettaskbyproject", protect, getTaskByProject);
-
+router.post("/assignemployee", protect, assignEmployee);
 export default router;

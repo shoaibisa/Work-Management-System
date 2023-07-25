@@ -98,12 +98,13 @@ function DetailedViewtask() {
                       <a href={data.mobileData && data.mobileData.android}>
                         {data.mobileData && data.mobileData.android}
                       </a>
-                      <button
+                      <Link
                         type="submit"
+                        to={`/viewproject/${projectId}/viewtask/${taskID}/anorid/assignsingle`}
                         className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
                         Assign
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 )}
@@ -116,12 +117,13 @@ function DetailedViewtask() {
                       <a href={data.mobileData && data.mobileData.ios}>
                         {data.mobileData && data.mobileData.ios}
                       </a>
-                      <button
+                      <Link
                         type="submit"
+                        to={`/viewproject/${projectId}/viewtask/${taskID}/ios/assignsingle`}
                         className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
                         Assign
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 )}
@@ -163,12 +165,13 @@ function DetailedViewtask() {
                 </div>
 
                 <div className=" mt-2 flex justify-end gap-x-6">
-                  <button
+                  <Link
                     type="submit"
+                    to={`/viewproject/${projectId}/viewtask/${taskID}/api/assignsingle`}
                     className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Assign
-                  </button>
+                  </Link>
                 </div>
               </div>
             ) : null}
@@ -198,12 +201,13 @@ function DetailedViewtask() {
                 </div>
 
                 <div className=" mt-2 flex justify-end gap-x-6">
-                  <button
+                  <Link
                     type="submit"
+                    to={`/viewproject/${projectId}/viewtask/${taskID}/network/assignsingle`}
                     className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Assign
-                  </button>
+                  </Link>
                 </div>
               </div>
             ) : null}
@@ -224,12 +228,13 @@ function DetailedViewtask() {
                 </div>
 
                 <div className=" mt-2 flex justify-end gap-x-6">
-                  <button
+                  <Link
                     type="submit"
+                    to={`/viewproject/${projectId}/viewtask/${taskID}/grc/assignsingle`}
                     className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Assign
-                  </button>
+                  </Link>
                 </div>
               </div>
             ) : null}

@@ -12,6 +12,7 @@ import {
   projectViewReducer,
   taskCreatedReducer,
   taskViewReducer,
+  taskAssignReducer,
 } from "./reducers/projectListReducer";
 import { reportCreatedReducer } from "./reducers/reportReducer";
 const employeenfoFromStroge = localStorage.getItem("employeeInfo")
@@ -28,6 +29,7 @@ const reducer = combineReducers({
   reportCreated: reportCreatedReducer,
   projectView: projectViewReducer,
   tasksView: taskViewReducer,
+  taskAssign: taskAssignReducer,
 });
 const initialState = {
   employeeLogin: { employeeInfo: employeenfoFromStroge },

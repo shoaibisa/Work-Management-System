@@ -5,6 +5,7 @@ import { Select, initTE } from "tw-elements";
 const Employee = (props) => {
   const { departments } = props;
   const [employee, setEmployee] = useState([]);
+  const [selectedEmployee, setselectedEmployee] = useState([]);
 
   useEffect(() => {
     initTE({ Select });
@@ -18,11 +19,18 @@ const Employee = (props) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setEmployee(data.employees);
         return data;
       });
   }, []);
+  const handleSelectdEmployee = (event) => {
+    const selectedValues = Array.from(
+      event.target.selectedOptions,
+      (option) => option.value
+    );
+    setselectedEmployee(selectedValues);
+    props.onDataUpdate(selectedValues);
+  };
 
   const optionelements = employee
     .filter((option) => {
@@ -39,8 +47,6 @@ const Employee = (props) => {
       </option>
     ));
 
-  //   console.log(optionelements);
-
   return (
     <div className="flex flex-col mx-5 mt-4">
       <select
@@ -48,6 +54,7 @@ const Employee = (props) => {
         multiple
         data-te-select-init
         data-te-select-filter="true"
+        onChange={(e) => handleSelectdEmployee(e)}
       >
         {optionelements}
       </select>
