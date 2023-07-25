@@ -60,6 +60,8 @@ const CreateTask = () => {
   //console.log(networkselectedFile);
   // For Mobile
   const [mobileotherRemarks, setMobileotherRemarks] = useState("");
+  const [androidUrl, setAndroidUrl] = useState("");
+  const [iosUrl, setIosUrl] = useState("");
 
   // For Grc
   const [grcotherRemarks, setGrcotherRemarks] = useState("");
@@ -121,9 +123,11 @@ const CreateTask = () => {
     // Check if "mobile" is selected
     if (selectedOptions.includes("mobile")) {
       // Add mobile-related data to formData
-      formData.append("mobile_anoride_link", targetURL[0]?.link || ""); // Assuming only one link is needed for mobile
-      formData.append("ios_link", targetURL[1]?.link || ""); // Assuming the second link is for iOS
+      // formData.append("mobile_anoride_link", targetURL[0]?.link || ""); // Assuming only one link is needed for mobile
+      // formData.append("ios_link", targetURL[1]?.link || ""); // Assuming the second link is for iOS
       formData.append("mobileotherRemarks", mobileotherRemarks);
+      formData.append("mobile_anoride_link", androidUrl);
+      formData.append("ios_link", iosUrl);
     }
 
     if (selectedOptions.includes("grc")) {
@@ -335,6 +339,7 @@ const CreateTask = () => {
                                 }
                                 name="webotherRemarks"
                                 rows="3"
+                                required
                                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                               ></textarea>
                             </div>
@@ -398,6 +403,7 @@ const CreateTask = () => {
                                 id="about"
                                 name="apiotherRemarks"
                                 rows="3"
+                                required
                                 value={apiotherRemarks}
                                 onChange={(e) =>
                                   setapiotherRemarks(e.target.value)
@@ -457,6 +463,7 @@ const CreateTask = () => {
                               <textarea
                                 name="networkotherRemarks"
                                 rows="3"
+                                required
                                 value={networkotherRemarks}
                                 onChange={(e) =>
                                   setNetworkotherRemarks(e.target.value)
@@ -502,6 +509,10 @@ const CreateTask = () => {
                                   <input
                                     type="url"
                                     name="mobile_anoride_link"
+                                    value={androidUrl}
+                                    onChange={(e) =>
+                                      setAndroidUrl(e.target.value)
+                                    }
                                     autoComplete="username"
                                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                     placeholder="Enter url"
@@ -526,7 +537,11 @@ const CreateTask = () => {
                                   <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                     <input
                                       type="url"
-                                      name="link"
+                                      name="ios_link"
+                                      value={iosUrl}
+                                      onChange={(e) =>
+                                        setIosUrl(e.target.value)
+                                      }
                                       autoComplete="username"
                                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                       placeholder="Enter url"
@@ -549,6 +564,11 @@ const CreateTask = () => {
                               <textarea
                                 name="mobileotherRemarks"
                                 rows="3"
+                                required
+                                value={mobileotherRemarks}
+                                onChange={(e) =>
+                                  setMobileotherRemarks(e.target.value)
+                                }
                                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                               ></textarea>
                             </div>
@@ -576,8 +596,13 @@ const CreateTask = () => {
                             </label>
                             <div class="mt-2">
                               <textarea
+                                required
                                 name="grcotherRemarks"
                                 rows="3"
+                                value={grcotherRemarks}
+                                onChange={(e) =>
+                                  setGrcotherRemarks(e.target.value)
+                                }
                                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                               ></textarea>
                             </div>

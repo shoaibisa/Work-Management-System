@@ -108,6 +108,7 @@ export const viewProject = (projectId) => async (dispatch) => {
         },
       }
     );
+
     dispatch({
       type: PROJECT_DETAILS_SUCCESS,
       payload: data,
@@ -139,7 +140,7 @@ export const listProject = () => async (dispatch) => {
         },
       }
     );
-    console.log(data);
+
     dispatch({
       type: PROJECT_LIST_SUCCESS,
       payload: data,
@@ -155,20 +156,22 @@ export const listProject = () => async (dispatch) => {
   }
 };
 
-export const viewTask = (projectId) => async (dispatch) => {
+export const viewTasks = (taskId) => async (dispatch) => {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const token = userData?.token;
+
   try {
     dispatch({ type: TASK_VIEW_REQUEST });
     const { data } = await axios.post(
-      "http://localhost:5000/project/gettaskbyproject",
-      { project: projectId },
+      "http://localhost:5000/project/getTask",
+      { id: taskId },
       {
         headers: {
           Authorization: "Bearer " + token,
         },
       }
     );
+    console.log(data);
     dispatch({
       type: TASK_VIEW_SUCCESS,
       payload: data,

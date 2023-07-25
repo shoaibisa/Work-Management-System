@@ -78,13 +78,13 @@ export const projectListReducer = (state = { project: [] }, action) => {
   }
 };
 
-export const taskViewReducer = (state = { task: [] }, action) => {
+export const taskViewReducer = (state = { tasks: [] }, action) => {
   switch (action.type) {
     case TASK_VIEW_REQUEST:
-      return { loading: true, task: [] };
+      return { loading: true, tasks: [] };
 
     case TASK_VIEW_SUCCESS:
-      return { loading: false, task: action.payload };
+      return { loading: false, tasks: action.payload };
 
     case TASK_VIEW_FAILS:
       return { loading: false, error: action.payload };

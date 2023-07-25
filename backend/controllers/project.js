@@ -265,17 +265,16 @@ const createTask = async (req, res) => {
 
 const getTask = async (req, res) => {
   const { id } = req.body;
+  // console.log(id);
   try {
     const task = await Task.findById(id).exec();
+
     if (!task) {
       return res.status(208).send({
         isError: true,
         title: "Error",
         message: "This project is not registered ",
       });
-    }
-    if (task.apiData.apifile) {
-      res.header("Content-Type", task.apiData.apifile.contentType);
     }
 
     return res.status(200).send({
@@ -298,10 +297,11 @@ const getTaskByProject = async (req, res) => {
         message: "This project is not registered ",
       });
     }
+
     return res.status(200).send({
       title: "Success",
       message: "project get sucessfully",
-      data1: task,
+      data: task,
     });
   } catch (error) {
     return res.status(500);

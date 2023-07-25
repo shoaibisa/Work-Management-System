@@ -41,7 +41,7 @@ router.post(
   ]),
   createTask
 );
-router.post("/getTask", getTask);
+router.post("/getTask", protect, getTask);
 router.post("/createReport", upload.array("files"), protect, creatReport);
 router.post("/gettaskbyproject", protect, getTaskByProject);
 
