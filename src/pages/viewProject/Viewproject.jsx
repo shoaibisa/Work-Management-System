@@ -6,7 +6,7 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import { dummyProjectList } from "../../dummyprojectlist";
 import { viewProject, viewTask } from "../../actions/projectlistAction";
 import { useDispatch, useSelector } from "react-redux";
-import { PaperClipIcon, PlusIcon } from "@heroicons/react/20/solid";
+import { EyeIcon, PlusIcon, TrashIcon } from "@heroicons/react/20/solid";
 function Viewproject() {
   const { projectId } = useParams();
   const dispatch = useDispatch();
@@ -86,20 +86,28 @@ function Viewproject() {
 
             {/* 3 cards */}
             <h1 className="text-lg"> Task List:</h1>
-            <div className="flex">
+            <div className="flex  flex-wrap ">
               {data &&
                 data.task.map((taskId) => (
-                  <div class="grid  m-5 space-x-1 lg:grid-cols-1">
-                    <div class="px-4 py-4 bg-white  shadow-2xl rounded">
+                  <div class=" flex m-5 space-x-1   shadow-2xloverflow-hidden">
+                    <div class="px-4 py-4 bg-white  rounded">
                       <p class="text-lg mb-4 text-center text-gray-800">
                         Task Name
                       </p>
-                      <Link
-                        to={`/viewproject/${projectId}/viewtask/${taskId}`}
-                        class="  cursor-pointer text-center w-6/12 flex  justify-center m-auto p-[7px] pointer-events-auto rounded-md bg-indigo-600 px-3 py-2 font-semibold leading-5 text-white hover:bg-indigo-500"
-                      >
-                        view
-                      </Link>
+                      <div className="flex  gap-3">
+                        <Link
+                          to={`/viewproject/${projectId}/viewtask/${taskId}`}
+                          class="  cursor-pointer text-center w-6/12 flex  justify-center m-auto p-[7px] pointer-events-auto rounded-md bg-indigo-600 px-3 py-2 font-semibold leading-5 text-white hover:bg-indigo-500"
+                        >
+                          <EyeIcon className="w-5 mx-2" />
+                        </Link>
+                        <Link
+                          to="#"
+                          class=" flex cursor-pointer text-center w-6/12   justify-center m-auto p-[7px] pointer-events-auto rounded-md bg-indigo-600 px-3 py-2 font-semibold leading-5 text-white hover:bg-indigo-500"
+                        >
+                          <TrashIcon className="w-5 mx-2" />
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 ))}

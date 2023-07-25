@@ -79,7 +79,7 @@ function Viewtask() {
             <div>
               <div className=" flex flex-row overflow-hidden flex-wrap ">
                 {data && data.webData && data.webData.webotherRemarks ? (
-                  <div className="block w-[300px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                  <div className="block w-[300px] rounded-lg shadow-xl bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                     <h1>For web</h1>
                     {data.webData.webtargetUrls &&
                       data.webData.webtargetUrls.map((url) => (
@@ -129,7 +129,7 @@ function Viewtask() {
                 {data &&
                 data.mobileData &&
                 data.mobileData.mobileotherRemarks ? (
-                  <div className="block w-[300px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                  <div className="block w-[300px]  shadow-xl rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                     <h1>For Mobile</h1>
                     {android && (
                       <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -183,7 +183,7 @@ function Viewtask() {
                   </div>
                 ) : null}
                 {data && data.apiData && data.apiData.apiotherRemarks ? (
-                  <div className="block w-[300px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                  <div className="block w-[300px] shadow-xl rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                     <h1>For Api</h1>
                     <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                       <span
@@ -217,7 +217,7 @@ function Viewtask() {
                 {data &&
                 data.networkData &&
                 data.networkData.networkotherRemarks ? (
-                  <div className="block w-[300px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                  <div className="block w-[300px]  shadow-xl rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                     <h1>For Network</h1>
                     <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                       <span
@@ -250,7 +250,7 @@ function Viewtask() {
                   </div>
                 ) : null}
                 {data && data.grcData && data.grcData.grcotherRemarks ? (
-                  <div className="block w-[300px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                  <div className="block w-[300px]  shadow-xl rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                     <h1>For GRC</h1>
 
                     <div className=" mt-4 flex flex-col">

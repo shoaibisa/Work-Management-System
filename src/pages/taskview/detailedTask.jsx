@@ -46,7 +46,7 @@ function DetailedViewtask() {
                 <h1>For web</h1>
                 {data.webData.webtargetUrls &&
                   data.webData.webtargetUrls.map((url) => (
-                    <div className="mt-4 shadow-sm sm:grid sm:grid-cols-10 sm:gap-4 sm:px-0">
+                    <div className="mt-4 pb-2 border-b-2 shadow-sm  flex   gap-9 sm:px-0">
                       <div className="text-md font-medium leading-6 text-gray-900">
                         {url.lable}:
                       </div>
