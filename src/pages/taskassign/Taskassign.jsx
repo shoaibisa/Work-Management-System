@@ -33,11 +33,17 @@ const Taskassign = () => {
       setdepartments((prev) => prev.filter((dept) => dept !== value));
     }
   };
+  const handleAssignButtonClick = () => {
+    // Dispatch the assignTask action with the necessary data
+    dispatch(
+      assignTask(ProjectId, taskID, type, url_id, employee, departments)
+    );
+  };
 
-  useEffect(() => {
-    dispatch(assignTask(ProjectId, taskID, type, url_id, employee));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, ProjectId, taskID, type, url_id, employee]);
+  // useEffect(() => {
+  //   dispatch(assignTask(ProjectId, taskID, type, url_id, employee));
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [dispatch, ProjectId, taskID, type, url_id, employee]);
 
   return (
     <div className="home">
@@ -170,6 +176,7 @@ const Taskassign = () => {
           {/* my-4 mx-5 flex rounded-lg border border-dashed border-gray-900/25 p-4 */}
           <div className="mt-6 mx-5 flex items-center justify-end gap-x-6">
             <button
+              onClick={handleAssignButtonClick}
               type="submit"
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >

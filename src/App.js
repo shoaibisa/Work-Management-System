@@ -88,7 +88,14 @@ function App() {
                   </AuthorizedAdmin>
                 }
               />
-              <Route path=":userId" element={<Single />} />
+              <Route
+                path=":userId"
+                element={
+                  <AuthorizedUser>
+                    <Single />
+                  </AuthorizedUser>
+                }
+              />
               <Route
                 path="new"
                 element={<New inputs={userInputs} title="Add New User" />}
@@ -96,7 +103,14 @@ function App() {
             </Route>
             <Route path="products">
               {/* <Route index element={<List />} /> */}
-              <Route path=":productId" element={<Single />} />
+              <Route
+                path=":productId"
+                element={
+                  <AuthorizedUser>
+                    <Single />
+                  </AuthorizedUser>
+                }
+              />
               <Route
                 path="new"
                 element={<New inputs={productInputs} title="Add New Product" />}
@@ -111,8 +125,22 @@ function App() {
               </AuthorizedPM>
             }
           />
-          <Route path="/projectlist" element={<Projectlist />} />
-          <Route path="/viewproject/:projectId" element={<Viewproject />} />
+          <Route
+            path="/projectlist"
+            element={
+              <AuthorizedPM>
+                <Projectlist />
+              </AuthorizedPM>
+            }
+          />
+          <Route
+            path="/viewproject/:projectId"
+            element={
+              <AuthorizedUser>
+                <Viewproject />
+              </AuthorizedUser>
+            }
+          />
 
           <Route
             path="/viewproject/:projectId/createtask"

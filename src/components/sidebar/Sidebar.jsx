@@ -35,6 +35,7 @@ const Sidebar = () => {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const role = userData?.userRole;
   const isAdmin = role === "admin";
+  const isPM = role === "Project Manager";
 
   return (
     <div className="sidebar  ">
@@ -65,237 +66,77 @@ const Sidebar = () => {
               </Link>
             </>
           )}
+          {isPM && (
+            <>
+              <p className="title bg-transparent">Project</p>
+              <li className="dropdown">
+                <Menu
+                  as="div"
+                  className="relative display:inline  bg-transparent  text-left"
+                >
+                  <div>
+                    <Menu.Button className="flex max-w-[150px] bg-transparent justify-around border-none outline-none w-full justify-center gap-x-1.5 rounded-md   text-sm font-semibold text-gray-900   ">
+                      <PersonOutlineIcon className="icon" />
+                      <span>Project</span>
+                      <span>
+                        <ChevronDownIcon
+                          className="-mr-1 ml-10 h-5 w-5 text-gray-400"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </Menu.Button>
+                  </div>
 
-          <p className="title bg-transparent">Project</p>
-          <li className="dropdown">
-            <Menu
-              as="div"
-              className="relative display:inline  bg-transparent  text-left"
-            >
-              <div>
-                <Menu.Button className="flex max-w-[150px] bg-transparent justify-around border-none outline-none w-full justify-center gap-x-1.5 rounded-md   text-sm font-semibold text-gray-900   ">
-                  <PersonOutlineIcon className="icon" />
-                  <span>Project</span>
-                  <span>
-                    <ChevronDownIcon
-                      className="-mr-1 ml-10 h-5 w-5 text-gray-400"
-                      aria-hidden="true"
-                    />
-                  </span>
-                </Menu.Button>
-              </div>
-
-              <Transition
-                as={Fragment}
-                enter="transition ease-out duration-100"
-                enterFrom="transform opacity-0 scale-95"
-                enterTo="transform opacity-100 scale-100"
-                leave="transition ease-in duration-75"
-                leaveFrom="transform opacity-100 scale-100"
-                leaveTo="transform opacity-0 scale-95"
-              >
-                <Menu.Items className=" menu-item bg-transparent relative  right-0 z-10  origin-top-right divide-y divide-gray-100 rounded-md  ring-black ring-opacity-5 focus:outline-none">
-                  <div className="py-1">
-                    <Menu.Item>
-                      {({ active }) => (
-                        // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                        <Link
-                          to="/createproject"
-                          className={classNames(
-                            active
-                              ? "bg-gray-100 text-gray-900"
-                              : "text-gray-700",
-                            "block px-4 py-2 text-sm"
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className=" menu-item bg-transparent relative  right-0 z-10  origin-top-right divide-y divide-gray-100 rounded-md  ring-black ring-opacity-5 focus:outline-none">
+                      <div className="py-1">
+                        <Menu.Item>
+                          {({ active }) => (
+                            // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                            <Link
+                              to="/createproject"
+                              className={classNames(
+                                active
+                                  ? "bg-gray-100 text-gray-900"
+                                  : "text-gray-700",
+                                "block px-4 py-2 text-sm"
+                              )}
+                            >
+                              Create Project
+                            </Link>
                           )}
-                        >
-                          Create Project
-                        </Link>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                        <Link
-                          to="/projectlist"
-                          className={classNames(
-                            active
-                              ? "bg-gray-100 text-gray-900"
-                              : "text-gray-700",
-                            "block px-4 py-2 text-sm"
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                            <Link
+                              to="/projectlist"
+                              className={classNames(
+                                active
+                                  ? "bg-gray-100 text-gray-900"
+                                  : "text-gray-700",
+                                "block px-4 py-2 text-sm"
+                              )}
+                            >
+                              Project List
+                            </Link>
                           )}
-                        >
-                          Project List
-                        </Link>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                        <Link
-                          to="/viewproject"
-                          className={classNames(
-                            active
-                              ? "bg-gray-100 text-gray-900"
-                              : "text-gray-700",
-                            "block px-4 py-2 text-sm"
-                          )}
-                        >
-                          Project view
-                        </Link>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                        <Link
-                          to="/createtask1"
-                          className={classNames(
-                            active
-                              ? "bg-gray-100 text-gray-900"
-                              : "text-gray-700",
-                            "block px-4 py-2 text-sm"
-                          )}
-                        >
-                          Create Task
-                        </Link>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                        <Link
-                          to="/taskassign"
-                          className={classNames(
-                            active
-                              ? "bg-gray-100 text-gray-900"
-                              : "text-gray-700",
-                            "block px-4 py-2 text-sm"
-                          )}
-                        >
-                          Task assign
-                        </Link>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                        <Link
-                          to="/reportsubmit"
-                          className={classNames(
-                            active
-                              ? "bg-gray-100 text-gray-900"
-                              : "text-gray-700",
-                            "block px-4 py-2 text-sm"
-                          )}
-                        >
-                          Submit Report
-                        </Link>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                        <Link
-                          to="/viewtask"
-                          className={classNames(
-                            active
-                              ? "bg-gray-100 text-gray-900"
-                              : "text-gray-700",
-                            "block px-4 py-2 text-sm"
-                          )}
-                        >
-                          View Report
-                        </Link>
-                      )}
-                    </Menu.Item>
-                  </div>
-                  {/* <div className="py-1">
-                    <Menu.Item>
-                      {({ active }) => (
-                        // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                        <a
-                          href="#"
-                          className={classNames(
-                            active
-                              ? "bg-gray-100 text-gray-900"
-                              : "text-gray-700",
-                            "block px-4 py-2 text-sm"
-                          )}
-                        >
-                          Archive
-                        </a>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <a
-                          href="#"
-                          className={classNames(
-                            active
-                              ? "bg-gray-100 text-gray-900"
-                              : "text-gray-700",
-                            "block px-4 py-2 text-sm"
-                          )}
-                        >
-                          Move
-                        </a>
-                      )}
-                    </Menu.Item>
-                  </div>
-                  <div className="py-1">
-                    <Menu.Item>
-                      {({ active }) => (
-                        // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                        <a
-                          href="#"
-                          className={classNames(
-                            active
-                              ? "bg-gray-100 text-gray-900"
-                              : "text-gray-700",
-                            "block px-4 py-2 text-sm"
-                          )}
-                        >
-                          Share
-                        </a>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <a
-                          href="#"
-                          className={classNames(
-                            active
-                              ? "bg-gray-100 text-gray-900"
-                              : "text-gray-700",
-                            "block px-4 py-2 text-sm"
-                          )}
-                        >
-                          Add to favorites
-                        </a>
-                      )}
-                    </Menu.Item>
-                  </div>
-                  <div className="py-1">
-                    <Menu.Item>
-                      {({ active }) => (
-                        <a
-                          href="#"
-                          className={classNames(
-                            active
-                              ? "bg-gray-100 text-gray-900"
-                              : "text-gray-700",
-                            "block px-4 py-2 text-sm"
-                          )}
-                        >
-                          Delete
-                        </a>
-                      )}
-                    </Menu.Item>
-                  </div> */}
-                </Menu.Items>
-              </Transition>
-            </Menu>
-          </li>
+                        </Menu.Item>
+                      </div>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+              </li>
+            </>
+          )}
 
           {/* <Link to="/products" style={{ textDecoration: "none" }}>
             <li>
