@@ -4,6 +4,7 @@ import Task from "../models/task.js";
 import SubmitProject from "../models/report.js";
 import Report from "../models/report.js";
 import fs from "fs";
+import Employee from "../models/employee.js";
 
 const createProject = async (req, res) => {
   const projectData = req.body;
@@ -467,40 +468,49 @@ const complteReport = async (req, res) => {
 
 const assignEmployee = async (req, res) => {
   const { taskid, employee, selectedOption } = req.body;
-  return console.log(employee);
-  // const employeeArray = JSON.parse(employee);
-  const assignEmployee = employeeArray.map((e) => {
-    employee: e;
-    report: [];
+  const assignEmployee = employee.map((e) => {
+    return {
+      employee: e,
+      report: [],
+    };
   });
   const task = await Task.findById(taskid).exec();
-  if (assignEmployee === "web") {
+  if (selectedOption === "web") {
     // find in webData webtargetUrls._id in task
-    const webtargetUrls = task.webData.webtargetUrls;
-    for (var i = 0; i < webtargetUrls.length; i++) {
-      if (webtargetUrls[i]._id === req.body.webtargetUrlsId) {
-        webtargetUrls[i].assignEmployee = assignEmployee;
+    for (var i = 0; i < task.webData.webtargetUrls.length; i++) {
+      if (
+        task.webData.webtargetUrls[i]._id.toString() === req.body.webtargetUrls
+      ) {
+        task.webData.webtargetUrls[i].assignEmployee.push(...assignEmployee);
       }
     }
   }
   if (selectedOption === "api") {
-    task.apiData.assignEmployee = assignEmployee;
+    task.apiData.assignEmployee.push(...assignEmployee);
   }
   if (selectedOption === "network") {
-    task.networkData.assignEmployee = assignEmployee;
+    task.networkData.assignEmployee.push(...assignEmployee);
   }
   if (selectedOption === "mobile") {
     if (req.body.mobileType === "android") {
-      task.mobileData.forAndroid.assignEmployee = assignEmployee;
+      task.mobileData.forAndroid.assignEmployee.push(...assignEmployee);
     }
     if (req.body.mobileType === "ios") {
-      task.mobileData.forIos.assignEmployee = assignEmployee;
+      task.mobileData.forIos.assignEmployee.push(...assignEmployee);
     }
   }
   if (selectedOption === "grc") {
-    task.grcData.assignEmployee = assignEmployee;
+    task.grcData.assignEmployee.push(...assignEmployee);
   }
   await task.save();
+  // push tasks in employee in employeeProjects in tasks is array
+
+  for (var i = 0; i < employee.length; i++) {
+    const employeeData = await Employee.findById(employee[i]).exec();
+    //  findin employeeProjects
+    employeeData.tasks.push(taskid);
+    await employeeData.save();
+  }
 
   return res.status(200).send({
     title: "Success",

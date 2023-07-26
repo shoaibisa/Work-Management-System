@@ -53,18 +53,14 @@ const employeeSchema = new Schema(
         ref: "Project",
       },
     ],
-    employeeProjects: [
+
+    tasks: [
       {
-        project: {
-          type: Schema.Types.ObjectId,
-          ref: "Project",
-        },
-        task: {
-          type: Schema.Types.ObjectId,
-          ref: "Task",
-        },
+        type: Schema.Types.ObjectId,
+        ref: "Task",
       },
     ],
+
     clientProjects: [
       {
         type: Schema.Types.ObjectId,
