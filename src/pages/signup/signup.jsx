@@ -161,12 +161,12 @@ const Signup = () => {
                   onChange={(e) => setSelectedDepartment(e.target.value)}
                 >
                   <option selected>Choose Department</option>
-                  <option value="HR">HR Tram</option>
-                  <option value="GRC">GRC Team</option>
-                  <option value="Account">Account Team</option>
-                  <option value="Technical">Technical Team</option>
-                  <option value="Marketing">Marketing Team</option>
-                  <option value="Management">Management Team</option>
+                  <option value="hr">HR Tram</option>
+                  <option value="grc">GRC Team</option>
+                  <option value="account">Account Team</option>
+                  <option value="technical">Technical Team</option>
+                  <option value="marketing">Marketing Team</option>
+                  <option value="management">Management Team</option>
                 </select>
               </div>
             </div>
