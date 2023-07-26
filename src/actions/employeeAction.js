@@ -13,9 +13,6 @@ import {
 
 import axios from "axios";
 
-const API_URL =
-  "https://hub.dummyapis.com/employee?noofRecords=20&idStarts=1001";
-
 //Logout
 export const logout = () => (dispatch) => {
   localStorage.removeItem("employeeInfo");
