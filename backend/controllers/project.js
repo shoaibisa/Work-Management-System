@@ -456,14 +456,14 @@ const assignEmployee = async (req, res) => {
   if (selectedOption === "network") {
     task.networkData.assignEmployee.push(...assignEmployee);
   }
-  if (selectedOption === "mobile") {
-    if (req.body.mobileType === "android") {
-      task.mobileData.forAndroid.assignEmployee.push(...assignEmployee);
-    }
-    if (req.body.mobileType === "ios") {
-      task.mobileData.forIos.assignEmployee.push(...assignEmployee);
-    }
+
+  if (req.body.selectedOption === "android") {
+    task.mobileData.forAndroid.assignEmployee.push(...assignEmployee);
   }
+  if (req.body.selectedOption === "ios") {
+    task.mobileData.forIos.assignEmployee.push(...assignEmployee);
+  }
+
   if (selectedOption === "grc") {
     task.grcData.assignEmployee.push(...assignEmployee);
   }
