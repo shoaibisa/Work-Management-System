@@ -5,6 +5,7 @@ import {
   employeeListReducer,
   employeeRegisterReducer,
   employeeLoginReducer,
+  employeeTaskReducer,
 } from "./reducers/employeeReducer";
 import {
   projectListReducer,
@@ -30,6 +31,7 @@ const reducer = combineReducers({
   projectView: projectViewReducer,
   tasksView: taskViewReducer,
   taskAssign: taskAssignReducer,
+  employeeTask: employeeTaskReducer,
 });
 const initialState = {
   employeeLogin: { employeeInfo: employeenfoFromStroge },

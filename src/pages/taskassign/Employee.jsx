@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { userRows } from "../../employessdata";
 import { Select, initTE } from "tw-elements";
 
 const Employee = (props) => {

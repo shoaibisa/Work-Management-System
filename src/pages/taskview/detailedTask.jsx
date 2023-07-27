@@ -5,6 +5,8 @@ import { Link, useParams } from "react-router-dom";
 import { viewTasks } from "../../actions/projectlistAction";
 import { useDispatch, useSelector } from "react-redux";
 import { PaperClipIcon } from "@heroicons/react/20/solid";
+import { listEmployee } from "../../actions/employeeAction";
+
 function DetailedViewtask() {
   const { projectId, taskID, type } = useParams();
   const dispatch = useDispatch();
@@ -12,17 +14,39 @@ function DetailedViewtask() {
   const { tasks } = TaskView;
   const { data } = tasks;
 
+  const employeeList = useSelector((state) => state.employeeList);
+  const { loading, error, employees } = employeeList;
+
   let android = "";
   let ios = "";
   if (data && data.mobileData) {
     const mobileData = data.mobileData;
     android = mobileData.android !== "";
     ios = mobileData.ios !== "";
-    console.log(mobileData);
+    //  console.log(mobileData);
   }
   useEffect(() => {
     dispatch(viewTasks(taskID));
+    dispatch(listEmployee());
   }, [dispatch, taskID]);
+
+  let findid = [];
+  // let namesOfFilteredEmployees;
+  // let filteredEmployees;
+  // if (data && data.webData) {
+  //   data.webData.webtargetUrls.map((url) => {
+  //     url.assignEmployee.map((employee) => {
+  //       let id = employee.employee;
+  //       filteredEmployees = employees.filter((employee) =>
+  //         id.includes(employee._id)
+  //       );
+  //       namesOfFilteredEmployees = filteredEmployees.map(
+  //         (employee) => employee.name
+  //       );
+  //     });
+  //   });
+  // }
+  // console.log(namesOfFilteredEmployees);
 
   return (
     <div className="App">
@@ -46,28 +70,49 @@ function DetailedViewtask() {
                 <h1>For web</h1>
                 {data.webData.webtargetUrls &&
                   data.webData.webtargetUrls.map((url) => (
-                    <div className="mt-4 pb-2 border-b-2 shadow-sm  flex   gap-9 sm:px-0">
-                      <div className="text-md font-medium leading-6 text-gray-900">
-                        {url.lable}:
+                    <div className=" border-b-2 my-5  py-5">
+                      <div className="   pb-2 shadow-sm  flex   gap-9 sm:px-0">
+                        <div className="text-md font-medium leading-6 text-gray-900">
+                          {url.lable}:
+                        </div>
+                        <div
+                          key={url._id}
+                          className=" flex  mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+                        >
+                          <a
+                            href={url.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {url.link}
+                          </a>
+                          <Link
+                            to={`/viewproject/${projectId}/viewtask/${taskID}/assign/web/webtargetUrlsId/${url._id}`}
+                            type="submit"
+                            className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          >
+                            Assign
+                          </Link>
+                        </div>
                       </div>
-                      <div
-                        key={url._id}
-                        className=" flex  mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
-                      >
-                        <a
-                          href={url.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {url.link}
-                        </a>
-                        <Link
-                          to={`/viewproject/${projectId}/viewtask/${taskID}/assign/web/webtargetUrlsId/${url._id}`}
-                          type="submit"
-                          className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        >
-                          Assign
-                        </Link>
+                      <div className="flex">
+                        <h3> Assign To: </h3>
+                        {url.assignEmployee.map((employee) => {
+                          const filteredEmployees = employees.filter((emp) =>
+                            employee.employee.includes(emp._id)
+                          );
+                          console.log(filteredEmployees);
+                          const namesOfFilteredEmployees =
+                            filteredEmployees.map((emp) => emp.name);
+                          return (
+                            <span
+                              key={employee._id}
+                              className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
+                            >
+                              {namesOfFilteredEmployees.join(", ")}
+                            </span>
+                          );
+                        })}
                       </div>
                     </div>
                   ))}

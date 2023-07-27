@@ -36,41 +36,6 @@ const createProject = async (req, res) => {
     });
 };
 
-// Function to filter out empty data
-const filterEmptyData = (data) => {
-  const filteredData = { ...data };
-
-  // Recursive function to filter nested objects and arrays
-  const filterEmpty = (obj) => {
-    for (const key in obj) {
-      const value = obj[key];
-
-      // Check for empty strings and arrays
-      if (value === "" || (Array.isArray(value) && value.length === 0)) {
-        delete obj[key];
-      }
-
-      // Recursively filter nested objects and arrays
-      if (typeof value === "object" && value !== null) {
-        filterEmpty(value);
-      }
-    }
-  };
-
-  filterEmpty(filteredData);
-  return filteredData;
-};
-
-// Function to check if an object is empty
-const isEmpty = (obj) => {
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      return false;
-    }
-  }
-  return true;
-};
-
 const actionProject = async (req, res) => {
   const { id, action } = req.body;
   try {

@@ -104,6 +104,7 @@ const getEmployeeByDepartment = async (req, res) => {
 };
 
 const getEmployeeTask = async (req, res) => {
+  //console.log(req.body);
   try {
     const employee = await Employee.findById(req.user._id).exec();
 

@@ -2,13 +2,8 @@ import "./taskassign.scss";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Employee from "./Employee";
-import { userRows } from "../../employessdata";
-import DatePicker from "react-date-picker";
-import "react-date-picker/dist/DatePicker.css";
-import "react-calendar/dist/Calendar.css";
-import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { PaperClipIcon } from "@heroicons/react/20/solid";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
 import { assignTask } from "../../actions/projectlistAction";
 import { useDispatch, useSelector } from "react-redux";
 const Taskassign = () => {
@@ -34,16 +29,10 @@ const Taskassign = () => {
     }
   };
   const handleAssignButtonClick = () => {
-    // Dispatch the assignTask action with the necessary data
     dispatch(
       assignTask(ProjectId, taskID, type, url_id, employee, departments)
     );
   };
-
-  // useEffect(() => {
-  //   dispatch(assignTask(ProjectId, taskID, type, url_id, employee));
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [dispatch, ProjectId, taskID, type, url_id, employee]);
 
   return (
     <div className="home">

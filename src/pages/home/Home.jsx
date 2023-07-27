@@ -1,12 +1,21 @@
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import "./home.scss";
-
 import { useDispatch, useSelector } from "react-redux";
-
+import Widget from "../client/components/widget/Widget";
+import { EmployeeTask } from "../../actions/employeeAction";
+import { useEffect } from "react";
 const Home = () => {
+  const dispatch = useDispatch();
+
   const employeeLogin = useSelector((state) => state.employeeLogin);
   const { employeeInfo } = employeeLogin;
+  const employeeTask = useSelector((state) => state.employeeTask);
+  const { loading, error, task } = employeeTask;
+
+  useEffect(() => {
+    dispatch(EmployeeTask());
+  }, [dispatch]);
   return (
     <div className="home">
       <Sidebar />
@@ -16,6 +25,7 @@ const Home = () => {
         <div className="widgets">
           <h1>{employeeInfo && employeeInfo.name}</h1>
           <h1>{employeeInfo && employeeInfo.userRole}</h1>
+
           {/* <Widget type="user" /> */}
           {/* <Widget type="order" />
           <Widget type="earning" />

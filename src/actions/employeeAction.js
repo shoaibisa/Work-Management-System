@@ -9,6 +9,9 @@ import {
   EMPLOYEE_LOGIN_SUCCESS,
   EMPLOYEE_LOGIN_FAIL,
   EMPLOYEE_LOGOUT,
+  EMPLOYEE_TASK_DETAILS_REQUEST,
+  EMPLOYEE_TASK_DETAILS_SUCCESS,
+  EMPLOYEE_TASK_DETAILS_FAILS,
 } from "../constants/employee";
 
 import axios from "axios";
@@ -92,6 +95,36 @@ export const listEmployee = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: EMPLOYEE_LIST_FAILS,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+export const EmployeeTask = () => async (dispatch) => {
+  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+  const token = userData?.token;
+  console.log(token);
+  try {
+    dispatch({ type: EMPLOYEE_TASK_DETAILS_REQUEST });
+    const { data } = await axios.post(
+      "http://localhost:5000/user/tasks",
+      {},
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    console.log(data);
+    dispatch({
+      type: EMPLOYEE_TASK_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: EMPLOYEE_TASK_DETAILS_FAILS,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
