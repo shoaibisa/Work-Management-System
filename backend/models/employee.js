@@ -56,8 +56,18 @@ const employeeSchema = new Schema(
 
     tasks: [
       {
-        type: Schema.Types.ObjectId,
-        ref: "Task",
+        taskid: {
+          type: Schema.Types.ObjectId,
+          ref: "Task",
+        },
+        selectedOption: {
+          name: {
+            type: String,
+          },
+          webtargetUrls: {
+            type: String,
+          },
+        },
       },
     ],
 

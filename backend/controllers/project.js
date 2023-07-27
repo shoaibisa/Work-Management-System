@@ -507,8 +507,18 @@ const assignEmployee = async (req, res) => {
 
   for (var i = 0; i < employee.length; i++) {
     const employeeData = await Employee.findById(employee[i]).exec();
+
     //  findin employeeProjects
-    employeeData.tasks.push(taskid);
+    var ttask = {
+      taskid: taskid,
+      selectedOption: {
+        name: selectedOption,
+      },
+    };
+    if (selectedOption === "web") {
+      ttask.selectedOption.webtargetUrls = req.body.webtargetUrls;
+    }
+    employeeData.tasks.push(ttask);
     await employeeData.save();
   }
 
