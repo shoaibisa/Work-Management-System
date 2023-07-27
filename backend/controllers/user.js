@@ -103,10 +103,24 @@ const getEmployeeByDepartment = async (req, res) => {
   }
 };
 
+const getEmployeeTask = async (req, res) => {
+  try {
+    const employee = await Employee.findById(req.user._id).exec();
+
+    return res.status(200).send({
+      tasks: employee.tasks,
+      isError: false,
+    });
+  } catch (error) {
+    return res.status(500);
+  }
+};
+
 export {
   statusToggle,
   roleSet,
   getUserById,
   getAllUsers,
   getEmployeeByDepartment,
+  getEmployeeTask,
 };
