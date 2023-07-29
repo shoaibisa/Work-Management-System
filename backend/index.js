@@ -7,6 +7,7 @@ import authRoute from "./routes/auth.js";
 import userRoute from "./routes/user.js";
 import cors from "cors";
 import projectRoute from "./routes/project.js";
+import bodyParser from "body-parser";
 
 dotenv.config();
 connectDB();
@@ -18,6 +19,13 @@ const corsOptions = {
   optionSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
+
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(bodyParser.json());
+app.use(express.static("public"));
+app.set("view engine", "ejs");
+app.use("/files", express.static("uploads"));
 
 app.get("/", async (req, resq, next) => {
   resq.send("Hello From Express default route");
