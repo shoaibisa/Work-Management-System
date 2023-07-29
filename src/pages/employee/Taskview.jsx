@@ -38,12 +38,12 @@ function Taskview() {
           <Navbar />
           <div className=" flex mt-6 mx-10 justify-between ">
             <div className="font-bold text-2xl">Task Name</div>
-            <button
-              type="submit"
+            <Link
+              to={"/reportsubmit"}
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Add Report
-            </button>
+            </Link>
           </div>
 
           <div className="m-10 flex gap-4  flex-col   rounded-lg border border-dashed border-gray-900/25 p-6">
@@ -163,11 +163,11 @@ function Taskview() {
                 <h1>For Api</h1>
                 <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                   <span className=" flex font-medium text-indigo-600 hover:text-indigo-500">
+                    FILE
                     <PaperClipIcon
                       className="h-5 w-5 flex-shrink-0 text-gray-400"
                       aria-hidden="true"
                     />
-                    FILE
                   </span>
                 </div>
                 <div className="flex">
@@ -321,7 +321,7 @@ function Taskview() {
               </div>
             </div>
 
-            <div className="px-4  sm:grid sm:grid-cols-3 sm:gap-4 sm:px-4">
+            <div className="px-4  sm:grid sm:grid-cols-1 sm:gap-4 sm:px-4">
               <dt className="text-sm font-semibold leading-6 text-gray-900">
                 Comments :
               </dt>

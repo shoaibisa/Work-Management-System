@@ -37,6 +37,7 @@ const Sidebar = () => {
   const role = userData?.userRole;
   const isAdmin = role === "admin";
   const isPM = role === "Project Manager";
+  const isEmployee = role === "Employee";
 
   return (
     <div className="sidebar  ">
@@ -138,13 +139,18 @@ const Sidebar = () => {
               </li>
             </>
           )}
-          <p className="title">Tasks</p>
-          <Link to="/alltasks" style={{ textDecoration: "none" }}>
-            <li>
-              <Task className="icon" />
-              <span>Tasks</span>
-            </li>
-          </Link>
+          {isEmployee && (
+            <>
+              <p className="title">Tasks</p>
+              <Link to="/alltasks" style={{ textDecoration: "none" }}>
+                <li>
+                  <Task className="icon" />
+                  <span>Tasks</span>
+                </li>
+              </Link>
+            </>
+          )}
+
           {/* <li>
             <CreditCardIcon className="icon" />
             <span>Orders</span>

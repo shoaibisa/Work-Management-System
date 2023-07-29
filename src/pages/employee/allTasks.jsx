@@ -11,10 +11,11 @@ function EmployeeTasksList() {
 
   const employeeLogin = useSelector((state) => state.employeeLogin);
   const { employeeInfo } = employeeLogin;
+
   const employeeTask = useSelector((state) => state.employeeTask);
   const { loading, error, task } = employeeTask;
-  const tasks = task?.tasks;
-  console.log(tasks);
+  const data = task?.datas;
+  //console.log(tasks);
 
   useEffect(() => {
     dispatch(EmployeeTask());
@@ -28,8 +29,8 @@ function EmployeeTasksList() {
 
           <div className="font-bold text-2xl ml-10 mt-6">List of tasks</div>
           <div className="m-10 flex items-center justify-center flex-row flex-wrap rounded-lg border border-dashed border-gray-900/25 py-6">
-            {tasks &&
-              tasks.map((item) => (
+            {data &&
+              data.map((item) => (
                 <div key={item._id}>
                   <div className="block w-[320px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                     <div className="flex my-2 justify-between">

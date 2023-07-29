@@ -16,7 +16,7 @@ import CreateTask from "./pages/createProject/createTask";
 import Taskassign from "./pages/taskassign/Taskassign";
 import Projectlist from "./pages/projectList/projectlist";
 import Viewproject from "./pages/viewProject/Viewproject";
-import Reportsubmit from "./pages/reportsubmit/reportsubmit.jsx";
+import Reportsubmit from "./pages/employee/reportsubmit/reportsubmit.jsx";
 import Viewtask from "./pages/taskview/viewTask.jsx";
 import DetailedViewtask from "./pages/taskview/detailedTask";
 import ClientDashboard from "./pages/client/dashboard";
@@ -165,9 +165,17 @@ function App() {
             path="/viewproject/:projectId/viewtask/:taskID/:type/assignsingle"
             element={<Taskassign />}
           />
+          <Route
+            path="/reportsubmit"
+            element={
+              <AuthorizedUser>
+                <Reportsubmit />
+              </AuthorizedUser>
+            }
+          />
 
           {/* <Route path="/createtask" element={<CreateTask1 />} /> */}
-          {/* <Route path="/reportsubmit" element={<Reportsubmit />} />
+          {/* 
           <Route path="/viewtask" element={<Taskview />} />
           <Route path="/clentdashboard" element={<ClientDashboard />} />
           <Route path="/clientProject" element={<ClientProjectlist />} />

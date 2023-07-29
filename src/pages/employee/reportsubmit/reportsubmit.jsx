@@ -1,9 +1,9 @@
-import Navbar from "../../components/navbar/Navbar";
-import Sidebar from "../../components/sidebar/Sidebar";
+import Navbar from "../../../components/navbar/Navbar";
+import Sidebar from "../../../components/sidebar/Sidebar";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { reportCreate } from "../../actions/reportSubmit";
+import { reportCreate } from "../../../actions/reportSubmit";
 const Reportsubmit = () => {
   const [vulnerability, setVulnerability] = useState("");
   const [risk, setRisk] = useState("");

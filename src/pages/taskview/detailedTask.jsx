@@ -6,9 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { PaperClipIcon } from "@heroicons/react/20/solid";
 import { viewTasks } from "../../actions/projectlistAction";
 import { listEmployee } from "../../actions/employeeAction";
-
+import { EmployeeTask } from "../../actions/employeeAction";
 function DetailedViewtask() {
   const { projectId, taskID, type } = useParams();
+
   const dispatch = useDispatch();
   const TaskView = useSelector((state) => state.tasksView);
   const { tasks } = TaskView;
@@ -16,6 +17,10 @@ function DetailedViewtask() {
 
   const employeeList = useSelector((state) => state.employeeList);
   const { loading, error, employees } = employeeList;
+
+  const employeeTask = useSelector((state) => state.employeeTask);
+  const { task } = employeeTask;
+  const datas = task?.data;
 
   let android = "";
   let ios = "";
@@ -28,6 +33,7 @@ function DetailedViewtask() {
   useEffect(() => {
     dispatch(viewTasks(taskID));
     dispatch(listEmployee());
+    dispatch(EmployeeTask());
   }, [dispatch, taskID]);
 
   return (
@@ -86,12 +92,13 @@ function DetailedViewtask() {
                           const namesOfFilteredEmployees =
                             filteredEmployees.map((emp) => emp.name);
                           return (
-                            <span
-                              key={employee._id}
+                            <Link
+                              // key={employee._id}
+                              // to={`/taskview/${item.taskid._id}/${item.selectedOption.name}/${item.selectedOption.webtargetUrls}`}
                               className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
                             >
                               {namesOfFilteredEmployees.join(", ")}
-                            </span>
+                            </Link>
                           );
                         })}
                       </div>
