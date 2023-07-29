@@ -105,7 +105,7 @@ export const listEmployee = () => async (dispatch) => {
 export const EmployeeTask = () => async (dispatch) => {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const token = userData?.token;
-  console.log(token);
+
   try {
     dispatch({ type: EMPLOYEE_TASK_DETAILS_REQUEST });
     const { data } = await axios.post(
@@ -117,7 +117,7 @@ export const EmployeeTask = () => async (dispatch) => {
         },
       }
     );
-    console.log(data);
+
     dispatch({
       type: EMPLOYEE_TASK_DETAILS_SUCCESS,
       payload: data,
