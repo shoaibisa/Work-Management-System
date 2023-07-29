@@ -22,6 +22,8 @@ import DetailedViewtask from "./pages/taskview/detailedTask";
 import ClientDashboard from "./pages/client/dashboard";
 import ClientProjectlist from "./pages/client/pages/allproject";
 import ClientProjectView from "./pages/client/pages/projectdetail";
+import EmployeeTasksList from "./pages/employee/allTasks";
+import EmployeeTaskview from "./pages/employee/Taskview";
 import {
   AuthorizedUser,
   AuthorizedAdmin,
@@ -170,6 +172,23 @@ function App() {
           <Route path="/clentdashboard" element={<ClientDashboard />} />
           <Route path="/clientProject" element={<ClientProjectlist />} />
           <Route path="/clientprojectview" element={<ClientProjectView />} /> */}
+
+          <Route
+            path="/alltasks"
+            element={
+              <AuthorizedUser>
+                <EmployeeTasksList />
+              </AuthorizedUser>
+            }
+          />
+          <Route
+            path="/taskview/:id/:type/:webtargetUrls"
+            element={
+              <AuthorizedUser>
+                <EmployeeTaskview />
+              </AuthorizedUser>
+            }
+          />
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>

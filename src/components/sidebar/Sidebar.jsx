@@ -20,6 +20,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../actions/employeeAction";
+import { Task } from "@mui/icons-material";
 const Sidebar = () => {
   const dispatch = useDispatch();
   const logoutHandler = () => {
@@ -137,13 +138,13 @@ const Sidebar = () => {
               </li>
             </>
           )}
-
-          {/* <Link to="/products" style={{ textDecoration: "none" }}>
+          <p className="title">Tasks</p>
+          <Link to="/alltasks" style={{ textDecoration: "none" }}>
             <li>
-              <StoreIcon className="icon" />
-              <span>Products</span>
+              <Task className="icon" />
+              <span>Tasks</span>
             </li>
-          </Link> */}
+          </Link>
           {/* <li>
             <CreditCardIcon className="icon" />
             <span>Orders</span>
