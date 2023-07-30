@@ -267,7 +267,7 @@ const getTaskByProject = async (req, res) => {
     return res.status(200).send({
       title: "Success",
       message: "project get sucessfully",
-      data: task,
+      task: task,
     });
   } catch (error) {
     return res.status(500);
@@ -493,8 +493,6 @@ const assignEmployee = async (req, res) => {
     data: task,
   });
 };
-
-  
 
 export {
   createProject,

@@ -35,11 +35,17 @@ export const reportCreate =
     };
     try {
       dispatch({ type: REPORT_CREATED_REQUEST });
-      const config = { headers: { "Contnet-Type": "application/json" } };
+      const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+      const token = userData?.token;
+
       const { data } = await axios.post(
         "http://localhost:5000/project/createReport",
         { payload: payload },
-        config``
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
       );
       dispatch({
         type: REPORT_CREATED_SUCCESS,

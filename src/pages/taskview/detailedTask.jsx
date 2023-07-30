@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { PaperClipIcon } from "@heroicons/react/20/solid";
 import { viewTasks } from "../../actions/projectlistAction";
 import { listEmployee } from "../../actions/employeeAction";
-import { EmployeeTask } from "../../actions/employeeAction";
+import { EmployeeTask } from "../../actions/employeeAction.js";
 function DetailedViewtask() {
   const { projectId, taskID, type } = useParams();
 
@@ -20,7 +20,8 @@ function DetailedViewtask() {
 
   const employeeTask = useSelector((state) => state.employeeTask);
   const { task } = employeeTask;
-  const datas = task?.data;
+  const data1 = task?.datas;
+  console.log(data1);
 
   let android = "";
   let ios = "";
