@@ -119,6 +119,22 @@ const getEmployeeTask = async (req, res) => {
   }
 };
 
+const getEmployeeReport = async (req, res) => {
+  //console.log(req.body);
+  try {
+    const employee = await Employee.findById(req.user._id)
+      .populate("tasks.taskid")
+      .exec();
+
+    return res.status(200).send({
+      datas: employee.tasks,
+      isError: false,
+    });
+  } catch (error) {
+    return res.status(500);
+  }
+};
+
 export {
   statusToggle,
   roleSet,
