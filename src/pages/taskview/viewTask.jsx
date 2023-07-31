@@ -20,7 +20,7 @@ function Viewtask() {
     const mobileData = data.mobileData;
     android = mobileData.android !== "";
     ios = mobileData.ios !== "";
-    console.log(mobileData);
+    //console.log(mobileData);
   }
 
   const handleDownloadClicks = () => {

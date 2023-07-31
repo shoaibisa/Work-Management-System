@@ -166,7 +166,7 @@ function App() {
             element={<Taskassign />}
           />
           <Route
-            path="/reportsubmit"
+            path="/reportsubmit/:id/:type/:webtargetUrlsId"
             element={
               <AuthorizedUser>
                 <Reportsubmit />

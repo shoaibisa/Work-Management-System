@@ -9,7 +9,7 @@ import { listEmployee } from "../../actions/employeeAction";
 import { useDispatch, useSelector } from "react-redux";
 function Taskview() {
   const { id, type, webtargetUrls } = useParams();
-  console.log(useParams());
+  //console.log(useParams());
   const dispatch = useDispatch();
   const TaskView = useSelector((state) => state.tasksView);
   const { tasks } = TaskView;
@@ -39,7 +39,7 @@ function Taskview() {
           <div className=" flex mt-6 mx-10 justify-between ">
             <div className="font-bold text-2xl">Task Name</div>
             <Link
-              to={"/reportsubmit"}
+              to={`/reportsubmit/${id}/${type}/${webtargetUrls}`}
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Add Report

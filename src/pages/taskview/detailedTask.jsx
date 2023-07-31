@@ -21,7 +21,7 @@ function DetailedViewtask() {
   const employeeTask = useSelector((state) => state.employeeTask);
   const { task } = employeeTask;
   const data1 = task?.datas;
-  console.log(data1);
+  // console.log(data1);
 
   let android = "";
   let ios = "";

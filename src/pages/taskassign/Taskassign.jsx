@@ -2,17 +2,17 @@ import "./taskassign.scss";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Employee from "./Employee";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useState } from "react";
 import { assignTask } from "../../actions/projectlistAction";
 import { useDispatch, useSelector } from "react-redux";
-const Taskassign = () => {
+import { withRouter } from "react-router-dom";
+const Taskassign = ({ history }) => {
   const [employee, setEmployee] = useState("");
   const handleDataFromChild = (data) => {
     setEmployee(data);
   };
-  console.log(employee);
-
+  const location = useLocation();
   const { ProjectId, taskID, type, url_id } = useParams();
 
   const dispatch = useDispatch();
@@ -28,10 +28,13 @@ const Taskassign = () => {
       setdepartments((prev) => prev.filter((dept) => dept !== value));
     }
   };
+  const redirect = location.search ? location.search.split("=")[1] : "/";
+
   const handleAssignButtonClick = () => {
     dispatch(
       assignTask(ProjectId, taskID, type, url_id, employee, departments)
     );
+    history.goBack();
   };
 
   return (
