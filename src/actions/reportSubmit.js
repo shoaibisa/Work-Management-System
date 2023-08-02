@@ -20,6 +20,7 @@ export const reportCreate =
     employee
   ) =>
   async (dispatch) => {
+    console.log(pocFile);
     const payload = {
       vulnerability,
       risk,
@@ -29,7 +30,6 @@ export const reportCreate =
       cwe,
       impact,
       mitigation,
-      pocFile,
       brief,
       employee,
     };
@@ -37,13 +37,29 @@ export const reportCreate =
       dispatch({ type: REPORT_CREATED_REQUEST });
       const userData = JSON.parse(localStorage.getItem("employeeInfo"));
       const token = userData?.token;
+      const formData = new FormData();
+
+      for (const key in payload) {
+        formData.append(key, payload[key]);
+      }
+      // Append the pocFile as a file to the FormData
+      // formData.append("pocFiles", pocFile);
+      // formData.append("pocFile", pocFile.data, pocFile.name);
+      for (const file of pocFile) {
+        formData.append("pocFiles", file);
+      }
+      //  console.log(formData);
+      formData.forEach((value, key) => {
+        console.log(key, value);
+      });
 
       const { data } = await axios.post(
         "http://localhost:5000/project/createReport",
-        { payload: payload },
+        formData,
         {
           headers: {
             Authorization: "Bearer " + token,
+            "Content-Type": "multipart/form-data",
           },
         }
       );

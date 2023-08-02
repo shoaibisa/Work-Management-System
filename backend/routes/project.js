@@ -43,7 +43,7 @@ router.post(
   createTask
 );
 router.post("/getTask", protect, getTask);
-router.post("/createReport", upload.array("files"), protect, creatReport);
+router.post("/createReport", upload.array("pocFiles"), protect, creatReport);
 router.post("/gettaskbyproject", protect, getTaskByProject);
 router.post("/assignemployee", protect, assignEmployee);
 export default router;
