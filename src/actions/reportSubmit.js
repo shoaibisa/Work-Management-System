@@ -20,7 +20,7 @@ export const reportCreate =
     employee
   ) =>
   async (dispatch) => {
-    console.log(pocFile);
+ 
     const payload = {
       vulnerability,
       risk,
@@ -42,16 +42,11 @@ export const reportCreate =
       for (const key in payload) {
         formData.append(key, payload[key]);
       }
-      // Append the pocFile as a file to the FormData
-      // formData.append("pocFiles", pocFile);
-      // formData.append("pocFile", pocFile.data, pocFile.name);
+      
       for (const file of pocFile) {
         formData.append("pocFiles", file);
       }
-      //  console.log(formData);
-      formData.forEach((value, key) => {
-        console.log(key, value);
-      });
+  
 
       const { data } = await axios.post(
         "http://localhost:5000/project/createReport",
