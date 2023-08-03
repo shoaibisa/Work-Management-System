@@ -277,7 +277,7 @@ const getTaskByProject = async (req, res) => {
 const creatReport = async (req, res) => {
   const payload = req.body;
   //  images
-  return console.log(req.files);
+  return console.log(req.body);
 
   const images = req.files.map((f) => f.filename);
   payload.files = images;

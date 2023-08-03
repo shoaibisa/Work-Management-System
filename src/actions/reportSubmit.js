@@ -17,10 +17,12 @@ export const reportCreate =
     mitigation,
     pocFile,
     brief,
-    employee
+    employee,
+    taskID,
+    type,
+    webtargetUrlsId
   ) =>
   async (dispatch) => {
- 
     const payload = {
       vulnerability,
       risk,
@@ -32,6 +34,9 @@ export const reportCreate =
       mitigation,
       brief,
       employee,
+      taskID,
+      type,
+      webtargetUrlsId,
     };
     try {
       dispatch({ type: REPORT_CREATED_REQUEST });
@@ -42,11 +47,10 @@ export const reportCreate =
       for (const key in payload) {
         formData.append(key, payload[key]);
       }
-      
+
       for (const file of pocFile) {
         formData.append("pocFiles", file);
       }
-  
 
       const { data } = await axios.post(
         "http://localhost:5000/project/createReport",
