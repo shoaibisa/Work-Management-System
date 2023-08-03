@@ -277,16 +277,78 @@ const getTaskByProject = async (req, res) => {
 const creatReport = async (req, res) => {
   const payload = req.body;
   //  images
-  return console.log(req.body);
 
   const images = req.files.map((f) => f.filename);
-  payload.files = images;
-  const report = new Report(payload);
-  const task = await Task.findById(payload.task).exec();
-  task.assignEmployee.push({
+
+  const task = await Task.findById(payload.taskID).exec();
+  const report = new Report({
+    project: task.project,
     employee: payload.employee,
-    report: report._id,
+    task: payload.taskID,
+    vulnerability: payload.vulnerability,
+    risk: payload.risk,
+    affectedUrl: payload.affectedUrl,
+    observation: payload.observation,
+    attributingFactor: payload.attributingFactor,
+    cwe: payload.cwe,
+    impact: payload.impact,
+    mitigation: payload.mitigation,
+    brief: payload.brief,
+    files: images,
   });
+  if (req.body.type === "web") {
+    // find in webData webtargetUrls._id in task
+    for (var i = 0; i < task.webData.webtargetUrls.length; i++) {
+      if (req.body.webtargetUrlsId === task.webData.webtargetUrls[i]) {
+        // find employee in it
+        for (
+          var j = 0;
+          j < task.webData.webtargetUrls[i].assignEmployee.length;
+          j++
+        ) {
+          if (
+            req.body.employee ===
+            task.webData.webtargetUrls[i].assignEmployee[j]
+          ) {
+            task.webData.webtargetUrls[i].assignEmployee[j].report.push(
+              report._id
+            );
+          }
+        }
+      }
+    }
+  } else if (req.body.type === "network") {
+    for (var i = 0; i < task.networkData.assignEmployee.length; i++) {
+      if (req.body.employee === task.networkData.assignEmployee[i]) {
+        task.networkData.assignEmployee[i].report.push(report._id);
+      }
+    }
+  } else if (req.body.type === "api") {
+    for (var i = 0; i < task.apiData.assignEmployee.length; i++) {
+      if (req.body.employee === task.apiData.assignEmployee[i]) {
+        task.apiData.assignEmployee[i].report.push(report._id);
+      }
+    }
+  } else if (req.body.type === "android") {
+    for (var i = 0; i < task.mobileData.forAndroid.assignEmployee.length; i++) {
+      if (req.body.employee === task.mobileData.forAndroid.assignEmployee[i]) {
+        task.mobileData.forAndroid.assignEmployee[i].report.push(report._id);
+      }
+    }
+  } else if (req.body.type === "ios") {
+    for (var i = 0; i < task.mobileData.forIos.assignEmployee.length; i++) {
+      if (req.body.employee === task.mobileData.forIos.assignEmployee[i]) {
+        task.mobileData.forIos.assignEmployee[i].report.push(report._id);
+      }
+    }
+  } else if (req.body.type === "grc") {
+    for (var i = 0; i < task.grcData.assignEmployee.length; i++) {
+      if (req.body.employee === task.grcData.assignEmployee[i]) {
+        task.grcData.assignEmployee[i].report.push(report._id);
+      }
+    }
+  }
+
   await task.save();
 
   report
