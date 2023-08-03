@@ -308,7 +308,7 @@ const creatReport = async (req, res) => {
         ) {
           if (
             req.body.employee ===
-            task.webData.webtargetUrls[i].assignEmployee[j]
+            task.webData.webtargetUrls[i].assignEmployee[j].employee.toString()
           ) {
             task.webData.webtargetUrls[i].assignEmployee[j].report.push(
               report._id
@@ -319,31 +319,44 @@ const creatReport = async (req, res) => {
     }
   } else if (req.body.type === "network") {
     for (var i = 0; i < task.networkData.assignEmployee.length; i++) {
-      if (req.body.employee === task.networkData.assignEmployee[i]) {
+      if (
+        req.body.employee ===
+        task.networkData.assignEmployee[i].employee.toString()
+      ) {
         task.networkData.assignEmployee[i].report.push(report._id);
       }
     }
   } else if (req.body.type === "api") {
     for (var i = 0; i < task.apiData.assignEmployee.length; i++) {
-      if (req.body.employee === task.apiData.assignEmployee[i]) {
+      if (
+        req.body.employee === task.apiData.assignEmployee[i].employee.toString()
+      ) {
         task.apiData.assignEmployee[i].report.push(report._id);
       }
     }
   } else if (req.body.type === "android") {
     for (var i = 0; i < task.mobileData.forAndroid.assignEmployee.length; i++) {
-      if (req.body.employee === task.mobileData.forAndroid.assignEmployee[i]) {
+      if (
+        req.body.employee ===
+        task.mobileData.forAndroid.assignEmployee[i].employee.toString()
+      ) {
         task.mobileData.forAndroid.assignEmployee[i].report.push(report._id);
       }
     }
   } else if (req.body.type === "ios") {
     for (var i = 0; i < task.mobileData.forIos.assignEmployee.length; i++) {
-      if (req.body.employee === task.mobileData.forIos.assignEmployee[i]) {
+      if (
+        req.body.employee ===
+        task.mobileData.forIos.assignEmployee[i].employee.toString()
+      ) {
         task.mobileData.forIos.assignEmployee[i].report.push(report._id);
       }
     }
   } else if (req.body.type === "grc") {
     for (var i = 0; i < task.grcData.assignEmployee.length; i++) {
-      if (req.body.employee === task.grcData.assignEmployee[i]) {
+      if (
+        req.body.employee === task.grcData.assignEmployee[i].employee.toString()
+      ) {
         task.grcData.assignEmployee[i].report.push(report._id);
       }
     }
