@@ -648,7 +648,7 @@ const getReportsByUser = async (req, res) => {
       reports = task.grcData.assignEmployee.report;
     }
   }
-  console.log(reports);
+  //console.log(reports);
   return res.status(200).send({
     title: "Success",
     message: "project get sucessfully",
