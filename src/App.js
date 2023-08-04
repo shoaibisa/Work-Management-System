@@ -24,6 +24,7 @@ import ClientProjectlist from "./pages/client/pages/allproject";
 import ClientProjectView from "./pages/client/pages/projectdetail";
 import EmployeeTasksList from "./pages/employee/allTasks";
 import EmployeeTaskview from "./pages/employee/Taskview";
+import PDF from "./pages/employee/reportsubmit/reportView";
 import {
   AuthorizedUser,
   AuthorizedAdmin,
@@ -194,6 +195,14 @@ function App() {
             element={
               <AuthorizedUser>
                 <EmployeeTaskview />
+              </AuthorizedUser>
+            }
+          />
+          <Route
+            path="/pdf"
+            element={
+              <AuthorizedUser>
+                <PDF />
               </AuthorizedUser>
             }
           />

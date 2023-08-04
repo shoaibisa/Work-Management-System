@@ -574,6 +574,8 @@ const assignEmployee = async (req, res) => {
 const getReportsByUser = async (req, res) => {
   const taskId = req.body.taskId;
   const type = req.body.type;
+  // const url = req.body.webtargetUrls;
+  // console.log(taskId, type, url);
   var reports = [];
   if (type === "web") {
     const task = await Task.findById(taskId)
@@ -581,7 +583,7 @@ const getReportsByUser = async (req, res) => {
       .populate("webData.webtargetUrls.assignEmployee.report");
     for (var i = 0; i < task.webData.webtargetUrls.length; i++) {
       if (
-        task.webData.webtargetUrls._id.toString() === req.body.webtargetUrls
+        task.webData.webtargetUrls[i]._id.toString() === req.body.webtargetUrls
       ) {
         for (
           var j = 0;
@@ -634,6 +636,7 @@ const getReportsByUser = async (req, res) => {
       reports = task.grcData.assignEmployee.report;
     }
   }
+
   return res.status(200).send({
     title: "Success",
     message: "project get sucessfully",

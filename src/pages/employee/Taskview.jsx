@@ -7,6 +7,7 @@ import { Link, useParams } from "react-router-dom";
 import { viewTasks } from "../../actions/projectlistAction";
 import { listEmployee } from "../../actions/employeeAction";
 import { useDispatch, useSelector } from "react-redux";
+import { viewReport } from "../../actions/reportSubmit";
 function Taskview() {
   const { id, type, webtargetUrls } = useParams();
   //console.log(useParams());
@@ -14,6 +15,9 @@ function Taskview() {
   const TaskView = useSelector((state) => state.tasksView);
   const { tasks } = TaskView;
   const { data } = tasks;
+
+  const reportView = useSelector((state) => state.reportView);
+  const { report } = reportView;
 
   const employeeList = useSelector((state) => state.employeeList);
   const { loading, error, employees } = employeeList;
@@ -28,7 +32,8 @@ function Taskview() {
   useEffect(() => {
     dispatch(viewTasks(id));
     dispatch(listEmployee());
-  }, [dispatch, id]);
+    dispatch(viewReport(id, type, webtargetUrls));
+  }, [dispatch, id, type, webtargetUrls]);
 
   return (
     <div className="App">
