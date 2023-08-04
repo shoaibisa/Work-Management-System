@@ -581,6 +581,7 @@ const getReportsByUser = async (req, res) => {
     const task = await Task.findById(taskId)
       .populate("webData.webtargetUrls.assignEmployee.employee")
       .populate("webData.webtargetUrls.assignEmployee.report");
+
     for (var i = 0; i < task.webData.webtargetUrls.length; i++) {
       if (
         task.webData.webtargetUrls[i]._id.toString() === req.body.webtargetUrls
@@ -625,8 +626,19 @@ const getReportsByUser = async (req, res) => {
     const task = await Task.findById(taskId)
       .populate("mobileData.forIos.assignEmployee.employee")
       .populate("mobileData.forIos.assignEmployee.report");
+
     for (var i = 0; i < task.mobileData.forIos.assignEmployee.length; i++) {
-      reports = task.mobileData.forIos.assignEmployee.report;
+      console.log(
+        task.mobileData.forIos.assignEmployee[i].employee._id,
+        req.user._id
+      );
+
+      if (
+        task.mobileData.forIos.assignEmployee[i].employee._id.toString() ===
+        req.user._id.toString()
+      ) {
+        reports = task.mobileData.forIos.assignEmployee[i].report;
+      }
     }
   } else if (req.body.type === "grc") {
     const task = await Task.findById(taskId)
@@ -636,7 +648,7 @@ const getReportsByUser = async (req, res) => {
       reports = task.grcData.assignEmployee.report;
     }
   }
-
+  console.log(reports);
   return res.status(200).send({
     title: "Success",
     message: "project get sucessfully",
