@@ -25,6 +25,7 @@ import ClientProjectView from "./pages/client/pages/projectdetail";
 import EmployeeTasksList from "./pages/employee/allTasks";
 import EmployeeTaskview from "./pages/employee/Taskview";
 import PDF from "./pages/employee/reportsubmit/reportView";
+import Pdftemplate from "./components/pdf/Pdftemplate";
 import {
   AuthorizedUser,
   AuthorizedAdmin,
@@ -206,6 +207,7 @@ function App() {
               </AuthorizedUser>
             }
           />
+          <Route path="/temp" element={<Pdftemplate />} />
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>
