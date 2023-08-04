@@ -594,7 +594,7 @@ const getReportsByUser = async (req, res) => {
           if (
             task.webData.webtargetUrls[i].assignEmployee[
               j
-            ].employee._id.toString() === req.user._id
+            ].employee._id.toString() === req.user._id.toString()
           ) {
             reports = task.webData.webtargetUrls[i].assignEmployee[j].report;
           }
@@ -606,21 +606,36 @@ const getReportsByUser = async (req, res) => {
       .populate("networkData.assignEmployee.employee")
       .populate("networkData.assignEmployee.report");
     for (var i = 0; i < task.networkData.assignEmployee.length; i++) {
-      reports = task.networkData.assignEmployee.report;
+      if (
+        task.networkData.assignEmployee[i].employee.id.toString() ===
+        req.user._id.toString()
+      ) {
+        reports = task.networkData.assignEmployee[i].report;
+      }
     }
   } else if (req.body.type === "api") {
     const task = await Task.findById(taskId)
       .populate("apiData.assignEmployee.employee")
       .populate("apiData.assignEmployee.report");
     for (var i = 0; i < task.apiData.assignEmployee.length; i++) {
-      reports = task.apiData.assignEmployee.report;
+      if (
+        task.apiData.assignEmployee[i].employee._id.toString() ===
+        req.user._id.toString()
+      ) {
+        reports = task.apiData.assignEmployee[i].report;
+      }
     }
   } else if (req.body.type === "android") {
     const task = await Task.findById(taskId)
       .populate("mobileData.forAndroid.assignEmployee.employee")
       .populate("mobileData.forAndroid.assignEmployee.report");
     for (var i = 0; i < task.mobileData.forAndroid.assignEmployee.length; i++) {
-      reports = task.mobileData.forAndroid.assignEmployee.report;
+      if (
+        task.mobileData.forAndroid.assignEmployee[i].id.toString() ===
+        req.user._id.toString()
+      ) {
+        reports = task.mobileData.forAndroid.assignEmployee[i].report;
+      }
     }
   } else if (req.body.type === "ios") {
     const task = await Task.findById(taskId)
@@ -628,11 +643,6 @@ const getReportsByUser = async (req, res) => {
       .populate("mobileData.forIos.assignEmployee.report");
 
     for (var i = 0; i < task.mobileData.forIos.assignEmployee.length; i++) {
-      console.log(
-        task.mobileData.forIos.assignEmployee[i].employee._id,
-        req.user._id
-      );
-
       if (
         task.mobileData.forIos.assignEmployee[i].employee._id.toString() ===
         req.user._id.toString()
@@ -645,7 +655,11 @@ const getReportsByUser = async (req, res) => {
       .populate("grcData.assignEmployee.employee")
       .populate("grcData.assignEmployee.report");
     for (var i = 0; i < task.grcData.assignEmployee.length; i++) {
-      reports = task.grcData.assignEmployee.report;
+      if (
+        task.grcData.assignEmployee[i].id.toString() === req.user._id.toString()
+      ) {
+        reports = task.grcData.assignEmployee[i].report;
+      }
     }
   }
   //console.log(reports);

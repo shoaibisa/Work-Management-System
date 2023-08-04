@@ -51,4 +51,9 @@ router.post("/createReport", upload.array("pocFiles"), protect, creatReport);
 router.post("/gettaskbyproject", protect, getTaskByProject);
 router.post("/assignemployee", protect, assignEmployee);
 router.post("/reportsbyuser", protect, getReportsByUser);
+
+router.post("/addremark", protect, addRemark);
+router.post("/completetask", protect, complteReport);
+router.post("/getreport", protect, getReport);
+
 export default router;
