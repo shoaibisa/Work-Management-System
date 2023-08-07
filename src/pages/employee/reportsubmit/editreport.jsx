@@ -3,10 +3,9 @@ import Sidebar from "../../../components/sidebar/Sidebar";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { reportCreate } from "../../../actions/reportSubmit";
-const Reportsubmit = () => {
+import { SingleViewReport, reportCreate } from "../../../actions/reportSubmit";
+const EditReportsubmit = () => {
   const { taskID, type, webtargetUrlsId } = useParams();
-  //console.log(useParams());
   const [vulnerability, setVulnerability] = useState("");
   const [risk, setRisk] = useState("");
   const [attributingFactor, setAttributingFactor] = useState("");
@@ -22,14 +21,14 @@ const Reportsubmit = () => {
     setPocFile(files);
   };
 
-  const [message, setMessage] = useState("");
-
-  //const location = useLocation();
-  //const Navigate = useNavigate();
   const dispatch = useDispatch();
-  //const redirect = location.search ? location.search.split("=")[1] : "/";
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const employee = userData?.id;
+
+  const { id } = useParams();
+  const singleReportView = useSelector((state) => state.singleReportView);
+  const { report } = singleReportView;
+  const { data } = report;
 
   const reportCreated = useSelector((state) => state.reportCreated);
   const { loading, error, report } = reportCreated;
@@ -38,11 +37,25 @@ const Reportsubmit = () => {
       if (!report.isError) {
         //Navigate(redirect);
       } else {
-        setMessage(report.message);
+        // setMessage(report.message);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [report]);
+
+  useEffect(() => {
+    setVulnerability((data && data.vulnerability) || "");
+    setRisk((data && data.risk) || "");
+    setImpact((data && data.impact) || "");
+    setCwe((data && data.cwe) || "");
+    setAttributingFactor((data && data.attributingFactor) || "");
+    setAffectedUrl((data && data.affectedUrl) || "");
+    setMitigation((data && data.mitigation) || "");
+    setObservation((data && data.observation) || "");
+    setBrief((data && data.brief) || "");
+
+    setPocFile((data && data.pocFile) || "");
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -64,7 +77,12 @@ const Reportsubmit = () => {
         webtargetUrlsId
       )
     );
+    //  dispatch(SingleViewReport(id));
   };
+
+  useEffect(() => {
+    dispatch(SingleViewReport(id));
+  }, [dispatch, id]);
 
   return (
     <div className="home">
@@ -293,4 +311,4 @@ const Reportsubmit = () => {
   );
 };
 
-export default Reportsubmit;
+export default EditReportsubmit;

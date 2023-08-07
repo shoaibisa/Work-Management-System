@@ -31,6 +31,7 @@ import {
   AuthorizedAdmin,
   AuthorizedPM,
 } from "./middleware/auth";
+import EditReportsubmit from "./pages/employee/reportsubmit/editreport";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
 
@@ -200,14 +201,29 @@ function App() {
             }
           />
           <Route
-            path="/pdf"
+            path="/pdf/:id"
             element={
               <AuthorizedUser>
                 <PDF />
               </AuthorizedUser>
             }
           />
-          <Route path="/temp" element={<Pdftemplate />} />
+          <Route
+            path="/editreport/:id"
+            element={
+              <AuthorizedUser>
+                <EditReportsubmit />
+              </AuthorizedUser>
+            }
+          />
+          <Route
+            path="/temp"
+            element={
+              <AuthorizedUser>
+                <Pdftemplate />
+              </AuthorizedUser>
+            }
+          />
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>
