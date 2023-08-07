@@ -419,10 +419,16 @@ const addRemark = async (req, res) => {
 const editReport = async (req, res) => {
   const { id } = req.body;
   const payload = req.body;
-  //  images
-  const images = req.files.map((f) => f.filename);
-  payload.files = images;
+  // if not files images
+
   const report = await Report.findById(id).exec();
+  var images;
+  if (!req.files) {
+    images = report.files;
+  } else {
+    const images = req.files.map((f) => f.filename);
+  }
+  payload.files = images;
   if (!report) {
     return res.status(208).send({
       isError: true,

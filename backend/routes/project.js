@@ -13,6 +13,7 @@ import {
   complteReport,
   getReport,
   getReportsByUser,
+  editReport,
 } from "../controllers/project.js";
 import { protect } from "../middleware/employeeMiddleware.js";
 import multer from "multer";
@@ -51,6 +52,7 @@ router.post("/createReport", upload.array("pocFiles"), protect, creatReport);
 router.post("/gettaskbyproject", protect, getTaskByProject);
 router.post("/assignemployee", protect, assignEmployee);
 router.post("/reportsbyuser", protect, getReportsByUser);
+router.post("/editreport", protect, editReport);
 
 router.post("/addremark", protect, addRemark);
 router.post("/completetask", protect, complteReport);
