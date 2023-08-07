@@ -393,7 +393,11 @@ const addRemark = async (req, res) => {
         message: "This report is not registered ",
       });
     }
-    report.remarks.push(remark);
+    const r = {
+      user: req.user._id,
+      remark: remark,
+    };
+    report.remarks.push(r);
     report
 
       .save()
@@ -417,7 +421,6 @@ const addRemark = async (req, res) => {
 };
 
 const editReport = async (req, res) => {
-  // return console.log(req.body.id);
   const { id } = req.body;
   const payload = req.body;
   // if not files images
@@ -427,7 +430,7 @@ const editReport = async (req, res) => {
   if (!req.files) {
     images = report.files;
   } else {
-    images = req.files.map((f) => f.filename);
+    const images = req.files.map((f) => f.filename);
   }
   payload.files = images;
   if (!report) {
