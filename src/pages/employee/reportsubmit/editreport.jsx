@@ -31,7 +31,7 @@ const EditReportsubmit = () => {
   const { data } = report;
 
   const reportCreated = useSelector((state) => state.reportCreated);
-  const { loading, error, report } = reportCreated;
+  //const { loading, error, report } = reportCreated;
   useEffect(() => {
     if (report) {
       if (!report.isError) {
