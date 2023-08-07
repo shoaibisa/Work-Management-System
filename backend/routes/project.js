@@ -14,6 +14,7 @@ import {
   getReport,
   getReportsByUser,
   editReport,
+  getReportsByUserId,
 } from "../controllers/project.js";
 import { protect } from "../middleware/employeeMiddleware.js";
 import multer from "multer";
@@ -57,5 +58,6 @@ router.post("/editreport", protect, upload.array("pocFiles"), editReport);
 router.post("/addremark", protect, addRemark);
 router.post("/completetask", protect, complteReport);
 router.post("/getreport", protect, getReport);
+router.post("/getreportsbyuserid", protect, getReportsByUserId);
 
 export default router;

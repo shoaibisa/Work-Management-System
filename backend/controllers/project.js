@@ -679,6 +679,103 @@ const getReportsByUser = async (req, res) => {
     data: reports,
   });
 };
+const getReportsByUserId = async (req, res) => {
+  const taskId = req.body.taskId;
+  const type = req.body.type;
+  const userId = req.body.userId;
+  // const url = req.body.webtargetUrls;
+  // console.log(taskId, type, url);
+  var reports = [];
+  if (type === "web") {
+    const task = await Task.findById(taskId)
+      .populate("webData.webtargetUrls.assignEmployee.employee")
+      .populate("webData.webtargetUrls.assignEmployee.report");
+
+    for (var i = 0; i < task.webData.webtargetUrls.length; i++) {
+      if (
+        task.webData.webtargetUrls[i]._id.toString() === req.body.webtargetUrls
+      ) {
+        for (
+          var j = 0;
+          j < task.webData.webtargetUrls[i].assignEmployee.length;
+          j++
+        ) {
+          if (
+            task.webData.webtargetUrls[i].assignEmployee[
+              j
+            ].employee._id.toString() === userId.toString()
+          ) {
+            reports = task.webData.webtargetUrls[i].assignEmployee[j].report;
+          }
+        }
+      }
+    }
+  } else if (req.body.type === "network") {
+    const task = await Task.findById(taskId)
+      .populate("networkData.assignEmployee.employee")
+      .populate("networkData.assignEmployee.report");
+    for (var i = 0; i < task.networkData.assignEmployee.length; i++) {
+      if (
+        task.networkData.assignEmployee[i].employee.id.toString() ===
+        userId.toString()
+      ) {
+        reports = task.networkData.assignEmployee[i].report;
+      }
+    }
+  } else if (req.body.type === "api") {
+    const task = await Task.findById(taskId)
+      .populate("apiData.assignEmployee.employee")
+      .populate("apiData.assignEmployee.report");
+    for (var i = 0; i < task.apiData.assignEmployee.length; i++) {
+      if (
+        task.apiData.assignEmployee[i].employee._id.toString() ===
+        userId.toString()
+      ) {
+        reports = task.apiData.assignEmployee[i].report;
+      }
+    }
+  } else if (req.body.type === "android") {
+    const task = await Task.findById(taskId)
+      .populate("mobileData.forAndroid.assignEmployee.employee")
+      .populate("mobileData.forAndroid.assignEmployee.report");
+    for (var i = 0; i < task.mobileData.forAndroid.assignEmployee.length; i++) {
+      if (
+        task.mobileData.forAndroid.assignEmployee[i].id.toString() ===
+        userId.toString()
+      ) {
+        reports = task.mobileData.forAndroid.assignEmployee[i].report;
+      }
+    }
+  } else if (req.body.type === "ios") {
+    const task = await Task.findById(taskId)
+      .populate("mobileData.forIos.assignEmployee.employee")
+      .populate("mobileData.forIos.assignEmployee.report");
+
+    for (var i = 0; i < task.mobileData.forIos.assignEmployee.length; i++) {
+      if (
+        task.mobileData.forIos.assignEmployee[i].employee._id.toString() ===
+        userId.toString()
+      ) {
+        reports = task.mobileData.forIos.assignEmployee[i].report;
+      }
+    }
+  } else if (req.body.type === "grc") {
+    const task = await Task.findById(taskId)
+      .populate("grcData.assignEmployee.employee")
+      .populate("grcData.assignEmployee.report");
+    for (var i = 0; i < task.grcData.assignEmployee.length; i++) {
+      if (task.grcData.assignEmployee[i].id.toString() === userId.toString()) {
+        reports = task.grcData.assignEmployee[i].report;
+      }
+    }
+  }
+  //console.log(reports);
+  return res.status(200).send({
+    title: "Success",
+    message: "project get sucessfully",
+    data: reports,
+  });
+};
 
 export {
   createProject,
@@ -696,4 +793,5 @@ export {
   assignEmployee,
   getTaskByProject,
   getReportsByUser,
+  getReportsByUserId,
 };
