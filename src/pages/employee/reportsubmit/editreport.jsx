@@ -3,7 +3,7 @@ import Sidebar from "../../../components/sidebar/Sidebar";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { SingleViewReport, reportCreate } from "../../../actions/reportSubmit";
+import { SingleViewReport, reportUpdate } from "../../../actions/reportSubmit";
 const EditReportsubmit = () => {
   const { taskID, type, webtargetUrlsId } = useParams();
   const [vulnerability, setVulnerability] = useState("");
@@ -25,23 +25,27 @@ const EditReportsubmit = () => {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const employee = userData?.id;
 
+  const updateReport = useSelector((state) => state.updateReport);
+  const { loading, error, updateReports } = updateReport;
+
   const { id } = useParams();
   const singleReportView = useSelector((state) => state.singleReportView);
   const { report } = singleReportView;
   const { data } = report;
 
-  const reportCreated = useSelector((state) => state.reportCreated);
-  //const { loading, error, report } = reportCreated;
   useEffect(() => {
-    if (report) {
+    if (updateReports) {
       if (!report.isError) {
         //Navigate(redirect);
       } else {
-        // setMessage(report.message);
+        //setMessage(report.message);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [report]);
+  useEffect(() => {
+    dispatch(SingleViewReport(id));
+  }, [dispatch, id]);
 
   useEffect(() => {
     setVulnerability((data && data.vulnerability) || "");
@@ -53,14 +57,14 @@ const EditReportsubmit = () => {
     setMitigation((data && data.mitigation) || "");
     setObservation((data && data.observation) || "");
     setBrief((data && data.brief) || "");
-
     setPocFile((data && data.pocFile) || "");
-  }, []);
+  }, [data]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    // console.log(vulnerability, risk);
     dispatch(
-      reportCreate(
+      reportUpdate(
         vulnerability,
         risk,
         attributingFactor,
@@ -74,15 +78,11 @@ const EditReportsubmit = () => {
         employee,
         taskID,
         type,
-        webtargetUrlsId
+        webtargetUrlsId,
+        id
       )
     );
-    //  dispatch(SingleViewReport(id));
   };
-
-  useEffect(() => {
-    dispatch(SingleViewReport(id));
-  }, [dispatch, id]);
 
   return (
     <div className="home">

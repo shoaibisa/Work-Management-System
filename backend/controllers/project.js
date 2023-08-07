@@ -417,6 +417,7 @@ const addRemark = async (req, res) => {
 };
 
 const editReport = async (req, res) => {
+  // return console.log(req.body.id);
   const { id } = req.body;
   const payload = req.body;
   // if not files images
@@ -426,7 +427,7 @@ const editReport = async (req, res) => {
   if (!req.files) {
     images = report.files;
   } else {
-    const images = req.files.map((f) => f.filename);
+    images = req.files.map((f) => f.filename);
   }
   payload.files = images;
   if (!report) {

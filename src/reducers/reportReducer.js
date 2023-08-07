@@ -60,13 +60,13 @@ export const reportSingleViewReducer = (state = { report: [] }, action) => {
   }
 };
 
-export const reportUpdateReducer = (state = { updateReport: [] }, action) => {
+export const reportUpdateReducer = (state = { updateReports: [] }, action) => {
   switch (action.type) {
     case REPORT_UPDATE_REQUEST:
-      return { loading: true, updateReport: [] };
+      return { loading: true, updateReports: [] };
 
     case REPORT_UPDATE_SUCCESS:
-      return { loading: false, updateReport: action.payload };
+      return { loading: false, updateReports: action.payload };
 
     case REPORT_UPDATE_FAILS:
       return { loading: false, error: action.payload };

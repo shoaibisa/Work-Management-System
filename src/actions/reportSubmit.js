@@ -127,7 +127,7 @@ export const SingleViewReport = (id) => async (dispatch) => {
     dispatch({ type: REPORT_SINGLEVIEW_REQUEST });
     const userData = JSON.parse(localStorage.getItem("employeeInfo"));
     const token = userData?.token;
-
+    //console.log(id);
     const { data } = await axios.post(
       "http://localhost:5000/project/getreport",
       {
@@ -140,7 +140,7 @@ export const SingleViewReport = (id) => async (dispatch) => {
         },
       }
     );
-    // console.log(data);
+    //  console.log(data);
     dispatch({
       type: REPORT_SINGLEVIEW_SUCCESS,
       payload: data,
@@ -171,9 +171,11 @@ export const reportUpdate =
     employee,
     taskID,
     type,
-    webtargetUrlsId
+    webtargetUrlsId,
+    id
   ) =>
   async (dispatch) => {
+    console.log(id);
     const payload = {
       vulnerability,
       risk,
@@ -188,9 +190,10 @@ export const reportUpdate =
       taskID,
       type,
       webtargetUrlsId,
+      id,
     };
     try {
-      dispatch({ type: REPORT_CREATED_REQUEST });
+      dispatch({ type: REPORT_UPDATE_REQUEST });
       const userData = JSON.parse(localStorage.getItem("employeeInfo"));
       const token = userData?.token;
       const formData = new FormData();
@@ -202,9 +205,10 @@ export const reportUpdate =
       for (const file of pocFile) {
         formData.append("pocFiles", file);
       }
-
+      // console.log(payload.id);
+      console.log(formData.get("id"));
       const { data } = await axios.post(
-        "http://localhost:5000/project/createReport",
+        "http://localhost:5000/project/editreport",
         formData,
         {
           headers: {
@@ -214,12 +218,12 @@ export const reportUpdate =
         }
       );
       dispatch({
-        type: REPORT_CREATED_SUCCESS,
+        type: REPORT_UPDATE_SUCCESS,
         payload: data,
       });
     } catch (error) {
       dispatch({
-        type: REPORT_CREATED_FAILS,
+        type: REPORT_UPDATE_FAILS,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
