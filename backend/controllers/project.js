@@ -299,7 +299,10 @@ const creatReport = async (req, res) => {
   if (req.body.type === "web") {
     // find in webData webtargetUrls._id in task
     for (var i = 0; i < task.webData.webtargetUrls.length; i++) {
-      if (req.body.webtargetUrlsId === task.webData.webtargetUrls[i]) {
+      if (
+        req.body.webtargetUrlsId ===
+        task.webData.webtargetUrls[i]._id.toString()
+      ) {
         // find employee in it
         for (
           var j = 0;
