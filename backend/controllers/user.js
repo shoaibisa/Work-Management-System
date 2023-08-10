@@ -135,6 +135,32 @@ const getEmployeeReport = async (req, res) => {
   }
 };
 
+const listOfManagers = async (req, res) => {
+  try {
+    const managers = await Employee.find({ role: "Project Manager" }).exec();
+
+    return res.status(200).send({
+      managers: managers,
+      isError: false,
+    });
+  } catch (error) {
+    return res.status(500);
+  }
+};
+
+const listOfEmployees = async (req, res) => {
+  try {
+    const employees = await Employee.find({ role: "Employee" }).exec();
+
+    return res.status(200).send({
+      employees: employees,
+      isError: false,
+    });
+  } catch (error) {
+    return res.status(500);
+  }
+};
+
 export {
   statusToggle,
   roleSet,
@@ -142,4 +168,7 @@ export {
   getAllUsers,
   getEmployeeByDepartment,
   getEmployeeTask,
+  getEmployeeReport,
+  listOfManagers,
+  listOfEmployees,
 };
