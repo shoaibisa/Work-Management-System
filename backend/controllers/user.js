@@ -91,6 +91,8 @@ const getEmployeeByDepartment = async (req, res) => {
   try {
     const employees = await Employee.find({
       role: "Employee",
+      isVerified: true,
+      status: true,
     }).exec();
 
     // console.log(employees);
