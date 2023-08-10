@@ -9,6 +9,8 @@ import {
   getEmployeeReport,
   listOfManagers,
   listOfEmployees,
+  getEmployeeById,
+  getManagerById,
 } from "../controllers/user.js";
 import { protect } from "../middleware/employeeMiddleware.js";
 
@@ -23,5 +25,7 @@ router.post("/tasks", protect, getEmployeeTask);
 router.post("/reports", protect, getEmployeeReport);
 router.get("/managers", protect, listOfManagers);
 router.get("/employees", protect, listOfEmployees);
+router.post("/getEmployeeById", protect, getEmployeeById);
+router.post("/getManagerById", protect, getManagerById);
 
 export default router;

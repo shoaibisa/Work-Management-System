@@ -87,6 +87,48 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const getManagerById = async (req, res) => {
+  const { id } = req.body;
+  try {
+    const employee = await Employee.findById(id).exec();
+    if (!employee) {
+      return res.status(208).send({
+        isError: true,
+        title: "Error",
+        message: "This email is not registered. Redirecting to Signup page!",
+      });
+
+      return res.status(200).send({
+        employee: employee,
+        isError: false,
+      });
+    }
+  } catch (error) {
+    return res.status(500);
+  }
+};
+
+const getEmployeeById = async (req, res) => {
+  const { id } = req.body;
+  try {
+    const employee = await Employee.findById(id).exec();
+    if (!employee) {
+      return res.status(208).send({
+        isError: true,
+        title: "Error",
+        message: "This email is not registered. Redirecting to Signup page!",
+      });
+
+      return res.status(200).send({
+        employee: employee,
+        isError: false,
+      });
+    }
+  } catch (error) {
+    return res.status(500);
+  }
+};
+
 const getEmployeeByDepartment = async (req, res) => {
   try {
     const employees = await Employee.find({
@@ -173,4 +215,6 @@ export {
   getEmployeeReport,
   listOfManagers,
   listOfEmployees,
+  getEmployeeById,
+  getManagerById,
 };
