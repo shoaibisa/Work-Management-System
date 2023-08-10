@@ -26,13 +26,14 @@ export const logout = () => (dispatch) => {
 
 //Register
 export const register =
-  (name, email, password, phone, selectedDepartment) => async (dispatch) => {
+  (name, email, password, phone, selectedDepartment, selectedrole) =>
+  async (dispatch) => {
     try {
       dispatch({ type: EMPLOYEE_REGISTER_REQUEST });
       const config = { headers: { "Contnet-Type": "application/json" } };
       const { data } = await axios.post(
         "http://localhost:5000/auth/sign-up",
-        { name, email, password, phone, selectedDepartment },
+        { name, email, password, phone, selectedDepartment, selectedrole },
         config
       );
 

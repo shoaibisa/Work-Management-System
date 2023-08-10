@@ -13,6 +13,7 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [selectedrole, setSelectedrole] = useState("");
   const [message, setMessage] = useState("");
 
   const location = useLocation();
@@ -41,7 +42,9 @@ const Signup = () => {
       console.log("Confirm Password  do not Match");
       setMessage("Confirm Password  do not Match");
     } else {
-      dispatch(register(name, email, password, phone, selectedDepartment));
+      dispatch(
+        register(name, email, password, phone, selectedDepartment, selectedrole)
+      );
     }
   };
 
@@ -167,6 +170,19 @@ const Signup = () => {
                   <option value="technical">Technical Team</option>
                   <option value="marketing">Marketing Team</option>
                   <option value="management">Management Team</option>
+                  <option value="client">Client</option>
+                </select>
+              </div>
+              <div className="my-5">
+                <select
+                  data-te-select-init
+                  value={selectedrole}
+                  onChange={(e) => setSelectedrole(e.target.value)}
+                >
+                  <option selected>Choose role</option>
+                  <option value="Employee">Employee</option>
+                  <option value="Project Manager">Project Manager</option>
+                  <option value="Client">Client</option>
                 </select>
               </div>
             </div>

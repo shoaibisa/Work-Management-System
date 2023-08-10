@@ -42,7 +42,6 @@ const employeeSchema = new Schema(
     },
     role: {
       type: String,
-      default: "Employee",
     },
     department: {
       type: String,
