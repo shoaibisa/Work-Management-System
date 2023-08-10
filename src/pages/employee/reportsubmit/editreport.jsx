@@ -82,6 +82,7 @@ const EditReportsubmit = () => {
         id
       )
     );
+    window.history.back();
   };
 
   return (
@@ -91,7 +92,7 @@ const EditReportsubmit = () => {
         <Navbar />
         {/* main code here  */}
         <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight m-6">
-          Submit Report
+          Edit Report
         </h2>
         <div className=" flex w-auto  rounded-lg border border-dashed border-gray-900/25 p-6 m-6 mt-6">
           <form

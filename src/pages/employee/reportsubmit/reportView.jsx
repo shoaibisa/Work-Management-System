@@ -18,105 +18,105 @@ function PDF() {
     dispatch(SingleViewReport(id));
   }, [dispatch, id]);
 
-  const downloadPDF = () => {
-    const capture = document.querySelector(".actual-receipt");
+  // const downloadPDF = () => {
+  //   const capture = document.querySelector(".actual-receipt");
 
-    setLoader(true);
-    html2canvas(capture).then((canvas) => {
-      const imgData = canvas.toDataURL("img/png");
+  //   setLoader(true);
+  //   html2canvas(capture).then((canvas) => {
+  //     const imgData = canvas.toDataURL("img/png");
 
-      const doc = new jsPDF("p", "mm", "a4", true);
-      const componentWidth = doc.internal.pageSize.getWidth();
-      const componentHeight = doc.internal.pageSize.getHeight();
-      const scaleFactor = Math.min(
-        componentWidth / canvas.width,
-        componentHeight / canvas.height
-      );
+  //     const doc = new jsPDF("p", "mm", "a4", true);
+  //     const componentWidth = doc.internal.pageSize.getWidth();
+  //     const componentHeight = doc.internal.pageSize.getHeight();
+  //     const scaleFactor = Math.min(
+  //       componentWidth / canvas.width,
+  //       componentHeight / canvas.height
+  //     );
 
-      doc.autoTable({
-        html: "#my-table",
-        theme: "grid", // Use the grid theme for the table
-        styles: {
-          // Custom styling for the table
-          fontSize: 10,
-          cellPadding: 2,
-        },
-        headStyles: {
-          // Custom styles for the table header
-          fillColor: "#DBEAFE",
-          fontStyle: "bold",
-          textColor: "black",
-        },
-        bodyStyles: {
-          // Custom styles for the table body
-          valign: "middle",
-          halign: "center",
-          fillColor: "#ffffff",
-        },
+  //     doc.autoTable({
+  //       html: "#my-table",
+  //       theme: "grid", // Use the grid theme for the table
+  //       styles: {
+  //         // Custom styling for the table
+  //         fontSize: 10,
+  //         cellPadding: 2,
+  //       },
+  //       headStyles: {
+  //         // Custom styles for the table header
+  //         fillColor: "#DBEAFE",
+  //         fontStyle: "bold",
+  //         textColor: "black",
+  //       },
+  //       bodyStyles: {
+  //         // Custom styles for the table body
+  //         valign: "middle",
+  //         halign: "center",
+  //         fillColor: "#ffffff",
+  //       },
 
-        columnStyles: {
-          // Custom styles for individual columns
-          1: { fontStyle: "bold", fillColor: "#ebf8ff" },
-          3: { fillColor: "#ebf8ff" },
-          5: { fontStyle: "bold", fillColor: "#ebf8ff" },
-          7: { fillColor: "#ebf8ff" },
-        },
+  //       columnStyles: {
+  //         // Custom styles for individual columns
+  //         1: { fontStyle: "bold", fillColor: "#ebf8ff" },
+  //         3: { fillColor: "#ebf8ff" },
+  //         5: { fontStyle: "bold", fillColor: "#ebf8ff" },
+  //         7: { fillColor: "#ebf8ff" },
+  //       },
 
-        // Rest of the code to add images to the PDF
-      });
+  //       // Rest of the code to add images to the PDF
+  //     });
 
-      const aspectRatio = canvas.width / canvas.height;
-      //console.log(aspectRatio);
-      data &&
-        data.files.forEach((items, index) => {
-          // if (index !== 0) {
-          doc.addPage(); // Create a new page for each image (skip for the first image)
-          //}
+  //     const aspectRatio = canvas.width / canvas.height;
+  //     //console.log(aspectRatio);
+  //     data &&
+  //       data.files.forEach((items, index) => {
+  //         // if (index !== 0) {
+  //         doc.addPage(); // Create a new page for each image (skip for the first image)
+  //         //}
 
-          // const imgWidth = canvas.width; // Adjust this value to set the image width in the PDF
-          // const imgHeight = canvas.height; // Calculate the height to maintain the aspect ratio
+  //         // const imgWidth = canvas.width; // Adjust this value to set the image width in the PDF
+  //         // const imgHeight = canvas.height; // Calculate the height to maintain the aspect ratio
 
-          // const pageWidth = doc.internal.pageSize.getWidth();
-          // const pageHeight = doc.internal.pageSize.getHeight();
+  //         // const pageWidth = doc.internal.pageSize.getWidth();
+  //         // const pageHeight = doc.internal.pageSize.getHeight();
 
-          // const ratio = Math.min(pageWidth / imgWidth, pageHeight / imgHeight);
-          // const imgx = (pageWidth - imgWidth * ratio) / 2;
-          // const imgY = 0;
-          // const xPosition = (pageWidth - imgWidth) / 2; // Center the image horizontally
-          // const yPosition = 0; // Set a top margin of 20mm
+  //         // const ratio = Math.min(pageWidth / imgWidth, pageHeight / imgHeight);
+  //         // const imgx = (pageWidth - imgWidth * ratio) / 2;
+  //         // const imgY = 0;
+  //         // const xPosition = (pageWidth - imgWidth) / 2; // Center the image horizontally
+  //         // const yPosition = 0; // Set a top margin of 20mm
 
-          const imgWidth = 200; // Adjust this value to set the image width in the PDF
-          const imgHeight = imgWidth / aspectRatio; // // Calculate the height to maintain the aspect ratio
+  //         const imgWidth = 200; // Adjust this value to set the image width in the PDF
+  //         const imgHeight = imgWidth / aspectRatio; // // Calculate the height to maintain the aspect ratio
 
-          const pageWidth = doc.internal.pageSize.getWidth();
-          const pageHeight = doc.internal.pageSize.getHeight();
+  //         const pageWidth = doc.internal.pageSize.getWidth();
+  //         const pageHeight = doc.internal.pageSize.getHeight();
 
-          const xPosition = (pageWidth - imgWidth) / 2; // Center the image horizontally
-          const yPosition = 20; // Set a top margin of 20mm
+  //         const xPosition = (pageWidth - imgWidth) / 2; // Center the image horizontally
+  //         const yPosition = 20; // Set a top margin of 20mm
 
-          // doc.addImage(
-          //   `http://localhost:5000/files/${items}`,
-          //   "PNG",
-          //   imgx,
-          //   imgY,
-          //   imgWidth * ratio,
-          //   imgHeight * ratio
-          // );
-          doc.addImage(
-            `http://localhost:5000/files/${items}`,
-            "JPEG",
-            xPosition,
-            yPosition,
-            imgWidth,
-            imgHeight
-          );
-        });
+  //         // doc.addImage(
+  //         //   `http://localhost:5000/files/${items}`,
+  //         //   "PNG",
+  //         //   imgx,
+  //         //   imgY,
+  //         //   imgWidth * ratio,
+  //         //   imgHeight * ratio
+  //         // );
+  //         doc.addImage(
+  //           `http://localhost:5000/files/${items}`,
+  //           "JPEG",
+  //           xPosition,
+  //           yPosition,
+  //           imgWidth,
+  //           imgHeight
+  //         );
+  //       });
 
-      // Rest of the code to add images to the PDF remains unchanged
-      setLoader(false);
-      doc.save("receipt.pdf");
-    });
-  };
+  //     // Rest of the code to add images to the PDF remains unchanged
+  //     setLoader(false);
+  //     doc.save("receipt.pdf");
+  //   });
+  // };
 
   const PrintButton = () => {
     window.print();
@@ -129,15 +129,18 @@ function PDF() {
         <div className="actual-receipt">
           <div className="mt-12">
             <div className="receipt-actions-div">
-              <div className="actions-right">
+              <div className="actions-right justify-end flex mx-3">
                 <button
-                  className="receipt-modal-download-button"
+                  className="receipt-modal-download-button rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   onClick={PrintButton}
                   disabled={!(loader === false)}
                 >
                   {loader ? <span>Printing</span> : <span>Print</span>}
                 </button>
               </div>
+            </div>
+            <div>
+              <h1 className=" text-center  bold text-2xl ">Report</h1>
             </div>
             <div class="flex  m-auto mt-10 flex-col w-[1000px]">
               <table

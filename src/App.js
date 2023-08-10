@@ -26,6 +26,7 @@ import EmployeeTasksList from "./pages/employee/allTasks";
 import EmployeeTaskview from "./pages/employee/Taskview";
 import PDF from "./pages/employee/reportsubmit/reportView";
 import Pdftemplate from "./components/pdf/Pdftemplate";
+import TaskviewUser from "./pages/projectManager/singleTask";
 import {
   AuthorizedUser,
   AuthorizedAdmin,
@@ -197,6 +198,22 @@ function App() {
             element={
               <AuthorizedUser>
                 <EmployeeTaskview />
+              </AuthorizedUser>
+            }
+          />
+          <Route
+            path="/singlereportview/:id/:type/:webtargetUrls/:userid"
+            element={
+              <AuthorizedUser>
+                <TaskviewUser />
+              </AuthorizedUser>
+            }
+          />
+          <Route
+            path="/singlereportview/:id/:type/:userid"
+            element={
+              <AuthorizedUser>
+                <TaskviewUser />
               </AuthorizedUser>
             }
           />

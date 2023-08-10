@@ -34,7 +34,7 @@ const Taskassign = ({ history }) => {
     dispatch(
       assignTask(ProjectId, taskID, type, url_id, employee, departments)
     );
-    history.goBack();
+    window.history.back();
   };
 
   return (

@@ -40,6 +40,9 @@ const reportSchema = new mongoose.Schema(
         remark: {
           type: String,
         },
+        date: {
+          type: Date,
+        },
       },
     ],
 

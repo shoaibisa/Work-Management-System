@@ -4,9 +4,11 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { reportCreate } from "../../../actions/reportSubmit";
+import { useHistory } from "react-router-dom";
 const Reportsubmit = () => {
+  // const history = useHistory();
   const { taskID, type, webtargetUrlsId } = useParams();
-  //console.log(useParams());
+  // console.log(useParams());
   const [vulnerability, setVulnerability] = useState("");
   const [risk, setRisk] = useState("");
   const [attributingFactor, setAttributingFactor] = useState("");
@@ -24,10 +26,10 @@ const Reportsubmit = () => {
 
   const [message, setMessage] = useState("");
 
-  //const location = useLocation();
-  //const Navigate = useNavigate();
+  const location = useLocation();
+  const Navigate = useNavigate();
   const dispatch = useDispatch();
-  //const redirect = location.search ? location.search.split("=")[1] : "/";
+  const redirect = location.search ? location.search.split("=")[1] : "/";
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const employee = userData?.id;
 
@@ -36,7 +38,6 @@ const Reportsubmit = () => {
   useEffect(() => {
     if (report) {
       if (!report.isError) {
-        //Navigate(redirect);
       } else {
         setMessage(report.message);
       }
@@ -64,6 +65,7 @@ const Reportsubmit = () => {
         webtargetUrlsId
       )
     );
+    window.history.back();
   };
 
   return (

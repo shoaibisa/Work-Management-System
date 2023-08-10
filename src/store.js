@@ -20,6 +20,8 @@ import {
   reportViewReducer,
   reportSingleViewReducer,
   reportUpdateReducer,
+  reportRemarkReducer,
+  reportByUserReducer,
 } from "./reducers/reportReducer";
 const employeenfoFromStroge = localStorage.getItem("employeeInfo")
   ? JSON.parse(localStorage.getItem("employeeInfo"))
@@ -40,6 +42,8 @@ const reducer = combineReducers({
   reportView: reportViewReducer,
   singleReportView: reportSingleViewReducer,
   updateReport: reportUpdateReducer,
+  remarkReport: reportRemarkReducer,
+  reportByUser: reportByUserReducer,
 });
 const initialState = {
   employeeLogin: { employeeInfo: employeenfoFromStroge },

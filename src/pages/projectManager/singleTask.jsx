@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect } from "react";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
@@ -8,10 +9,10 @@ import { listEmployee } from "../../actions/employeeAction";
 import { useDispatch, useSelector } from "react-redux";
 import { viewReport, remarksReport } from "../../actions/reportSubmit";
 import { useState } from "react";
-import { Edit } from "@mui/icons-material";
-function Taskview() {
-  const { id, type, webtargetUrls } = useParams();
-
+import { reportsByUser } from "../../actions/reportSubmit";
+function TaskviewUser() {
+  const { id, type, webtargetUrls, userid } = useParams();
+  //console.log(useParams());
   const dispatch = useDispatch();
   const TaskView = useSelector((state) => state.tasksView);
   const { tasks } = TaskView;
@@ -22,6 +23,10 @@ function Taskview() {
 
   const remarkReport = useSelector((state) => state.remarkReport);
   const { remark } = remarkReport;
+
+  const reportByUser = useSelector((state) => state.reportByUser);
+  const { singleReport } = reportByUser;
+  //const{data}=singleReport;
 
   const employeeList = useSelector((state) => state.employeeList);
   const { loading, error, employees } = employeeList;
@@ -42,19 +47,22 @@ function Taskview() {
   const handleSendClick = (id, index) => {
     const remarks = remarksArray[index];
     dispatch(remarksReport(id, remarks));
-    // console.log(report.data);
-    for (var i = 0; i < report.data.length; i++) {
-      if (id.toString() === report.data[i]._id.toString()) {
-        report.data[i].remarks.push({
+    //   console.log(id);
+
+    for (var i = 0; i < singleReport.length; i++) {
+      if (id.toString() === singleReport[i]._id.toString()) {
+        singleReport[i].remarks.push({
           user: employeeInfo.id,
           remark: remarks,
           date: Date.now(),
         });
       }
     }
+
     const newArray = [...remarksArray];
     newArray[index] = "";
     setRemarksArray(newArray);
+
     // dispatch(viewTasks(id));
   };
 
@@ -79,11 +87,45 @@ function Taskview() {
     ios = mobileData.ios !== "";
   }
 
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+  const token = userData?.token;
+  function handleButtonClick(itemId) {
+    // Prepare data for the request, if needed
+    const requestData = {
+      id: itemId,
+    };
+    console.log(id);
+
+    // Perform the fetch request
+    fetch("http://localhost:5000/project/completetask", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Handle the response data here
+        console.log(data);
+      })
+      .catch((error) => {
+        // Handle errors here
+        console.error("Error:", error);
+      });
+    setIsCompleted((prevIsCompleted) => !prevIsCompleted);
+  }
+
+  //console.log(" hfgfhg", user_id);
   useEffect(() => {
     dispatch(viewTasks(id));
     dispatch(listEmployee());
     dispatch(viewReport(id, type, webtargetUrls));
-  }, [dispatch, id, type, webtargetUrls]);
+    dispatch(reportsByUser(id, type, webtargetUrls, userid));
+  }, [dispatch, id, type, webtargetUrls, userid]);
 
   return (
     <div className="App">
@@ -92,13 +134,7 @@ function Taskview() {
         <div className="homeContainer">
           <Navbar />
           <div className=" flex mt-6 mx-10 justify-between ">
-            <div className="font-bold text-2xl">Task Name</div>
-            <Link
-              to={`/reportsubmit/${id}/${type}/${webtargetUrls}`}
-              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Add Report
-            </Link>
+            <div className="font-bold text-2xl">Employee Name Report</div>
           </div>
 
           <div className="m-10 flex gap-4  flex-col   rounded-lg border border-dashed border-gray-900/25 p-6">
@@ -131,24 +167,6 @@ function Taskview() {
                                 {url.link}
                               </a>
                             </div>
-                          </div>
-                          <div className="flex">
-                            <h3> Assign To: </h3>
-                            {url.assignEmployee.map((employee) => {
-                              const filteredEmployees = employees.filter(
-                                (emp) => employee.employee.includes(emp._id)
-                              );
-                              const namesOfFilteredEmployees =
-                                filteredEmployees.map((emp) => emp.name);
-                              return (
-                                <span
-                                  key={employee._id}
-                                  className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
-                                >
-                                  {namesOfFilteredEmployees.join(", ")}
-                                </span>
-                              );
-                            })}
                           </div>
                         </div>
                       );
@@ -186,25 +204,6 @@ function Taskview() {
                         </a>
                       </div>
                     </div>
-                    <div className="flex mt-4">
-                      <h3> Assign To: </h3>
-                      {data.mobileData.forIos.assignEmployee.map((employee) => {
-                        const filteredEmployees = employees.filter((emp) =>
-                          employee.employee.includes(emp._id)
-                        );
-                        const namesOfFilteredEmployees = filteredEmployees.map(
-                          (emp) => emp.name
-                        );
-                        return (
-                          <span
-                            key={employee._id}
-                            className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
-                          >
-                            {namesOfFilteredEmployees.join(", ")}
-                          </span>
-                        );
-                      })}
-                    </div>
                   </>
                 )}
 
@@ -237,26 +236,6 @@ function Taskview() {
                         </a>
                       </div>
                     </div>
-                    <div className="flex mt-4">
-                      <h3> Assign To: </h3>
-                      {data.mobileData.forAndroid.assignEmployee.map(
-                        (employee) => {
-                          const filteredEmployees = employees.filter((emp) =>
-                            employee.employee.includes(emp._id)
-                          );
-                          const namesOfFilteredEmployees =
-                            filteredEmployees.map((emp) => emp.name);
-                          return (
-                            <span
-                              key={employee._id}
-                              className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
-                            >
-                              {namesOfFilteredEmployees.join(", ")}
-                            </span>
-                          );
-                        }
-                      )}
-                    </div>
                   </>
                 )}
 
@@ -286,25 +265,6 @@ function Taskview() {
                     />
                   </span>
                 </div>
-                <div className="flex">
-                  <h3> Assign To: </h3>
-                  {data.apiData.assignEmployee.map((employee) => {
-                    const filteredEmployees = employees.filter((emp) =>
-                      employee.employee.includes(emp._id)
-                    );
-                    const namesOfFilteredEmployees = filteredEmployees.map(
-                      (emp) => emp.name
-                    );
-                    return (
-                      <span
-                        key={employee._id}
-                        className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
-                      >
-                        {namesOfFilteredEmployees.join(", ")}
-                      </span>
-                    );
-                  })}
-                </div>
 
                 <div className=" mt-4 flex flex-col">
                   <div className="text-md font-medium leading-6 text-gray-900">
@@ -333,25 +293,7 @@ function Taskview() {
                     FILE
                   </span>
                 </div>
-                <div className="flex">
-                  <h3> Assign To: </h3>
-                  {data.networkData.assignEmployee.map((employee) => {
-                    const filteredEmployees = employees.filter((emp) =>
-                      employee.employee.includes(emp._id)
-                    );
-                    const namesOfFilteredEmployees = filteredEmployees.map(
-                      (emp) => emp.name
-                    );
-                    return (
-                      <span
-                        key={employee._id}
-                        className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
-                      >
-                        {namesOfFilteredEmployees.join(", ")}
-                      </span>
-                    );
-                  })}
-                </div>
+
                 <div className=" mt-4 flex flex-col">
                   <div className="text-md font-medium leading-6 text-gray-900">
                     Remarks :
@@ -370,25 +312,6 @@ function Taskview() {
             type === "grc" ? (
               <div className="block w-full rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                 <h1>For GRC</h1>
-                <div className="flex">
-                  <h3> Assign To: </h3>
-                  {data.grcData.assignEmployee.map((employee) => {
-                    const filteredEmployees = employees.filter((emp) =>
-                      employee.employee.includes(emp._id)
-                    );
-                    const namesOfFilteredEmployees = filteredEmployees.map(
-                      (emp) => emp.name
-                    );
-                    return (
-                      <span
-                        key={employee._id}
-                        className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
-                      >
-                        {namesOfFilteredEmployees.join(", ")}
-                      </span>
-                    );
-                  })}
-                </div>
 
                 <div className=" mt-4 flex flex-col">
                   <div className="text-md font-medium leading-6 text-gray-900">
@@ -404,16 +327,9 @@ function Taskview() {
             ) : null}
           </div>
 
-          {report.data && report.data.length > 0 ? (
-            report.data.map((items, index) => (
+          {singleReport && singleReport.length > 0 ? (
+            singleReport.map((items, index) => (
               <div className="m-10 flex gap-4  flex-col   rounded-lg border border-dashed border-gray-900/25 p-4">
-                <div className="  flex  justify-end">
-                  {items.isCompleted === false ? (
-                    <Link to={`/editreport/${items._id}`}>
-                      <Edit className="w-5 mx-2" />
-                    </Link>
-                  ) : null}
-                </div>
                 <div className="px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-4">
                   <dt className="text-sm font-semibold leading-6 text-gray-900">
                     Report ID: {items._id}
@@ -427,7 +343,7 @@ function Taskview() {
                     Edited :
                   </Link>
                   <div className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {formatDate(items.updatedAt)}
+                    10/12/2023
                   </div>
                 </div>
 
@@ -436,7 +352,7 @@ function Taskview() {
                     Name :
                   </dt>
                   <div className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {employeeInfo.name}
+                    {}
                   </div>
                 </div>
 
@@ -463,42 +379,6 @@ function Taskview() {
                     <div className="container">
                       <div className="bg-white rounded-lg shadow-lg p-4">
                         {/* Chat area */}
-                        {/* <div className=" h-[300px] overflow-y-scroll">
-                          {items &&
-                            items.remarks.map((data) => (
-                              <div className="mb-4 ">
-                                {employeeInfo.id === data.user ? (
-                                  <>
-                                    <div className="flex items-end  justify-end">
-                                      <div className="flex-shrink-0"></div>
-                                      <div className="ml-3">
-                                        <div className="bg-green-100 text-blue-600 p-2 rounded-lg">
-                                          {data.remark}
-                                        </div>
-                                        <p className="text-xs text-gray-500 mt-1">
-                                          {formatDate(data.date)}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </>
-                                ) : (
-                                  <>
-                                    <div className="flex items-start">
-                                      <div className="flex-shrink-0"></div>
-                                      <div className="ml-3">
-                                        <div className="bg-blue-100 text-blue-900 p-2 rounded-lg">
-                                          {data.remark}
-                                        </div>
-                                        <p className="text-xs text-gray-500 mt-1">
-                                          {formatDate(data.date)}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </>
-                                )}
-                              </div>
-                            ))}
-                        </div> */}
                         <div className=" h-96 overflow-y-scroll">
                           {items && items.remarks.length > 0 ? (
                             items.remarks.map((data) => (
@@ -540,39 +420,104 @@ function Taskview() {
                             </p>
                           )}
                         </div>
-                        {items.isCompleted === false ? (
-                          <div className="flex items-center border-t mt-4 pt-4">
-                            <input
-                              type="text"
-                              value={remarksArray[index] || ""}
-                              onChange={(e) =>
-                                handleRemarkChange(e.target.value, index)
-                              }
-                              name="remark"
-                              id={items._id}
-                              className="w-full rounded-lg border-gray-300 px-4 py-2 focus:outline-none focus:border-blue-400"
-                              placeholder="Type your message..."
-                            />
 
-                            <button
-                              onClick={() => handleSendClick(items._id, index)}
-                              type="submit"
-                              className="ml-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg"
-                            >
-                              Send
-                            </button>
-                          </div>
-                        ) : null}
+                        {/* <div className="h-96 overflow-y-scroll">
+                          {items && items.remarks.length > 0 ? (
+                            items.remarks.map((data) => (
+                              <div className="mb-4" key={data.id}>
+                                {employeeInfo.id === data.user ? (
+                                  <>
+                                    <div className="flex items-end justify-end">
+                                      <div className="flex-shrink-0"></div>
+                                      <div className="ml-3">
+                                        <div className="bg-green-100 text-blue-600 p-2 rounded-lg">
+                                          {data.remark}
+                                        </div>
+                                        <p className="text-xs text-gray-500 mt-1">
+                                          {formatDate(data.date)}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    <div className="flex items-start">
+                                      <div className="flex-shrink-0"></div>
+                                      <div className="ml-3">
+                                        <div className="bg-blue-100 text-blue-900 p-2 rounded-lg">
+                                          {data.remark}
+                                        </div>
+                                        <p className="text-xs text-gray-500 mt-1">
+                                          {formatDate(data.date)}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+                            ))
+                          ) : (
+                            <p className="text-gray-500 mt-2">
+                              No remarks to display.
+                            </p>
+                          )}
+                        </div> */}
+
+                        <div className="flex items-center border-t mt-4 pt-4">
+                          <input
+                            type="text"
+                            value={remarksArray[index] || ""}
+                            onChange={(e) =>
+                              handleRemarkChange(e.target.value, index)
+                            }
+                            name="remark"
+                            id={items._id}
+                            className="w-full rounded-lg border-gray-300 px-4 py-2 focus:outline-none focus:border-blue-400"
+                            placeholder="Type your message..."
+                          />
+
+                          <button
+                            //onClick={() => handleSendClick(items._id)}
+                            onClick={() => handleSendClick(items._id, index)}
+                            type="submit"
+                            className="ml-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg"
+                          >
+                            Send
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                {/* {items.isCompleted === false ? (
+                  <button
+                    onClick={() => handleButtonClick(items._id)}
+                    className="inline-block rounded-full w-24 ml-4 bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                  >
+                    completed
+                  </button>
+                ) : (
+                  <button className="inline-block rounded-full w-24 ml-4 bg-danger px-2 text-xs uppercase leading-normal text-white cursor-auto">
+                    Done
+                  </button>
+                )} */}
+
+                <button
+                  type="button"
+                  className={`inline-block rounded-full w-24 ml-4 ${
+                    isCompleted ? "bg-gray-400" : "bg-success"
+                  } px-2 text-xs uppercase leading-normal text-white`}
+                  // onClick={handleButtonClick}
+                  onClick={() => handleButtonClick(items._id)}
+                >
+                  {/* {isCompleted ? "completed" : "mark as completed"} */}
+                  {(isCompleted || items.isCompleted) && "completed"}
+                  {!isCompleted && !items.isCompleted && "mark as completed"}
+                </button>
               </div>
             ))
           ) : (
-            <div className="text-center   bold  text-lg">
-              No reports found | Add Report
-            </div>
+            <div className="text-center   bold  text-lg">No reports found</div>
           )}
         </div>
       </div>
@@ -580,4 +525,4 @@ function Taskview() {
   );
 }
 
-export default Taskview;
+export default TaskviewUser;

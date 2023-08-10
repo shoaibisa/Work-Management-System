@@ -11,6 +11,12 @@ import {
   REPORT_UPDATE_REQUEST,
   REPORT_UPDATE_SUCCESS,
   REPORT_UPDATE_FAILS,
+  REPORT_REMARK_REQUEST,
+  REPORT_REMARK_SUCCESS,
+  REPORT_REMARK_FAILS,
+  REPORT_VIEWBYUSER_REQUEST,
+  REPORT_VIEWBYUSER_SUCCESS,
+  REPORT_VIEWBYUSER_FAILS,
 } from "../constants/reportsubmit";
 
 export const reportCreatedReducer = (state = { report: [] }, action) => {
@@ -69,6 +75,36 @@ export const reportUpdateReducer = (state = { updateReports: [] }, action) => {
       return { loading: false, updateReports: action.payload };
 
     case REPORT_UPDATE_FAILS:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+export const reportRemarkReducer = (state = { remark: [] }, action) => {
+  switch (action.type) {
+    case REPORT_REMARK_REQUEST:
+      return { loading: true, remark: [] };
+
+    case REPORT_REMARK_SUCCESS:
+      return { loading: false, remark: action.payload };
+
+    case REPORT_REMARK_FAILS:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+export const reportByUserReducer = (state = { singleReport: [] }, action) => {
+  switch (action.type) {
+    case REPORT_VIEWBYUSER_REQUEST:
+      return { loading: true, singleReport: [] };
+
+    case REPORT_VIEWBYUSER_SUCCESS:
+      return { loading: false, singleReport: action.payload };
+
+    case REPORT_VIEWBYUSER_FAILS:
       return { loading: false, error: action.payload };
 
     default:

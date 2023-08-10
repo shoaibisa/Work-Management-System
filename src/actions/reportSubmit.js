@@ -12,6 +12,12 @@ import {
   REPORT_UPDATE_REQUEST,
   REPORT_UPDATE_SUCCESS,
   REPORT_UPDATE_FAILS,
+  REPORT_REMARK_REQUEST,
+  REPORT_REMARK_SUCCESS,
+  REPORT_REMARK_FAILS,
+  REPORT_VIEWBYUSER_REQUEST,
+  REPORT_VIEWBYUSER_SUCCESS,
+  REPORT_VIEWBYUSER_FAILS,
 } from "../constants/reportsubmit";
 
 export const reportCreate =
@@ -91,8 +97,7 @@ export const viewReport = (id, type, webtargetUrls) => async (dispatch) => {
     dispatch({ type: REPORT_VIEW_REQUEST });
     const userData = JSON.parse(localStorage.getItem("employeeInfo"));
     const token = userData?.token;
-
-    console.log(id, type, webtargetUrls);
+    // console.log(id, type, webtargetUrls);
     const { data } = await axios.post(
       "http://localhost:5000/project/reportsbyuser",
       {
@@ -175,7 +180,7 @@ export const reportUpdate =
     id
   ) =>
   async (dispatch) => {
-    console.log(id);
+    //console.log(id);
     const payload = {
       vulnerability,
       risk,
@@ -206,7 +211,7 @@ export const reportUpdate =
         formData.append("pocFiles", file);
       }
       // console.log(payload.id);
-      console.log(formData.get("id"));
+      //  console.log(formData.get("id"));
       const { data } = await axios.post(
         "http://localhost:5000/project/editreport",
         formData,
@@ -224,6 +229,77 @@ export const reportUpdate =
     } catch (error) {
       dispatch({
         type: REPORT_UPDATE_FAILS,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const remarksReport = (id, remarks) => async (dispatch) => {
+  try {
+    dispatch({ type: REPORT_REMARK_REQUEST });
+    const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+    const token = userData?.token;
+    const { data } = await axios.post(
+      "http://localhost:5000/project/addremark",
+      {
+        id,
+        remark: remarks,
+      },
+
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    dispatch({
+      type: REPORT_REMARK_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: REPORT_REMARK_FAILS,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const reportsByUser =
+  (id, type, webtargetUrls, userid) => async (dispatch) => {
+    try {
+      dispatch({ type: REPORT_VIEWBYUSER_REQUEST });
+      const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+      const token = userData?.token;
+
+      const { data } = await axios.post(
+        "http://localhost:5000/project/getreportsbyuserid",
+        {
+          userId: userid,
+          taskId: id,
+          type,
+          webtargetUrls,
+        },
+
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      //console.log("dgdfg", data);
+      dispatch({
+        type: REPORT_VIEWBYUSER_SUCCESS,
+        payload: data.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: REPORT_VIEWBYUSER_FAILS,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

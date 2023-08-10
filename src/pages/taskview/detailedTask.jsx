@@ -92,14 +92,21 @@ function DetailedViewtask() {
                           );
                           const namesOfFilteredEmployees =
                             filteredEmployees.map((emp) => emp.name);
-                          return (
+
+                          const employeeLinks = filteredEmployees.map((emp) => (
                             <Link
-                              // key={employee._id}
-                              // to={`/taskview/${item.taskid._id}/${item.selectedOption.name}/${item.selectedOption.webtargetUrls}`}
+                              key={emp._id}
+                              to={`/singlereportview/${taskID}/web/${url._id}/${emp._id}`}
                               className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
                             >
-                              {namesOfFilteredEmployees.join(", ")}
+                              {emp.name}
                             </Link>
+                          ));
+
+                          return (
+                            <>
+                              <div key={employee._id}>{employeeLinks}</div>
+                            </>
                           );
                         })}
                       </div>
@@ -124,42 +131,120 @@ function DetailedViewtask() {
               <div className="block w-full rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                 <h1>For Mobile</h1>
                 {android && (
-                  <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <div className="text-md font-medium leading-6 text-gray-900">
-                      Android
+                  <>
+                    <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <div className="text-md font-medium leading-6 text-gray-900">
+                        Android
+                      </div>
+                      <div className="mt-1  flex text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        <a href={data.mobileData && data.mobileData.android}>
+                          {data.mobileData && data.mobileData.android}
+                        </a>
+                        <Link
+                          type="submit"
+                          to={`/viewproject/${projectId}/viewtask/${taskID}/android/assignsingle`}
+                          className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        >
+                          Assign
+                        </Link>
+                      </div>
                     </div>
-                    <div className="mt-1  flex text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                      <a href={data.mobileData && data.mobileData.android}>
-                        {data.mobileData && data.mobileData.android}
-                      </a>
-                      <Link
-                        type="submit"
-                        to={`/viewproject/${projectId}/viewtask/${taskID}/android/assignsingle`}
-                        className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                      >
-                        Assign
-                      </Link>
+                    <div className="flex">
+                      <h3> Assign To: </h3>
+                      {data.mobileData.forAndroid.assignEmployee.map(
+                        (employee) => {
+                          const filteredEmployees = employees.filter((emp) =>
+                            employee.employee.includes(emp._id)
+                          );
+
+                          const employeeLinks = filteredEmployees.map((emp) => (
+                            <Link
+                              key={emp._id}
+                              to={`/singlereportview/${taskID}/android/${emp._id}`}
+                              className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
+                            >
+                              {emp.name}
+                            </Link>
+                          ));
+
+                          return (
+                            <>
+                              <div key={employee._id}>{employeeLinks}</div>
+                            </>
+                          );
+                        }
+                      )}
                     </div>
-                  </div>
+                  </>
                 )}
                 {ios && (
-                  <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <div className="text-md font-medium leading-6 text-gray-900">
-                      IOS
+                  <>
+                    <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <div className="text-md font-medium leading-6 text-gray-900">
+                        IOS
+                      </div>
+                      <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        <a href={data.mobileData && data.mobileData.ios}>
+                          {data.mobileData && data.mobileData.ios}
+                        </a>
+                        <Link
+                          type="submit"
+                          to={`/viewproject/${projectId}/viewtask/${taskID}/ios/assignsingle`}
+                          className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        >
+                          Assign
+                        </Link>
+                      </div>
                     </div>
-                    <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                      <a href={data.mobileData && data.mobileData.ios}>
-                        {data.mobileData && data.mobileData.ios}
-                      </a>
-                      <Link
-                        type="submit"
-                        to={`/viewproject/${projectId}/viewtask/${taskID}/ios/assignsingle`}
-                        className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                      >
-                        Assign
-                      </Link>
+                    {/* <div className="flex">
+                      <h3> Assign To: </h3>
+                      {data.mobileData &&
+                        data.mobileData.forIos.assignEmployee.map(
+                          (employee) => {
+                            const filteredEmployees = employees.filter((emp) =>
+                              employee.employee.includes(emp._id)
+                            );
+                            const namesOfFilteredEmployees =
+                              filteredEmployees.map((emp) => emp.name);
+                            return (
+                              <Link
+                                // to={`/singlereportview/${taskID}/web/${url._id}`}
+                                to={`/singlereportview/${taskID}/ios${emp._id}`}
+                                className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
+                              >
+                                {namesOfFilteredEmployees.join(", ")}
+                              </Link>
+                            );
+                          }
+                        )}
+                    </div> */}
+                    <div className="flex">
+                      <h3> Assign To: </h3>
+                      {data.mobileData.forAndroid.assignEmployee.map(
+                        (employee) => {
+                          const filteredEmployees = employees.filter((emp) =>
+                            employee.employee.includes(emp._id)
+                          );
+
+                          const employeeLinks = filteredEmployees.map((emp) => (
+                            <Link
+                              key={emp._id}
+                              to={`/singlereportview/${taskID}/ios/${emp._id}`}
+                              className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
+                            >
+                              {emp.name}
+                            </Link>
+                          ));
+
+                          return (
+                            <>
+                              <div key={employee._id}>{employeeLinks}</div>
+                            </>
+                          );
+                        }
+                      )}
                     </div>
-                  </div>
+                  </>
                 )}
 
                 <div className=" mt-4 flex flex-col">
@@ -188,7 +273,7 @@ function DetailedViewtask() {
                     FILE
                   </span>
                 </div>
-                <div className="flex">
+                {/* <div className="flex">
                   <h3> Assign To: </h3>
                   {data.apiData.assignEmployee.map((employee) => {
                     const filteredEmployees = employees.filter((emp) =>
@@ -204,6 +289,31 @@ function DetailedViewtask() {
                       >
                         {namesOfFilteredEmployees.join(", ")}
                       </span>
+                    );
+                  })}
+                </div> */}
+
+                <div className="flex">
+                  <h3> Assign To: </h3>
+                  {data.apiData.assignEmployee.map((employee) => {
+                    const filteredEmployees = employees.filter((emp) =>
+                      employee.employee.includes(emp._id)
+                    );
+
+                    const employeeLinks = filteredEmployees.map((emp) => (
+                      <Link
+                        key={emp._id}
+                        to={`/singlereportview/${taskID}/api/${emp._id}`}
+                        className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
+                      >
+                        {emp.name}
+                      </Link>
+                    ));
+
+                    return (
+                      <>
+                        <div key={employee._id}>{employeeLinks}</div>
+                      </>
                     );
                   })}
                 </div>
@@ -243,7 +353,7 @@ function DetailedViewtask() {
                     FILE
                   </span>
                 </div>
-                <div className="flex">
+                {/* <div className="flex">
                   <h3> Assign To: </h3>
                   {data.networkData.assignEmployee.map((employee) => {
                     const filteredEmployees = employees.filter((emp) =>
@@ -259,6 +369,31 @@ function DetailedViewtask() {
                       >
                         {namesOfFilteredEmployees.join(", ")}
                       </span>
+                    );
+                  })}
+                </div> */}
+
+                <div className="flex">
+                  <h3> Assign To: </h3>
+                  {data.networkData.assignEmployee.map((employee) => {
+                    const filteredEmployees = employees.filter((emp) =>
+                      employee.employee.includes(emp._id)
+                    );
+
+                    const employeeLinks = filteredEmployees.map((emp) => (
+                      <Link
+                        key={emp._id}
+                        to={`/singlereportview/${taskID}/network/${emp._id}`}
+                        className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
+                      >
+                        {emp.name}
+                      </Link>
+                    ));
+
+                    return (
+                      <>
+                        <div key={employee._id}>{employeeLinks}</div>
+                      </>
                     );
                   })}
                 </div>
@@ -288,7 +423,7 @@ function DetailedViewtask() {
             type === "grc" ? (
               <div className="block w-full rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                 <h1>For GRC</h1>
-                <div className="flex">
+                {/* <div className="flex">
                   <h3> Assign To: </h3>
                   {data.grcData.assignEmployee.map((employee) => {
                     const filteredEmployees = employees.filter((emp) =>
@@ -304,6 +439,31 @@ function DetailedViewtask() {
                       >
                         {namesOfFilteredEmployees.join(", ")}
                       </span>
+                    );
+                  })}
+                </div> */}
+
+                <div className="flex">
+                  <h3> Assign To: </h3>
+                  {data.grcData.assignEmployee.map((employee) => {
+                    const filteredEmployees = employees.filter((emp) =>
+                      employee.employee.includes(emp._id)
+                    );
+
+                    const employeeLinks = filteredEmployees.map((emp) => (
+                      <Link
+                        key={emp._id}
+                        to={`/singlereportview/${taskID}/grc/${emp._id}`}
+                        className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
+                      >
+                        {emp.name}
+                      </Link>
+                    ));
+
+                    return (
+                      <>
+                        <div key={employee._id}>{employeeLinks}</div>
+                      </>
                     );
                   })}
                 </div>
