@@ -204,6 +204,18 @@ const listOfEmployees = async (req, res) => {
     return res.status(500);
   }
 };
+const listOfClients = async (req, res) => {
+  try {
+    const clients = await Employee.find({ role: "Client" }).exec();
+
+    return res.status(200).send({
+      clients: clients,
+      isError: false,
+    });
+  } catch (error) {
+    return res.status(500);
+  }
+};
 
 export {
   statusToggle,
@@ -217,4 +229,5 @@ export {
   listOfEmployees,
   getEmployeeById,
   getManagerById,
+  listOfClients,
 };
