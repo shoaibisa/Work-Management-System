@@ -6,7 +6,7 @@ export const AuthorizedAdmin = ({ children }) => {
   const role = userData?.userRole;
   if (!token) {
     return <Navigate to={"/login"} replace={true}></Navigate>;
-  } else if (role !== "admin") {
+  } else if (role !== "Admin") {
     return <Navigate to={"/"} replace={true}></Navigate>;
   }
   return children;

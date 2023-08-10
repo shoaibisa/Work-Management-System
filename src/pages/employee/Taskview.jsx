@@ -420,12 +420,7 @@ function Taskview() {
                   </dt>
                 </div>
                 <div className="px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-4">
-                  <Link
-                    to={`/editreport/${items._id}`}
-                    className="text-sm font-semibold leading-6 text-gray-900"
-                  >
-                    Edited :
-                  </Link>
+                  Edited :
                   <div className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                     {formatDate(items.updatedAt)}
                   </div>

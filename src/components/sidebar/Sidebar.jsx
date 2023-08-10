@@ -35,7 +35,7 @@ const Sidebar = () => {
   const { dispatchs } = useContext(DarkModeContext);
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const role = userData?.userRole;
-  const isAdmin = role === "admin";
+  const isAdmin = role === "Admin";
   const isPM = role === "Project Manager";
   const isEmployee = role === "Employee";
 
