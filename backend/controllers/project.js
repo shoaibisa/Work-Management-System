@@ -535,26 +535,46 @@ const assignEmployee = async (req, res) => {
       if (
         task.webData.webtargetUrls[i]._id.toString() === req.body.webtargetUrls
       ) {
-        task.webData.webtargetUrls[i].assignEmployee.push(...assignEmployee);
+        // if employee already exist then not push
+
+        if (
+          task.webData.webtargetUrls[i].assignEmployee.indexOf(
+            assignEmployee
+          ) === -1
+        ) {
+          task.webData.webtargetUrls[i].assignEmployee.push(...assignEmployee);
+        }
       }
     }
   }
   if (selectedOption === "api") {
-    task.apiData.assignEmployee.push(...assignEmployee);
+    if (task.apiData.assignEmployee.indexOf(assignEmployee) === -1) {
+      task.apiData.assignEmployee.push(...assignEmployee);
+    }
   }
   if (selectedOption === "network") {
-    task.networkData.assignEmployee.push(...assignEmployee);
+    if (task.networkData.assignEmployee.indexOf(assignEmployee) === -1) {
+      task.networkData.assignEmployee.push(...assignEmployee);
+    }
   }
 
   if (req.body.selectedOption === "android") {
-    task.mobileData.forAndroid.assignEmployee.push(...assignEmployee);
+    if (
+      task.mobileData.forAndroid.assignEmployee.indexOf(assignEmployee) === -1
+    ) {
+      task.mobileData.forAndroid.assignEmployee.push(...assignEmployee);
+    }
   }
   if (req.body.selectedOption === "ios") {
-    task.mobileData.forIos.assignEmployee.push(...assignEmployee);
+    if (task.mobileData.forIos.assignEmployee.indexOf(assignEmployee) === -1) {
+      task.mobileData.forIos.assignEmployee.push(...assignEmployee);
+    }
   }
 
   if (selectedOption === "grc") {
-    task.grcData.assignEmployee.push(...assignEmployee);
+    if (task.grcData.assignEmployee.indexOf(assignEmployee)) {
+      task.grcData.assignEmployee.push(...assignEmployee);
+    }
   }
   await task.save();
   // push tasks in employee in employeeProjects in tasks is array
