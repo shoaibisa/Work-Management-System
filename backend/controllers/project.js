@@ -18,6 +18,8 @@ const createProject = async (req, res) => {
     });
   }
   const project = new Project(projectData);
+  const client = await Employee.findById(projectData.client).exec();
+  client.clientProjects.push(project._id);
   project
     .save()
     .then(() => {
