@@ -403,6 +403,14 @@ function Taskview() {
               </div>
             ) : null}
           </div>
+          <div className="flex mt-6 mx-10 justify-end">
+            <Link
+              to={`/allpdf/${id}`}
+              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              View Reports
+            </Link>
+          </div>
 
           {report.data && report.data.length > 0 ? (
             report.data.map((items, index) => (

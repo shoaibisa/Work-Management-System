@@ -159,6 +159,7 @@ const Signup = () => {
               </div>
               <div className="my-5">
                 <select
+                  required
                   data-te-select-init
                   value={selectedDepartment}
                   onChange={(e) => setSelectedDepartment(e.target.value)}
@@ -176,6 +177,7 @@ const Signup = () => {
               <div className="my-5">
                 <select
                   data-te-select-init
+                  required
                   value={selectedrole}
                   onChange={(e) => setSelectedrole(e.target.value)}
                 >

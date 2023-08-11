@@ -13,7 +13,18 @@ function PDF() {
   const singleReportView = useSelector((state) => state.singleReportView);
   const { report } = singleReportView;
   const { data } = report;
-
+  function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    };
+    return date.toLocaleString("en-US", options);
+  }
   useEffect(() => {
     dispatch(SingleViewReport(id));
   }, [dispatch, id]);
@@ -142,12 +153,214 @@ function PDF() {
             <div>
               <h1 className=" text-center  bold text-2xl ">Report</h1>
             </div>
-            <div class="flex  m-auto mt-10 flex-col w-[1000px]">
+            <div className="section1">
+              <div class="flex mx-auto mt-10 flex-col w-[1000px]">
+                <table className="table-auto border border-collapse border-gray-300">
+                  <tbody>
+                    <tr>
+                      <td
+                        className="px-4 w-[30%] text-blue-500 bg-blue-100 py-2 border  border-gray-300"
+                        colSpan={2}
+                      >
+                        ReportID
+                      </td>
+                      <td
+                        colSpan={6}
+                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
+                      >
+                        {data && data._id}
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td
+                        className="px-4 text-blue-500 bg-blue-100 py-2 border border-gray-300"
+                        colSpan={2}
+                      >
+                        Report Type
+                      </td>
+                      <td
+                        colSpan={6}
+                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
+                      ></td>
+                    </tr>
+
+                    <tr>
+                      <td
+                        className="px-4 text-blue-500 bg-blue-100 py-2 border border-gray-300"
+                        colSpan={2}
+                      >
+                        Document Type
+                      </td>
+                      <td
+                        colSpan={6}
+                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
+                      >
+                        PDF
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td
+                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
+                        colSpan={2}
+                      >
+                        Client Name
+                      </td>
+                      <td
+                        colSpan={6}
+                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
+                      ></td>
+                    </tr>
+
+                    <tr>
+                      <td
+                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
+                        colSpan={2}
+                      >
+                        Project Name/ID
+                      </td>
+                      <td
+                        colSpan={6}
+                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
+                      >
+                        {data && data.project}
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td
+                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
+                        colSpan={2}
+                      >
+                        Test Enviourment
+                      </td>
+                      <td
+                        colSpan={6}
+                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
+                      ></td>
+                    </tr>
+
+                    <tr>
+                      <td
+                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
+                        colSpan={2}
+                      >
+                        Test Method
+                      </td>
+                      <td
+                        colSpan={6}
+                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
+                      ></td>
+                    </tr>
+
+                    <tr>
+                      <td
+                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
+                        colSpan={2}
+                      >
+                        Web Application Verson Number / Build Number
+                      </td>
+                      <td
+                        colSpan={6}
+                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
+                      ></td>
+                    </tr>
+
+                    <tr>
+                      <td
+                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
+                        colSpan={2}
+                      >
+                        Refrence Document / Base Document
+                      </td>
+                      <td
+                        colSpan={6}
+                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
+                      ></td>
+                    </tr>
+
+                    <tr>
+                      <td
+                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
+                        colSpan={2}
+                      >
+                        Report Date
+                      </td>
+                      <td
+                        colSpan={6}
+                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
+                      ></td>
+                    </tr>
+
+                    <tr>
+                      <td
+                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
+                        colSpan={2}
+                      >
+                        Test Start Date
+                      </td>
+                      <td
+                        colSpan={4}
+                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
+                      ></td>
+                      <td
+                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
+                        colSpan={1}
+                      >
+                        Test End Date
+                      </td>
+                      <td
+                        colSpan={4}
+                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
+                      ></td>
+                    </tr>
+
+                    <tr>
+                      <td
+                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
+                        colSpan={2}
+                      >
+                        Testing Performed By
+                      </td>
+                      <td
+                        colSpan={6}
+                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
+                      ></td>
+                    </tr>
+
+                    <tr>
+                      <td
+                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
+                        colSpan={2}
+                      >
+                        Report Author
+                      </td>
+                      <td
+                        colSpan={3}
+                        className="px-4 py-2 border  text-blue-500 bg-blue-100 border-gray-300 h-20 col-span-6"
+                      >
+                        {data && data.employee}
+                      </td>
+                      <td
+                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
+                        colSpan={4}
+                      >
+                        Date {formatDate(data && data.updatedAt)}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className="page-break break-before-always" />
+            <div class="flex section2  m-auto mt-10 flex-col w-[1000px]">
               <table
                 id="my-table"
                 className="table-auto border border-collapse border-gray-300"
               >
-                <thead>
+                {/* <thead> */}
+                <tbody>
                   <tr className="bg-gray-100">
                     <th className="px-4 py-2 w-10 border border-gray-300">#</th>
                     <th className="px-4 py-2 w-[200px] border border-gray-300 font-semibold text-blue-500 bg-blue-100">
@@ -166,8 +379,8 @@ function PDF() {
                       Status
                     </th>
                   </tr>
-                </thead>
-                <tbody>
+                  {/* </thead> */}
+
                   <tr>
                     <td className="px-4 py-2 border border-gray-300"> </td>
                     <td className="px-4 py-2 border h-20 border-gray-300 font-semibold text-blue-500 bg-blue-100">

@@ -68,6 +68,8 @@ const CreateTask = () => {
   //console.log(mobileData);
   const [message, setMessage] = useState("");
 
+  const [taskName, setTaskName] = useState("");
+
   const location = useLocation();
   const Navigate = useNavigate();
   const redirect = location.search ? location.search.split("=")[1] : "/";
@@ -98,6 +100,7 @@ const CreateTask = () => {
     // Add selectedOptions to formData as an array
     formData.append("selectedOptions", JSON.stringify(selectedOptions));
     formData.append("project", projectId);
+    formData.append("taskname", taskName);
 
     // Check if "web" is selected
     if (selectedOptions.includes("web")) {
@@ -188,6 +191,29 @@ const CreateTask = () => {
                       Project Name : Birla (Id:{projectId})
                     </label>
                   </div>
+                  <div className="sm:col-span-4 w-1/2 mr-10 mb-10">
+                    <label
+                      for="username"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Task Name
+                    </label>
+                    <div className="mt-2">
+                      <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        <input
+                          type="text"
+                          name="webcompanyName"
+                          autoComplete="username"
+                          className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                          placeholder="Enter Task Name"
+                          required="true"
+                          value={taskName}
+                          onChange={(e) => setTaskName(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
                   <div className=" sm:col-span-4 mt-6 text-black-700">
                     <label
                       for="projectType"

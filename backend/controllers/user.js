@@ -62,6 +62,7 @@ const getUserById = async (req, res) => {
       phone: employee.phone,
       department: employee.department,
       isError: false,
+      data: employee,
     });
   } catch (error) {
     return res.status(500);

@@ -15,6 +15,8 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createProject } from "../../actions/projectlistAction";
 import { useLocation, useNavigate } from "react-router-dom";
+import { listClients } from "../../actions/clientAction";
+
 // import { Link } from "react-router-dom";
 // import { Menu, Transition } from "@headlessui/react";
 // import { ChevronDownIcon } from "@heroicons/react/20/solid";
@@ -27,6 +29,7 @@ const Createproject = () => {
   const [clientName, setclientName] = useState("");
   const [clientEmail, setclientEmail] = useState("");
 
+  console.log(clientEmail);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   const [submissionDate, setSubmissionDate] = useState(null);
@@ -42,7 +45,12 @@ const Createproject = () => {
 
   const projectCreated = useSelector((state) => state.projectCreated);
   const { loading, error, project } = projectCreated;
+
+  const clientsList = useSelector((state) => state.clientsList);
+  const { clients } = clientsList;
+  console.log(clients);
   useEffect(() => {
+    dispatch(listClients());
     if (project) {
       if (!project.isError) {
         //Navigate(redirect);
@@ -51,6 +59,7 @@ const Createproject = () => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    initTE({ Select });
   }, [project, redirect]);
 
   const handleOptionSelect = (event) => {
@@ -89,6 +98,7 @@ const Createproject = () => {
         projectPriority
       )
     );
+
     setMessage("Sucessfully Register");
   };
 
@@ -190,7 +200,23 @@ const Createproject = () => {
                       Client email
                     </label>
                     <div className="mt-2">
-                      <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                      <select
+                        data-te-select-init
+                        data-te-select-filter="true"
+                        value={clientEmail}
+                        onChange={(e) => setclientEmail(e.target.value)}
+                      >
+                        <option value="" disabled>
+                          Select an employee
+                        </option>
+                        {clients.clients &&
+                          clients.clients.map((employee) => (
+                            <option key={employee._id} value={employee._id}>
+                              {employee.email}
+                            </option>
+                          ))}
+                      </select>
+                      {/* <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                         <input
                           type="email"
                           name="webclientEmail"
@@ -201,9 +227,21 @@ const Createproject = () => {
                           value={clientEmail}
                           onChange={(e) => setclientEmail(e.target.value)}
                         />
-                      </div>
+                      </div> */}
                     </div>
                   </div>
+                  {/* <div className="flex flex-col mx-5 mt-4">
+                    <select
+                      id="multiSelection"
+                      multiple
+                      data-te-select-init
+                      data-te-select-filter="true"
+                      //onChange={(e) => handleSelectdEmployee(e)}
+                    >
+                      <option>fdiosjfgoisd</option>
+                    </select>
+                    <label data-te-select-label-ref>Select Client Email</label>
+                  </div> */}
                 </div>
                 <div className="flex w-full">
                   <div className=" sm:col-span-4 w-1/2 mr-10  mt-6  mb-6 flex">

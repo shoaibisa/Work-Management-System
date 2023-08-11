@@ -326,6 +326,14 @@ function TaskviewUser() {
               </div>
             ) : null}
           </div>
+          <div className="flex mt-6 mx-10 justify-end">
+            <Link
+              to={`/allreportbyuser/${id}/${type}/${userid}/${webtargetUrls}`}
+              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              View Reports
+            </Link>
+          </div>
 
           {singleReport && singleReport.length > 0 ? (
             singleReport.map((items, index) => (

@@ -28,6 +28,6 @@ router.get("/managers", protect, listOfManagers);
 router.get("/employees", protect, listOfEmployees);
 router.post("/getEmployeeById", protect, getEmployeeById);
 router.post("/getManagerById", protect, getManagerById);
-router.get("/clients", protect, listOfClients);
+router.get("/clients", listOfClients);
 
 export default router;

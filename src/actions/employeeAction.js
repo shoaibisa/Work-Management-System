@@ -33,7 +33,14 @@ export const register =
       const config = { headers: { "Contnet-Type": "application/json" } };
       const { data } = await axios.post(
         "http://localhost:5000/auth/sign-up",
-        { name, email, password, phone, selectedDepartment, selectedrole },
+        {
+          name,
+          email,
+          password,
+          phone,
+          selectedDepartment,
+          role: selectedrole,
+        },
         config
       );
 
