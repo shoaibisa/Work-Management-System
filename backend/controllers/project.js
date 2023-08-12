@@ -8,7 +8,7 @@ import Employee from "../models/employee.js";
 
 const createProject = async (req, res) => {
   const projectData = req.body;
-  // console.log(req.body.apiData.apifile);
+  console.log(projectData);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(201).send({
@@ -17,9 +17,18 @@ const createProject = async (req, res) => {
       isError: true,
     });
   }
-  const project = new Project(projectData);
-  const client = await Employee.findById(projectData.client).exec();
+  const project = new Project({
+    projectName: req.body.projectName,
+    companyName: req.body.companyName,
+    clientName: req.body.clientName,
+    clientEmail: req.body.client,
+    projectPriority: req.body.projectPriority,
+    manager: req.body.manager,
+    submissionDate: req.body.submissionDate,
+  });
+  const client = await Employee.findById(req.body.client).exec();
   client.clientProjects.push(project._id);
+  await client.save();
   project
     .save()
     .then(() => {
@@ -155,6 +164,7 @@ const createTask = async (req, res) => {
   var taskLoady = {
     project: req.body.project,
     selectedOptions: selectedOptions,
+    taskName: req.body.taskname,
   };
 
   var file1;

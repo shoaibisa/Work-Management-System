@@ -23,6 +23,7 @@ import {
   reportRemarkReducer,
   reportByUserReducer,
 } from "./reducers/reportReducer";
+import { clientsListReducer } from "./reducers/clientReducer";
 const employeenfoFromStroge = localStorage.getItem("employeeInfo")
   ? JSON.parse(localStorage.getItem("employeeInfo"))
   : null;
@@ -44,6 +45,7 @@ const reducer = combineReducers({
   updateReport: reportUpdateReducer,
   remarkReport: reportRemarkReducer,
   reportByUser: reportByUserReducer,
+  clientsList: clientsListReducer,
 });
 const initialState = {
   employeeLogin: { employeeInfo: employeenfoFromStroge },

@@ -27,6 +27,8 @@ import EmployeeTaskview from "./pages/employee/Taskview";
 import PDF from "./pages/employee/reportsubmit/reportView";
 import Pdftemplate from "./components/pdf/Pdftemplate";
 import TaskviewUser from "./pages/projectManager/singleTask";
+import AllPDF from "./pages/employee/reportsubmit/viewAllReports";
+import AllReportPDF from "./pages/projectManager/allReportbyUser";
 import {
   AuthorizedUser,
   AuthorizedAdmin,
@@ -179,11 +181,11 @@ function App() {
           />
 
           {/* <Route path="/createtask" element={<CreateTask1 />} /> */}
-          {/* 
-          <Route path="/viewtask" element={<Taskview />} />
-          <Route path="/clentdashboard" element={<ClientDashboard />} />
+          {/* <Route path="/viewtask" element={<Taskview />} /> */}
+
+          <Route path="/clientdashboard" element={<ClientDashboard />} />
           <Route path="/clientProject" element={<ClientProjectlist />} />
-          <Route path="/clientprojectview" element={<ClientProjectView />} /> */}
+          <Route path="/clientprojectview" element={<ClientProjectView />} />
 
           <Route
             path="/alltasks"
@@ -222,6 +224,23 @@ function App() {
             element={
               <AuthorizedUser>
                 <PDF />
+              </AuthorizedUser>
+            }
+          />
+          <Route
+            path="/allpdf/:id"
+            element={
+              <AuthorizedUser>
+                <AllPDF />
+              </AuthorizedUser>
+            }
+          />
+          <Route
+            // path="/allreportbyuser/:id/:type/:userId/:"
+            path="/allreportbyuser/:id/:type/:userid/:webtargetUrls"
+            element={
+              <AuthorizedUser>
+                <AllReportPDF />
               </AuthorizedUser>
             }
           />

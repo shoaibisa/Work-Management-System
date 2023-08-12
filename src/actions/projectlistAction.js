@@ -31,6 +31,7 @@ export const createProject =
   async (dispatch) => {
     const userData = JSON.parse(localStorage.getItem("employeeInfo"));
     const token = userData?.token;
+    console.log(clientEmail);
     try {
       dispatch({ type: PROJECT_CREATED_REQUEST });
       const { data } = await axios.post(
@@ -39,7 +40,7 @@ export const createProject =
           projectName,
           companyName,
           clientName,
-          clientEmail,
+          client: clientEmail,
           manager,
           submissionDate,
           projectPriority,
