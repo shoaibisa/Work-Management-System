@@ -796,7 +796,24 @@ const getReportsByUserId = async (req, res) => {
       }
     }
   }
-  console.log(reports);
+  return res.status(200).send({
+    title: "Success",
+    message: "project get sucessfully",
+    data: reports,
+  });
+};
+
+const getAllReportOfManager = async (req, res) => {
+  const id = req.user._id;
+  const projects = await Project.find({ manager: id });
+
+  var reports = [];
+
+  for (var i = 0; i < projects.length; i++) {
+    var r = await Report.find({ project: projects[i] });
+    reports.push(r);
+  }
+
   return res.status(200).send({
     title: "Success",
     message: "project get sucessfully",
@@ -821,4 +838,5 @@ export {
   getTaskByProject,
   getReportsByUser,
   getReportsByUserId,
+  getAllReportOfManager,
 };
