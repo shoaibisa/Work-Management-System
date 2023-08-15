@@ -1,14 +1,13 @@
+import React, { useEffect, useState } from "react";
 import Navbar from "../../../components/navbar/Navbar";
 import Sidebar from "../../../components/sidebar/Sidebar";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { reportCreate } from "../../../actions/reportSubmit";
-import { useHistory } from "react-router-dom";
+import { initTE, Select } from "tw-elements";
+
 const Reportsubmit = () => {
-  // const history = useHistory();
   const { taskID, type, webtargetUrlsId } = useParams();
-  // console.log(useParams());
   const [vulnerability, setVulnerability] = useState("");
   const [risk, setRisk] = useState("");
   const [attributingFactor, setAttributingFactor] = useState("");
@@ -19,12 +18,48 @@ const Reportsubmit = () => {
   const [mitigation, setMitigation] = useState("");
   const [pocFile, setPocFile] = useState([]);
   const [brief, setBrief] = useState("");
+  const [files, setFiles] = useState({});
+  const [message, setMessage] = useState("");
+
   const handleFileInputChange = (event) => {
-    const files = event.target.files;
-    setPocFile(files);
+    const selectedFiles = event.target.files;
+    setPocFile(selectedFiles);
+    for (const file of selectedFiles) {
+      addFile(file);
+    }
   };
 
-  const [message, setMessage] = useState("");
+  const dropHandler = (event) => {
+    event.preventDefault();
+    const fileList = event.dataTransfer.files;
+    for (const file of fileList) {
+      addFile(file);
+    }
+  };
+
+  const dragOverHandler = (event) => {
+    event.preventDefault();
+  };
+
+  const dragLeaveHandler = (event) => {
+    event.preventDefault();
+  };
+
+  const dragEnterHandler = (event) => {
+    event.preventDefault();
+  };
+
+  const handleBrowseButtonClick = () => {
+    const hiddenInput = document.getElementById("hidden-input");
+    hiddenInput.click();
+  };
+
+  const handleFileInput = (event) => {
+    const fileList = event.target.files;
+    for (const file of fileList) {
+      addFile(file);
+    }
+  };
 
   const location = useLocation();
   const Navigate = useNavigate();
@@ -33,16 +68,38 @@ const Reportsubmit = () => {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const employee = userData?.id;
 
+  const addFile = (file) => {
+    const isImage = file.type.startsWith("image/");
+    const objectURL = URL.createObjectURL(file);
+
+    setFiles((prevFiles) => ({
+      ...prevFiles,
+      [objectURL]: file,
+    }));
+  };
+
+  const deleteFile = (objectURL) => {
+    const updatedFiles = { ...files };
+    delete updatedFiles[objectURL];
+    setFiles(updatedFiles);
+  };
+
+  const handleSubmitFiles = () => {
+    alert(`Submitted Files:\n${JSON.stringify(files)}`);
+    console.log(files);
+  };
+
   const reportCreated = useSelector((state) => state.reportCreated);
   const { loading, error, report } = reportCreated;
+
   useEffect(() => {
     if (report) {
       if (!report.isError) {
+        // Do something on success
       } else {
         setMessage(report.message);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [report]);
 
   const handleSubmit = (event) => {
@@ -68,21 +125,83 @@ const Reportsubmit = () => {
     window.history.back();
   };
 
+  useEffect(() => {
+    initTE({ Select });
+  }, []);
+
   return (
-    <div className="home">
+    <div className="home ">
       <Sidebar />
-      <div className="homeContainer">
+      <div className="homeContainer w-[70vw]">
         <Navbar />
-        {/* main code here  */}
+        {/* main code here */}
         <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight m-6">
           Submit Report
         </h2>
-        <div className=" flex w-auto  rounded-lg border border-dashed border-gray-900/25 p-6 m-6 mt-6">
+        <div className="flex w-auto rounded-lg border border-dashed border-gray-900/25 p-6 m-6 mt-6">
           <form
             onSubmit={handleSubmit}
             className="w-full"
             enctype="multipart/form-data"
           >
+            {/* multi file upload start herepx  */}
+            <main className="container mb-8 mx-auto h-fit">
+              {/* file upload modal */}
+              <article
+                aria-label="File Upload Modal"
+                className="relative h-full flex flex-col bg-white shadow-xl rounded-md"
+                onDrop={dropHandler}
+                onDragOver={dragOverHandler}
+                onDragLeave={dragLeaveHandler}
+                onDragEnter={dragEnterHandler}
+              >
+                {/* scroll area */}
+                <section className=" overflow-auto p-8 w-full h-full flex flex-col">
+                  <header className="border-dashed border-2 border-gray-400 py-12 flex flex-col justify-center items-center">
+                    <p className="mb-3 font-semibold text-gray-900 flex flex-wrap justify-center">
+                      <span>Drag and drop your</span>&nbsp;
+                      <span>files anywhere or</span>
+                    </p>
+                    <input
+                      id="hidden-input"
+                      type="file"
+                      multiple
+                      className="hidden"
+                      onChange={handleFileInput}
+                    />
+                    <button
+                      id="button"
+                      className="mt-2 rounded-sm px-3 py-1 bg-gray-200 hover:bg-gray-300 focus:shadow-outline focus:outline-none"
+                      onClick={handleBrowseButtonClick}
+                    >
+                      Upload a file
+                    </button>
+                  </header>
+
+                  <h1 className="pt-8 pb-3 font-semibold sm:text-lg text-gray-900">
+                    To Upload
+                  </h1>
+                </section>
+
+                {/* sticky footer */}
+                <footer className="flex justify-end px-8 pb-8 pt-4">
+                  <button
+                    id="submit"
+                    className="rounded-sm px-3 py-1 bg-blue-700 hover:bg-blue-500 text-white focus:shadow-outline focus:outline-none"
+                    onClick={handleSubmitFiles}
+                  >
+                    Upload now
+                  </button>
+                  <button
+                    id="cancel"
+                    className="ml-3 rounded-sm px-3 py-1 hover:bg-gray-300 focus:shadow-outline focus:outline-none"
+                  >
+                    Cancel
+                  </button>
+                </footer>
+              </article>
+            </main>
+            {/* multi file upload end here  */}
             <div className=" flex  ">
               <div className="sm:col-span-4">
                 <label
@@ -98,7 +217,7 @@ const Reportsubmit = () => {
                     id="Vulnerability"
                     name="vulnerability"
                     type="text"
-                    className="block w-[400px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-[260px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -109,16 +228,32 @@ const Reportsubmit = () => {
                 >
                   Risk
                 </label>
-                <div className="mt-2">
-                  <input
+                <div className=" mt-2 ">
+                  <select
                     value={risk}
-                    onChange={(e) => setRisk(e.target.value)}
                     id="Vulnerability"
                     name="risk"
                     type="text"
-                    className="block w-[400px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
+                    required
+                    data-te-select-init
+                    onChange={(e) => setRisk(e.target.value)}
+                  >
+                    <option selected>Select Risk</option>
+                    <option value="high">Hign</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                  </select>
                 </div>
+
+                {/* <div className="mt-2">
+                  <input
+                    value={risk}
+                    id="Vulnerability"
+                    name="risk"
+                    type="text"
+                    className="block w-[260px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div> */}
               </div>
               <div className="sm:col-span-4 ml-10 ">
                 <label
@@ -134,12 +269,11 @@ const Reportsubmit = () => {
                     id="Vulnerability"
                     name="cwe"
                     type="text"
-                    className="block w-[300px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-[260px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
             </div>
-
             <div className=" flex  mt-8 ">
               <div className="sm:col-span-4">
                 <label
@@ -155,7 +289,7 @@ const Reportsubmit = () => {
                     id="Vulnerability"
                     name="attributingFactor"
                     type="text"
-                    className="block w-[370px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-[250px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   ></textarea>
                 </div>
               </div>
@@ -172,7 +306,7 @@ const Reportsubmit = () => {
                     onChange={(e) => setAffectedUrl(e.target.value)}
                     name="affectedUrl"
                     type="text"
-                    className="block w-[370px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-[250px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   ></textarea>
                 </div>
               </div>
@@ -190,12 +324,11 @@ const Reportsubmit = () => {
                     id="Vulnerability"
                     name="observation"
                     type="text"
-                    className="block w-[370px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-[250px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   ></textarea>
                 </div>
               </div>
             </div>
-
             <div className=" flex  mt-8 ">
               <div className="sm:col-span-4">
                 <label
@@ -211,7 +344,7 @@ const Reportsubmit = () => {
                     id="Vulnerability"
                     name="impact"
                     type="text"
-                    className="block w-[370px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-[250px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   ></textarea>
                 </div>
               </div>
@@ -229,7 +362,7 @@ const Reportsubmit = () => {
                     id="Vulnerability"
                     name="mitigation"
                     type="text"
-                    className="block w-[370px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-[250px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   ></textarea>
                 </div>
               </div>
@@ -252,7 +385,6 @@ const Reportsubmit = () => {
                 </div>
               </div>
             </div>
-
             <div className=" flex flex-col  mt-8 ">
               <div className="sm:col-span-4">
                 <label
