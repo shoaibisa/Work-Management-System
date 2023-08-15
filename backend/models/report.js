@@ -26,6 +26,12 @@ const reportSchema = new mongoose.Schema(
     impact: String,
     mitigation: String,
     brief: String,
+    reportFiles: [
+      {
+        type: String,
+      },
+    ],
+
     files: [
       {
         type: String,
