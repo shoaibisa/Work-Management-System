@@ -16,6 +16,7 @@ import {
   editReport,
   getReportsByUserId,
   getAllReportOfManager,
+  getReportsByTaskId,
 } from "../controllers/project.js";
 import { protect } from "../middleware/employeeMiddleware.js";
 import multer from "multer";
@@ -67,5 +68,6 @@ router.post("/completetask", protect, complteReport);
 router.post("/getreport", protect, getReport);
 router.post("/getreportsbyuserid", protect, getReportsByUserId);
 router.post("/getallreportsofmanager", protect, getAllReportOfManager);
+router.post("/getreportsbytaskid", protect, getReportsByTaskId);
 
 export default router;
