@@ -438,7 +438,7 @@ const editReport = async (req, res) => {
   if (!req.files) {
     images = report.files;
   } else {
-    const images = req.files.map((f) => f.filename);
+    images = req.files.map((f) => f.filename);
   }
   payload.files = images;
   if (!report) {
@@ -460,7 +460,7 @@ const editReport = async (req, res) => {
   report.impact = payload.impact;
   report.mitigation = payload.mitigation;
   report.brief = payload.brief;
-  report.files = payload.files;
+  report.files = images;
   report
     .save()
     .then(() => {
