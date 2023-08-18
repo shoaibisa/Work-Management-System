@@ -7,12 +7,29 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import { Line } from "recharts";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { singleTaskView } from "../../../../actions/task";
+import { infoUSer } from "../../../../actions/employeeAction";
 
 const Widget = ({ type }) => {
   let data;
-
+  const dispatch = useDispatch();
+  const projectList = useSelector((state) => state.userInfo);
+  const { loading, error, user } = projectList;
   //temporary
-  const amount = 1;
+  //const amount = user.data.clientProject.size();
+  //console.log(user.data.clientProjects.length());
+  //const amount = 1;
+  if (user && user.data && user.data.clientProjects) {
+    var amount = user.data.clientProjects.length;
+    console.log(amount);
+  } else {
+    console.log("clientProjects data not available");
+  }
+  useEffect(() => {
+    dispatch(infoUSer());
+  }, [dispatch]);
+
   const diff = 20;
 
   switch (type) {

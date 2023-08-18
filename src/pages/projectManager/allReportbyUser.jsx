@@ -15,11 +15,11 @@ function AllReportPDF() {
   const reportByUser = useSelector((state) => state.reportByUser);
   const { singleReport } = reportByUser;
   const report = singleReport;
-  //console.log(report);
+  console.log(report);
   useEffect(() => {
-    if (!singleReport) {
-      dispatch(reportsByUser(id, type, webtargetUrls, userid));
-    }
+    
+    dispatch(reportsByUser(id, type, webtargetUrls, userid));
+   
   }, [dispatch, id, type, webtargetUrls, userid]);
 
   //   const capture = document.querySelector(".actual-receipt");

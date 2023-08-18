@@ -23,7 +23,7 @@ const ClientDashboard = () => {
             }}
           >
             {" "}
-            Weclcome ClientName
+            Welcome {employeeInfo.name}
           </h1>
         </div>
         <div className="widgets w-2/5">

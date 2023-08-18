@@ -14,6 +14,17 @@ function Projectlist() {
   useEffect(() => {
     dispatch(listProject());
   }, [dispatch]);
+
+  function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+     
+    };
+    return date.toLocaleString("en-US", options);
+  }
   return (
     <div className="App">
       <div className="home">
@@ -54,8 +65,8 @@ function Projectlist() {
                       <p>{item.projectName}</p>
                     </div>
                     <div className="flex my-2">
-                      <p className="font-semibold">Assigned To -</p>
-                      {/* <p>{item.clientName}</p> */}
+                      <p className="font-semibold">createdAt -</p>
+                      <p>{formatDate(item.createdAt)}</p>
                     </div>
 
                     <Link to={`/viewproject/${item._id}`}>

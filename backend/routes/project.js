@@ -53,7 +53,7 @@ router.post(
 router.post("/getTask", protect, getTask);
 router.post(
   "/createReport",
-  upload.array("reportFiles"),
+  upload.array("files"),
   upload.array("pocFiles"),
   protect,
   creatReport

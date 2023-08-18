@@ -18,6 +18,9 @@ import {
   REPORT_VIEWBYUSER_REQUEST,
   REPORT_VIEWBYUSER_SUCCESS,
   REPORT_VIEWBYUSER_FAILS,
+  ALLREPORT_VIEW_FAILS,
+  ALLREPORT_VIEW_REQUEST,
+  ALLREPORT_VIEW_SUCCESS,
 } from "../constants/reportsubmit";
 
 export const reportCreate =
@@ -35,9 +38,11 @@ export const reportCreate =
     employee,
     taskID,
     type,
-    webtargetUrlsId
+    webtargetUrlsId,
+    files
   ) =>
   async (dispatch) => {
+    console.log(files);
     const payload = {
       vulnerability,
       risk,
@@ -52,6 +57,7 @@ export const reportCreate =
       taskID,
       type,
       webtargetUrlsId,
+      files,
     };
     try {
       dispatch({ type: REPORT_CREATED_REQUEST });
@@ -300,6 +306,42 @@ export const reportsByUser =
     } catch (error) {
       dispatch({
         type: REPORT_VIEWBYUSER_FAILS,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const allReportsByTask =
+  (taskId, Type, webtargetUrls) => async (dispatch) => {
+    try {
+      dispatch({ type: ALLREPORT_VIEW_REQUEST });
+      const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+      const token = userData?.token;
+
+      const { data } = await axios.post(
+        "http://localhost:5000/project/getreportsbytaskid",
+        {
+          taskId,
+          type: Type,
+          webtargetUrls,
+        },
+
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      dispatch({
+        type: ALLREPORT_VIEW_SUCCESS,
+        payload: data.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ALLREPORT_VIEW_FAILS,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

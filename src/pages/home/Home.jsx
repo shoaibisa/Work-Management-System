@@ -24,8 +24,22 @@ const Home = () => {
       <div className="homeContainer">
         <Navbar />
         <div></div>
-        <h1>{employeeInfo && employeeInfo.name}</h1>
-        <h1>{employeeInfo && employeeInfo.userRole}</h1>
+        {/* <h1>{employeeInfo && employeeInfo.name}</h1>
+        <h1>{employeeInfo && employeeInfo.userRole}</h1> */}
+        <div>
+          <h1
+            style={{
+              fontSize: "32px",
+              fontWeight: "bold",
+              textAlign: "center",
+              marginTop: "20px",
+              marginBottom: "20px",
+            }}
+          >
+            {" "}
+            Welcome {employeeInfo.name}
+          </h1>
+        </div>
         <div className="widgets ">
           <Widget type="user" datas={tasks && tasks.length} />
           <Widget type="order" datas={0} />

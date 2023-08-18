@@ -19,7 +19,7 @@ const router = Express.Router();
 
 router.post("/status", statusToggle);
 router.post("/role", roleSet);
-router.post("/getById", getUserById);
+router.post("/getById", protect, getUserById);
 router.get("/all", getAllUsers);
 router.post("/department", getEmployeeByDepartment);
 router.post("/tasks", protect, getEmployeeTask);

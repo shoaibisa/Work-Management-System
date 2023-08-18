@@ -12,6 +12,9 @@ import {
   EMPLOYEE_TASK_DETAILS_REQUEST,
   EMPLOYEE_TASK_DETAILS_SUCCESS,
   EMPLOYEE_TASK_DETAILS_FAILS,
+  USER_INFO_REQUEST,
+  USER_INFO_SUCCESS,
+  USER_INFO_FAIL,
 } from "../constants/employee";
 
 import axios from "axios";
@@ -132,6 +135,38 @@ export const EmployeeTask = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: EMPLOYEE_TASK_DETAILS_FAILS,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const infoUSer = () => async (dispatch) => {
+  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+  const id = userData?.id;
+  const token = userData?.token;
+  try {
+    dispatch({ type: USER_INFO_REQUEST });
+    const { data } = await axios.post(
+      "http://localhost:5000/user/getById",
+      {
+        id,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    dispatch({
+      type: USER_INFO_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_INFO_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

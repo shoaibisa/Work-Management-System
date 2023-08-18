@@ -288,7 +288,9 @@ const getTaskByProject = async (req, res) => {
 
 const creatReport = async (req, res) => {
   const payload = req.body;
-  //  images
+  console.log(payload);
+  const files = req.files;
+  console.log(files);
 
   const images = req.files.map((f) => f.filename);
 
@@ -512,7 +514,7 @@ const complteReport = async (req, res) => {
 
   try {
     const report = await Report.findById(id).exec();
-    console.log(report);
+    //console.log(report);
     report.isCompleted = true;
     report
       .save()
@@ -673,7 +675,7 @@ const getReportsByUser = async (req, res) => {
     const task = await Task.findById(taskId)
       .populate("mobileData.forAndroid.assignEmployee.employee")
       .populate("mobileData.forAndroid.assignEmployee.report");
-    console.log(task);
+    // console.log(task);
     for (var i = 0; i < task.mobileData.forAndroid.assignEmployee.length; i++) {
       if (
         task.mobileData.forAndroid.assignEmployee[i].employee._id.toString() ===
@@ -707,7 +709,7 @@ const getReportsByUser = async (req, res) => {
       }
     }
   }
-  console.log(reports);
+  // console.log(reports);
   return res.status(200).send({
     title: "Success",
     message: "project get sucessfully",
@@ -835,7 +837,7 @@ const getReportsByTaskId = async (req, res) => {
   const taskId = req.body.taskId;
   const type = req.body.type;
 
-  //console.log(req.body);
+  // console.log(req.body);
   var reports = [];
   if (type === "web") {
     const task = await Task.findById(taskId)

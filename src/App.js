@@ -29,6 +29,8 @@ import Pdftemplate from "./components/pdf/Pdftemplate";
 import TaskviewUser from "./pages/projectManager/singleTask";
 import AllPDF from "./pages/employee/reportsubmit/viewAllReports";
 import AllReportPDF from "./pages/projectManager/allReportbyUser";
+import ClientTasklist from "./pages/client/pages/alltask";
+import AllReportForClient from "./pages/client/pages/allReportClient";
 import {
   AuthorizedUser,
   AuthorizedAdmin,
@@ -185,7 +187,15 @@ function App() {
 
           <Route path="/clientdashboard" element={<ClientDashboard />} />
           <Route path="/clientProject" element={<ClientProjectlist />} />
-          <Route path="/clientprojectview" element={<ClientProjectView />} />
+          <Route path="/clienttasks/:projectId" element={<ClientTasklist />} />
+          <Route
+            path="/allreportforclient/:taskId/:Type/:webtargetUrls"
+            element={<AllReportForClient />}
+          />
+          <Route
+            path="/clientprojectview/:projectId/:taskId"
+            element={<ClientProjectView />}
+          />
 
           <Route
             path="/alltasks"

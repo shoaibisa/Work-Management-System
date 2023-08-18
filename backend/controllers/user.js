@@ -57,11 +57,11 @@ const getUserById = async (req, res) => {
       });
     }
     return res.status(200).send({
-      name: employee.name,
-      email: employee.email,
-      phone: employee.phone,
-      department: employee.department,
-      isError: false,
+      // name: employee.name,
+      // email: employee.email,
+      // phone: employee.phone,
+      // department: employee.department,
+      // isError: false,
       data: employee,
     });
   } catch (error) {
@@ -88,24 +88,56 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+// const getManagerById = async (req, res) => {
+//   const { id } = req.body;
+//   //console.log(id);
+//   try {
+//     const employee = await Employee.findById(id).exec();
+
+//     if (!employee) {
+//       return res.status(208).send({
+//         isError: true,
+//         title: "Error",
+//         message: "This email is not registered. Redirecting to Signup page!",
+//       });
+
+//       return res.status(200).send({
+//         employee: employee,
+//         isError: false,
+//       });
+//       console.log(employee);
+//     }
+//   } catch (error) {
+//     return res.status(500);
+//   }
+// };
 const getManagerById = async (req, res) => {
   const { id } = req.body;
+  //console.log(id);
   try {
     const employee = await Employee.findById(id).exec();
+
     if (!employee) {
       return res.status(208).send({
         isError: true,
         title: "Error",
         message: "This email is not registered. Redirecting to Signup page!",
       });
-
-      return res.status(200).send({
-        employee: employee,
-        isError: false,
-      });
     }
+
+    // This should be outside the if block
+    console.log(employee);
+
+    return res.status(200).send({
+      employee: employee,
+      isError: false,
+    });
   } catch (error) {
-    return res.status(500);
+    return res.status(500).send({
+      isError: true,
+      title: "Error",
+      message: "An error occurred while fetching manager details.",
+    });
   }
 };
 

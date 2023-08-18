@@ -6,6 +6,7 @@ import {
   employeeRegisterReducer,
   employeeLoginReducer,
   employeeTaskReducer,
+  userInfoReducer,
 } from "./reducers/employeeReducer";
 import {
   projectListReducer,
@@ -22,7 +23,9 @@ import {
   reportUpdateReducer,
   reportRemarkReducer,
   reportByUserReducer,
+  allReportByTaskReducer,
 } from "./reducers/reportReducer";
+import { singleTaskReducer } from "./reducers/taskReducer";
 import { clientsListReducer } from "./reducers/clientReducer";
 const employeenfoFromStroge = localStorage.getItem("employeeInfo")
   ? JSON.parse(localStorage.getItem("employeeInfo"))
@@ -46,6 +49,9 @@ const reducer = combineReducers({
   remarkReport: reportRemarkReducer,
   reportByUser: reportByUserReducer,
   clientsList: clientsListReducer,
+  userInfo: userInfoReducer,
+  singleTask: singleTaskReducer,
+  allReportByTask: allReportByTaskReducer,
 });
 const initialState = {
   employeeLogin: { employeeInfo: employeenfoFromStroge },

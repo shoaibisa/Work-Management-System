@@ -144,7 +144,7 @@ export const listProject = () => async (dispatch) => {
         },
       }
     );
-
+    console.log(data);
     dispatch({
       type: PROJECT_LIST_SUCCESS,
       payload: data,

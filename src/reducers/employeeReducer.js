@@ -12,6 +12,9 @@ import {
   EMPLOYEE_TASK_DETAILS_REQUEST,
   EMPLOYEE_TASK_DETAILS_SUCCESS,
   EMPLOYEE_TASK_DETAILS_FAILS,
+  USER_INFO_REQUEST,
+  USER_INFO_SUCCESS,
+  USER_INFO_FAIL,
 } from "../constants/employee";
 
 export const employeeLoginReducer = (state = {}, action) => {
@@ -66,6 +69,22 @@ export const employeeTaskReducer = (state = { task: [] }, action) => {
       return { loading: false, task: action.payload };
 
     case EMPLOYEE_TASK_DETAILS_FAILS:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const userInfoReducer = (state = { user: [] }, action) => {
+  switch (action.type) {
+    case USER_INFO_REQUEST:
+      return { loading: true, user: [] };
+
+    case USER_INFO_SUCCESS:
+      return { loading: false, user: action.payload };
+
+    case USER_INFO_FAIL:
       return { loading: false, error: action.payload };
 
     default:

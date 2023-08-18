@@ -17,6 +17,9 @@ import {
   REPORT_VIEWBYUSER_REQUEST,
   REPORT_VIEWBYUSER_SUCCESS,
   REPORT_VIEWBYUSER_FAILS,
+  ALLREPORT_VIEW_REQUEST,
+  ALLREPORT_VIEW_SUCCESS,
+  ALLREPORT_VIEW_FAILS,
 } from "../constants/reportsubmit";
 
 export const reportCreatedReducer = (state = { report: [] }, action) => {
@@ -105,6 +108,22 @@ export const reportByUserReducer = (state = { singleReport: [] }, action) => {
       return { loading: false, singleReport: action.payload };
 
     case REPORT_VIEWBYUSER_FAILS:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const allReportByTaskReducer = (state = { allReport: [] }, action) => {
+  switch (action.type) {
+    case ALLREPORT_VIEW_REQUEST:
+      return { loading: true, allReport: [] };
+
+    case ALLREPORT_VIEW_SUCCESS:
+      return { loading: false, allReport: action.payload };
+
+    case ALLREPORT_VIEW_FAILS:
       return { loading: false, error: action.payload };
 
     default:

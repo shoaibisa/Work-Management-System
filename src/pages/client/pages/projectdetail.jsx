@@ -1,14 +1,25 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/sidebar/sidebar";
 import Navbar from "../../../components/navbar/Navbar";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { dummyProjectList } from "../../../dummyprojectlist";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import { PaperClipIcon } from "@heroicons/react/20/solid";
+import { useDispatch, useSelector } from "react-redux";
+import { viewTasks } from "../../../actions/projectlistAction";
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
 function ClientProjectView() {
+  //console.log(useParams());
+  const { projectId, taskId } = useParams();
+  const dispatch = useDispatch();
+  const TaskView = useSelector((state) => state.tasksView);
+  const { tasks } = TaskView;
+  useEffect(() => {
+    dispatch(viewTasks(taskId));
+  }, [dispatch, taskId]);
+
   const data = {
     labels: ["High", "modurate", "low", "Urgent"],
     datasets: [
@@ -80,6 +91,7 @@ function ClientProjectView() {
                   >
                     Select an option:
                   </label>
+
                   <select
                     onChange={handleDropdownChange}
                     id="dropdown"
@@ -89,36 +101,39 @@ function ClientProjectView() {
                     <option disabled selected value="">
                       Select an option
                     </option>
-                    <option value="webapp">Web App</option>
-                    <option value="mobile">Mobile</option>
-                    <option value="API">API</option>
-                    <option value="Network">Network</option>
-                    <option value="GRC">GRC</option>
+                    {tasks.data.selectedOptions.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
                   </select>
                 </div>
               )}
 
               {
                 <div>
-                  {selectedOption === "webapp" && (
+                  {selectedOption === "web" && (
                     <div>
-                      <div className=" pt-6 flex justify-between">
-                        <div className="flex  flex-1 items-center">
-                          <PaperClipIcon
-                            className="h-5 w-5 flex-shrink-0 text-gray-400"
-                            aria-hidden="true"
-                          />
-                          Label
+                      {tasks.data.webData.webtargetUrls.map((url, index) => (
+                        <div key={index} className="pt-6 flex justify-between">
+                          <div className="flex flex-1 items-center">
+                            <PaperClipIcon
+                              className="h-5 w-5 flex-shrink-0 text-gray-400"
+                              aria-hidden="true"
+                            />
+                            {url.lable}
+                          </div>
+                          <div className="ml-4 flex-shrink-0">
+                            <Link
+                              to={`/allreportforclient/${taskId}/web/${url._id}`}
+                              className="font-medium text-indigo-600 hover:text-indigo-500"
+                              rel="noopener noreferrer"
+                            >
+                              Download Report
+                            </Link>
+                          </div>
                         </div>
-                        <div className="ml-4 flex-shrink-0">
-                          <a
-                            href="#"
-                            className="font-medium text-indigo-600 hover:text-indigo-500"
-                          >
-                            Download Report
-                          </a>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   )}
                   {selectedOption === "mobile" && (
@@ -159,7 +174,7 @@ function ClientProjectView() {
                       </div>
                     </div>
                   )}
-                  {selectedOption === "API" && (
+                  {selectedOption === "api" && (
                     <div className=" pt-6 flex justify-between">
                       <div className="flex  flex-1 items-center">
                         <PaperClipIcon
@@ -175,7 +190,7 @@ function ClientProjectView() {
                       </div>
                     </div>
                   )}
-                  {selectedOption === "Network" && (
+                  {selectedOption === "network" && (
                     <div className=" pt-6 flex justify-between">
                       <div className="flex  flex-1 items-center">
                         <PaperClipIcon
@@ -191,7 +206,7 @@ function ClientProjectView() {
                       </div>
                     </div>
                   )}
-                  {selectedOption === "GRC" && (
+                  {selectedOption === "grc" && (
                     <div className=" pt-6 flex justify-between">
                       <div className="flex  flex-1 items-center">
                         <PaperClipIcon
