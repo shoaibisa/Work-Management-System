@@ -288,9 +288,7 @@ const getTaskByProject = async (req, res) => {
 
 const creatReport = async (req, res) => {
   const payload = req.body;
-  console.log(payload);
-  const files = req.files;
-  return console.log(req.files);
+  // console.log(payload);
 
   const images = req.files.map((f) => f.filename);
 
@@ -299,16 +297,7 @@ const creatReport = async (req, res) => {
     project: task.project,
     employee: payload.employee,
     task: payload.taskID,
-    vulnerability: payload.vulnerability,
-    risk: payload.risk,
-    affectedUrl: payload.affectedUrl,
-    observation: payload.observation,
-    attributingFactor: payload.attributingFactor,
-    cwe: payload.cwe,
-    impact: payload.impact,
-    mitigation: payload.mitigation,
-    brief: payload.brief,
-    files: images,
+    reportFiles: images,
   });
   if (req.body.type === "web") {
     // find in webData webtargetUrls._id in task
@@ -387,6 +376,7 @@ const creatReport = async (req, res) => {
       console.log("Report  save to db!");
       return res.status(200).send({
         title: "Success",
+        reportId: report._id,
         message: "Report created sucessfully",
       });
     })
