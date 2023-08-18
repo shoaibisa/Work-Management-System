@@ -290,7 +290,7 @@ const creatReport = async (req, res) => {
   const payload = req.body;
   console.log(payload);
   const files = req.files;
-  console.log(files);
+  return console.log(req.files);
 
   const images = req.files.map((f) => f.filename);
 

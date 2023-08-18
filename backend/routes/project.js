@@ -54,7 +54,8 @@ router.post("/getTask", protect, getTask);
 router.post(
   "/createReport",
   upload.array("files"),
-  upload.array("pocFiles"),
+// upload.array("pocFiles"),
+  // upload.fields([{ name: "files" }, { name: "pocFiles" }]),
   protect,
   creatReport
 );

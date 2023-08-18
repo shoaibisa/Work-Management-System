@@ -72,6 +72,9 @@ export const reportCreate =
       for (const file of pocFile) {
         formData.append("pocFiles", file);
       }
+      for (const file of files) {
+        formData.append("files", file);
+      }
 
       const { data } = await axios.post(
         "http://localhost:5000/project/createReport",

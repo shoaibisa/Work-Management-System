@@ -80,7 +80,7 @@ const Reportsubmit = () => {
   //  Multiple file upload
   const [highlight, setHighlight] = useState(false);
   const [files, setFiles] = useState([]);
-
+  console.log(files);
   const handleDragEnter = (e) => {
     e.preventDefault();
     setHighlight(true);
@@ -133,73 +133,13 @@ const Reportsubmit = () => {
           {/* <FileUpload /> */}
 
           {/* Here  multiple file  upload Start*/}
-          {/* <div className=" flex-col   items-center  mb-5 pb-5">
-            <h1 className=" bold  text-2xl p-2 m-2  "> Upload Report Here</h1>
-            <div
-              className={`border-4  w-full ${
-                highlight ? "border-blue-500" : "border-gray-300"
-              } border-dashed p-8 `}
-            >
-              <div
-                className="w-full h-32 flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-300 rounded-lg"
-                onDragEnter={handleDragEnter}
-                onDragOver={(e) => e.preventDefault()}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
-              >
-                <input
-                  type="file"
-                  className="hidden"
-                  onChange={handleFileInput}
-                  multiple
-                  accept=".pdf, .xlsx, .xls"
-                />
-                <p>Drag & Drop PDF or Excel files here</p>
-                <p>or</p>
-                <button
-                  className="px-4 py-2 mt-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-                  onClick={() =>
-                    document.querySelector("input[type=file]").click()
-                  }
-                >
-                  Browse Files
-                </button>
-              </div>
-              <ul className="mt-4 space-y-2">
-                {files.map((file) => (
-                  <li
-                    key={file.name}
-                    className="flex items-center justify-between space-x-2"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <span>{file.name}</span>
-                      <span className="text-sm text-gray-500">
-                        ({(file.size / 1024).toFixed(2)} KB)
-                      </span>
-                    </div>
-                    <button
-                      className="text-red-600 hover:text-red-800 focus:outline-none"
-                      onClick={() => removeFile(file.name)}
-                    >
-                      Remove
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div> */}
-          {/* Here  multiple file  upload End*/}
-          <h1 className="  mb-5 pb-5 text-red-600  bold  text-lg">
-            This Form is Optional
-          </h1>
-
           <form
             onSubmit={handleSubmit}
             className="w-full"
             enctype="multipart/form-data"
           >
-            <div className=" flex items-center  mb-5 pb-5">
-              {/* <h1 className=" bold  text-2xl p-2 m-2  "> Upload Report Here</h1> */}
+            <div className=" flex-col   items-center  mb-5 pb-5">
+              <h1 className=" bold  text-2xl p-2 m-2  "> Upload Report Here</h1>
               <div
                 className={`border-4  w-full ${
                   highlight ? "border-blue-500" : "border-gray-300"
@@ -217,8 +157,8 @@ const Reportsubmit = () => {
                     className="hidden"
                     onChange={handleFileInput}
                     multiple
-                    name="files"
                     accept=".pdf, .xlsx, .xls"
+                    name="files"
                   />
                   <p>Drag & Drop PDF or Excel files here</p>
                   <p>or</p>
@@ -253,7 +193,32 @@ const Reportsubmit = () => {
                   ))}
                 </ul>
               </div>
+              <div className=" flex items-center justify-end gap-x-6">
+                <button
+                  type="button"
+                  className="text-sm font-semibold leading-6 text-gray-900"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  Submit
+                </button>
+              </div>
             </div>
+          </form>
+
+          {/* Here  multiple file  upload End*/}
+          <h1 className="  mb-5 pb-5 text-red-600  bold  text-lg">
+            This Form is Optional
+          </h1>
+          <form
+            onSubmit={handleSubmit}
+            className="w-full"
+            enctype="multipart/form-data"
+          >
             {/* multi file upload end here  */}
             <div className=" flex  ">
               <div className="sm:col-span-4">
