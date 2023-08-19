@@ -3,7 +3,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "jspdf-autotable";
 import { viewTasks } from "../../../actions/projectlistAction";
 function AllPDF() {
@@ -149,6 +149,20 @@ function AllPDF() {
             {report.data &&
               report.data.map((items) => (
                 <div class="flex  m-auto mt-10  flex-col w-[1000px] ">
+                  <button class="btn btn-primary">
+                    <Link
+                      class="receipt-modal-download-button rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      to={
+                        report && report.reportFiles
+                          ? `http://localhost:5000/files/${report.reportFiles}`
+                          : "#"
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View Reports
+                    </Link>
+                  </button>
                   <table
                     id="my-table"
                     className="table-auto border border-collapse border-gray-300"

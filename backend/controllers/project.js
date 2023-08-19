@@ -886,9 +886,11 @@ const getReportsByTaskId = async (req, res) => {
       reports.push(task.grcData.assignEmployee[i].report);
     }
   }
+  console.log(reports);
   return res.status(200).send({
     title: "Success",
     message: "project get sucessfully",
+
     data: reports,
   });
 };

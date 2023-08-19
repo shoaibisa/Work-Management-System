@@ -16,6 +16,7 @@ function ClientProjectView() {
   const dispatch = useDispatch();
   const TaskView = useSelector((state) => state.tasksView);
   const { tasks } = TaskView;
+  // console.log(tasks);
   useEffect(() => {
     dispatch(viewTasks(taskId));
   }, [dispatch, taskId]);
@@ -60,7 +61,7 @@ function ClientProjectView() {
 
   const handleOptionSelect = (option) => {
     // Do something with the selected option
-    console.log("Selected option:", option);
+    //console.log("Selected option:", option);
     setShowOptions(false); // Hide the options after selection (you can change this behavior as needed)
   };
   return (
@@ -176,18 +177,20 @@ function ClientProjectView() {
                   )}
                   {selectedOption === "api" && (
                     <div className=" pt-6 flex justify-between">
-                      <div className="flex  flex-1 items-center">
-                        <PaperClipIcon
-                          className="h-5 w-5 flex-shrink-0 text-gray-400"
-                          aria-hidden="true"
-                        />
-                        <a
-                          href="#"
-                          className="font-medium ml-4 text-indigo-600 hover:text-indigo-500"
-                        >
-                          Download Report
-                        </a>
-                      </div>
+                      {tasks.data.apiData && (
+                        <div className="flex  flex-1 items-center">
+                          <PaperClipIcon
+                            className="h-5 w-5 flex-shrink-0 text-gray-400"
+                            aria-hidden="true"
+                          />
+                          <Link
+                            to={`/allreportforclient/${taskId}/api/`}
+                            className="font-medium ml-4 text-indigo-600 hover:text-indigo-500"
+                          >
+                            Download Report
+                          </Link>
+                        </div>
+                      )}
                     </div>
                   )}
                   {selectedOption === "network" && (
@@ -197,12 +200,13 @@ function ClientProjectView() {
                           className="h-5 w-5 flex-shrink-0 text-gray-400"
                           aria-hidden="true"
                         />
-                        <a
+                        <Link
+                          to={`/allreportforclient/${taskId}/api/`}
                           href="#"
                           className="font-medium ml-4 text-indigo-600 hover:text-indigo-500"
                         >
                           Download Report
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   )}

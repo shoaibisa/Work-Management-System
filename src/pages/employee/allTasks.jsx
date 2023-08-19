@@ -15,7 +15,7 @@ function EmployeeTasksList() {
   const employeeTask = useSelector((state) => state.employeeTask);
   const { loading, error, task } = employeeTask;
   const data = task?.datas;
-  console.log(data);
+  //  console.log(data);
   useEffect(() => {
     dispatch(EmployeeTask());
   }, [dispatch]);
