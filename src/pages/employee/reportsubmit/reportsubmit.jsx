@@ -3,9 +3,8 @@ import Navbar from "../../../components/navbar/Navbar";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { reportCreate } from "../../../actions/reportSubmit";
+import { reportCreate, reportUpdate } from "../../../actions/reportSubmit";
 import { initTE, Select } from "tw-elements";
-// import FileUpload from "./fileupload";
 
 const Reportsubmit = () => {
   const { taskID, type, webtargetUrlsId } = useParams();
@@ -25,9 +24,6 @@ const Reportsubmit = () => {
   const handleFileInputChange = (event) => {
     const selectedFiles = event.target.files;
     setPocFile(selectedFiles);
-    // for (const file of selectedFiles) {
-    //   addFile(file);
-    // }
   };
 
   const location = useLocation();
@@ -36,9 +32,16 @@ const Reportsubmit = () => {
   const redirect = location.search ? location.search.split("=")[1] : "/";
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const employee = userData?.id;
-
   const reportCreated = useSelector((state) => state.reportCreated);
   const { loading, error, report } = reportCreated;
+
+  const updateReport = useSelector((state) => state.updateReport);
+  const { updateReports } = updateReport;
+
+  const [showForm, setShowForm] = useState(false);
+  const handleCheckboxChange = () => {
+    setShowForm(!showForm); // Toggle the state when checkbox is clicked
+  };
 
   useEffect(() => {
     if (report) {
@@ -49,6 +52,7 @@ const Reportsubmit = () => {
       }
     }
   }, [report]);
+  console.log(report.reportId);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -71,7 +75,33 @@ const Reportsubmit = () => {
         files
       )
     );
+    setFiles([]);
+
     // window.history.back();
+  };
+
+  const handleSubmits = (event) => {
+    event.preventDefault();
+    dispatch(
+      reportUpdate(
+        vulnerability,
+        risk,
+        attributingFactor,
+        affectedUrl,
+        observation,
+        cwe,
+        impact,
+        mitigation,
+        pocFile,
+        brief,
+        employee,
+        taskID,
+        type,
+        webtargetUrlsId,
+        report.reportId
+      )
+    );
+    window.history.back();
   };
 
   useEffect(() => {
@@ -80,7 +110,7 @@ const Reportsubmit = () => {
   //  Multiple file upload
   const [highlight, setHighlight] = useState(false);
   const [files, setFiles] = useState([]);
-  console.log(files);
+  // console.log(files);
   const handleDragEnter = (e) => {
     e.preventDefault();
     setHighlight(true);
@@ -119,7 +149,7 @@ const Reportsubmit = () => {
     );
     setFiles([...files, ...validFiles]);
   };
-  console.log(files);
+  //console.log(files);
   return (
     <div className="home ">
       <Sidebar />
@@ -157,6 +187,7 @@ const Reportsubmit = () => {
                     className="hidden"
                     onChange={handleFileInput}
                     multiple
+                    required
                     accept=".pdf, .xlsx, .xls"
                     name="files"
                   />
@@ -207,239 +238,233 @@ const Reportsubmit = () => {
                   Submit
                 </button>
               </div>
+              <div className="  text-green-500   text-md ">
+                {report.message}
+              </div>
             </div>
           </form>
 
           {/* Here  multiple file  upload End*/}
-          <h1 className="  mb-5 pb-5 text-red-600  bold  text-lg">
-            This Form is Optional
-          </h1>
-          <form
-            onSubmit={handleSubmit}
-            className="w-full"
-            enctype="multipart/form-data"
-          >
-            {/* multi file upload end here  */}
-            <div className=" flex  ">
-              <div className="sm:col-span-4">
-                <label
-                  htmlFor="Vulnerability"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Vulnerability Name
-                </label>
-                <div className="mt-2">
-                  <input
-                    value={vulnerability}
-                    onChange={(e) => setVulnerability(e.target.value)}
-                    id="Vulnerability"
-                    name="vulnerability"
-                    type="text"
-                    className="block w-[260px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-              <div className="sm:col-span-4 ml-10 ">
-                <label
-                  htmlFor="Vulnerability"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Risk
-                </label>
-                <div className=" mt-2 ">
-                  <select
-                    value={risk}
-                    id="Vulnerability"
-                    name="risk"
-                    type="text"
-                    required
-                    data-te-select-init
-                    onChange={(e) => setRisk(e.target.value)}
+
+          <div className=" ">
+            <label className="  mx-2 mb-5 pb-5 text-red-600  bold  text-lg">
+              <input
+                type="checkbox"
+                onChange={handleCheckboxChange}
+                checked={showForm}
+                className="t"
+              />
+              Would You Like to Fill the Form Of Vulnerability (First Submit the
+              report File)
+            </label>
+          </div>
+          {showForm && report.reportId && (
+            <form
+              onSubmit={handleSubmits}
+              className="w-full mt-5"
+              enctype="multipart/form-data"
+            >
+              {/* multi file upload end here  */}
+              <div className=" flex ">
+                <div className="">
+                  <label
+                    htmlFor="Vulnerability"
+                    className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    <option selected>Select Risk</option>
-                    <option value="critical">Critical</option>
-                    <option value="high">Hign</option>
-                    <option value="medium">Medium</option>
-                    <option value="low">Low</option>
-                  </select>
+                    Vulnerability Name
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      value={vulnerability}
+                      onChange={(e) => setVulnerability(e.target.value)}
+                      id="Vulnerability"
+                      name="vulnerability"
+                      type="text"
+                      className="block w-[260px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                </div>
+                <div className=" ml-10 ">
+                  <label
+                    htmlFor="Vulnerability"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Risk
+                  </label>
+                  <div className=" mt-2 ">
+                    <select
+                      value={risk}
+                      name="risk"
+                      type="text"
+                      required
+                      data-te-select-init
+                      onChange={(e) => setRisk(e.target.value)}
+                    >
+                      <option selected>Select Risk</option>
+                      <option value="critical">Critical</option>
+                      <option value="high">Hign</option>
+                      <option value="medium">Medium</option>
+                      <option value="low">Low</option>
+                    </select>
+                  </div>
+                </div>
+                <div className=" ml-10 ">
+                  <label className="block text-sm font-medium leading-6 text-gray-900">
+                    CWE #
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      value={cwe}
+                      onChange={(e) => setCwe(e.target.value)}
+                      name="cwe"
+                      type="text"
+                      className="block w-[260px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className=" flex  mt-8 ">
+                <div className="sm:col-span-4">
+                  <label className="block text-sm font-medium leading-6 text-gray-900">
+                    Attributing Factor
+                  </label>
+                  <div className="mt-2">
+                    <textarea
+                      value={attributingFactor}
+                      onChange={(e) => setAttributingFactor(e.target.value)}
+                      name="attributingFactor"
+                      type="text"
+                      className="block w-[250px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    ></textarea>
+                  </div>
+                </div>
+                <div className="sm:col-span-4 ml-10">
+                  <label className="block text-sm font-medium leading-6 text-gray-900">
+                    Affected URL
+                  </label>
+                  <div className="mt-2">
+                    <textarea
+                      value={affectedUrl}
+                      onChange={(e) => setAffectedUrl(e.target.value)}
+                      name="affectedUrl"
+                      type="text"
+                      className="block w-[250px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    ></textarea>
+                  </div>
+                </div>
+                <div className="sm:col-span-4 ml-10 ">
+                  <label
+                    htmlFor="Vulnerability"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Observation
+                  </label>
+                  <div className="mt-2">
+                    <textarea
+                      value={observation}
+                      onChange={(e) => setObservation(e.target.value)}
+                      id="Vulnerability"
+                      name="observation"
+                      type="text"
+                      className="block w-[250px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+              <div className=" flex  mt-8 ">
+                <div className="sm:col-span-4">
+                  <label
+                    htmlFor="Vulnerability"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Impact
+                  </label>
+                  <div className="mt-2">
+                    <textarea
+                      value={impact}
+                      onChange={(e) => setImpact(e.target.value)}
+                      id="Vulnerability"
+                      name="impact"
+                      type="text"
+                      className="block w-[250px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    ></textarea>
+                  </div>
+                </div>
+                <div className="sm:col-span-4 ml-10 ">
+                  <label
+                    htmlFor="Vulnerability"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Mitigations
+                  </label>
+                  <div className="mt-2">
+                    <textarea
+                      value={mitigation}
+                      onChange={(e) => setMitigation(e.target.value)}
+                      id="Vulnerability"
+                      name="mitigation"
+                      type="text"
+                      className="block w-[250px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    ></textarea>
+                  </div>
+                </div>
+                <div className="sm:col-span-4 ml-10 w-[300px] ">
+                  <label
+                    htmlFor="Vulnerability"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    POC
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      onChange={handleFileInputChange}
+                      class="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
+                      type="file"
+                      multiple
+                      name="pocFiles"
+                      id="formFile"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className=" flex flex-col  mt-8 ">
+                <div className="sm:col-span-4">
+                  <label
+                    htmlFor="Vulnerability"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Brief Description
+                  </label>
+                  <div className="mt-2">
+                    <textarea
+                      value={brief}
+                      onChange={(e) => setBrief(e.target.value)}
+                      id="Vulnerability"
+                      name="brief"
+                      type="text"
+                      className="block w-[650px] h-[75px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    ></textarea>
+                  </div>
                 </div>
 
-                {/* <div className="mt-2">
-                  <input
-                    value={risk}
-                    id="Vulnerability"
-                    name="risk"
-                    type="text"
-                    className="block w-[260px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div> */}
-              </div>
-              <div className="sm:col-span-4 ml-10 ">
-                <label
-                  htmlFor="Vulnerability"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  CWE #
-                </label>
-                <div className="mt-2">
-                  <input
-                    value={cwe}
-                    onChange={(e) => setCwe(e.target.value)}
-                    id="Vulnerability"
-                    name="cwe"
-                    type="text"
-                    className="block w-[260px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
+                <div className=" flex items-center justify-end gap-x-6">
+                  <button
+                    type="button"
+                    className="text-sm font-semibold leading-6 text-gray-900"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Submit
+                  </button>
                 </div>
               </div>
-            </div>
-            <div className=" flex  mt-8 ">
-              <div className="sm:col-span-4">
-                <label
-                  htmlFor="Vulnerability"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Attributing Factor
-                </label>
-                <div className="mt-2">
-                  <textarea
-                    value={attributingFactor}
-                    onChange={(e) => setAttributingFactor(e.target.value)}
-                    id="Vulnerability"
-                    name="attributingFactor"
-                    type="text"
-                    className="block w-[250px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  ></textarea>
-                </div>
-              </div>
-              <div className="sm:col-span-4 ml-10">
-                <label
-                  htmlFor="Vulnerability"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Affected URL
-                </label>
-                <div className="mt-2">
-                  <textarea
-                    value={affectedUrl}
-                    onChange={(e) => setAffectedUrl(e.target.value)}
-                    name="affectedUrl"
-                    type="text"
-                    className="block w-[250px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  ></textarea>
-                </div>
-              </div>
-              <div className="sm:col-span-4 ml-10 ">
-                <label
-                  htmlFor="Vulnerability"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Observation
-                </label>
-                <div className="mt-2">
-                  <textarea
-                    value={observation}
-                    onChange={(e) => setObservation(e.target.value)}
-                    id="Vulnerability"
-                    name="observation"
-                    type="text"
-                    className="block w-[250px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  ></textarea>
-                </div>
-              </div>
-            </div>
-            <div className=" flex  mt-8 ">
-              <div className="sm:col-span-4">
-                <label
-                  htmlFor="Vulnerability"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Impact
-                </label>
-                <div className="mt-2">
-                  <textarea
-                    value={impact}
-                    onChange={(e) => setImpact(e.target.value)}
-                    id="Vulnerability"
-                    name="impact"
-                    type="text"
-                    className="block w-[250px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  ></textarea>
-                </div>
-              </div>
-              <div className="sm:col-span-4 ml-10 ">
-                <label
-                  htmlFor="Vulnerability"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Mitigations
-                </label>
-                <div className="mt-2">
-                  <textarea
-                    value={mitigation}
-                    onChange={(e) => setMitigation(e.target.value)}
-                    id="Vulnerability"
-                    name="mitigation"
-                    type="text"
-                    className="block w-[250px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  ></textarea>
-                </div>
-              </div>
-              <div className="sm:col-span-4 ml-10 w-[300px] ">
-                <label
-                  htmlFor="Vulnerability"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  POC
-                </label>
-                <div className="mt-2">
-                  <input
-                    onChange={handleFileInputChange}
-                    class="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
-                    type="file"
-                    multiple
-                    name="pocFiles"
-                    id="formFile"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className=" flex flex-col  mt-8 ">
-              <div className="sm:col-span-4">
-                <label
-                  htmlFor="Vulnerability"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Brief Description
-                </label>
-                <div className="mt-2">
-                  <textarea
-                    value={brief}
-                    onChange={(e) => setBrief(e.target.value)}
-                    id="Vulnerability"
-                    name="brief"
-                    type="text"
-                    className="block w-[650px] h-[75px] rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  ></textarea>
-                </div>
-              </div>
-
-              <div className=" flex items-center justify-end gap-x-6">
-                <button
-                  type="button"
-                  className="text-sm font-semibold leading-6 text-gray-900"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Submit
-                </button>
-              </div>
-            </div>
-          </form>
+              <input name="reportId" hidden value={report.reportId} />
+            </form>
+          )}
         </div>
       </div>
     </div>

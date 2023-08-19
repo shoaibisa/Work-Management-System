@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SingleViewReport, reportUpdate } from "../../../actions/reportSubmit";
+import { initTE, Select } from "tw-elements";
 const EditReportsubmit = () => {
   const { taskID, type, webtargetUrlsId } = useParams();
   const [vulnerability, setVulnerability] = useState("");
@@ -84,6 +85,9 @@ const EditReportsubmit = () => {
     );
     window.history.back();
   };
+  useEffect(() => {
+    initTE({ Select });
+  }, []);
 
   return (
     <div className="home">
@@ -119,7 +123,7 @@ const EditReportsubmit = () => {
                   />
                 </div>
               </div>
-              <div className="sm:col-span-4 ml-10 ">
+              {/* <div className="sm:col-span-4 ml-10 ">
                 <label
                   htmlFor="Vulnerability"
                   className="block text-sm font-medium leading-6 text-gray-900"
@@ -135,6 +139,30 @@ const EditReportsubmit = () => {
                     type="text"
                     className="block w-[400px]  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
+                </div>
+              </div> */}
+              <div className=" ml-10 ">
+                <label
+                  htmlFor="Vulnerability"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Risk
+                </label>
+                <div className=" mt-2 ">
+                  <select
+                    value={risk}
+                    name="risk"
+                    type="text"
+                    required
+                    data-te-select-init
+                    onChange={(e) => setRisk(e.target.value)}
+                  >
+                    <option selected>Select Risk</option>
+                    <option value="critical">Critical</option>
+                    <option value="high">Hign</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                  </select>
                 </div>
               </div>
               <div className="sm:col-span-4 ml-10 ">

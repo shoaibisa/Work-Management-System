@@ -193,6 +193,10 @@ function App() {
             element={<AllReportForClient />}
           />
           <Route
+            path="/allreportforclient/:taskId/:Type/"
+            element={<AllReportForClient />}
+          />
+          <Route
             path="/clientprojectview/:projectId/:taskId"
             element={<ClientProjectView />}
           />
