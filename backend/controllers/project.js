@@ -546,6 +546,8 @@ const assignEmployee = async (req, res) => {
             assignEmployee
           ) === -1
         ) {
+          // if employee already exist then not push
+
           task.webData.webtargetUrls[i].assignEmployee.push(...assignEmployee);
         }
       }
@@ -827,7 +829,6 @@ const getReportsByTaskId = async (req, res) => {
   const taskId = req.body.taskId;
   const type = req.body.type;
 
-  // console.log(req.body);
   var reports = [];
   if (type === "web") {
     const task = await Task.findById(taskId)
@@ -845,12 +846,19 @@ const getReportsByTaskId = async (req, res) => {
           j < task.webData.webtargetUrls[i].assignEmployee.length;
           j++
         ) {
-          if (
-            task.webData.webtargetUrls[i].assignEmployee[j].report.isCompleted
+          for (
+            var k = 0;
+            k < task.webData.webtargetUrls[i].assignEmployee[j].report.length;
+            k++
           ) {
-            reports.push(
-              task.webData.webtargetUrls[i].assignEmployee[j].report
-            );
+            if (
+              task.webData.webtargetUrls[i].assignEmployee[j].report[k]
+                .isCompleted
+            ) {
+              reports.push(
+                task.webData.webtargetUrls[i].assignEmployee[j].report[k]
+              );
+            }
           }
         }
       }
@@ -860,8 +868,14 @@ const getReportsByTaskId = async (req, res) => {
       .populate("networkData.assignEmployee.employee")
       .populate("networkData.assignEmployee.report");
     for (var i = 0; i < task.networkData.assignEmployee.length; i++) {
-      if (task.networkData.assignEmployee[i].report.isCompleted) {
-        reports.push(task.networkData.assignEmployee[i].report);
+      for (
+        var k = 0;
+        k < task.networkData.assignEmployee[i].report.length;
+        k++
+      ) {
+        if (task.networkData.assignEmployee[i].report[k].isCompleted) {
+          reports.push(task.networkData.assignEmployee[i].report[k]);
+        }
       }
     }
   } else if (req.body.type === "api") {
@@ -869,8 +883,10 @@ const getReportsByTaskId = async (req, res) => {
       .populate("apiData.assignEmployee.employee")
       .populate("apiData.assignEmployee.report");
     for (var i = 0; i < task.apiData.assignEmployee.length; i++) {
-      if (task.apiData.assignEmployee[i].report.isCompleted) {
-        reports.push(task.apiData.assignEmployee[i].report);
+      for (var k = 0; k < task.apiData.assignEmployee[i].report.length; k++) {
+        if (task.apiData.assignEmployee[i].report[k].isCompleted) {
+          reports.push(task.apiData.assignEmployee[i].report[k]);
+        }
       }
     }
   } else if (req.body.type === "android") {
@@ -878,8 +894,16 @@ const getReportsByTaskId = async (req, res) => {
       .populate("mobileData.forAndroid.assignEmployee.employee")
       .populate("mobileData.forAndroid.assignEmployee.report");
     for (var i = 0; i < task.mobileData.forAndroid.assignEmployee.length; i++) {
-      if (task.mobileData.forAndroid.assignEmployee[i].report.isCompleted) {
-        reports.push(task.mobileData.forAndroid.assignEmployee[i].report);
+      for (
+        var k = 0;
+        k < task.mobileData.forAndroid.assignEmployee[i].report.length;
+        k++
+      ) {
+        if (
+          task.mobileData.forAndroid.assignEmployee[i].report[k].isCompleted
+        ) {
+          reports.push(task.mobileData.forAndroid.assignEmployee[i].report[k]);
+        }
       }
     }
   } else if (req.body.type === "ios") {
@@ -888,8 +912,14 @@ const getReportsByTaskId = async (req, res) => {
       .populate("mobileData.forIos.assignEmployee.report");
 
     for (var i = 0; i < task.mobileData.forIos.assignEmployee.length; i++) {
-      if (task.mobileData.forIos.assignEmployee[i].report.isCompleted) {
-        reports.push(task.mobileData.forIos.assignEmployee[i].report);
+      for (
+        var k = 0;
+        k < task.mobileData.forIos.assignEmployee[i].report.length;
+        ki++
+      ) {
+        if (task.mobileData.forIos.assignEmployee[i].report[k].isCompleted) {
+          reports.push(task.mobileData.forIos.assignEmployee[i].report[k]);
+        }
       }
     }
   } else if (req.body.type === "grc") {
@@ -897,8 +927,10 @@ const getReportsByTaskId = async (req, res) => {
       .populate("grcData.assignEmployee.employee")
       .populate("grcData.assignEmployee.report");
     for (var i = 0; i < task.grcData.assignEmployee.length; i++) {
-      if (task.grcData.assignEmployee[i].report.isCompleted) {
-        reports.push(task.grcData.assignEmployee[i].report);
+      for (var k = 0; k < task.grcData.assignEmployee[i].report.length; k++) {
+        if (task.grcData.assignEmployee[i].report[k].isCompleted) {
+          reports.push(task.grcData.assignEmployee[i].report[k]);
+        }
       }
     }
   }
