@@ -854,21 +854,21 @@ const getReportsByTaskId = async (req, res) => {
       .populate("networkData.assignEmployee.employee")
       .populate("networkData.assignEmployee.report");
     for (var i = 0; i < task.networkData.assignEmployee.length; i++) {
-      reports = task.networkData.assignEmployee[i].report;
+      reports.push(task.networkData.assignEmployee[i].report);
     }
   } else if (req.body.type === "api") {
     const task = await Task.findById(taskId)
       .populate("apiData.assignEmployee.employee")
       .populate("apiData.assignEmployee.report");
     for (var i = 0; i < task.apiData.assignEmployee.length; i++) {
-      reports = task.apiData.assignEmployee[i].report;
+      reports.push(task.apiData.assignEmployee[i].report);
     }
   } else if (req.body.type === "android") {
     const task = await Task.findById(taskId)
       .populate("mobileData.forAndroid.assignEmployee.employee")
       .populate("mobileData.forAndroid.assignEmployee.report");
     for (var i = 0; i < task.mobileData.forAndroid.assignEmployee.length; i++) {
-      reports = task.mobileData.forAndroid.assignEmployee[i].report;
+      reports.push(task.mobileData.forAndroid.assignEmployee[i].report);
     }
   } else if (req.body.type === "ios") {
     const task = await Task.findById(taskId)
@@ -876,14 +876,14 @@ const getReportsByTaskId = async (req, res) => {
       .populate("mobileData.forIos.assignEmployee.report");
 
     for (var i = 0; i < task.mobileData.forIos.assignEmployee.length; i++) {
-      reports = task.mobileData.forIos.assignEmployee[i].report;
+      reports.push(task.mobileData.forIos.assignEmployee[i].report);
     }
   } else if (req.body.type === "grc") {
     const task = await Task.findById(taskId)
       .populate("grcData.assignEmployee.employee")
       .populate("grcData.assignEmployee.report");
     for (var i = 0; i < task.grcData.assignEmployee.length; i++) {
-      reports = task.grcData.assignEmployee[i].report;
+      reports.push(task.grcData.assignEmployee[i].report);
     }
   }
   return res.status(200).send({
