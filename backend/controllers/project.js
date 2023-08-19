@@ -845,7 +845,13 @@ const getReportsByTaskId = async (req, res) => {
           j < task.webData.webtargetUrls[i].assignEmployee.length;
           j++
         ) {
-          reports.push(task.webData.webtargetUrls[i].assignEmployee[j].report);
+          if (
+            task.webData.webtargetUrls[i].assignEmployee[j].report.isCompleted
+          ) {
+            reports.push(
+              task.webData.webtargetUrls[i].assignEmployee[j].report
+            );
+          }
         }
       }
     }
@@ -854,21 +860,27 @@ const getReportsByTaskId = async (req, res) => {
       .populate("networkData.assignEmployee.employee")
       .populate("networkData.assignEmployee.report");
     for (var i = 0; i < task.networkData.assignEmployee.length; i++) {
-      reports.push(task.networkData.assignEmployee[i].report);
+      if (task.networkData.assignEmployee[i].report.isCompleted) {
+        reports.push(task.networkData.assignEmployee[i].report);
+      }
     }
   } else if (req.body.type === "api") {
     const task = await Task.findById(taskId)
       .populate("apiData.assignEmployee.employee")
       .populate("apiData.assignEmployee.report");
     for (var i = 0; i < task.apiData.assignEmployee.length; i++) {
-      reports.push(task.apiData.assignEmployee[i].report);
+      if (task.apiData.assignEmployee[i].report.isCompleted) {
+        reports.push(task.apiData.assignEmployee[i].report);
+      }
     }
   } else if (req.body.type === "android") {
     const task = await Task.findById(taskId)
       .populate("mobileData.forAndroid.assignEmployee.employee")
       .populate("mobileData.forAndroid.assignEmployee.report");
     for (var i = 0; i < task.mobileData.forAndroid.assignEmployee.length; i++) {
-      reports.push(task.mobileData.forAndroid.assignEmployee[i].report);
+      if (task.mobileData.forAndroid.assignEmployee[i].report.isCompleted) {
+        reports.push(task.mobileData.forAndroid.assignEmployee[i].report);
+      }
     }
   } else if (req.body.type === "ios") {
     const task = await Task.findById(taskId)
@@ -876,21 +888,23 @@ const getReportsByTaskId = async (req, res) => {
       .populate("mobileData.forIos.assignEmployee.report");
 
     for (var i = 0; i < task.mobileData.forIos.assignEmployee.length; i++) {
-      reports.push(task.mobileData.forIos.assignEmployee[i].report);
+      if (task.mobileData.forIos.assignEmployee[i].report.isCompleted) {
+        reports.push(task.mobileData.forIos.assignEmployee[i].report);
+      }
     }
   } else if (req.body.type === "grc") {
     const task = await Task.findById(taskId)
       .populate("grcData.assignEmployee.employee")
       .populate("grcData.assignEmployee.report");
     for (var i = 0; i < task.grcData.assignEmployee.length; i++) {
-      reports.push(task.grcData.assignEmployee[i].report);
+      if (task.grcData.assignEmployee[i].report.isCompleted) {
+        reports.push(task.grcData.assignEmployee[i].report);
+      }
     }
   }
-  console.log(reports);
   return res.status(200).send({
     title: "Success",
     message: "project get sucessfully",
-
     data: reports,
   });
 };
