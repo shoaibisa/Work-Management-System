@@ -959,6 +959,7 @@ const taskComplete = async (req, res) => {
     task.grcData.isCompleted = true;
   }
 
+  await task.save();
   res.send({
     title: "Success",
     message: "task completed sucessfully",
