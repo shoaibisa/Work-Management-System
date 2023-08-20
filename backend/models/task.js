@@ -40,9 +40,17 @@ const taskSchema = new mongoose.Schema(
       webotherRemarks: {
         type: String,
       },
+      isCompleted: {
+        type: Boolean,
+        default: false,
+      },
     },
 
     networkData: {
+      isCompleted: {
+        type: Boolean,
+        default: false,
+      },
       networkfileUpload: {
         type: String,
       },
@@ -65,6 +73,10 @@ const taskSchema = new mongoose.Schema(
       ],
     },
     apiData: {
+      isCompleted: {
+        type: Boolean,
+        default: false,
+      },
       apifile: {
         type: String,
       },
@@ -87,6 +99,10 @@ const taskSchema = new mongoose.Schema(
       ],
     },
     mobileData: {
+      isCompleted: {
+        type: Boolean,
+        default: false,
+      },
       android: {
         type: String,
       },
@@ -114,6 +130,10 @@ const taskSchema = new mongoose.Schema(
         ],
       },
       forIos: {
+        isCompleted: {
+          type: Boolean,
+          default: false,
+        },
         assignEmployee: [
           {
             employee: {
@@ -131,6 +151,10 @@ const taskSchema = new mongoose.Schema(
       },
     },
     grcData: {
+      isCompleted: {
+        type: Boolean,
+        default: false,
+      },
       grcotherRemarks: {
         type: String,
       },

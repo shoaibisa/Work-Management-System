@@ -941,6 +941,111 @@ const getReportsByTaskId = async (req, res) => {
   });
 };
 
+const taskComplete = async (req, res) => {
+  const taskId = req.body.taskId;
+  const type = req.body.type;
+  const task = await Task.findById(taskId);
+  if (type === "web") {
+    task.webData.isCompleted = true;
+  } else if (type === "network") {
+    task.networkData.isCompleted = true;
+  } else if (type === "api") {
+    task.apiData.isCompleted = true;
+  } else if (type === "android") {
+    task.mobileData.forAndroid.isCompleted = true;
+  } else if (type === "ios") {
+    task.mobileData.forIos.isCompleted = true;
+  } else if (type === "grc") {
+    task.grcData.isCompleted = true;
+  }
+
+  res.send({
+    title: "Success",
+    message: "task completed sucessfully",
+    data: task,
+  });
+};
+const getReportDataByProject = async (req, res) => {
+  const taskId = req.body.taskId;
+  const task = await Project.findById(taskId);
+  const reports = [];
+  for (var i = 0; i < task.webData.webtargetUrls.length; i++) {
+    for (
+      var k = 0;
+      k < task.webData.webtargetUrls[i].assignEmployee.length;
+      k++
+    ) {
+      for (
+        var j = 0;
+        j < task.webData.webtargetUrls[i].assignEmployee[k].report.length;
+        j++
+      ) {
+        reports.push(task.webData.webtargetUrls[i].assignEmployee[k].report[j]);
+      }
+    }
+  }
+  for (var i = 0; i < task.networkData.assignEmployee.length; i++) {
+    for (var k = 0; k < task.networkData.assignEmployee[i].report.length; k++) {
+      reports.push(task.networkData.assignEmployee[i].report[k]);
+    }
+  }
+  for (var i = 0; i < task.apiData.assignEmployee.length; i++) {
+    for (var k = 0; k < task.apiData.assignEmployee[i].report.length; k++) {
+      reports.push(task.apiData.assignEmployee[i].report[k]);
+    }
+  }
+
+  for (var i = 0; i < task.mobileData.forAndroid.assignEmployee.length; i++) {
+    for (
+      var k = 0;
+      k < task.mobileData.forAndroid.assignEmployee[i].report.length;
+      k++
+    ) {
+      reports.push(task.mobileData.forAndroid.assignEmployee[i].report[k]);
+    }
+  }
+
+  for (var i = 0; i < task.mobileData.forIos.assignEmployee.length; i++) {
+    for (
+      var k = 0;
+      k < task.mobileData.forIos.assignEmployee[i].report.length;
+      k++
+    ) {
+      reports.push(task.mobileData.forIos.assignEmployee[i].report[k]);
+    }
+  }
+
+  for (var i = 0; i < task.grcData.assignEmployee.length; i++) {
+    for (var k = 0; k < task.grcData.assignEmployee[i].report.length; k++) {
+      reports.push(task.grcData.assignEmployee[i].report[k]);
+    }
+  }
+  var low = 0,
+    medium = 0,
+    high = 0,
+    critical = 0;
+  for (var i = 0; i < reports.length; i++) {
+    if (reports[i].risk === "low") {
+      low++;
+    } else if (reports[i].risk === "medium") {
+      medium++;
+    } else if (reports[i].risk === "high") {
+      high++;
+    } else if (reports[i].risk === "critical") {
+      critical++;
+    }
+  }
+
+  return res.status(200).send({
+    title: "Success",
+    critical: critical,
+    low: low,
+    medium: medium,
+    high: high,
+    message: "project get sucessfully",
+  });
+};
+
 export {
   createProject,
   actionProject,
@@ -960,4 +1065,6 @@ export {
   getReportsByUserId,
   getAllReportOfManager,
   getReportsByTaskId,
+  taskComplete,
+  getReportDataByProject,
 };

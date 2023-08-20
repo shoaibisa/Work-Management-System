@@ -17,6 +17,8 @@ import {
   getReportsByUserId,
   getAllReportOfManager,
   getReportsByTaskId,
+  taskComplete,
+  getReportDataByProject,
 } from "../controllers/project.js";
 import { protect } from "../middleware/employeeMiddleware.js";
 import multer from "multer";
@@ -54,7 +56,7 @@ router.post("/getTask", protect, getTask);
 router.post(
   "/createReport",
   upload.array("files"),
-// upload.array("pocFiles"),
+  // upload.array("pocFiles"),
   // upload.fields([{ name: "files" }, { name: "pocFiles" }]),
   protect,
   creatReport
@@ -70,5 +72,7 @@ router.post("/getreport", protect, getReport);
 router.post("/getreportsbyuserid", protect, getReportsByUserId);
 router.post("/getallreportsofmanager", protect, getAllReportOfManager);
 router.post("/getreportsbytaskid", protect, getReportsByTaskId);
+router.post("/taskcomplete", protect, taskComplete);
+router.post("/getreportdatabyproject", protect, getReportDataByProject);
 
 export default router;
