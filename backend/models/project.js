@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-const fileTypes = ["application/pdf", "application/vnd.ms-excel"];
 const projectSchema = new mongoose.Schema(
   {
     projectName: {

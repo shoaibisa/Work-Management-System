@@ -76,7 +76,14 @@ const employeeSchema = new Schema(
         ref: "Project",
       },
     ],
+    notifications: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Notification",
+      },
+    ],
   },
+
   { timestamps: true }
 );
 
