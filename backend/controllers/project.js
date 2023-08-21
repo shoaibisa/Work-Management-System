@@ -376,7 +376,16 @@ const creatReport = async (req, res) => {
       }
     }
   }
-
+  const project = await Project.findOne({ _id: task.project }).exec();
+  const notification = new Notification({
+    notification: `New Report Created for ${task.project}`,
+    employee: project.manager,
+    link: "pdf/" + report._id,
+  });
+  await notification.save();
+  const manager = await Employee.findOne({ _id: project.manager }).exec();
+  manager.notifications.push(notification._id);
+  await manager.save();
   await task.save();
 
   report
@@ -409,6 +418,31 @@ const addRemark = async (req, res) => {
         message: "This report is not registered ",
       });
     }
+    const user = await Employee.findById(req.user._id).exec();
+    if (user.role === "employee") {
+      const project = Project.findById(report.project).exec();
+      const manager = await Employee.findById(project.manager).exec();
+      const notification = new Notification({
+        notification: `${user.name} has added remark to ${report._id}`,
+        employee: manager._id,
+        link: "pdf/" + report._id,
+      });
+      await notification.save();
+      manager.notifications.push(notification._id);
+      await manager.save();
+    } else {
+      const user = await Employee.findById(report.employee);
+      const notification = new Notification({
+        notification: "Manager has added remark to " + report._id,
+        employee: user._id,
+        link: "viewproject" + report.task,
+      });
+
+      await notification.save();
+      user.notifications.push(notification._id);
+      await user.save();
+    }
+
     const r = {
       user: req.user._id,
       remark: remark,
@@ -416,7 +450,6 @@ const addRemark = async (req, res) => {
     };
     report.remarks.push(r);
     report
-
       .save()
       .then(() => {
         console.log("Report  save to db!");
@@ -1078,7 +1111,7 @@ const getReportDataByProject = async (req, res) => {
       critical++;
     }
   }
-  console.log(low, critical, medium, high);
+
   return res.status(200).send({
     title: "Success",
     critical: critical,

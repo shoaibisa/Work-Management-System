@@ -183,6 +183,10 @@ const taskSchema = new mongoose.Schema(
       type: Schema.Types.ObjectId,
       ref: "Employee",
     },
+    isCompleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
