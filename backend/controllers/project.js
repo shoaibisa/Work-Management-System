@@ -22,6 +22,7 @@ const createProject = async (req, res) => {
     clientEmail: req.body.client,
     projectPriority: req.body.projectPriority,
     manager: req.body.manager,
+    client: req.body.client,
     submissionDate: req.body.submissionDate,
   });
 
@@ -419,7 +420,7 @@ const addRemark = async (req, res) => {
       });
     }
     const user = await Employee.findById(req.user._id).exec();
-    if (user.role === "employee") {
+    if (user.role === "Employee") {
       const project = Project.findById(report.project).exec();
       const manager = await Employee.findById(project.manager).exec();
       const notification = new Notification({
