@@ -19,6 +19,9 @@ import {
   getReportsByTaskId,
   taskComplete,
   getReportDataByProject,
+  actionNotification,
+  getNotifications,
+  projectComplete,
 } from "../controllers/project.js";
 import { protect } from "../middleware/employeeMiddleware.js";
 import multer from "multer";
@@ -74,5 +77,8 @@ router.post("/getallreportsofmanager", protect, getAllReportOfManager);
 router.post("/getreportsbytaskid", protect, getReportsByTaskId);
 router.post("/taskcomplete", protect, taskComplete);
 router.post("/getreportdatabyproject", protect, getReportDataByProject);
+router.post("/actionnotification", protect, actionNotification);
+router.post("/getnotifications", protect, getNotifications);
+router.post("/projectcomplete", protect, projectComplete);
 
 export default router;

@@ -5,10 +5,8 @@ import SubmitProject from "../models/report.js";
 import Report from "../models/report.js";
 import fs from "fs";
 import Employee from "../models/employee.js";
-
+import Notification from "../models/notification.js";
 const createProject = async (req, res) => {
-  const projectData = req.body;
-  console.log(projectData);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(201).send({
@@ -26,9 +24,20 @@ const createProject = async (req, res) => {
     manager: req.body.manager,
     submissionDate: req.body.submissionDate,
   });
+
+  const notification = new Notification({
+    notification: `New project ${req.body.projectName} is created`,
+    employee: req.body.client,
+    link: `/clienttasks/${project._id}`,
+  });
+  await notification.save();
+
   const client = await Employee.findById(req.body.client).exec();
   client.clientProjects.push(project._id);
+  client.notifications.push(notification._id);
   await client.save();
+  const manager = await Employee.findById(req.body.manager).exec();
+  manager.managerProjects.push(project._id);
   project
     .save()
     .then(() => {
@@ -505,6 +514,16 @@ const complteReport = async (req, res) => {
   try {
     const report = await Report.findById(id).exec();
     //console.log(report);
+    const notification = new Notification({
+      notification: "Report is completed by manager",
+      employee: report.employee,
+      link: "/pdf/" + report._id,
+    });
+    notification.save();
+    const employee = await Employee.findById(report.employee).exec();
+    employee.notifications.push(notification._id);
+    employee.save();
+
     report.isCompleted = true;
     report
       .save()
@@ -595,10 +614,21 @@ const assignEmployee = async (req, res) => {
         name: selectedOption,
       },
     };
+    var link;
     if (selectedOption === "web") {
       ttask.selectedOption.webtargetUrls = req.body.webtargetUrls;
+      link = `/taskview/${taskid}/${selectedOption}/${req.body.webtargetUrls}`;
+    } else {
+      link = `/taskview/${taskid}/${selectedOption}/undefined`;
     }
+    const notification = new Notification({
+      notification: `New task ${req.body.projectName} is assigned to you`,
+      employee: employee[i],
+      link: link,
+    });
+    await notification.save();
     employeeData.tasks.push(ttask);
+    employeeData.notifications.push(notification._id);
     await employeeData.save();
   }
 
@@ -958,6 +988,17 @@ const taskComplete = async (req, res) => {
   } else if (type === "grc") {
     task.grcData.isCompleted = true;
   }
+  const project = await Project.findById(task.project);
+  const notification = new Notification({
+    notification: "Task Completed",
+    employee: project.client,
+    link: "/allreportforclient/" + task._id + type,
+  });
+  await notification.save();
+
+  const client = await Employee.findById(project.client);
+  client.notifications.push(notification._id);
+  await client.save();
 
   await task.save();
   res.send({
@@ -1047,6 +1088,41 @@ const getReportDataByProject = async (req, res) => {
   });
 };
 
+const projectComplete = async (req, res) => {
+  const projectId = req.body.projectId;
+  const project = await Project.findById(projectId);
+  project.isCompleted = true;
+  await project.save();
+  res.send({
+    title: "Success",
+    message: "project completed sucessfully",
+    data: project,
+  });
+};
+const getNotifications = async (req, res) => {
+  const employeeId = req.body.employeeId;
+  const employee = await Employee.findById(employeeId).populate(
+    "notifications"
+  );
+
+  res.send({
+    title: "Success",
+    message: "notifications get sucessfully",
+    data: employee.notifications,
+  });
+};
+const actionNotification = async (req, res) => {
+  const notificationId = req.body.notificationId;
+  const notification = await Notification.findById(notificationId);
+  notification.isRead = true;
+  await notification.save();
+  res.send({
+    title: "Success",
+    message: "notifications get sucessfully",
+    data: notification,
+  });
+};
+
 export {
   createProject,
   actionProject,
@@ -1068,4 +1144,7 @@ export {
   getReportsByTaskId,
   taskComplete,
   getReportDataByProject,
+  projectComplete,
+  getNotifications,
+  actionNotification,
 };

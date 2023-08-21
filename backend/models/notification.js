@@ -10,6 +10,9 @@ const notificationSchema = new mongoose.Schema(
       type: Schema.Types.ObjectId,
       ref: "Employee",
     },
+    link: {
+      type: String,
+    },
 
     isRead: {
       type: Boolean,
