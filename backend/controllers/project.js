@@ -1026,7 +1026,7 @@ const taskComplete = async (req, res) => {
   const notification = new Notification({
     notification: "Task Completed",
     employee: project.client,
-    link: "/allreportforclient/" + task._id + type,
+    link: "/allreportforclient/" + task._id + "/" + type,
   });
   await notification.save();
 
