@@ -136,6 +136,7 @@ export const viewReport = (id, type, webtargetUrls) => async (dispatch) => {
     });
   }
 };
+
 export const SingleViewReport = (id) => async (dispatch) => {
   try {
     dispatch({ type: REPORT_SINGLEVIEW_REQUEST });

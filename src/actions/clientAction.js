@@ -9,17 +9,8 @@ export const listClients = () => async (dispatch) => {
   const token = userData?.token;
   try {
     dispatch({ type: CLIENTS_LIST_REQUEST });
-    const { data } = await axios.get(
-      "http://localhost:5000/user/clients",
-      {},
+    const { data } = await axios.get("http://localhost:5000/user/clients", {});
 
-    //   {
-    //     headers: {
-    //       Authorization: "Bearer " + token,
-    //     },
-    //   }
-    );
-    console.log(data);
     dispatch({
       type: CLIENTS_LIST_SUCCESS,
       payload: data,

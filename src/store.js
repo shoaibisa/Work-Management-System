@@ -25,6 +25,10 @@ import {
   reportByUserReducer,
   allReportByTaskReducer,
 } from "./reducers/reportReducer";
+import {
+  notificationReducer,
+  seeNotificationReducer,
+} from "./reducers/notificationReducer";
 import { singleTaskReducer } from "./reducers/taskReducer";
 import { clientsListReducer } from "./reducers/clientReducer";
 const employeenfoFromStroge = localStorage.getItem("employeeInfo")
@@ -52,10 +56,11 @@ const reducer = combineReducers({
   userInfo: userInfoReducer,
   singleTask: singleTaskReducer,
   allReportByTask: allReportByTaskReducer,
+  allNotification: notificationReducer,
+  seeNotifications: seeNotificationReducer,
 });
 const initialState = {
   employeeLogin: { employeeInfo: employeenfoFromStroge },
-  // project: { data: [] },
 };
 const middlewares = [thunk];
 const store = createStore(

@@ -1078,7 +1078,7 @@ const getReportDataByProject = async (req, res) => {
       critical++;
     }
   }
-
+  console.log(low, critical, medium, high);
   return res.status(200).send({
     title: "Success",
     critical: critical,

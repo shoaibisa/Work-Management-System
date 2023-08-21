@@ -126,7 +126,7 @@ const getManagerById = async (req, res) => {
     }
 
     // This should be outside the if block
-    console.log(employee);
+    // console.log(employee);
 
     return res.status(200).send({
       employee: employee,

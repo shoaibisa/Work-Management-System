@@ -16,37 +16,13 @@ function ClientProjectView() {
   const dispatch = useDispatch();
   const TaskView = useSelector((state) => state.tasksView);
   const { tasks } = TaskView;
-  // console.log(tasks);
+
   useEffect(() => {
     dispatch(viewTasks(taskId));
   }, [dispatch, taskId]);
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const token = userData?.token;
-  // const VernablityCount = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `http://localhost:5000/project/getreportdatabyproject`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           // Authorization: `Bearer ${token}`, // Pass token in the "Authorization" header
-  //           Authorization: "Bearer " + token,
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({ taskId }),
-  //       }
-  //     );
 
-  //     if (!response.ok) {
-  //       throw new Error("Failed to update task status");
-  //     }
-
-  //     const data = await response.json();
-  //     return data;
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // };
   const [Vernablitydata, setVernablityData] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
@@ -76,12 +52,20 @@ function ClientProjectView() {
 
     fetchData();
   }, []);
-  console.log(Vernablitydata);
+
+  //console.log(Vernablitydata);
+
+  const integerValues = [
+    Vernablitydata.critical,
+    Vernablitydata.low,
+    Vernablitydata.medium,
+    Vernablitydata.high,
+  ];
   const data = {
-    labels: ["High", "modurate", "low", "Urgent"],
+    labels: ["Critical", "Low", "Medium", "High"],
     datasets: [
       {
-        data: [12, 19, 3, 5],
+        data: integerValues,
         backgroundColor: [
           "#FF6384",
           "#36A2EB",
