@@ -1067,13 +1067,14 @@ const getReportDataByProject = async (req, res) => {
     high = 0,
     critical = 0;
   for (var i = 0; i < reports.length; i++) {
-    if (reports[i].risk === "low") {
+    const r = await Report.findById(reports[i]._id);
+    if (r.risk === "low") {
       low++;
-    } else if (reports[i].risk === "medium") {
+    } else if (r.risk === "medium") {
       medium++;
-    } else if (reports[i].risk === "high") {
+    } else if (r.risk === "high") {
       high++;
-    } else if (reports[i].risk === "critical") {
+    } else if (r.risk === "critical") {
       critical++;
     }
   }
