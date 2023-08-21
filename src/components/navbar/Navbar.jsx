@@ -52,7 +52,7 @@ const Navbar = () => {
   const { dispatchs } = useContext(DarkModeContext);
 
   return (
-    <div className="navbar">
+    <div className="navbar relative">
       <div className="wrapper">
         <div className="search">
           <input type="text" placeholder="Search..." />
@@ -85,11 +85,11 @@ const Navbar = () => {
           </div> */}
           <div className="item" onClick={toggleNotificationPopup}>
             <NotificationsNoneOutlinedIcon className="icon" />
-            <div className="counter">{unreadCount}</div>
+            {unreadCount > 0 && <div className="counter">{unreadCount}</div>}
           </div>
 
           {showNotifications && notification && notification.data && (
-            <div className="notification-popup">
+            <div className=" absolute mt-20 p-2 z-20  bg-white  shadow-[0px_0px_10px_2px_#9f7aea] transition-all duration-200 w-[200px] rounded-sm ">
               {notification.data.some(
                 (notification) => !notification.isRead
               ) ? (
@@ -110,7 +110,7 @@ const Navbar = () => {
                     )
                 )
               ) : (
-                <div className="no-notifications-message">
+                <div className="no-notifications-message  ">
                   No new notifications.
                 </div>
               )}
