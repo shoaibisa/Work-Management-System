@@ -968,7 +968,7 @@ const taskComplete = async (req, res) => {
 };
 const getReportDataByProject = async (req, res) => {
   const taskId = req.body.taskId;
-  const task = await Project.findById(taskId);
+  const task = await Task.findById(taskId);
   const reports = [];
   for (var i = 0; i < task.webData.webtargetUrls.length; i++) {
     for (
