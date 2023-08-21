@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import { Link, useParams } from "react-router-dom";
@@ -6,6 +6,7 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import { viewTasks } from "../../actions/projectlistAction";
 import { useDispatch, useSelector } from "react-redux";
 import { PaperClipIcon } from "@heroicons/react/20/solid";
+import axios from "axios";
 function Viewtask() {
   const { projectId, taskID } = useParams();
 
@@ -65,6 +66,46 @@ function Viewtask() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, taskID]);
 
+  //completed Tasks
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  const handleButtonClick = async (type) => {
+    // Call a function to update the status in the database
+    try {
+      await updateTaskStatus(taskID, type);
+      setIsCompleted(true);
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
+  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+  const token = userData?.token;
+
+  const updateTaskStatus = async (taskID, type) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/project/taskcomplete`,
+        {
+          method: "POST",
+          headers: {
+            // Authorization: `Bearer ${token}`, // Pass token in the "Authorization" header
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ taskId: taskID, type }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update task status");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
   return (
     <div className="App">
       <div className="home">
@@ -80,7 +121,28 @@ function Viewtask() {
               <div className=" flex flex-row overflow-hidden flex-wrap ">
                 {data && data.webData && data.webData.webotherRemarks ? (
                   <div className="block w-[300px] rounded-lg shadow-xl bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-                    <h1>For web</h1>
+                    <div className=" flex  justify-between">
+                      <h1>For web</h1>
+                      <p>
+                        {data.webData.isCompleted === false && (
+                          <button
+                            type="button"
+                            className="inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                          >
+                            ongoing
+                          </button>
+                        )}
+
+                        {data.webData.isCompleted === true && (
+                          <button
+                            type="button"
+                            className="inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                          >
+                            completed
+                          </button>
+                        )}
+                      </p>
+                    </div>
                     {data.webData.webtargetUrls &&
                       data.webData.webtargetUrls.map((url) => (
                         <div className="mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -114,7 +176,16 @@ function Viewtask() {
                       </div>
                     </div>
 
-                    <div className=" mt-2 flex justify-end gap-x-6">
+                    <div className=" mt-2 flex justify-between gap-x-6">
+                      {!data.webData.isCompleted && (
+                        <button
+                          onClick={() => handleButtonClick("web")}
+                          className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                          disabled={isCompleted}
+                        >
+                          {isCompleted ? "Completed" : "Mark as Completed"}
+                        </button>
+                      )}
                       <Link
                         type="submit"
                         to={`/viewproject/${projectId}/viewtask/${taskID}/detailedtask/web`}
@@ -130,7 +201,28 @@ function Viewtask() {
                 data.mobileData &&
                 data.mobileData.mobileotherRemarks ? (
                   <div className="block w-[300px]  shadow-xl rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-                    <h1>For Mobile</h1>
+                    <div className=" flex  justify-between">
+                      <h1>For web</h1>
+                      <p>
+                        {data.mobileData.isCompleted === false && (
+                          <button
+                            type="button"
+                            className="inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                          >
+                            ongoing
+                          </button>
+                        )}
+
+                        {data.mobileData.isCompleted === true && (
+                          <button
+                            type="button"
+                            className="inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                          >
+                            completed
+                          </button>
+                        )}
+                      </p>
+                    </div>
                     {android && (
                       <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <div className="text-md font-medium leading-6 text-gray-900">
@@ -171,7 +263,16 @@ function Viewtask() {
                       </div>
                     </div>
 
-                    <div className=" mt-2 flex justify-end gap-x-6">
+                    <div className=" mt-2 flex  justify-between gap-x-6">
+                      {!data.mobileData.isCompleted && (
+                        <button
+                          onClick={() => handleButtonClick("mobile")}
+                          className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                          disabled={isCompleted}
+                        >
+                          {isCompleted ? "Completed" : "Mark as Completed"}
+                        </button>
+                      )}
                       <Link
                         type="submit"
                         to={`/viewproject/${projectId}/viewtask/${taskID}/detailedtask/mobile`}
@@ -184,7 +285,28 @@ function Viewtask() {
                 ) : null}
                 {data && data.apiData && data.apiData.apiotherRemarks ? (
                   <div className="block w-[300px] shadow-xl rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-                    <h1>For Api</h1>
+                    <div className=" flex  justify-between">
+                      <h1>For API</h1>
+                      <p>
+                        {data.apiData.isCompleted === false && (
+                          <button
+                            type="button"
+                            className="inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                          >
+                            ongoing
+                          </button>
+                        )}
+
+                        {data.apiData.isCompleted === true && (
+                          <button
+                            type="button"
+                            className="inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                          >
+                            completed
+                          </button>
+                        )}
+                      </p>
+                    </div>
                     <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                       <span
                         className="font-medium text-indigo-600 hover:text-indigo-500"
@@ -203,7 +325,16 @@ function Viewtask() {
                       </div>
                     </div>
 
-                    <div className=" mt-2 flex justify-end gap-x-6">
+                    <div className=" mt-2 flex  justify-between gap-x-6">
+                      {!data.apiData.isCompleted && (
+                        <button
+                          onClick={() => handleButtonClick("api")}
+                          className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                          disabled={isCompleted}
+                        >
+                          {isCompleted ? "Completed" : "Mark as Completed"}
+                        </button>
+                      )}
                       <Link
                         type="submit"
                         to={`/viewproject/${projectId}/viewtask/${taskID}/detailedtask/api`}
@@ -218,7 +349,28 @@ function Viewtask() {
                 data.networkData &&
                 data.networkData.networkotherRemarks ? (
                   <div className="block w-[300px]  shadow-xl rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-                    <h1>For Network</h1>
+                    <div className=" flex  justify-between">
+                      <h1>For Network</h1>
+                      <p>
+                        {data.networkData.isCompleted === false && (
+                          <button
+                            type="button"
+                            className="inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                          >
+                            ongoing
+                          </button>
+                        )}
+
+                        {data.networkData.isCompleted === true && (
+                          <button
+                            type="button"
+                            className="inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                          >
+                            completed
+                          </button>
+                        )}
+                      </p>
+                    </div>
                     <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                       <span
                         className="font-medium text-indigo-600 hover:text-indigo-500"
@@ -238,7 +390,16 @@ function Viewtask() {
                       </div>
                     </div>
 
-                    <div className=" mt-2 flex justify-end gap-x-6">
+                    <div className=" mt-2 flex  justify-between gap-x-6">
+                      {!data.networkData.isCompleted && (
+                        <button
+                          onClick={() => handleButtonClick("network")}
+                          className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                          disabled={isCompleted}
+                        >
+                          {isCompleted ? "Completed" : "Mark as Completed"}
+                        </button>
+                      )}
                       <Link
                         type="submit"
                         to={`/viewproject/${projectId}/viewtask/${taskID}/detailedtask/network`}
@@ -251,7 +412,28 @@ function Viewtask() {
                 ) : null}
                 {data && data.grcData && data.grcData.grcotherRemarks ? (
                   <div className="block w-[300px]  shadow-xl rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-                    <h1>For GRC</h1>
+                    <div className=" flex  justify-between">
+                      <h1>For GRC</h1>
+                      <p>
+                        {data.grcData.isCompleted === false && (
+                          <button
+                            type="button"
+                            className="inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                          >
+                            ongoing
+                          </button>
+                        )}
+
+                        {data.grcData.isCompleted === true && (
+                          <button
+                            type="button"
+                            className="inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                          >
+                            completed
+                          </button>
+                        )}
+                      </p>
+                    </div>
 
                     <div className=" mt-4 flex flex-col">
                       <div className="text-md font-medium leading-6 text-gray-900">
@@ -262,7 +444,16 @@ function Viewtask() {
                       </div>
                     </div>
 
-                    <div className=" mt-2 flex justify-end gap-x-6">
+                    <div className=" mt-2 flex justify-between gap-x-6">
+                      {!data.grcData.isCompleted && (
+                        <button
+                          onClick={() => handleButtonClick("grc")}
+                          className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                          disabled={isCompleted}
+                        >
+                          {isCompleted ? "Completed" : "Mark as Completed"}
+                        </button>
+                      )}
                       <Link
                         type="submit"
                         to={`/viewproject/${projectId}/viewtask/${taskID}/detailedtask/grc`}

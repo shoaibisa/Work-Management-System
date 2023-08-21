@@ -31,7 +31,7 @@ export const createProject =
   async (dispatch) => {
     const userData = JSON.parse(localStorage.getItem("employeeInfo"));
     const token = userData?.token;
-    console.log(clientEmail);
+    // console.log(clientEmail);
     try {
       dispatch({ type: PROJECT_CREATED_REQUEST });
       const { data } = await axios.post(
@@ -144,7 +144,7 @@ export const listProject = () => async (dispatch) => {
         },
       }
     );
-    console.log(data);
+    //  console.log(data);
     dispatch({
       type: PROJECT_LIST_SUCCESS,
       payload: data,
@@ -175,7 +175,7 @@ export const viewTasks = (taskId) => async (dispatch) => {
         },
       }
     );
-
+    // console.log(data);
     dispatch({
       type: TASK_VIEW_SUCCESS,
       payload: data,

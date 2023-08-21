@@ -44,7 +44,7 @@ function AllReportForClient() {
               <h1 className=" text-center  bold text-2xl "> Full Report</h1>
             </div>
             {report && report.length > 0 ? (
-              report[0].map((items, index) => (
+              report.map((items, index) => (
                 <div class="flex  m-auto mt-10  flex-col w-[1000px]     border-b-4 border-violet-600">
                   <span>Report no: {index + 1}</span>
                   {items.reportFiles && items.reportFiles.length > 0 && (

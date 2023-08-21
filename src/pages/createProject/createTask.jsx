@@ -10,8 +10,9 @@ import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { Select, initTE } from "tw-elements";
 import { useState } from "react";
-
+import { viewProject, viewTask } from "../../actions/projectlistAction";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 const CreateTask = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [targetURL, setTargetURL] = useState([{ lable: "", link: "" }]);
@@ -167,6 +168,16 @@ const CreateTask = () => {
     initTE({ Select });
   }, []);
 
+  const dispatch = useDispatch();
+  const projectView = useSelector((state) => state.projectView);
+  const { loading, error, project } = projectView;
+  const { data } = project;
+
+  useEffect(() => {
+    dispatch(viewProject(projectId));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, projectId]);
+
   return (
     <div className="home">
       <Sidebar />
@@ -188,7 +199,7 @@ const CreateTask = () => {
                       for="username"
                       className="block text-sm leading-6 text-gray-900  font-bold"
                     >
-                      Project Name : Birla (Id:{projectId})
+                      Project Name : {data && data.projectName} (Id:{projectId})
                     </label>
                   </div>
                   <div className="sm:col-span-4 w-1/2 mr-10 mb-10">
@@ -202,8 +213,7 @@ const CreateTask = () => {
                       <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                         <input
                           type="text"
-                          name="webcompanyName"
-                          autoComplete="username"
+                          name="taskname"
                           className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                           placeholder="Enter Task Name"
                           required="true"

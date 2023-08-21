@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import { Link, useParams } from "react-router-dom";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { dummyProjectList } from "../../dummyprojectlist";
-import { viewProject, viewTask } from "../../actions/projectlistAction";
+import { viewProject } from "../../actions/projectlistAction";
+import { viewTasks } from "../../actions/projectlistAction";
+
 import { useDispatch, useSelector } from "react-redux";
 import { EyeIcon, PlusIcon, TrashIcon } from "@heroicons/react/20/solid";
 function Viewproject() {
@@ -13,11 +15,59 @@ function Viewproject() {
   const projectView = useSelector((state) => state.projectView);
   const { loading, error, project } = projectView;
   const { data } = project;
-
+  const TaskView = useSelector((state) => state.tasksView);
+  const { tasks } = TaskView;
   useEffect(() => {
     dispatch(viewProject(projectId));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, projectId]);
+
+  const [taskDetails, setTaskDetails] = useState([]);
+  useEffect(() => {
+    if (data && data.task) {
+      data.task.forEach((taskId) => {
+        if (!taskDetails[taskId]) {
+          fetchTaskDetails(taskId);
+        }
+      });
+    }
+  }, [data, taskDetails]);
+
+  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+  const token = userData?.token;
+
+  const fetchTaskDetails = async (taskId) => {
+    try {
+      const response = await fetch("http://localhost:5000/project/getTask", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: taskId }),
+      });
+
+      const taskData = await response.json();
+      setTaskDetails((prevTaskDetails) => ({
+        ...prevTaskDetails,
+        [taskId]: taskData,
+      }));
+      return taskData;
+    } catch (error) {
+      console.error("Error fetching task:", error);
+      return null;
+    }
+  };
+
+  function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
+    return date.toLocaleString("en-US", options);
+  }
+  console.log(taskDetails);
 
   return (
     <div className="App">
@@ -88,38 +138,68 @@ function Viewproject() {
             <h1 className="text-lg"> Task List:</h1>
             <div className="flex  flex-wrap ">
               {data &&
-                data.task.map((taskId) => (
-                  <div class=" flex m-5 space-x-1   shadow-2xloverflow-hidden">
-                    <div class="px-4 py-4 bg-white  rounded">
-                      <p class="text-lg mb-4 text-center text-gray-800">
-                        Task Name
-                      </p>
-                      <div className="flex  gap-3">
-                        <Link
-                          to={`/viewproject/${projectId}/viewtask/${taskId}`}
-                          class="  cursor-pointer text-center w-6/12 flex  justify-center m-auto p-[7px] pointer-events-auto rounded-md bg-indigo-600 px-3 py-2 font-semibold leading-5 text-white hover:bg-indigo-500"
-                        >
-                          <EyeIcon className="w-5 mx-2" />
-                        </Link>
-                        <Link
-                          to="#"
-                          class=" flex cursor-pointer text-center w-6/12   justify-center m-auto p-[7px] pointer-events-auto rounded-md bg-indigo-600 px-3 py-2 font-semibold leading-5 text-white hover:bg-indigo-500"
-                        >
-                          <TrashIcon className="w-5 mx-2" />
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-            </div>
+                data.task.map((taskId) => {
+                  const taskData = taskDetails[taskId];
+                  if (!taskData) {
+                    return null;
+                  }
 
-            <div className="   sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <div className="text-md font-medium leading-6 text-gray-900">
-                Project Assigned Date :
-              </div>
-              <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {/* {project.createdAt.split("T")[0]} */}
-              </div>
+                  const taskName = taskData.data.taskName;
+                  const createdAt = taskData.data.createdAt;
+                  const selectedOptions = taskData.data.selectedOptions;
+
+                  const isAllCompleted = selectedOptions.every((option) => {
+                    if (option === "web") {
+                      return taskData.data.webData.isCompleted;
+                    } else if (option === "network") {
+                      return taskData.data.networkData.isCompleted;
+                    } else if (option === "api") {
+                      return taskData.data.apiData.isCompleted;
+                    } else if (option === "mobile") {
+                      return (
+                        taskData.data.mobileData.forAndroid.isCompleted &&
+                        taskData.data.mobileData.forIos.isCompleted
+                      );
+                    } else if (option === "grc") {
+                      return taskData.data.grcData.isCompleted;
+                    }
+                    return false;
+                  });
+                  const buttonClassName = isAllCompleted
+                    ? "inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                    : "inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto";
+
+                  return (
+                    <>
+                      <div className="block w-[320px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                        <div className="flex my-2 justify-between">
+                          <p className="font-semibold pr-4">
+                            Task Name: {taskName}
+                          </p>
+                          <p>
+                            <button className={buttonClassName}>
+                              <p> {isAllCompleted ? "Completed" : "Ongoing"}</p>
+                            </button>
+                          </p>
+                        </div>
+                        <div className="flex my-2">
+                          <p className="font-semibold">Task createdAt -</p>
+                          <p>{formatDate(createdAt)}</p>
+                        </div>
+
+                        <div className="flex">
+                          <Link
+                            to={`/viewproject/${projectId}/viewtask/${taskId}`}
+                            className="cursor-pointer text-center w-6/12 flex justify-center m-auto p-[7px] pointer-events-auto rounded-md bg-indigo-600 px-3 py-2 font-semibold leading-5 text-white hover:bg-indigo-500"
+                          >
+                            <EyeIcon className="w-5 mx-2" />
+                            View
+                          </Link>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })}
             </div>
 
             <div className="   sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -131,14 +211,6 @@ function Viewproject() {
               </div>
             </div>
 
-            <div className="   sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <div className="text-md font-medium leading-6 text-gray-900">
-                Project Assigned To :
-              </div>
-              <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {/* {data && data.clientName} */}
-              </div>
-            </div>
             <div className="   sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <div className="text-md font-medium leading-6 text-gray-900">
                 Project Type :

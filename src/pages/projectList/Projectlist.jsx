@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import { Link } from "react-router-dom";
-import { dummyProjectList } from "../../dummyprojectlist";
 import { listProject } from "../../actions/projectlistAction";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -21,7 +20,6 @@ function Projectlist() {
       year: "numeric",
       month: "short",
       day: "numeric",
-     
     };
     return date.toLocaleString("en-US", options);
   }

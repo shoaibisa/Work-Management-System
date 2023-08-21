@@ -20,7 +20,63 @@ function ClientProjectView() {
   useEffect(() => {
     dispatch(viewTasks(taskId));
   }, [dispatch, taskId]);
+  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+  const token = userData?.token;
+  // const VernablityCount = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       `http://localhost:5000/project/getreportdatabyproject`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           // Authorization: `Bearer ${token}`, // Pass token in the "Authorization" header
+  //           Authorization: "Bearer " + token,
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ taskId }),
+  //       }
+  //     );
 
+  //     if (!response.ok) {
+  //       throw new Error("Failed to update task status");
+  //     }
+
+  //     const data = await response.json();
+  //     return data;
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // };
+  const [Vernablitydata, setVernablityData] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/project/getreportdatabyproject`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ taskId }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to update task status");
+        }
+
+        const responseData = await response.json();
+        setVernablityData(responseData);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  console.log(Vernablitydata);
   const data = {
     labels: ["High", "modurate", "low", "Urgent"],
     datasets: [
@@ -195,19 +251,21 @@ function ClientProjectView() {
                   )}
                   {selectedOption === "network" && (
                     <div className=" pt-6 flex justify-between">
-                      <div className="flex  flex-1 items-center">
-                        <PaperClipIcon
-                          className="h-5 w-5 flex-shrink-0 text-gray-400"
-                          aria-hidden="true"
-                        />
-                        <Link
-                          to={`/allreportforclient/${taskId}/api/`}
-                          href="#"
-                          className="font-medium ml-4 text-indigo-600 hover:text-indigo-500"
-                        >
-                          Download Report
-                        </Link>
-                      </div>
+                      {tasks.data.networkData && (
+                        <div className="flex  flex-1 items-center">
+                          <PaperClipIcon
+                            className="h-5 w-5 flex-shrink-0 text-gray-400"
+                            aria-hidden="true"
+                          />
+                          <Link
+                            to={`/allreportforclient/${taskId}/network/`}
+                            href="#"
+                            className="font-medium ml-4 text-indigo-600 hover:text-indigo-500"
+                          >
+                            Download Report
+                          </Link>
+                        </div>
+                      )}
                     </div>
                   )}
                   {selectedOption === "grc" && (
