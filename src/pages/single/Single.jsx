@@ -3,8 +3,18 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import Chart from "../../components/chart/Chart";
 import List from "../../components/table/Table";
-
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { infoUSer } from "../../actions/employeeAction";
 const Single = () => {
+  const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.userInfo);
+  const { user } = userInfo;
+  const { data } = user;
+  useEffect(() => {
+    dispatch(infoUSer());
+  }, [dispatch]);
+
   return (
     <div className="single">
       <Sidebar />
@@ -21,24 +31,23 @@ const Single = () => {
                 className="itemImg"
               />
               <div className="details">
-                <h1 className="itemTitle">Jane Doe</h1>
+                <h1 className="itemTitle">{data && data.name}</h1>
                 <div className="detailItem">
                   <span className="itemKey">Email:</span>
-                  <span className="itemValue">janedoe@gmail.com</span>
+                  <span className="itemValue">{data && data.email}</span>
                 </div>
                 <div className="detailItem">
                   <span className="itemKey">Phone:</span>
-                  <span className="itemValue">+1 2345 67 89</span>
+                  <span className="itemValue">{data && data.phone}</span>
                 </div>
                 <div className="detailItem">
-                  <span className="itemKey">Address:</span>
-                  <span className="itemValue">
-                    Elton St. 234 Garden Yd. NewYork
-                  </span>
+                  <span className="itemKey">Role:</span>
+                  <span className="itemValue">{data && data.role}</span>
                 </div>
+
                 <div className="detailItem">
-                  <span className="itemKey">Country:</span>
-                  <span className="itemValue">USA</span>
+                  <span className="itemKey">Department:</span>
+                  <span className="itemValue">{data && data.department}</span>
                 </div>
               </div>
             </div>

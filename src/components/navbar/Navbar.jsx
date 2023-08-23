@@ -10,6 +10,7 @@ import { useContext, useState } from "react";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../actions/employeeAction";
+
 import {
   notifiactionAll,
   notificationSee,
@@ -29,6 +30,7 @@ const Navbar = () => {
 
   const AllNotification = useSelector((state) => state.allNotification);
   const { notification } = AllNotification;
+
   const seeNotifications = useSelector((state) => state.seeNotifications);
   const { seeNotification } = seeNotifications;
 
@@ -50,9 +52,20 @@ const Navbar = () => {
   }
 
   const { dispatchs } = useContext(DarkModeContext);
+  const markNotificationAsRead = async (notificationId) => {
+    dispatch(notificationSee(notificationId));
+    const matchingNotification = notification.data.find(
+      (notification) => notification._id === notificationId
+    );
 
+    // Check if a matching notification was found
+    if (matchingNotification) {
+      // Access the notification's link and redirect to it
+      window.location.href = matchingNotification.link;
+    }
+  };
   return (
-    <div className="navbar relative">
+    <div className="navbar">
       <div className="wrapper">
         <div className="search">
           <input type="text" placeholder="Search..." />
@@ -85,18 +98,21 @@ const Navbar = () => {
           </div> */}
           <div className="item" onClick={toggleNotificationPopup}>
             <NotificationsNoneOutlinedIcon className="icon" />
-            {unreadCount > 0 && <div className="counter">{unreadCount}</div>}
+            <div className="counter">{unreadCount}</div>
           </div>
 
           {showNotifications && notification && notification.data && (
-            <div className=" absolute mt-20 p-2 z-20  bg-white  shadow-[0px_0px_10px_2px_#9f7aea] transition-all duration-200 w-[200px] rounded-sm ">
+            <div className="notification-popup">
               {notification.data.some(
                 (notification) => !notification.isRead
               ) ? (
                 notification.data.map(
                   (notification) =>
                     !notification.isRead && (
-                      <Link key={notification._id} to={notification.link}>
+                      <button
+                        key={notification._id}
+                        onClick={() => markNotificationAsRead(notification._id)}
+                      >
                         <div className="notification-item">
                           <NotificationsNoneOutlinedIcon className="icon" />
                           <div className="notification-text">
@@ -106,11 +122,11 @@ const Navbar = () => {
                             {formatDate(notification.createdAt)}
                           </div>
                         </div>
-                      </Link>
+                      </button>
                     )
                 )
               ) : (
-                <div className="no-notifications-message  ">
+                <div className="no-notifications-message">
                   No new notifications.
                 </div>
               )}

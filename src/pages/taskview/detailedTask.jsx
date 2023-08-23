@@ -75,13 +75,15 @@ function DetailedViewtask() {
                           >
                             {url.link}
                           </a>
-                          <Link
-                            to={`/viewproject/${projectId}/viewtask/${taskID}/assign/web/webtargetUrlsId/${url._id}`}
-                            type="submit"
-                            className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                          >
-                            Assign
-                          </Link>
+                          {url.isCompleted === false ? (
+                            <Link
+                              to={`/viewproject/${projectId}/viewtask/${taskID}/assign/web/webtargetUrlsId/${url._id}`}
+                              type="submit"
+                              className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            >
+                              Assign
+                            </Link>
+                          ) : null}
                         </div>
                       </div>
                       <div className="flex">
@@ -138,15 +140,21 @@ function DetailedViewtask() {
                       </div>
                       <div className="mt-1  flex text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                         <a href={data.mobileData && data.mobileData.android}>
-                          {data.mobileData && data.mobileData.android}
+                          {/* {data.mobileData && data.mobileData.android} */}
+                          <PaperClipIcon
+                            className="h-5 w-5 flex-shrink-0 text-gray-400"
+                            aria-hidden="true"
+                          />
                         </a>
-                        <Link
-                          type="submit"
-                          to={`/viewproject/${projectId}/viewtask/${taskID}/android/assignsingle`}
-                          className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        >
-                          Assign
-                        </Link>
+                        {data.mobileData && !data.mobileData.isCompleted ? (
+                          <Link
+                            type="submit"
+                            to={`/viewproject/${projectId}/viewtask/${taskID}/android/assignsingle`}
+                            className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          >
+                            Assign
+                          </Link>
+                        ) : null}
                       </div>
                     </div>
                     <div className="flex">
@@ -183,19 +191,26 @@ function DetailedViewtask() {
                       <div className="text-md font-medium leading-6 text-gray-900">
                         IOS
                       </div>
-                      <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                      <div className="mt-1  flex text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                         <a href={data.mobileData && data.mobileData.ios}>
-                          {data.mobileData && data.mobileData.ios}
+                          {/* {data.mobileData && data.mobileData.ios} */}
+                          <PaperClipIcon
+                            className="h-5 w-5 flex-shrink-0 text-gray-400"
+                            aria-hidden="true"
+                          />
                         </a>
-                        <Link
-                          type="submit"
-                          to={`/viewproject/${projectId}/viewtask/${taskID}/ios/assignsingle`}
-                          className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        >
-                          Assign
-                        </Link>
+                        {data.mobileData && !data.mobileData.isCompleted ? (
+                          <Link
+                            type="submit"
+                            to={`/viewproject/${projectId}/viewtask/${taskID}/ios/assignsingle`}
+                            className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          >
+                            Assign
+                          </Link>
+                        ) : null}
                       </div>
                     </div>
+
                     {/* <div className="flex">
                       <h3> Assign To: </h3>
                       {data.mobileData &&
@@ -273,26 +288,6 @@ function DetailedViewtask() {
                     FILE
                   </span>
                 </div>
-                {/* <div className="flex">
-                  <h3> Assign To: </h3>
-                  {data.apiData.assignEmployee.map((employee) => {
-                    const filteredEmployees = employees.filter((emp) =>
-                      employee.employee.includes(emp._id)
-                    );
-                    const namesOfFilteredEmployees = filteredEmployees.map(
-                      (emp) => emp.name
-                    );
-                    return (
-                      <span
-                        key={employee._id}
-                        className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
-                      >
-                        {namesOfFilteredEmployees.join(", ")}
-                      </span>
-                    );
-                  })}
-                </div> */}
-
                 <div className="flex">
                   <h3> Assign To: </h3>
                   {data.apiData.assignEmployee.map((employee) => {
@@ -326,16 +321,17 @@ function DetailedViewtask() {
                     {data.apiData && data.apiData.apiotherRemarks}
                   </div>
                 </div>
-
-                <div className=" mt-2 flex justify-end gap-x-6">
-                  <Link
-                    type="submit"
-                    to={`/viewproject/${projectId}/viewtask/${taskID}/api/assignsingle`}
-                    className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    Assign
-                  </Link>
-                </div>
+                {data.apiData && !data.apiData.isCompleted ? (
+                  <div className=" mt-2 flex justify-end gap-x-6">
+                    <Link
+                      type="submit"
+                      to={`/viewproject/${projectId}/viewtask/${taskID}/api/assignsingle`}
+                      className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                      Assign
+                    </Link>
+                  </div>
+                ) : null}
               </div>
             ) : null}
             {data &&
@@ -405,16 +401,17 @@ function DetailedViewtask() {
                     {data.networkData && data.networkData.networkotherRemarks}
                   </div>
                 </div>
-
-                <div className=" mt-2 flex justify-end gap-x-6">
-                  <Link
-                    type="submit"
-                    to={`/viewproject/${projectId}/viewtask/${taskID}/network/assignsingle`}
-                    className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    Assign
-                  </Link>
-                </div>
+                {data.networkData && !data.networkData.isCompleted ? (
+                  <div className=" mt-2 flex justify-end gap-x-6">
+                    <Link
+                      type="submit"
+                      to={`/viewproject/${projectId}/viewtask/${taskID}/network/assignsingle`}
+                      className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                      Assign
+                    </Link>
+                  </div>
+                ) : null}
               </div>
             ) : null}
             {data &&
@@ -476,16 +473,19 @@ function DetailedViewtask() {
                     {data.grcData && data.grcData.grcotherRemarks}
                   </div>
                 </div>
-
-                <div className=" mt-2 flex justify-end gap-x-6">
-                  <Link
-                    type="submit"
-                    to={`/viewproject/${projectId}/viewtask/${taskID}/grc/assignsingle`}
-                    className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    Assign
-                  </Link>
-                </div>
+                {data.grcData && !data.grcData.isCompleted ? (
+                  <>
+                    <div className=" mt-2 flex justify-end gap-x-6">
+                      <Link
+                        type="submit"
+                        to={`/viewproject/${projectId}/viewtask/${taskID}/grc/assignsingle`}
+                        className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      >
+                        Assign
+                      </Link>
+                    </div>
+                  </>
+                ) : null}
               </div>
             ) : null}
           </div>

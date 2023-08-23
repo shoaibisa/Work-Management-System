@@ -106,6 +106,56 @@ function Viewtask() {
       throw error;
     }
   };
+  const [webIsCompleted, setWebIsCompleted] = useState(false);
+  const [mobileIsCompleted, setMobileIsCompleted] = useState(false);
+  const [apiIsCompleted, setApiIsCompleted] = useState(false);
+  const [networkIsCompleted, setNetworkIsCompleted] = useState(false);
+  const [grcIsCompleted, setGrcIsCompleted] = useState(false);
+  const handleWebButtonClick = async () => {
+    try {
+      await updateTaskStatus(taskID, "web");
+      setWebIsCompleted(true);
+    } catch (error) {
+      console.error("Error updating web task status:", error);
+    }
+  };
+
+  const handleMobileButtonClick = async () => {
+    try {
+      await updateTaskStatus(taskID, "mobile");
+      setMobileIsCompleted(true);
+    } catch (error) {
+      console.error("Error updating mobile task status:", error);
+    }
+  };
+
+  const handleApiButtonClick = async () => {
+    try {
+      await updateTaskStatus(taskID, "api");
+      setApiIsCompleted(true);
+    } catch (error) {
+      console.error("Error updating API task status:", error);
+    }
+  };
+
+  const handleNetworkButtonClick = async () => {
+    try {
+      await updateTaskStatus(taskID, "network");
+      setNetworkIsCompleted(true);
+    } catch (error) {
+      console.error("Error updating network task status:", error);
+    }
+  };
+
+  const handleGrcButtonClick = async () => {
+    try {
+      await updateTaskStatus(taskID, "grc");
+      setGrcIsCompleted(true);
+    } catch (error) {
+      console.error("Error updating GRC task status:", error);
+    }
+  };
+
   return (
     <div className="App">
       <div className="home">
@@ -179,11 +229,11 @@ function Viewtask() {
                     <div className=" mt-2 flex justify-between gap-x-6">
                       {!data.webData.isCompleted && (
                         <button
-                          onClick={() => handleButtonClick("web")}
+                          onClick={handleWebButtonClick}
                           className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
                           disabled={isCompleted}
                         >
-                          {isCompleted ? "Completed" : "Mark as Completed"}
+                          {webIsCompleted ? "Completed" : "Mark as Completed"}
                         </button>
                       )}
                       <Link
@@ -202,7 +252,7 @@ function Viewtask() {
                 data.mobileData.mobileotherRemarks ? (
                   <div className="block w-[300px]  shadow-xl rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                     <div className=" flex  justify-between">
-                      <h1>For web</h1>
+                      <h1>For Mobile</h1>
                       <p>
                         {data.mobileData.isCompleted === false && (
                           <button
@@ -266,11 +316,13 @@ function Viewtask() {
                     <div className=" mt-2 flex  justify-between gap-x-6">
                       {!data.mobileData.isCompleted && (
                         <button
-                          onClick={() => handleButtonClick("mobile")}
+                          onClick={handleMobileButtonClick}
                           className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
-                          disabled={isCompleted}
+                          disabled={mobileIsCompleted}
                         >
-                          {isCompleted ? "Completed" : "Mark as Completed"}
+                          {mobileIsCompleted
+                            ? "Completed"
+                            : "Mark as Completed"}
                         </button>
                       )}
                       <Link
@@ -328,11 +380,11 @@ function Viewtask() {
                     <div className=" mt-2 flex  justify-between gap-x-6">
                       {!data.apiData.isCompleted && (
                         <button
-                          onClick={() => handleButtonClick("api")}
+                          onClick={handleApiButtonClick}
                           className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
-                          disabled={isCompleted}
+                          disabled={apiIsCompleted}
                         >
-                          {isCompleted ? "Completed" : "Mark as Completed"}
+                          {apiIsCompleted ? "Completed" : "Mark as Completed"}
                         </button>
                       )}
                       <Link
@@ -393,11 +445,13 @@ function Viewtask() {
                     <div className=" mt-2 flex  justify-between gap-x-6">
                       {!data.networkData.isCompleted && (
                         <button
-                          onClick={() => handleButtonClick("network")}
+                          onClick={handleNetworkButtonClick}
                           className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
-                          disabled={isCompleted}
+                          disabled={networkIsCompleted}
                         >
-                          {isCompleted ? "Completed" : "Mark as Completed"}
+                          {networkIsCompleted
+                            ? "Completed"
+                            : "Mark as Completed"}
                         </button>
                       )}
                       <Link
@@ -447,11 +501,11 @@ function Viewtask() {
                     <div className=" mt-2 flex justify-between gap-x-6">
                       {!data.grcData.isCompleted && (
                         <button
-                          onClick={() => handleButtonClick("grc")}
+                          onClick={handleGrcButtonClick}
                           className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
-                          disabled={isCompleted}
+                          disabled={grcIsCompleted}
                         >
-                          {isCompleted ? "Completed" : "Mark as Completed"}
+                          {grcIsCompleted ? "Completed" : "Mark as Completed"}
                         </button>
                       )}
                       <Link

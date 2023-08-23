@@ -67,8 +67,65 @@ function Viewproject() {
     };
     return date.toLocaleString("en-US", options);
   }
-  console.log(taskDetails);
+  // console.log(taskDetails);
 
+  const totalTasks = data?.task.length || 0;
+  const completedTasks = data?.task.reduce((count, taskId) => {
+    const taskData = taskDetails[taskId];
+    if (taskData) {
+      const selectedOptions = taskData.data.selectedOptions;
+      const isAllCompleted = selectedOptions.every((option) => {
+        // The same completion logic you have used before
+        if (option === "web") {
+          return taskData.data.webData.isCompleted;
+        } else if (option === "network") {
+          return taskData.data.networkData.isCompleted;
+        } else if (option === "api") {
+          return taskData.data.apiData.isCompleted;
+        } else if (option === "mobile") {
+          return taskData.data.mobileData.isCompleted;
+        } else if (option === "grc") {
+          return taskData.data.grcData.isCompleted;
+        }
+        return false;
+      });
+      if (isAllCompleted) {
+        updateStatusInDatabase(true, taskId);
+      } else {
+        updateStatusInDatabase(false, taskId);
+      }
+      if (isAllCompleted) {
+        return count + 1;
+      }
+    }
+
+    return count;
+  }, 0);
+
+  const completionPercentage =
+    totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+
+  function updateStatusInDatabase(status, taskId) {
+    const updateEndpoint = "http://localhost:5000/project/updateTask";
+    fetch(updateEndpoint, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: taskId,
+        status,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Status updated successfully:", data);
+      })
+      .catch((error) => {
+        console.error("Error updating status:", error);
+      });
+  }
   return (
     <div className="App">
       <div className="home">
@@ -157,14 +214,15 @@ function Viewproject() {
                       return taskData.data.apiData.isCompleted;
                     } else if (option === "mobile") {
                       return (
-                        taskData.data.mobileData.forAndroid.isCompleted &&
-                        taskData.data.mobileData.forIos.isCompleted
+                        taskData.data.mobileData.isCompleted &&
+                        taskData.data.mobileData.isCompleted
                       );
                     } else if (option === "grc") {
                       return taskData.data.grcData.isCompleted;
                     }
                     return false;
                   });
+
                   const buttonClassName = isAllCompleted
                     ? "inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"
                     : "inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto";
@@ -224,7 +282,8 @@ function Viewproject() {
               <div className="text-md font-medium leading-6 text-gray-900">
                 Project Status :
               </div>
-              <ProgressBar completed={60} />
+              <ProgressBar completed={completionPercentage} />
+              {completionPercentage}%
             </div>
             {/* buttons  */}
           </div>

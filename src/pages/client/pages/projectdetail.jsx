@@ -56,10 +56,10 @@ function ClientProjectView() {
   //console.log(Vernablitydata);
 
   const integerValues = [
-    Vernablitydata.critical,
-    Vernablitydata.low,
-    Vernablitydata.medium,
-    Vernablitydata.high,
+    Vernablitydata?.critical,
+    Vernablitydata?.low,
+    Vernablitydata?.medium,
+    Vernablitydata?.high,
   ];
   const data = {
     labels: ["Critical", "Low", "Medium", "High"],

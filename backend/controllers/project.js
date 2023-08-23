@@ -274,6 +274,33 @@ const getTask = async (req, res) => {
     return res.status(500);
   }
 };
+
+const updateTask = async (req, res) => {
+  const { id, status } = req.body;
+  console.log(id, status);
+
+  try {
+    const task = await Task.findById(id).exec();
+
+    if (!task) {
+      return res.status(208).send({
+        isError: true,
+        title: "Error",
+        message: "This project is not registered ",
+      });
+    }
+
+    task.isCompleted = status; // Update the isCompleted field
+    await task.save();
+    return res.status(200).send({
+      title: "Success",
+      message: "Update  sucessfully",
+    });
+  } catch (error) {
+    return res.status(500);
+  }
+};
+
 const getTaskByProject = async (req, res) => {
   const { project } = req.body;
   try {
@@ -410,6 +437,7 @@ const creatReport = async (req, res) => {
 
 const addRemark = async (req, res) => {
   const { id, remark } = req.body;
+  // console.log(id, remark);
   try {
     const report = await Report.findById(id).exec();
     if (!report) {
@@ -420,6 +448,7 @@ const addRemark = async (req, res) => {
       });
     }
     const user = await Employee.findById(req.user._id).exec();
+    //  console.log(user);
     if (user.role === "Employee") {
       const project = Project.findById(report.project).exec();
       const manager = await Employee.findById(project.manager).exec();
@@ -1008,6 +1037,7 @@ const getReportsByTaskId = async (req, res) => {
 const taskComplete = async (req, res) => {
   const taskId = req.body.taskId;
   const type = req.body.type;
+  console.log(taskId, type);
   const task = await Task.findById(taskId);
   if (type === "web") {
     task.webData.isCompleted = true;
@@ -1015,11 +1045,13 @@ const taskComplete = async (req, res) => {
     task.networkData.isCompleted = true;
   } else if (type === "api") {
     task.apiData.isCompleted = true;
-  } else if (type === "android") {
-    task.mobileData.forAndroid.isCompleted = true;
-  } else if (type === "ios") {
-    task.mobileData.forIos.isCompleted = true;
-  } else if (type === "grc") {
+  } else if (type === "mobile") {
+    task.mobileData.isCompleted = true;
+  }
+  // else if (type === "ios") {
+  //   task.mobileData.forIos.isCompleted = true;
+  // }
+  else if (type === "grc") {
     task.grcData.isCompleted = true;
   }
   const project = await Project.findById(task.project);
@@ -1182,4 +1214,5 @@ export {
   projectComplete,
   getNotifications,
   actionNotification,
+  updateTask,
 };

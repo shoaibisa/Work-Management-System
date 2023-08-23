@@ -10,6 +10,14 @@ function Projectlist() {
   const projectList = useSelector((state) => state.projectList);
   const { loading, error, project } = projectList;
   const { data } = project;
+
+  const isAllTasksCompleted =
+    data &&
+    data.task &&
+    data.task.every((taskId) => {
+      const task = project.tasks.find((task) => task.taskId === taskId);
+      return task && task.isCompleted === true;
+    });
   useEffect(() => {
     dispatch(listProject());
   }, [dispatch]);
@@ -39,7 +47,7 @@ function Projectlist() {
                     <div className="flex my-2 justify-between">
                       <p className="font-semibold pr-4">{item.companyName}</p>
                       <p>
-                        {item.status === "ongoing" && (
+                        {isAllTasksCompleted === false && (
                           <button
                             type="button"
                             className="inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto"
@@ -48,7 +56,7 @@ function Projectlist() {
                           </button>
                         )}
 
-                        {item.status === "completed" && (
+                        {isAllTasksCompleted === false && (
                           <button
                             type="button"
                             className="inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"

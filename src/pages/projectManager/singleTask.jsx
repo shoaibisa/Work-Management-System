@@ -5,7 +5,7 @@ import Navbar from "../../components/navbar/Navbar";
 import { PaperClipIcon } from "@heroicons/react/20/solid";
 import { Link, useParams } from "react-router-dom";
 import { viewTasks } from "../../actions/projectlistAction";
-import { listEmployee } from "../../actions/employeeAction";
+import { infoUSer, listEmployee } from "../../actions/employeeAction";
 import { useDispatch, useSelector } from "react-redux";
 import { viewReport, remarksReport } from "../../actions/reportSubmit";
 import { useState } from "react";
@@ -13,10 +13,14 @@ import { reportsByUser } from "../../actions/reportSubmit";
 function TaskviewUser() {
   const { id, type, webtargetUrls, userid } = useParams();
   //console.log(useParams());
+
   const dispatch = useDispatch();
   const TaskView = useSelector((state) => state.tasksView);
   const { tasks } = TaskView;
   const { data } = tasks;
+
+  const userInfo = useSelector((state) => state.userInfo);
+  const { user } = userInfo;
 
   const reportView = useSelector((state) => state.reportView);
   const { report } = reportView;
@@ -26,7 +30,7 @@ function TaskviewUser() {
 
   const reportByUser = useSelector((state) => state.reportByUser);
   const { singleReport } = reportByUser;
-  //const{data}=singleReport;
+
 
   const employeeList = useSelector((state) => state.employeeList);
   const { loading, error, employees } = employeeList;
@@ -47,7 +51,6 @@ function TaskviewUser() {
   const handleSendClick = (id, index) => {
     const remarks = remarksArray[index];
     dispatch(remarksReport(id, remarks));
-    //   console.log(id);
 
     for (var i = 0; i < singleReport.length; i++) {
       if (id.toString() === singleReport[i]._id.toString()) {
@@ -119,12 +122,12 @@ function TaskviewUser() {
     setIsCompleted((prevIsCompleted) => !prevIsCompleted);
   }
 
-  //console.log(" hfgfhg", user_id);
   useEffect(() => {
     dispatch(viewTasks(id));
     dispatch(listEmployee());
     dispatch(viewReport(id, type, webtargetUrls));
     dispatch(reportsByUser(id, type, webtargetUrls, userid));
+
   }, [dispatch, id, type, webtargetUrls, userid]);
 
   return (
