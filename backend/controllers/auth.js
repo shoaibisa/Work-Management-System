@@ -1,9 +1,10 @@
 import { validationResult } from "express-validator";
 import Employee from "../models/employee.js";
-import authverifyToken from "../models/verifyToken.js";
+import transporter from "../utils/mail-send.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
+import nodemailer from "nodemailer";
 import { v4 as uuidv4 } from "uuid";
 
 const maxAge = 7 * 24 * 60 * 60;
@@ -27,7 +28,6 @@ function generateEmployeeId(fullname, department) {
 
 // for Signup
 const signUp = async (req, res) => {
-  console.log(req.body);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(201).send({
@@ -61,38 +61,39 @@ const signUp = async (req, res) => {
   const password = req.body.password;
   let payLoad;
 
-  try {
-    const encryptedPassword = await bcrypt.hash(password, 10);
-    payLoad = {
-      email: req.body.email,
-      name: req.body.name,
-      userId: EmployeeId,
-      password: encryptedPassword,
-      role: req.body.role,
-      phone: req.body.phone,
-      department: req.body.selectedDepartment.toLowerCase(),
-    };
-  } catch (error) {
-    return res
-      .status(400)
-      .send({ isError: true, title: "Error", message: "Something went wrong" });
-  }
+  const token = crypto.randomBytes(32).toString("hex");
+
+  const encryptedPassword = await bcrypt.hash(password, 10);
+  payLoad = {
+    email: req.body.email,
+    name: req.body.name,
+    userId: EmployeeId,
+    password: encryptedPassword,
+    role: req.body.role,
+    phone: req.body.phone,
+    department: req.body.selectedDepartment.toLowerCase(),
+    userToken: token,
+  };
 
   const employee = new Employee(payLoad);
-  //  const uri = `http://localhost:3000/auth/verifyUser/${token}`;
+  // const uri = `${process.env.BACKEND_URL}/auth/verifyUser/${employee._id}/${token}`;
 
-  try {
-    const token = crypto.randomBytes(32).toString("hex");
-    await authverifyToken({
-      token: token,
-      email: req.body.email,
-    }).save();
-  } catch (err) {
-    return res.status(400).json({
-      title: "Error",
-      message: "Error in signUp",
-    });
-  }
+  // const mailOptions = {
+  //   from: process.env.EMAIL_ID,
+  //   to: employee.email,
+  //   subject: "Verify your email",
+  //   html: `<h1>Hi ${employee.name}</h1>
+  //   <h3>Click on the link below to verify your email</h3>
+  //   <a href="${uri}">Click here to verify</a>`,
+  // };
+
+  // transporter.sendMail(mailOptions, (error, info) => {
+  //   if (error) {
+  //     console.log("Error:", error);
+  //   } else {
+  //     console.log("Email sent:", info.response);
+  //   }
+  // });
 
   employee
     .save()

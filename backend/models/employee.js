@@ -69,7 +69,9 @@ const employeeSchema = new Schema(
         },
       },
     ],
-
+    userToken: {
+      type: String,
+    },
     clientProjects: [
       {
         type: Schema.Types.ObjectId,

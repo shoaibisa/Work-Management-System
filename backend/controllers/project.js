@@ -1158,7 +1158,8 @@ const getReportDataByProject = async (req, res) => {
 const projectComplete = async (req, res) => {
   const projectId = req.body.projectId;
   const project = await Project.findById(projectId);
-  project.isCompleted = true;
+  const status = req.body.status;
+  project.isCompleted = status;
   await project.save();
   res.send({
     title: "Success",
