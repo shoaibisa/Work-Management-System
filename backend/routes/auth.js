@@ -8,6 +8,7 @@ import {
   signIn,
   getAllEmployees,
   profile,
+  verifyUser,
 } from "../controllers/auth.js";
 import { createProject, createTask } from "../controllers/project.js";
 
@@ -44,5 +45,6 @@ router.post("/createproject", protect, createProject);
 router.post("/createtask", upload.single("file"), protect, createTask);
 router.get("/allemployees", getAllEmployees);
 router.get("/profile", protect, profile);
+router.get("/verifyUser/:id/:token", verifyUser);
 
 export default router;

@@ -1,6 +1,6 @@
 import { validationResult } from "express-validator";
 import Employee from "../models/employee.js";
-import transporter from "../utils/mail-send.js";
+import mailSender from "../utils/mail-send-code.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
@@ -76,24 +76,17 @@ const signUp = async (req, res) => {
   };
 
   const employee = new Employee(payLoad);
-  // const uri = `${process.env.BACKEND_URL}/auth/verifyUser/${employee._id}/${token}`;
+  const uri = `${process.env.BACKEND_URL}/auth/verifyUser/${employee._id}/${token}`;
 
-  // const mailOptions = {
-  //   from: process.env.EMAIL_ID,
-  //   to: employee.email,
-  //   subject: "Verify your email",
-  //   html: `<h1>Hi ${employee.name}</h1>
-  //   <h3>Click on the link below to verify your email</h3>
-  //   <a href="${uri}">Click here to verify</a>`,
-  // };
+  const bodypart = `<h1>Hi ${employee.name}</h1>
+    <h3>Click on the link below to verify your email</h3>
+    <a href="${uri}">Click here to verify</a>`;
 
-  // transporter.sendMail(mailOptions, (error, info) => {
-  //   if (error) {
-  //     console.log("Error:", error);
-  //   } else {
-  //     console.log("Email sent:", info.response);
-  //   }
-  // });
+  const callFun = await mailSender(
+    employee.email,
+    "Verify your email",
+    bodypart
+  );
 
   employee
     .save()
@@ -111,6 +104,39 @@ const signUp = async (req, res) => {
         message: err,
       });
     });
+};
+
+const verifyUser = async (req, res) => {
+  const { id, token } = req.params;
+  try {
+    const employee = await Employee.findById(id);
+    if (!employee) {
+      return res.status(400).send({
+        isError: true,
+        title: "Error",
+        message: "Invalid token",
+      });
+    }
+
+    if (employee.userToken === token) {
+      employee.isVerified = true;
+      employee.userToken = "";
+      await employee.save();
+      return res.render("success");
+    } else {
+      return res.status(400).send({
+        isError: true,
+        title: "Error",
+        message: "Invalid token",
+      });
+    }
+  } catch (error) {
+    return res.status(500).send({
+      isError: true,
+      title: "Error",
+      message: "Internal server error",
+    });
+  }
 };
 
 //For Sign in
@@ -175,4 +201,4 @@ const profile = async (req, res) => {
   res.send("Sucess");
 };
 
-export { signUp, signIn, getAllEmployees, profile };
+export { signUp, signIn, getAllEmployees, profile, verifyUser };
