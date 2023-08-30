@@ -72,6 +72,9 @@ const employeeSchema = new Schema(
     userToken: {
       type: String,
     },
+    resetToken: {
+      type: String,
+    },
     clientProjects: [
       {
         type: Schema.Types.ObjectId,

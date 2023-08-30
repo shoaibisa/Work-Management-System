@@ -201,4 +201,106 @@ const profile = async (req, res) => {
   res.send("Sucess");
 };
 
-export { signUp, signIn, getAllEmployees, profile, verifyUser };
+const getForgotPassword = async (req, res) => {
+  const { email } = req.body;
+  const employee = await Employee.find({ email });
+  if (!employee) {
+    return res.status(400).send({
+      isError: true,
+      title: "Error",
+      message: "Invalid email",
+    });
+  }
+  const token = crypto.randomBytes(32).toString("hex");
+  employee.resetToken = token;
+  await employee.save();
+  const uri = `${process.env.BACKEND_URL}/auth/resetPassword/${employee._id}/${token}`;
+  const bodypart = `<h1>Hi ${employee.name}</h1>
+
+    <h3>Click on the link below to reset your password</h3>
+    <a href="${uri}">Click here to reset</a>`;
+  const callFun = await mailSender(
+    employee.email,
+    "Reset your password",
+    bodypart
+  );
+  return res.status(200).send({
+    isError: false,
+    title: "Success",
+    message: "Redirecting to gmail in 3s...",
+  });
+};
+
+const getResetPassword = async (req, res) => {
+  const { id, token } = req.params;
+  try {
+    const employee = await Employee.findById(id);
+    if (!employee) {
+      return res.status(400).send({
+        isError: true,
+
+        title: "Error",
+        message: "Invalid token",
+      });
+    }
+    if (employee.resetToken === token) {
+      return res.render("resetPassword", { id, token });
+    } else {
+      return res.status(400).send({
+        isError: true,
+        title: "Error",
+        message: "Invalid token",
+      });
+    }
+  } catch (error) {
+    return res.status(500).send({
+      isError: true,
+      title: "Error",
+      message: "Internal server error",
+    });
+  }
+};
+const postResetPassword = async (req, res) => {
+  const { id, token } = req.params;
+  const { password } = req.body;
+  try {
+    const employee = await Employee.findById(id);
+    if (!employee) {
+      return res.status(400).send({
+        isError: true,
+        title: "Error",
+        message: "Invalid token",
+      });
+    }
+    if (employee.resetToken === token) {
+      const encryptedPassword = await bcrypt.hash(password, 10);
+      employee.password = encryptedPassword;
+      employee.resetToken = "";
+      await employee.save();
+      return res.render("success");
+    } else {
+      return res.status(400).send({
+        isError: true,
+        title: "Error",
+        message: "Invalid token",
+      });
+    }
+  } catch (error) {
+    return res.status(500).send({
+      isError: true,
+      title: "Error",
+      message: "Internal server error",
+    });
+  }
+};
+
+export {
+  signUp,
+  signIn,
+  getAllEmployees,
+  profile,
+  verifyUser,
+  getForgotPassword,
+  getResetPassword,
+  postResetPassword,
+};
