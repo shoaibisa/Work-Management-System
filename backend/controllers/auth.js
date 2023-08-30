@@ -1,10 +1,10 @@
 import { validationResult } from "express-validator";
 import Employee from "../models/employee.js";
 import mailSender from "../utils/mail-send-code.js";
+import Notification from "../models/notification.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import nodemailer from "nodemailer";
 import { v4 as uuidv4 } from "uuid";
 
 const maxAge = 7 * 24 * 60 * 60;
@@ -87,6 +87,19 @@ const signUp = async (req, res) => {
     "Verify your email",
     bodypart
   );
+
+  const notification = new Notification({
+    title: "New Employee",
+    message: `${employee.name} has joined the company`,
+    employee: employee._id,
+  });
+  await notification.save();
+
+  const userAdmins = await Employee.find({ role: "admin" });
+  userAdmins.forEach(async (admin) => {
+    admin.notifications.push(notification._id);
+    await admin.save();
+  });
 
   employee
     .save()
