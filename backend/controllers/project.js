@@ -149,7 +149,10 @@ const getAllProject = async (req, res) => {
   // based on the role of the employee, we will get the project
   //console.log(req.user._id);
   try {
-    const project = await Project.find({ manager: req.user._id }).exec();
+    // based on lates
+    const project = await Project.find({ manager: req.user._id }).sort({
+      createdAt: -1,
+    });
     //   console.log(project);
     if (!project) {
       return res.status(208).send({
@@ -304,7 +307,9 @@ const updateTask = async (req, res) => {
 const getTaskByProject = async (req, res) => {
   const { project } = req.body;
   try {
-    const task = await Task.find({ project: project }).exec();
+    const task = (await Task.find({ project: project })).sort({
+      createdAt: -1,
+    });
     if (!task) {
       return res.status(208).send({
         isError: true,
@@ -437,7 +442,6 @@ const creatReport = async (req, res) => {
 
 const addRemark = async (req, res) => {
   const { id, remark } = req.body;
-  // console.log(id, remark);
   try {
     const report = await Report.findById(id).exec();
     if (!report) {
@@ -448,9 +452,9 @@ const addRemark = async (req, res) => {
       });
     }
     const user = await Employee.findById(req.user._id).exec();
-    //  console.log(user);
+    console.log(user.role === "Employee");
     if (user.role === "Employee") {
-      const project = Project.findById(report.project).exec();
+      const project = await Project.findById(report.project).exec();
       const manager = await Employee.findById(project.manager).exec();
       const notification = new Notification({
         notification: `${user.name} has added remark to ${report._id}`,
@@ -461,16 +465,16 @@ const addRemark = async (req, res) => {
       manager.notifications.push(notification._id);
       await manager.save();
     } else {
-      const user = await Employee.findById(report.employee);
+      const user1 = await Employee.findById(report.employee);
       const notification = new Notification({
         notification: "Manager has added remark to " + report._id,
-        employee: user._id,
+        employee: user1._id,
         link: "viewproject" + report.task,
       });
 
       await notification.save();
-      user.notifications.push(notification._id);
-      await user.save();
+      user1.notifications.push(notification._id);
+      await user1.save();
     }
 
     const r = {
@@ -482,7 +486,6 @@ const addRemark = async (req, res) => {
     report
       .save()
       .then(() => {
-        console.log("Report  save to db!");
         return res.status(200).send({
           title: "Success",
           message: "Report created sucessfully",
