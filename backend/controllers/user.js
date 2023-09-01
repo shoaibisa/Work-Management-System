@@ -1,4 +1,5 @@
 import Employee from "../models/employee.js";
+import project from "../models/project.js";
 
 const statusToggle = async function (req, res) {
   try {
@@ -185,10 +186,21 @@ const getEmployeeTask = async (req, res) => {
   try {
     const employee = await Employee.findById(req.user._id)
       .populate("tasks.taskid")
+
       .exec();
 
+    const tasks = employee.tasks;
+    // get project manager name
+    tasks.forEach(async (task) => {
+      const project = await project
+        .findById(task.project)
+        .populate("manager")
+        .exec();
+      task.projectManager = project.manager.name;
+    });
+
     return res.status(200).send({
-      datas: employee.tasks,
+      datas: tasks,
       isError: false,
     });
   } catch (error) {

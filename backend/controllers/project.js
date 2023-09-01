@@ -615,6 +615,7 @@ const assignEmployee = async (req, res) => {
     return {
       employee: e,
       report: [],
+      assignedDate: Date.now(),
     };
   });
   const task = await Task.findById(taskid).exec();

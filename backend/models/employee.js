@@ -59,6 +59,9 @@ const employeeSchema = new Schema(
           type: Schema.Types.ObjectId,
           ref: "Task",
         },
+        assignedDate: {
+          type: String,
+        },
         selectedOption: {
           name: {
             type: String,
