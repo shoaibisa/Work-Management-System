@@ -510,7 +510,7 @@ const editReport = async (req, res) => {
 
   const report = await Report.findById(id).exec();
   var images;
-  if (!req.files) {
+  if (req.files.length < 1) {
     images = report.files;
   } else {
     images = req.files.map((f) => f.filename);
