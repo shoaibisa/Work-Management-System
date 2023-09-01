@@ -186,18 +186,22 @@ const getEmployeeTask = async (req, res) => {
   try {
     const employee = await Employee.findById(req.user._id)
       .populate("tasks.taskid")
-
       .exec();
 
-    const tasks = employee.tasks;
+    var tasks = employee.tasks;
+    const final_tasks = [];
     // get project manager name
-    tasks.forEach(async (task) => {
-      const project = await Project.findById(task.project)
+    for (const i of tasks) {
+      const project = await Project.findById(i.taskid.project)
         .populate("manager")
         .exec();
-      task.projectManager = project.manager.name;
-    });
-
+      const task_val = {
+        tasks: i,
+        manager: project.manager.name,
+      };
+      final_tasks.push(task_val);
+    }
+    // console.log(final_tasks);
     return res.status(200).send({
       datas: tasks,
       isError: false,
