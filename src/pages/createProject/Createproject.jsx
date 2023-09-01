@@ -89,17 +89,13 @@ const Createproject = () => {
         clientName,
         clientEmail,
         manager,
-        // webData,
-        // apiData,
-        // networkData,
-        // mobileData,
-        // grcData,
         submissionDate,
         projectPriority
       )
     );
 
-    setMessage("Sucessfully Register");
+    setMessage("Sucessfully Project Created");
+    window.history.back();
   };
 
   useEffect(() => {

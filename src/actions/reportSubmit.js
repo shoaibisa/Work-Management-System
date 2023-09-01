@@ -248,7 +248,7 @@ export const reportUpdate =
   };
 
 export const remarksReport = (id, remarks) => async (dispatch) => {
-
+  console.log(id, remarks);
   try {
     dispatch({ type: REPORT_REMARK_REQUEST });
     const userData = JSON.parse(localStorage.getItem("employeeInfo"));

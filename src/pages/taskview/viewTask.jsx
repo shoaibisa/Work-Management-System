@@ -164,7 +164,9 @@ function Viewtask() {
           <Navbar />
 
           {/* main code  */}
-          <div className="font-bold text-2xl ml-10 mt-6">Task View</div>
+          <div className="font-bold text-2xl ml-10 mt-6">
+            {data && data.taskName}
+          </div>
           <div className="m-10 flex gap-4  flex-col   rounded-lg border border-dashed border-gray-900/25 p-6">
             {/* 3 cards */}
             <div>
@@ -360,11 +362,18 @@ function Viewtask() {
                       </p>
                     </div>
                     <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                      <span
-                        className="font-medium text-indigo-600 hover:text-indigo-500"
-                        onClick={handleDownloadClick}
-                      >
-                        FILE
+                      <span className=" flex font-medium text-indigo-600 hover:text-indigo-500">
+                        <a
+                          href={`http://localhost:5000/files/${data.apiData.apifile}`}
+                          download
+                          className="flex font-medium text-indigo-600 hover:text-indigo-500"
+                        >
+                          <PaperClipIcon
+                            className="h-5 w-5 flex-shrink-0 text-gray-400"
+                            aria-hidden="true"
+                          />
+                          FILE
+                        </a>
                       </span>
                     </div>
 
@@ -424,11 +433,18 @@ function Viewtask() {
                       </p>
                     </div>
                     <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                      <span
-                        className="font-medium text-indigo-600 hover:text-indigo-500"
-                        onClick={handleDownloadClicks}
-                      >
-                        FILE
+                      <span className=" flex font-medium text-indigo-600 hover:text-indigo-500">
+                        <a
+                          href={`http://localhost:5000/files/${data.networkData.networkfileUpload}`}
+                          download
+                          className="flex font-medium text-indigo-600 hover:text-indigo-500"
+                        >
+                          <PaperClipIcon
+                            className="h-5 w-5 flex-shrink-0 text-gray-400"
+                            aria-hidden="true"
+                          />
+                          FILE
+                        </a>
                       </span>
                     </div>
 

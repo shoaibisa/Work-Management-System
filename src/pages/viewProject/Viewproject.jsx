@@ -67,7 +67,6 @@ function Viewproject() {
     };
     return date.toLocaleString("en-US", options);
   }
-  // console.log(taskDetails);
 
   const totalTasks = data?.task.length || 0;
   const completedTasks = data?.task.reduce((count, taskId) => {
@@ -103,7 +102,7 @@ function Viewproject() {
   }, 0);
 
   const completionPercentage =
-    totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+    totalTasks > 0 ? (completedTasks / totalTasks).toFixed(2) * 100 : 0;
 
   function updateStatusInDatabase(status, taskId) {
     const updateEndpoint = "http://localhost:5000/project/updateTask";
@@ -195,69 +194,75 @@ function Viewproject() {
             <h1 className="text-lg"> Task List:</h1>
             <div className="flex  flex-wrap ">
               {data &&
-                data.task.map((taskId) => {
-                  const taskData = taskDetails[taskId];
-                  if (!taskData) {
-                    return null;
-                  }
-
-                  const taskName = taskData.data.taskName;
-                  const createdAt = taskData.data.createdAt;
-                  const selectedOptions = taskData.data.selectedOptions;
-
-                  const isAllCompleted = selectedOptions.every((option) => {
-                    if (option === "web") {
-                      return taskData.data.webData.isCompleted;
-                    } else if (option === "network") {
-                      return taskData.data.networkData.isCompleted;
-                    } else if (option === "api") {
-                      return taskData.data.apiData.isCompleted;
-                    } else if (option === "mobile") {
-                      return (
-                        taskData.data.mobileData.isCompleted &&
-                        taskData.data.mobileData.isCompleted
-                      );
-                    } else if (option === "grc") {
-                      return taskData.data.grcData.isCompleted;
+                data.task
+                  .slice()
+                  .reverse()
+                  .map((taskId) => {
+                    const taskData = taskDetails[taskId];
+                    if (!taskData) {
+                      return null;
                     }
-                    return false;
-                  });
 
-                  const buttonClassName = isAllCompleted
-                    ? "inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"
-                    : "inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto";
+                    const taskName = taskData.data.taskName;
+                    const createdAt = taskData.data.createdAt;
+                    const selectedOptions = taskData.data.selectedOptions;
 
-                  return (
-                    <>
-                      <div className="block w-[320px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-                        <div className="flex my-2 justify-between">
-                          <p className="font-semibold pr-4">
-                            Task Name: {taskName}
-                          </p>
-                          <p>
-                            <button className={buttonClassName}>
-                              <p> {isAllCompleted ? "Completed" : "Ongoing"}</p>
-                            </button>
-                          </p>
-                        </div>
-                        <div className="flex my-2">
-                          <p className="font-semibold">Task createdAt -</p>
-                          <p>{formatDate(createdAt)}</p>
-                        </div>
+                    const isAllCompleted = selectedOptions.every((option) => {
+                      if (option === "web") {
+                        return taskData.data.webData.isCompleted;
+                      } else if (option === "network") {
+                        return taskData.data.networkData.isCompleted;
+                      } else if (option === "api") {
+                        return taskData.data.apiData.isCompleted;
+                      } else if (option === "mobile") {
+                        return (
+                          taskData.data.mobileData.isCompleted &&
+                          taskData.data.mobileData.isCompleted
+                        );
+                      } else if (option === "grc") {
+                        return taskData.data.grcData.isCompleted;
+                      }
+                      return false;
+                    });
 
-                        <div className="flex">
-                          <Link
-                            to={`/viewproject/${projectId}/viewtask/${taskId}`}
-                            className="cursor-pointer text-center w-6/12 flex justify-center m-auto p-[7px] pointer-events-auto rounded-md bg-indigo-600 px-3 py-2 font-semibold leading-5 text-white hover:bg-indigo-500"
-                          >
-                            <EyeIcon className="w-5 mx-2" />
-                            View
-                          </Link>
+                    const buttonClassName = isAllCompleted
+                      ? "inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                      : "inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto";
+
+                    return (
+                      <>
+                        <div className="block w-[320px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                          <div className="flex my-2 justify-between">
+                            <p className="font-semibold pr-4">
+                              Task Name: {taskName}
+                            </p>
+                            <p>
+                              <button className={buttonClassName}>
+                                <p>
+                                  {" "}
+                                  {isAllCompleted ? "Completed" : "Ongoing"}
+                                </p>
+                              </button>
+                            </p>
+                          </div>
+                          <div className="flex my-2">
+                            <p className="font-semibold">Task createdAt -</p>
+                            <p>{formatDate(createdAt)}</p>
+                          </div>
+
+                          <div className="flex">
+                            <Link
+                              to={`/viewproject/${projectId}/viewtask/${taskId}`}
+                              className="cursor-pointer text-center w-6/12 flex justify-center m-auto p-[7px] pointer-events-auto rounded-md bg-indigo-600 px-3 py-2 font-semibold leading-5 text-white hover:bg-indigo-500"
+                            >
+                              <EyeIcon className="w-5 mx-2" />
+                              View
+                            </Link>
+                          </div>
                         </div>
-                      </div>
-                    </>
-                  );
-                })}
+                      </>
+                    );
+                  })}
             </div>
 
             <div className="   sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">

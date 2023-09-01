@@ -171,7 +171,6 @@ const Signup = () => {
                   <option value="technical">Technical Team</option>
                   <option value="marketing">Marketing Team</option>
                   <option value="management">Management Team</option>
-                  <option value="client">Client</option>
                 </select>
               </div>
               <div className="my-5">

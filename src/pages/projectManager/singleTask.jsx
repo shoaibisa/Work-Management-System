@@ -31,7 +31,6 @@ function TaskviewUser() {
   const reportByUser = useSelector((state) => state.reportByUser);
   const { singleReport } = reportByUser;
 
-
   const employeeList = useSelector((state) => state.employeeList);
   const { loading, error, employees } = employeeList;
 
@@ -127,7 +126,6 @@ function TaskviewUser() {
     dispatch(listEmployee());
     dispatch(viewReport(id, type, webtargetUrls));
     dispatch(reportsByUser(id, type, webtargetUrls, userid));
-
   }, [dispatch, id, type, webtargetUrls, userid]);
 
   return (
@@ -358,14 +356,14 @@ function TaskviewUser() {
                   </div>
                 </div>
 
-                <div className="px-4  sm:grid sm:grid-cols-3 sm:gap-4 sm:px-4">
+                {/* <div className="px-4  sm:grid sm:grid-cols-3 sm:gap-4 sm:px-4">
                   <dt className="text-sm font-semibold leading-6 text-gray-900">
                     Name :
                   </dt>
                   <div className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                     {}
                   </div>
-                </div>
+                </div> */}
 
                 <div className="px-6  sm:grid sm:grid-cols-3 sm:gap-4 sm:px-4">
                   <dt className="text-sm font-semibold leading-6 text-gray-900">
