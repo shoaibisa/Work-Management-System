@@ -16,6 +16,7 @@ function Taskview() {
   const TaskView = useSelector((state) => state.tasksView);
   const { tasks } = TaskView;
   const { data } = tasks;
+  console.log(data);
 
   const reportView = useSelector((state) => state.reportView);
   const { report } = reportView;
@@ -42,7 +43,7 @@ function Taskview() {
   const handleSendClick = (id, index) => {
     const remarks = remarksArray[index];
     dispatch(remarksReport(id, remarks));
-    // console.log(report.data);
+
     for (var i = 0; i < report.data.length; i++) {
       if (id.toString() === report.data[i]._id.toString()) {
         report.data[i].remarks.push({
@@ -55,7 +56,6 @@ function Taskview() {
     const newArray = [...remarksArray];
     newArray[index] = "";
     setRemarksArray(newArray);
-    // dispatch(viewTasks(id));
   };
 
   function formatDate(timestamp) {
@@ -92,13 +92,15 @@ function Taskview() {
         <div className="homeContainer">
           <Navbar />
           <div className=" flex mt-6 mx-10 justify-between ">
-            <div className="font-bold text-2xl">Task Name</div>
-            <Link
-              to={`/reportsubmit/${id}/${type}/${webtargetUrls}`}
-              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Add Report
-            </Link>
+            <div className="font-bold text-2xl">{data && data.taskName}</div>
+            {data && !data.isCompleted ? (
+              <Link
+                to={`/reportsubmit/${id}/${type}/${webtargetUrls}`}
+                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Add Report
+              </Link>
+            ) : null}
           </div>
 
           <div className="m-10 flex gap-4  flex-col   rounded-lg border border-dashed border-gray-900/25 p-6">
@@ -279,11 +281,18 @@ function Taskview() {
                 <h1>For Api</h1>
                 <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                   <span className=" flex font-medium text-indigo-600 hover:text-indigo-500">
-                    FILE
-                    <PaperClipIcon
-                      className="h-5 w-5 flex-shrink-0 text-gray-400"
-                      aria-hidden="true"
-                    />
+                    <a
+                      href={`http://localhost:5000/files/${data.apiData.apifile}`}
+                      download
+                      target="_blank"
+                      className="flex font-medium text-indigo-600 hover:text-indigo-500"
+                    >
+                      <PaperClipIcon
+                        className="h-5 w-5 flex-shrink-0 text-gray-400"
+                        aria-hidden="true"
+                      />
+                      FILE
+                    </a>
                   </span>
                 </div>
                 <div className="flex">
@@ -326,11 +335,18 @@ function Taskview() {
                 <h1>For Network</h1>
                 <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                   <span className=" flex font-medium text-indigo-600 hover:text-indigo-500">
-                    <PaperClipIcon
-                      className="h-5 w-5 flex-shrink-0 text-gray-400"
-                      aria-hidden="true"
-                    />
-                    FILE
+                    <a
+                      href={`http://localhost:5000/files/${data.networkData.networkfileUpload}`}
+                      download
+                      target="_blank"
+                      className="flex font-medium text-indigo-600 hover:text-indigo-500"
+                    >
+                      <PaperClipIcon
+                        className="h-5 w-5 flex-shrink-0 text-gray-400"
+                        aria-hidden="true"
+                      />
+                      FILE
+                    </a>
                   </span>
                 </div>
                 <div className="flex">
@@ -413,60 +429,63 @@ function Taskview() {
           </div>
 
           {report.data && report.data.length > 0 ? (
-            report.data.map((items, index) => (
-              <div className="m-10 flex gap-4  flex-col   rounded-lg border border-dashed border-gray-900/25 p-4">
-                <div className="  flex  justify-end">
-                  {items.isCompleted === false ? (
-                    <Link to={`/editreport/${items._id}`}>
-                      <Edit className="w-5 mx-2" />
-                    </Link>
-                  ) : null}
-                </div>
-                <div className="px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-4">
-                  <dt className="text-sm font-semibold leading-6 text-gray-900">
-                    Report ID: {items._id}
-                  </dt>
-                </div>
-                <div className="px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-4">
-                  Edited :
-                  <div className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {formatDate(items.updatedAt)}
+            report.data
+              .slice()
+              .reverse()
+              .map((items, index) => (
+                <div className="m-10 flex gap-4  flex-col   rounded-lg border border-dashed border-gray-900/25 p-4">
+                  <div className="  flex  justify-end">
+                    {items.isCompleted === false ? (
+                      <Link to={`/editreport/${items._id}`}>
+                        <Edit className="w-5 mx-2" />
+                      </Link>
+                    ) : null}
                   </div>
-                </div>
-
-                <div className="px-4  sm:grid sm:grid-cols-3 sm:gap-4 sm:px-4">
-                  <dt className="text-sm font-semibold leading-6 text-gray-900">
-                    Name :
-                  </dt>
-                  <div className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {employeeInfo.name}
+                  <div className="px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-4">
+                    <dt className="text-sm font-semibold leading-6 text-gray-900">
+                      Report ID: {items._id}
+                    </dt>
                   </div>
-                </div>
-
-                <div className="px-6  sm:grid sm:grid-cols-3 sm:gap-4 sm:px-4">
-                  <dt className="text-sm font-semibold leading-6 text-gray-900">
-                    Pdf :
-                  </dt>
-                  <div className=" flex-shrink-0">
-                    <Link
-                      to={`/pdf/${items._id}`}
-                      className="font-medium text-indigo-600 hover:text-indigo-500"
-                    >
-                      Download
-                    </Link>
+                  <div className="px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-4">
+                    Edited :
+                    <div className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                      {formatDate(items.updatedAt)}
+                    </div>
                   </div>
-                </div>
 
-                <div className="px-4  sm:grid sm:grid-cols-1 sm:gap-4 sm:px-4">
-                  <dt className="text-sm font-semibold leading-6 text-gray-900">
-                    Comments :
-                  </dt>
+                  <div className="px-4  sm:grid sm:grid-cols-3 sm:gap-4 sm:px-4">
+                    <dt className="text-sm font-semibold leading-6 text-gray-900">
+                      Name :
+                    </dt>
+                    <div className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                      {employeeInfo.name}
+                    </div>
+                  </div>
 
-                  <div className=" flex flex-col  rounded-lg border border-dashed border-gray-900/25 w-[550px]">
-                    <div className="container">
-                      <div className="bg-white rounded-lg shadow-lg p-4">
-                        {/* Chat area */}
-                        {/* <div className=" h-[300px] overflow-y-scroll">
+                  <div className="px-6  sm:grid sm:grid-cols-3 sm:gap-4 sm:px-4">
+                    <dt className="text-sm font-semibold leading-6 text-gray-900">
+                      Pdf :
+                    </dt>
+                    <div className=" flex-shrink-0">
+                      <Link
+                        to={`/pdf/${items._id}`}
+                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                      >
+                        Download
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="px-4  sm:grid sm:grid-cols-1 sm:gap-4 sm:px-4">
+                    <dt className="text-sm font-semibold leading-6 text-gray-900">
+                      Comments :
+                    </dt>
+
+                    <div className=" flex flex-col  rounded-lg border border-dashed border-gray-900/25 w-[550px]">
+                      <div className="container">
+                        <div className="bg-white rounded-lg shadow-lg p-4">
+                          {/* Chat area */}
+                          {/* <div className=" h-[300px] overflow-y-scroll">
                           {items &&
                             items.remarks.map((data) => (
                               <div className="mb-4 ">
@@ -502,76 +521,78 @@ function Taskview() {
                               </div>
                             ))}
                         </div> */}
-                        <div className=" h-96 overflow-y-scroll">
-                          {items && items.remarks.length > 0 ? (
-                            items.remarks.map((data) => (
-                              <div className="mb-4 ">
-                                {employeeInfo.id === data.user ? (
-                                  <>
-                                    <div className="flex items-end  justify-end">
-                                      <div className="flex-shrink-0"></div>
-                                      <div className="ml-3">
-                                        <div className="bg-green-100 text-blue-600 p-2 rounded-lg">
-                                          {data.remark}
+                          <div className=" h-96 overflow-y-scroll">
+                            {items && items.remarks.length > 0 ? (
+                              items.remarks.map((data) => (
+                                <div className="mb-4 ">
+                                  {employeeInfo.id === data.user ? (
+                                    <>
+                                      <div className="flex items-end  justify-end">
+                                        <div className="flex-shrink-0"></div>
+                                        <div className="ml-3">
+                                          <div className="bg-green-100 text-blue-600 p-2 rounded-lg">
+                                            {data.remark}
+                                          </div>
+                                          <p className="text-xs text-gray-500 mt-1">
+                                            {formatDate(data.date)}
+                                          </p>
                                         </div>
-                                        <p className="text-xs text-gray-500 mt-1">
-                                          {formatDate(data.date)}
-                                        </p>
                                       </div>
-                                    </div>
-                                  </>
-                                ) : (
-                                  <>
-                                    <div className="flex items-start">
-                                      <div className="flex-shrink-0"></div>
-                                      <div className="ml-3">
-                                        <div className="bg-blue-100 text-blue-900 p-2 rounded-lg">
-                                          {data.remark}
+                                    </>
+                                  ) : (
+                                    <>
+                                      <div className="flex items-start">
+                                        <div className="flex-shrink-0"></div>
+                                        <div className="ml-3">
+                                          <div className="bg-blue-100 text-blue-900 p-2 rounded-lg">
+                                            {data.remark}
+                                          </div>
+                                          <p className="text-xs text-gray-500 mt-1">
+                                            {formatDate(data.date)}
+                                          </p>
                                         </div>
-                                        <p className="text-xs text-gray-500 mt-1">
-                                          {formatDate(data.date)}
-                                        </p>
                                       </div>
-                                    </div>
-                                  </>
-                                )}
-                              </div>
-                            ))
-                          ) : (
-                            <p className="text-gray-500">
-                              No remarks to display.
-                            </p>
-                          )}
-                        </div>
-                        {items.isCompleted === false ? (
-                          <div className="flex items-center border-t mt-4 pt-4">
-                            <input
-                              type="text"
-                              value={remarksArray[index] || ""}
-                              onChange={(e) =>
-                                handleRemarkChange(e.target.value, index)
-                              }
-                              name="remark"
-                              id={items._id}
-                              className="w-full rounded-lg border-gray-300 px-4 py-2 focus:outline-none focus:border-blue-400"
-                              placeholder="Type your message..."
-                            />
-
-                            <button
-                              onClick={() => handleSendClick(items._id, index)}
-                              type="submit"
-                              className="ml-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg"
-                            >
-                              Send
-                            </button>
+                                    </>
+                                  )}
+                                </div>
+                              ))
+                            ) : (
+                              <p className="text-gray-500">
+                                No remarks to display.
+                              </p>
+                            )}
                           </div>
-                        ) : null}
+                          {items.isCompleted === false ? (
+                            <div className="flex items-center border-t mt-4 pt-4">
+                              <input
+                                type="text"
+                                value={remarksArray[index] || ""}
+                                onChange={(e) =>
+                                  handleRemarkChange(e.target.value, index)
+                                }
+                                name="remark"
+                                id={items._id}
+                                className="w-full rounded-lg border-gray-300 px-4 py-2 focus:outline-none focus:border-blue-400"
+                                placeholder="Type your message..."
+                              />
+
+                              <button
+                                onClick={() =>
+                                  handleSendClick(items._id, index)
+                                }
+                                type="submit"
+                                className="ml-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg"
+                              >
+                                Send
+                              </button>
+                            </div>
+                          ) : null}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))
+              ))
           ) : (
             <div className="text-center   bold  text-lg">
               No reports found | Add Report

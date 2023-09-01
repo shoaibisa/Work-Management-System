@@ -15,9 +15,9 @@ const Widget = ({ type, datas }) => {
   switch (type) {
     case "user":
       data = {
-        title: "TASKS",
+        title: "ALL TASKS",
 
-        link: "See all Task",
+        link: "view all Task",
         icon: (
           <PersonOutlinedIcon
             className="icon"
@@ -83,7 +83,7 @@ const Widget = ({ type, datas }) => {
       <div className="left">
         <span className="title  uppercase">{data.title}</span>
         <span className="counter">{datas}</span>
-        <span className="link">{data.link}</span>
+        {/* <span className="link">{data.link}</span> */}
       </div>
       <div className="right">{data.icon}</div>
     </div>

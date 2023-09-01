@@ -46,8 +46,7 @@ function DetailedViewtask() {
 
           {/* main code  */}
           <div className="font-bold text-2xl ml-10 mt-6">
-            {" "}
-            Detailed Task View
+            {data && data.taskName}
           </div>
           <div className="m-10 flex gap-4  flex-col   rounded-lg border border-dashed border-gray-900/25 p-6">
             {/* 3 cards */}
@@ -75,15 +74,15 @@ function DetailedViewtask() {
                           >
                             {url.link}
                           </a>
-                          {url.isCompleted === false ? (
-                            <Link
-                              to={`/viewproject/${projectId}/viewtask/${taskID}/assign/web/webtargetUrlsId/${url._id}`}
-                              type="submit"
-                              className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                            >
-                              Assign
-                            </Link>
-                          ) : null}
+                          {/* {  data &&  data.webData && data.webData.webtargetUrls.isCompleted === false ? ( */}
+                          <Link
+                            to={`/viewproject/${projectId}/viewtask/${taskID}/assign/web/webtargetUrlsId/${url._id}`}
+                            type="submit"
+                            className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          >
+                            Assign
+                          </Link>
+                          {/* ) : null} */}
                         </div>
                       </div>
                       <div className="flex">
@@ -281,11 +280,17 @@ function DetailedViewtask() {
                 <h1>For Api</h1>
                 <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                   <span className=" flex font-medium text-indigo-600 hover:text-indigo-500">
-                    <PaperClipIcon
-                      className="h-5 w-5 flex-shrink-0 text-gray-400"
-                      aria-hidden="true"
-                    />
-                    FILE
+                    <a
+                      href={`http://localhost:5000/files/${data.apiData.apifile}`}
+                      download
+                      className="flex font-medium text-indigo-600 hover:text-indigo-500"
+                    >
+                      <PaperClipIcon
+                        className="h-5 w-5 flex-shrink-0 text-gray-400"
+                        aria-hidden="true"
+                      />
+                      FILE
+                    </a>
                   </span>
                 </div>
                 <div className="flex">
@@ -342,32 +347,19 @@ function DetailedViewtask() {
                 <h1>For Network</h1>
                 <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                   <span className=" flex font-medium text-indigo-600 hover:text-indigo-500">
-                    <PaperClipIcon
-                      className="h-5 w-5 flex-shrink-0 text-gray-400"
-                      aria-hidden="true"
-                    />
-                    FILE
+                    <a
+                      href={`http://localhost:5000/files/${data.networkData.networkfileUpload}`}
+                      download
+                      className="flex font-medium text-indigo-600 hover:text-indigo-500"
+                    >
+                      <PaperClipIcon
+                        className="h-5 w-5 flex-shrink-0 text-gray-400"
+                        aria-hidden="true"
+                      />
+                      FILE
+                    </a>
                   </span>
                 </div>
-                {/* <div className="flex">
-                  <h3> Assign To: </h3>
-                  {data.networkData.assignEmployee.map((employee) => {
-                    const filteredEmployees = employees.filter((emp) =>
-                      employee.employee.includes(emp._id)
-                    );
-                    const namesOfFilteredEmployees = filteredEmployees.map(
-                      (emp) => emp.name
-                    );
-                    return (
-                      <span
-                        key={employee._id}
-                        className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
-                      >
-                        {namesOfFilteredEmployees.join(", ")}
-                      </span>
-                    );
-                  })}
-                </div> */}
 
                 <div className="flex">
                   <h3> Assign To: </h3>

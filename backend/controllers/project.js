@@ -153,7 +153,7 @@ const getAllProject = async (req, res) => {
     const project = await Project.find({ manager: req.user._id }).sort({
       createdAt: -1,
     });
-    //   console.log(project);
+    // console.log(project);
     if (!project) {
       return res.status(208).send({
         isError: true,
@@ -245,7 +245,7 @@ const createTask = async (req, res) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       return res.status(400).json({
         isError: true,
         title: "Error",
@@ -256,7 +256,7 @@ const createTask = async (req, res) => {
 
 const getTask = async (req, res) => {
   const { id } = req.body;
-  // console.log(id);
+
   try {
     const task = await Task.findById(id).exec();
 
@@ -280,7 +280,6 @@ const getTask = async (req, res) => {
 
 const updateTask = async (req, res) => {
   const { id, status } = req.body;
-  console.log(id, status);
 
   try {
     const task = await Task.findById(id).exec();
@@ -310,6 +309,7 @@ const getTaskByProject = async (req, res) => {
     const task = (await Task.find({ project: project })).sort({
       createdAt: -1,
     });
+    // console.log(task);
     if (!task) {
       return res.status(208).send({
         isError: true,
@@ -452,7 +452,7 @@ const addRemark = async (req, res) => {
       });
     }
     const user = await Employee.findById(req.user._id).exec();
-    console.log(user.role === "Employee");
+    // console.log(user.role === "Employee");
     if (user.role === "Employee") {
       const project = await Project.findById(report.project).exec();
       const manager = await Employee.findById(project.manager).exec();
@@ -1041,7 +1041,7 @@ const getReportsByTaskId = async (req, res) => {
 const taskComplete = async (req, res) => {
   const taskId = req.body.taskId;
   const type = req.body.type;
-  console.log(taskId, type);
+  // console.log(taskId, type);
   const task = await Task.findById(taskId);
   if (type === "web") {
     task.webData.isCompleted = true;

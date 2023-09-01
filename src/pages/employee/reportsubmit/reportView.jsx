@@ -353,147 +353,150 @@ function PDF() {
                 </table>
               </div>
             </div>
-
-            <div class="flex section2  m-auto mt-10 flex-col w-[1000px]">
-              <button class="btn btn-primary">
-                <Link
-                  class="receipt-modal-download-button rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  to={
-                    data && data.reportFiles
-                      ? `http://localhost:5000/files/${data.reportFiles}`
-                      : "#"
-                  }
-                  // style="color: #ffffff"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  View Reports
-                </Link>
-              </button>
-              <table
-                id="my-table"
-                className="table-auto border border-collapse border-gray-300 mt-5"
+            <button class="btn btn-primary m-auto flex justify-center pt-5  pb-5">
+              <Link
+                class="receipt-modal-download-button rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                to={
+                  data && data.reportFiles
+                    ? `http://localhost:5000/files/${data.reportFiles}`
+                    : "#"
+                }
+                // style="color: #ffffff"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                {/* <thead> */}
-                <tbody>
-                  <tr className="bg-gray-100">
-                    <th className="px-4 py-2 w-10 border border-gray-300">#</th>
-                    <th className="px-4 py-2 w-[200px] border border-gray-300 font-semibold text-blue-500 bg-blue-100">
-                      Vulnerability
-                    </th>
-                    <th className="px-4 py-2 w-[200px] border border-gray-300 col-span-3">
-                      {data && data.vulnerability}
-                    </th>
-                    <th className="px-4 py-2 w-[150px] border border-gray-300 font-semibold text-blue-500 bg-blue-100">
-                      Risk
-                    </th>
-                    <th className="px-4 py-2 w-[150px] border border-gray-300 font-semibold text-orange-500 bg-orange-100">
-                      {data && data.risk}
-                    </th>
-                    <th className="px-4 py-2 w-[150px] border border-gray-300 font-semibold text-blue-500 bg-blue-100">
-                      Status
-                    </th>
-                  </tr>
-                  {/* </thead> */}
+                View Reports
+              </Link>
+            </button>
+            {data && data.vulnerability ? (
+              <div class="flex section2  m-auto mt-10 flex-col w-[1000px]">
+                <table
+                  id="my-table"
+                  className="table-auto border border-collapse border-gray-300 mt-5"
+                >
+                  {/* <thead> */}
+                  <tbody>
+                    <tr className="bg-gray-100">
+                      <th className="px-4 py-2 w-10 border border-gray-300">
+                        #
+                      </th>
+                      <th className="px-4 py-2 w-[200px] border border-gray-300 font-semibold text-blue-500 bg-blue-100">
+                        Vulnerability
+                      </th>
+                      <th className="px-4 py-2 w-[200px] border border-gray-300 col-span-3">
+                        {data && data.vulnerability}
+                      </th>
+                      <th className="px-4 py-2 w-[150px] border border-gray-300 font-semibold text-blue-500 bg-blue-100">
+                        Risk
+                      </th>
+                      <th className="px-4 py-2 w-[150px] border border-gray-300 font-semibold text-orange-500 bg-orange-100">
+                        {data && data.risk}
+                      </th>
+                      <th className="px-4 py-2 w-[150px] border border-gray-300 font-semibold text-blue-500 bg-blue-100">
+                        Status
+                      </th>
+                    </tr>
+                    {/* </thead> */}
 
-                  <tr>
-                    <td className="px-4 py-2 border border-gray-300"> </td>
-                    <td className="px-4 py-2 border h-20 border-gray-300 font-semibold text-blue-500 bg-blue-100">
-                      Attributing Factor
-                    </td>
-                    <th className="px-4 py-2 w-[200px] border border-gray-300 col-span-3">
-                      {data && data.attributingFactor}
-                    </th>
-                    <td className="px-4 py-2 border border-gray-300 font-semibold text-blue-500 bg-blue-100">
-                      CWE #
-                    </td>
-                    <td className="px-4 py-2 border border-gray-300">
-                      {data && data.cwe}
-                    </td>
-                    <td className="px-4 py-2 border border-gray-300">open</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-2 border border-gray-300">1</td>
-                    <td className="px-4 py-2 border border-gray-300 font-semibold text-blue-500 bg-blue-100">
-                      Brief Description
-                    </td>
-                    <td
-                      colSpan={6}
-                      className="px-4 py-2 border h-20 border-gray-300 col-span-6"
-                    >
-                      {data && data.brief}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      className="px-4 text-blue-500 bg-blue-100 py-2 border  border-gray-300"
-                      colSpan={2}
-                    >
-                      Affected Path
-                    </td>
-                    <td
-                      colSpan={6}
-                      className="px-4 py-2 border border-gray-300 h-20 col-span-6"
-                    >
-                      {data && data.affectedUrl}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      className="px-4 text-blue-500 bg-blue-100 py-2 border border-gray-300"
-                      colSpan={2}
-                    >
-                      Observation
-                    </td>
-                    <td
-                      colSpan={6}
-                      className="px-4 py-2 border border-gray-300 h-20 col-span-6"
-                    >
-                      {data && data.observation}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      className="px-4 text-blue-500 bg-blue-100 py-2 border border-gray-300"
-                      colSpan={2}
-                    >
-                      Impact
-                    </td>
-                    <td
-                      colSpan={6}
-                      className="px-4 py-2 border border-gray-300 h-20 col-span-6"
-                    >
-                      {data && data.impact}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
-                      colSpan={2}
-                    >
-                      Mitigations
-                    </td>
-                    <td
-                      colSpan={6}
-                      className="px-4 py-2 border border-gray-300 h-20 col-span-6"
-                    >
-                      {data && data.mitigation}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                    <tr>
+                      <td className="px-4 py-2 border border-gray-300"> </td>
+                      <td className="px-4 py-2 border h-20 border-gray-300 font-semibold text-blue-500 bg-blue-100">
+                        Attributing Factor
+                      </td>
+                      <th className="px-4 py-2 w-[200px] border border-gray-300 col-span-3">
+                        {data && data.attributingFactor}
+                      </th>
+                      <td className="px-4 py-2 border border-gray-300 font-semibold text-blue-500 bg-blue-100">
+                        CWE #
+                      </td>
+                      <td className="px-4 py-2 border border-gray-300">
+                        {data && data.cwe}
+                      </td>
+                      <td className="px-4 py-2 border border-gray-300">open</td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-2 border border-gray-300">1</td>
+                      <td className="px-4 py-2 border border-gray-300 font-semibold text-blue-500 bg-blue-100">
+                        Brief Description
+                      </td>
+                      <td
+                        colSpan={6}
+                        className="px-4 py-2 border h-20 border-gray-300 col-span-6"
+                      >
+                        {data && data.brief}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        className="px-4 text-blue-500 bg-blue-100 py-2 border  border-gray-300"
+                        colSpan={2}
+                      >
+                        Affected Path
+                      </td>
+                      <td
+                        colSpan={6}
+                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
+                      >
+                        {data && data.affectedUrl}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        className="px-4 text-blue-500 bg-blue-100 py-2 border border-gray-300"
+                        colSpan={2}
+                      >
+                        Observation
+                      </td>
+                      <td
+                        colSpan={6}
+                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
+                      >
+                        {data && data.observation}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        className="px-4 text-blue-500 bg-blue-100 py-2 border border-gray-300"
+                        colSpan={2}
+                      >
+                        Impact
+                      </td>
+                      <td
+                        colSpan={6}
+                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
+                      >
+                        {data && data.impact}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
+                        colSpan={2}
+                      >
+                        Mitigations
+                      </td>
+                      <td
+                        colSpan={6}
+                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
+                      >
+                        {data && data.mitigation}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
 
-              {data &&
-                data.files.map((items) => (
-                  <div className="m-5">
-                    <img
-                      className=" w-500 h-auto"
-                      src={`http://localhost:5000/files/${items}`}
-                      alt={`Image ${items}`}
-                    />
-                  </div>
-                ))}
-            </div>
+                {data &&
+                  data.files.map((items) => (
+                    <div className="m-5">
+                      <img
+                        className=" w-500 h-auto"
+                        src={`http://localhost:5000/files/${items}`}
+                        alt={`Image ${items}`}
+                      />
+                    </div>
+                  ))}
+              </div>
+            ) : null}
           </div>
         </div>
         {/* end of actual receipt */}

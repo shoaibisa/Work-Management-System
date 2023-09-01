@@ -61,7 +61,7 @@ const Navbar = () => {
     // Check if a matching notification was found
     if (matchingNotification) {
       // Access the notification's link and redirect to it
-      window.location.href = matchingNotification.link;
+      window.location.href = `http://localhost:3000${matchingNotification.link}`;
     }
   };
   return (
