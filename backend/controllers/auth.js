@@ -89,9 +89,9 @@ const signUp = async (req, res) => {
   );
 
   const notification = new Notification({
-    title: "New Employee",
-    message: `${employee.name} has joined the company`,
+    notification: `${employee.name} has joined the company`,
     employee: employee._id,
+    link: "/employee",
   });
   await notification.save();
 
