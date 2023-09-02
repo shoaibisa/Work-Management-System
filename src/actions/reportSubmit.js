@@ -22,6 +22,7 @@ import {
   ALLREPORT_VIEW_REQUEST,
   ALLREPORT_VIEW_SUCCESS,
 } from "../constants/reportsubmit";
+import { toast } from "react-hot-toast";
 
 export const reportCreate =
   (
@@ -90,6 +91,7 @@ export const reportCreate =
         type: REPORT_CREATED_SUCCESS,
         payload: data,
       });
+      toast.success("Report created..");
     } catch (error) {
       dispatch({
         type: REPORT_CREATED_FAILS,
@@ -236,6 +238,7 @@ export const reportUpdate =
         type: REPORT_UPDATE_SUCCESS,
         payload: data,
       });
+      toast.success("Report updated..");
     } catch (error) {
       dispatch({
         type: REPORT_UPDATE_FAILS,

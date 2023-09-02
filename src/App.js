@@ -31,6 +31,7 @@ import AllPDF from "./pages/employee/reportsubmit/viewAllReports";
 import AllReportPDF from "./pages/projectManager/allReportbyUser";
 import ClientTasklist from "./pages/client/pages/alltask";
 import AllReportForClient from "./pages/client/pages/allReportClient";
+import { Toaster } from "react-hot-toast";
 import {
   AuthorizedUser,
   AuthorizedAdmin,
@@ -42,6 +43,7 @@ function App() {
 
   return (
     <div className={darkMode ? "app dark" : "app"}>
+      <Toaster />
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />

@@ -118,6 +118,7 @@ function Projectlist() {
 
                       <Link to={`/viewproject/${item._id}`}>
                         <button
+                        
                           type="submit"
                           className="flex justify-left py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 mt-4"
                         >

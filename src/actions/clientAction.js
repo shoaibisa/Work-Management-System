@@ -4,6 +4,7 @@ import {
   CLIENTS_LIST_SUCCESS,
   CLIENTS_LIST_FAILS,
 } from "../constants/client";
+
 export const listClients = () => async (dispatch) => {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const token = userData?.token;

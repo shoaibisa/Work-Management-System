@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../actions/employeeAction";
 import Spinner from "../../components/spinner/spinner";
 import { Select, initTE } from "tw-elements";
+import { toast } from "react-hot-toast";
 
 const Signup = () => {
   const [name, setName] = useState("");

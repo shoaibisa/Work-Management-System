@@ -16,7 +16,10 @@ import {
   TASK_ASSIGN_FAILS,
 } from "../constants/projectList.js";
 
+import { toast } from "react-hot-toast";
+
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const createProject =
   (
@@ -56,6 +59,8 @@ export const createProject =
         type: PROJECT_CREATED_SUCCESS,
         payload: data,
       });
+
+      toast.success("Project created..");
     } catch (error) {
       dispatch({
         type: PROJECT_CREATED_FAILS,
@@ -66,6 +71,7 @@ export const createProject =
       });
     }
   };
+
 export const createTask = (formData) => async (dispatch) => {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const token = userData?.token;
@@ -87,6 +93,8 @@ export const createTask = (formData) => async (dispatch) => {
       type: PROJECT_CREATED_SUCCESS,
       payload: data,
     });
+
+    toast.success("Task created..");
   } catch (error) {
     dispatch({
       type: PROJECT_CREATED_FAILS,
@@ -217,6 +225,8 @@ export const assignTask =
         type: TASK_ASSIGN_SUCCESS,
         payload: data,
       });
+
+      toast.success("Task assigned..");
     } catch (error) {
       dispatch({
         type: TASK_ASSIGN_FAILS,
