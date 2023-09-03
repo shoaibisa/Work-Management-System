@@ -52,7 +52,6 @@ const Reportsubmit = () => {
       }
     }
   }, [report]);
-  console.log(report.reportId);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -101,7 +100,7 @@ const Reportsubmit = () => {
         report.reportId
       )
     );
-    window.history.back();
+    // window.history.back();
   };
 
   useEffect(() => {
@@ -121,11 +120,18 @@ const Reportsubmit = () => {
     setHighlight(false);
   };
 
+  // const handleDrop = (e) => {
+  //   e.preventDefault();
+  //   setHighlight(false);
+  //   const droppedFiles = Array.from(e.dataTransfer.files);
+  //   validateAndAddFiles(droppedFiles);
+  // };
+
   const handleDrop = (e) => {
     e.preventDefault();
     setHighlight(false);
     const droppedFiles = Array.from(e.dataTransfer.files);
-    validateAndAddFiles(droppedFiles);
+    handleFileInputChange({ target: { files: droppedFiles } }); // Call handleFileInputChange with dropped files
   };
 
   const handleFileInput = (e) => {
@@ -193,14 +199,14 @@ const Reportsubmit = () => {
                   />
                   <p>Drag & Drop PDF or Excel files here</p>
                   <p>or</p>
-                  <button
+                  <p
                     className="px-4 py-2 mt-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
                     onClick={() =>
                       document.querySelector("input[type=file]").click()
                     }
                   >
                     Browse Files
-                  </button>
+                  </p>
                 </div>
                 <ul className="mt-4 space-y-2">
                   {files.map((file) => (

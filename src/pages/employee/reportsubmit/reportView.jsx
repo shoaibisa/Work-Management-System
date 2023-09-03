@@ -6,6 +6,7 @@ import { SingleViewReport } from "../../../actions/reportSubmit";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import "jspdf-autotable";
+import { EyeIcon } from "@heroicons/react/20/solid";
 function PDF() {
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -132,13 +133,14 @@ function PDF() {
   const PrintButton = () => {
     window.print();
   };
+  console.log(data && data.reportFiles);
 
   return (
     <div className="wrapper">
       <div className="receipt-box">
         {/* actual receipt */}
         <div className="actual-receipt">
-          <div className="mt-12">
+          <div className="mt-12   ">
             <div className="receipt-actions-div">
               <div className="actions-right justify-end flex mx-3">
                 <button
@@ -353,21 +355,32 @@ function PDF() {
                 </table>
               </div>
             </div>
-            <button class="btn btn-primary m-auto flex justify-center pt-5  pb-5">
-              <Link
-                class="receipt-modal-download-button rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                to={
-                  data && data.reportFiles
-                    ? `http://localhost:5000/files/${data.reportFiles}`
-                    : "#"
-                }
-                // style="color: #ffffff"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                View Reports
-              </Link>
-            </button>
+            <div className="flex section2  m-auto mt-10 flex-row w-[1000px] mb-20">
+              {data &&
+                data.reportFiles.map((fileName, index) => (
+                  <div
+                    key={index}
+                    className=" w-[150px] h-80px]   bg-indigo-600 mx-5  hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    <button className="  btn btn-primary m-auto flex justify-center pt-5 pb-5">
+                      <EyeIcon className="w-5 my-2 text-white" />
+                      <a
+                        className="receipt-modal-download-button rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        href={
+                          data && data.reportFiles
+                            ? `http://localhost:5000/files/${fileName}`
+                            : "#"
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View Reports
+                      </a>
+                    </button>
+                  </div>
+                ))}
+            </div>
+
             {data && data.vulnerability ? (
               <div class="flex section2  m-auto mt-10 flex-col w-[1000px]">
                 <table

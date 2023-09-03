@@ -205,60 +205,63 @@ function EmployeeTasksList() {
 
             {/* Task List */}
             <div className="flex items-center justify-center flex-row flex-wrap rounded-lg border border-dashed border-gray-900/25 py-6">
-              {currentTasks.map((item) => (
-                <div key={item._id}>
-                  <div className="block w-[320px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-                    <div className="flex my-2 justify-between">
-                      <p className="font-semibold pr-4">
-                        {item.taskid.taskName}
-                      </p>
+              {currentTasks
+                .slice()
+                .reverse()
+                .map((item) => (
+                  <div key={item._id}>
+                    <div className="block w-[320px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                      <div className="flex my-2 justify-between">
+                        <p className="font-semibold pr-4">
+                          {item.taskid.taskName}
+                        </p>
 
-                      <p>
-                        {item.taskid.isCompleted === true ? (
-                          <button
-                            type="button"
-                            className="inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"
-                          >
-                            completed
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            className="inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto"
-                          >
-                            ongoing
-                          </button>
-                        )}
-                      </p>
-                    </div>
-                    <div className="flex my-2">
-                      <p className="font-semibold">Task Type -</p>
-                      <p>{item.selectedOption.name}</p>
-                    </div>
-                    <div className="flex my-2">
-                      <p className="font-semibold">Assigned BY -</p>
-                      {/* Include the appropriate value for Assigned BY */}
-                      <p>{item.assignedBy}</p>
-                    </div>
-                    <div className="flex my-2">
-                      <p className="font-semibold">Assigned Date -</p>
-                      {/* Include the appropriate value for Assigned Date */}
-                      <p>{item.assignedDate}</p>
-                    </div>
+                        <p>
+                          {item.taskid.isCompleted === true ? (
+                            <button
+                              type="button"
+                              className="inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                            >
+                              completed
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              className="inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                            >
+                              ongoing
+                            </button>
+                          )}
+                        </p>
+                      </div>
+                      <div className="flex my-2">
+                        <p className="font-semibold">Task Type -</p>
+                        <p>{item.selectedOption.name}</p>
+                      </div>
+                      <div className="flex my-2">
+                        <p className="font-semibold">Assigned BY -</p>
+                        {/* Include the appropriate value for Assigned BY */}
+                        <p>{item.assignedBy}</p>
+                      </div>
+                      <div className="flex my-2">
+                        <p className="font-semibold">Assigned Date -</p>
+                        {/* Include the appropriate value for Assigned Date */}
+                        <p>{item.assignedDate}</p>
+                      </div>
 
-                    <Link
-                      to={`/taskview/${item.taskid._id}/${item.selectedOption.name}/${item.selectedOption.webtargetUrls}`}
-                    >
-                      <button
-                        type="submit"
-                        className="flex justify-left py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 mt-4"
+                      <Link
+                        to={`/taskview/${item.taskid._id}/${item.selectedOption.name}/${item.selectedOption.webtargetUrls}`}
                       >
-                        View
-                      </button>
-                    </Link>
+                        <button
+                          type="submit"
+                          className="flex justify-left py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 mt-4"
+                        >
+                          View
+                        </button>
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
 
             {/* Pagination */}
