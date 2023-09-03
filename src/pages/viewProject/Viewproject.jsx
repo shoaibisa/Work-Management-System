@@ -15,6 +15,7 @@ function Viewproject() {
   const projectView = useSelector((state) => state.projectView);
   const { loading, error, project } = projectView;
   const { data } = project;
+
   const TaskView = useSelector((state) => state.tasksView);
   const { tasks } = TaskView;
   useEffect(() => {
@@ -58,16 +59,6 @@ function Viewproject() {
     }
   };
 
-  function formatDate(timestamp) {
-    const date = new Date(timestamp);
-    const options = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    };
-    return date.toLocaleString("en-US", options);
-  }
-
   const totalTasks = data?.task.length || 0;
   const completedTasks = data?.task.reduce((count, taskId) => {
     const taskData = taskDetails[taskId];
@@ -103,7 +94,21 @@ function Viewproject() {
 
   const completionPercentage =
     totalTasks > 0 ? (completedTasks / totalTasks).toFixed(2) * 100 : 0;
+  if (completionPercentage === 100) {
+    updateProjectStatus(true, projectId);
+  } else {
+    updateProjectStatus(false, projectId);
+  }
 
+  function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
+    return date.toLocaleString("en-US", options);
+  }
   function updateStatusInDatabase(status, taskId) {
     const updateEndpoint = "http://localhost:5000/project/updateTask";
     fetch(updateEndpoint, {
@@ -114,6 +119,28 @@ function Viewproject() {
       },
       body: JSON.stringify({
         id: taskId,
+        status,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Status updated successfully:", data);
+      })
+      .catch((error) => {
+        console.error("Error updating status:", error);
+      });
+  }
+
+  function updateProjectStatus(status, projectId) {
+    const updateEndpoint = "http://localhost:5000/project/projectcomplete";
+    fetch(updateEndpoint, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        projectId,
         status,
       }),
     })

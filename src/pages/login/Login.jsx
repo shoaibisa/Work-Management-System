@@ -18,7 +18,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const employeeLogin = useSelector((state) => state.employeeLogin);
   const { loading, error, employeeInfo } = employeeLogin;
-  console.log(employeeInfo);
+  
 
   useEffect(() => {
     if (employeeInfo) {

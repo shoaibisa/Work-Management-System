@@ -19,22 +19,22 @@ import Viewproject from "./pages/viewProject/Viewproject";
 import Reportsubmit from "./pages/employee/reportsubmit/reportsubmit.jsx";
 import Viewtask from "./pages/taskview/viewTask.jsx";
 import DetailedViewtask from "./pages/taskview/detailedTask";
-import ClientDashboard from "./pages/client/dashboard";
 import ClientProjectlist from "./pages/client/pages/allproject";
 import ClientProjectView from "./pages/client/pages/projectdetail";
 import EmployeeTasksList from "./pages/employee/allTasks";
 import EmployeeTaskview from "./pages/employee/Taskview";
 import PDF from "./pages/employee/reportsubmit/reportView";
-import Pdftemplate from "./components/pdf/Pdftemplate";
 import TaskviewUser from "./pages/projectManager/singleTask";
 import AllPDF from "./pages/employee/reportsubmit/viewAllReports";
 import AllReportPDF from "./pages/projectManager/allReportbyUser";
 import ClientTasklist from "./pages/client/pages/alltask";
 import AllReportForClient from "./pages/client/pages/allReportClient";
+import { Toaster } from "react-hot-toast";
 import {
   AuthorizedUser,
   AuthorizedAdmin,
   AuthorizedPM,
+  AuthorizedClient,
 } from "./middleware/auth";
 import EditReportsubmit from "./pages/employee/reportsubmit/editreport";
 function App() {
@@ -42,6 +42,7 @@ function App() {
 
   return (
     <div className={darkMode ? "app dark" : "app"}>
+      <Toaster />
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -167,11 +168,19 @@ function App() {
 
           <Route
             path="/viewproject/:projectId/viewtask/:taskID/assign/:type/webtargetUrlsId/:url_id"
-            element={<Taskassign />}
+            element={
+              <AuthorizedPM>
+                <Taskassign />
+              </AuthorizedPM>
+            }
           />
           <Route
             path="/viewproject/:projectId/viewtask/:taskID/:type/assignsingle"
-            element={<Taskassign />}
+            element={
+              <AuthorizedPM>
+                <Taskassign />
+              </AuthorizedPM>
+            }
           />
           <Route
             path="/reportsubmit/:taskID/:type/:webtargetUrlsId"
@@ -182,23 +191,45 @@ function App() {
             }
           />
 
-          {/* <Route path="/createtask" element={<CreateTask1 />} /> */}
-          {/* <Route path="/viewtask" element={<Taskview />} /> */}
-
-          <Route path="/clientdashboard" element={<ClientDashboard />} />
-          <Route path="/clientProject" element={<ClientProjectlist />} />
-          <Route path="/clienttasks/:projectId" element={<ClientTasklist />} />
+          <Route
+            path="/clientProject"
+            element={
+              <AuthorizedClient>
+                <ClientProjectlist />
+              </AuthorizedClient>
+            }
+          />
+          <Route
+            path="/clienttasks/:projectId"
+            element={
+              <AuthorizedClient>
+                <ClientTasklist />
+              </AuthorizedClient>
+            }
+          />
           <Route
             path="/allreportforclient/:taskId/:Type/:webtargetUrls"
-            element={<AllReportForClient />}
+            element={
+              <AuthorizedClient>
+                <AllReportForClient />
+              </AuthorizedClient>
+            }
           />
           <Route
             path="/allreportforclient/:taskId/:Type/"
-            element={<AllReportForClient />}
+            element={
+              <AuthorizedClient>
+                <AllReportForClient />
+              </AuthorizedClient>
+            }
           />
           <Route
             path="/clientprojectview/:projectId/:taskId"
-            element={<ClientProjectView />}
+            element={
+              <AuthorizedClient>
+                <ClientProjectView />
+              </AuthorizedClient>
+            }
           />
 
           <Route
@@ -266,14 +297,7 @@ function App() {
               </AuthorizedUser>
             }
           />
-          <Route
-            path="/temp"
-            element={
-              <AuthorizedUser>
-                <Pdftemplate />
-              </AuthorizedUser>
-            }
-          />
+
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>

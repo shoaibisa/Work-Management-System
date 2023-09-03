@@ -19,7 +19,7 @@ function ClientTasklist() {
   useEffect(() => {
     dispatch(singleTaskView(projectId));
   }, [dispatch]);
-  // console.log(task);
+  //console.log(task);
 
   useEffect(() => {
     fetch(`http://localhost:5000/project/getbyid`, {
@@ -73,6 +73,29 @@ function ClientTasklist() {
     };
     return date.toLocaleString("en-US", options);
   }
+  const fetchTaskDetails = async (taskId) => {
+    try {
+      const response = await fetch("http://localhost:5000/project/getTask", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: taskId }),
+      });
+
+      const taskData = await response.json();
+      setTaskDetails((prevTaskDetails) => ({
+        ...prevTaskDetails,
+        [taskId]: taskData,
+      }));
+      return taskData;
+    } catch (error) {
+      console.error("Error fetching task:", error);
+      return null;
+    }
+  };
+
   useEffect(() => {
     if (data) {
       const fetchManagerDetails = async () => {
@@ -83,6 +106,47 @@ function ClientTasklist() {
     }
   }, [data]);
   //console.log(data);
+  const [taskDetails, setTaskDetails] = useState([]);
+  useEffect(() => {
+    if (data && data.task) {
+      data.task.forEach((taskId) => {
+        if (!taskDetails[taskId]) {
+          fetchTaskDetails(taskId);
+        }
+      });
+    }
+  }, [data, taskDetails]);
+  const totalTasks = data?.task.length || 0;
+  const completedTasks = data?.task.reduce((count, taskId) => {
+    const taskData = taskDetails[taskId];
+    if (taskData) {
+      const selectedOptions = taskData.data.selectedOptions;
+      const isAllCompleted = selectedOptions.every((option) => {
+        // The same completion logic you have used before
+        if (option === "web") {
+          return taskData.data.webData.isCompleted;
+        } else if (option === "network") {
+          return taskData.data.networkData.isCompleted;
+        } else if (option === "api") {
+          return taskData.data.apiData.isCompleted;
+        } else if (option === "mobile") {
+          return taskData.data.mobileData.isCompleted;
+        } else if (option === "grc") {
+          return taskData.data.grcData.isCompleted;
+        }
+        return false;
+      });
+
+      if (isAllCompleted) {
+        return count + 1;
+      }
+    }
+
+    return count;
+  }, 0);
+
+  const completionPercentage =
+    totalTasks > 0 ? (completedTasks / totalTasks).toFixed(2) * 100 : 0;
   return (
     <div className="App">
       <div className="home">
@@ -142,59 +206,62 @@ function ClientTasklist() {
             <h1 className="text-lg"> Task List:</h1>
             <div className="flex  flex-wrap ">
               {task.task &&
-                task.task.map((taskId) => (
-                  <>
-                    <div>
-                      <div className="block w-[320px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-                        <div className="flex my-2 justify-between">
-                          <p className="font-semibold pr-4">
-                            {taskId.taskName}
-                          </p>
-                          <p>
-                            {taskId.status === "ongoing" && (
-                              <button
-                                type="button"
-                                className="inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto"
-                              >
-                                ongoing
-                              </button>
-                            )}
+                task.task
+                  .slice()
+                  .reverse()
+                  .map((taskId) => (
+                    <>
+                      <div>
+                        <div className="block w-[320px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                          <div className="flex my-2 justify-between">
+                            <p className="font-semibold pr-4">
+                              {taskId.taskName}
+                            </p>
+                            <p>
+                              {taskId.isCompleted === false && (
+                                <button
+                                  type="button"
+                                  className="inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                                >
+                                  ongoing
+                                </button>
+                              )}
 
-                            {taskId.status === "completed" && (
-                              <button
-                                type="button"
-                                className="inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"
-                              >
-                                completed
-                              </button>
-                            )}
-                          </p>
-                        </div>
-                        <div className="flex my-2">
-                          <p className="font-semibold">Task createdAt -</p>
-                          <p>{formatDate(taskId.createdAt)}</p>
-                        </div>
-                        <div className="flex my-2">
-                          <p className="font-semibold">Manager-</p>
-                          <p>
-                            {managerDetails.length > 0
-                              ? managerDetails[0].employee.name
-                              : null}
-                          </p>
-                        </div>
-                        <div className="flex">
-                          <Link
-                            to={`/clientprojectview/${projectId}/${taskId._id}`}
-                            class="  cursor-pointer text-center w-6/12 flex  justify-center m-auto p-[7px] pointer-events-auto rounded-md bg-indigo-600 px-3 py-2 font-semibold leading-5 text-white hover:bg-indigo-500"
-                          >
-                            <EyeIcon className="w-5 mx-2" />
-                            View
-                          </Link>
+                              {taskId.isCompleted === true && (
+                                <button
+                                  type="button"
+                                  className="inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                                >
+                                  completed
+                                </button>
+                              )}
+                            </p>
+                          </div>
+                          <div className="flex my-2">
+                            <p className="font-semibold">Task createdAt -</p>
+                            <p>{formatDate(taskId.createdAt)}</p>
+                          </div>
+                          <div className="flex my-2">
+                            <p className="font-semibold">Manager-</p>
+                            <p>
+                              {managerDetails.length > 0
+                                ? managerDetails[0].employee.name
+                                : null}
+                            </p>
+                          </div>
+                          <div className="flex">
+                            <Link
+                              to={`/clientprojectview/${projectId}/${taskId._id}`}
+                              class="  cursor-pointer text-center w-6/12 flex  justify-center m-auto p-[7px] pointer-events-auto rounded-md bg-indigo-600 px-3 py-2 font-semibold leading-5 text-white hover:bg-indigo-500"
+                            >
+                              <EyeIcon className="w-5 mx-2" />
+                              View
+                            </Link>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </>
-                ))}
+                    </>
+                  ))}
             </div>
 
             <div className="   sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -230,7 +297,8 @@ function ClientTasklist() {
               <div className="text-md font-medium leading-6 text-gray-900">
                 Project Status :
               </div>
-              <ProgressBar completed={60} />
+              <ProgressBar completed={completionPercentage} />
+              {completionPercentage}%
             </div>
             {/* buttons  */}
           </div>

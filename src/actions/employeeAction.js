@@ -18,10 +18,12 @@ import {
 } from "../constants/employee";
 
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
 //Logout
 export const logout = () => (dispatch) => {
   localStorage.removeItem("employeeInfo");
+  toast.success("Logged out...");
   dispatch({
     type: EMPLOYEE_LOGOUT,
   });
@@ -51,11 +53,13 @@ export const register =
         type: EMPLOYEE_REGISTER_SUCCESS,
         payload: data,
       });
+
       // dispatch({
       //   type: EMPLOYEE_LOGIN_SUCCESS,
       //   payload: data,
       // });
       //localStorage.setItem("employeeInfo", JSON.stringify(data));
+      toast.success("Siggned up..");
     } catch (error) {
       dispatch({
         type: EMPLOYEE_REGISTER_FAIL,
@@ -68,6 +72,7 @@ export const register =
   };
 
 export const login = (email, password) => async (dispatch) => {
+  // const toastId = toast.loading('Loading...');
   try {
     dispatch({ type: EMPLOYEE_LOGIN_REQUEST });
     const config = { headers: { "Contnet-Type": "application/json" } };
@@ -83,6 +88,7 @@ export const login = (email, password) => async (dispatch) => {
       payload: data,
     });
     if (!data.isError) {
+      toast.success("Logged in");
       localStorage.setItem("employeeInfo", JSON.stringify(data));
     }
   } catch (error) {
@@ -93,8 +99,11 @@ export const login = (email, password) => async (dispatch) => {
           ? error.response.data.message
           : error.message,
     });
+    toast.error("Login failed..");
   }
+  // toast.dismiss(toastId);
 };
+
 export const listEmployee = () => async (dispatch) => {
   try {
     dispatch({ type: EMPLOYEE_LIST_REQUEST });
@@ -113,6 +122,7 @@ export const listEmployee = () => async (dispatch) => {
     });
   }
 };
+
 export const EmployeeTask = () => async (dispatch) => {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const token = userData?.token;

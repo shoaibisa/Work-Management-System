@@ -11,38 +11,9 @@ function Projectlist() {
   const projectList = useSelector((state) => state.projectList);
   const { loading, error, project } = projectList;
   const { data } = project;
-  const [taskDetails, setTaskDetails] = useState({});
-
-  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
-  const token = userData?.token;
-
-  const fetchTaskDetails = async (taskId) => {
-    try {
-      const response = await fetch("http://localhost:5000/project/getTask", {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: taskId }),
-      });
-
-      const taskData = await response.json();
-      setTaskDetails((prevTaskDetails) => ({
-        ...prevTaskDetails,
-        [taskId]: taskData,
-      }));
-      return taskData;
-    } catch (error) {
-      console.error("Error fetching task:", error);
-      return null;
-    }
-  };
-
   useEffect(() => {
     dispatch(listProject());
   }, [dispatch]);
-
   function formatDate(timestamp) {
     const date = new Date(timestamp);
     const options = {
@@ -52,6 +23,7 @@ function Projectlist() {
     };
     return date.toLocaleString("en-US", options);
   }
+
   return (
     <div className="App">
       <div className="home">
@@ -65,68 +37,55 @@ function Projectlist() {
               data
                 .slice()
                 .reverse()
-                .map((item) => (
-                  <div key={item._id}>
-                    <div className="block w-[320px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-                      <div className="flex my-2 justify-between">
-                        <p className="font-semibold pr-4">{item.companyName}</p>
-                        <p>
-                          {/* {isAllTasksCompleted === false && (
-                          <button
-                            type="button"
-                            className="inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto"
-                          >
-                            ongoing
-                          </button>
-                        )}
+                .map((item) => {
+                  return (
+                    <div key={item._id}>
+                      <div className="block w-[320px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                        <div className="flex my-2 justify-between">
+                          <p className="font-semibold pr-4">
+                            {item.companyName}
+                          </p>
+                          <p>
+                            {item.isCompleted === false && (
+                              <button
+                                type="button"
+                                className="inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                              >
+                                ongoing
+                              </button>
+                            )}
 
-                        {isAllTasksCompleted === false && (
-                          <button
-                            type="button"
-                            className="inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"
-                          >
-                            completed
-                          </button>
-                        )} */}
-                          {/* {!isAllTasksCompleted && (
-                          <button
-                            type="button"
-                            className="inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto"
-                          >
-                            ongoing
-                          </button>
-                        )}
+                            {item.isCompleted === true && (
+                              <button
+                                type="button"
+                                className="inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                              >
+                                completed
+                              </button>
+                            )}
+                          </p>
+                        </div>
+                        <div className="flex my-2">
+                          <p className="font-semibold">Project Name -</p>
+                          <p>{item.projectName}</p>
+                        </div>
+                        <div className="flex my-2">
+                          <p className="font-semibold">createdAt -</p>
+                          <p>{formatDate(item.createdAt)}</p>
+                        </div>
 
-                        {isAllTasksCompleted && (
+                        <Link to={`/viewproject/${item._id}`}>
                           <button
-                            type="button"
-                            className="inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                            type="submit"
+                            className="flex justify-left py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 mt-4"
                           >
-                            completed
+                            View
                           </button>
-                        )} */}
-                        </p>
+                        </Link>
                       </div>
-                      <div className="flex my-2">
-                        <p className="font-semibold">Project Name -</p>
-                        <p>{item.projectName}</p>
-                      </div>
-                      <div className="flex my-2">
-                        <p className="font-semibold">createdAt -</p>
-                        <p>{formatDate(item.createdAt)}</p>
-                      </div>
-
-                      <Link to={`/viewproject/${item._id}`}>
-                        <button
-                          type="submit"
-                          className="flex justify-left py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 mt-4"
-                        >
-                          View
-                        </button>
-                      </Link>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
           </div>
         </div>
       </div>

@@ -34,18 +34,14 @@ const Home = () => {
             completed: 0,
           };
         }
-
-        // Increment the total count for the selectedOption
         countBySelectedOption[selectedOptionName].total++;
-
-        // If isCompleted is true, increment the completed count for the selectedOption
         if (isCompleted) {
           countBySelectedOption[selectedOptionName].completed++;
         }
       }
     });
 
-  console.log(countBySelectedOption);
+  // console.log(countBySelectedOption);
 
   return (
     <div className="home">

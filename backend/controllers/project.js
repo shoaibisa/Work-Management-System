@@ -305,11 +305,10 @@ const updateTask = async (req, res) => {
 
 const getTaskByProject = async (req, res) => {
   const { project } = req.body;
+  console.log(project);
   try {
-    const task = (await Task.find({ project: project })).sort({
-      createdAt: -1,
-    });
-    // console.log(task);
+    const task = await Task.find({ project: project });
+    console.log(task);
     if (!task) {
       return res.status(208).send({
         isError: true,
@@ -1163,7 +1162,9 @@ const projectComplete = async (req, res) => {
   const projectId = req.body.projectId;
   const project = await Project.findById(projectId);
   const status = req.body.status;
+  //return console.log(projectId, status);
   project.isCompleted = status;
+
   await project.save();
   res.send({
     title: "Success",
