@@ -25,7 +25,7 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(logout());
-    window.location.reload();
+    window.location.href = "/login";
   };
 
   function classNames(...classes) {
@@ -38,6 +38,7 @@ const Sidebar = () => {
   const isAdmin = role === "Admin";
   const isPM = role === "Project Manager";
   const isEmployee = role === "Employee";
+  const isClient = role === "Client";
 
   return (
     <div className="sidebar  ">
@@ -146,6 +147,17 @@ const Sidebar = () => {
                 <li>
                   <Task className="icon" />
                   <span>Tasks</span>
+                </li>
+              </Link>
+            </>
+          )}
+          {isClient && (
+            <>
+              <p className="title">Employee</p>
+              <Link to="/clientProject" style={{ textDecoration: "none" }}>
+                <li>
+                  <PersonOutlineIcon className="icon" />
+                  <span>AllProject</span>
                 </li>
               </Link>
             </>

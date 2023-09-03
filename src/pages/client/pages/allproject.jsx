@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "../components/sidebar/sidebar";
+import Sidebar from "../../../components/sidebar/Sidebar";
 import Navbar from "../../../components/navbar/Navbar";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -92,7 +92,7 @@ function ClientProjectlist() {
       fetchManagerDetails();
     }
   }, [projectDetails]);
-  //  console.log(projectDetails);
+  // console.log(projectDetails);
   return (
     <div className="App">
       <div className="home">
@@ -105,7 +105,7 @@ function ClientProjectlist() {
             {projectDetails.map((projectData, index) => {
               if (projectData) {
                 const item = user.data.clientProjects[index];
-                /// console.log(projectData);
+                console.log(projectData);
                 return (
                   <>
                     <div key={item._id}>
@@ -113,7 +113,7 @@ function ClientProjectlist() {
                         <div className="flex my-2 justify-between">
                           <p className="font-semibold pr-4"></p>
                           <p>
-                            {item.status === "ongoing" && (
+                            {projectData.data.isCompleted === false && (
                               <button
                                 type="button"
                                 className="inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto"
@@ -122,7 +122,7 @@ function ClientProjectlist() {
                               </button>
                             )}
 
-                            {item.status === "completed" && (
+                            {projectData.isCompleted === true && (
                               <button
                                 type="button"
                                 className="inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"

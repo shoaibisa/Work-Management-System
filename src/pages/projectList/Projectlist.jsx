@@ -11,52 +11,9 @@ function Projectlist() {
   const projectList = useSelector((state) => state.projectList);
   const { loading, error, project } = projectList;
   const { data } = project;
-  const [taskDetails, setTaskDetails] = useState([]);
-
-  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
-  const token = userData?.token;
-
-  const fetchTaskDetails = async (taskId) => {
-    try {
-      const response = await fetch("http://localhost:5000/project/getTask", {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: taskId }),
-      });
-
-      const taskData = await response.json();
-      return taskData;
-    } catch (error) {
-      console.error("Error fetching task:", error);
-      return null;
-    }
-  };
-
-  useEffect(() => {
-    async function fetchProjectDetails() {
-      const details = [];
-      for (const project of data) {
-        const taskPromises = project.task.map((taskId) =>
-          fetchTaskDetails(taskId)
-        );
-        const taskDetails = await Promise.all(taskPromises);
-        details.push({ ...project, taskDetails });
-      }
-      setTaskDetails(details);
-    }
-
-    fetchProjectDetails();
-  }, [data]);
-
-  console.log(taskDetails);
-
   useEffect(() => {
     dispatch(listProject());
   }, [dispatch]);
-
   function formatDate(timestamp) {
     const date = new Date(timestamp);
     const options = {
@@ -66,9 +23,7 @@ function Projectlist() {
     };
     return date.toLocaleString("en-US", options);
   }
-  function areAllTasksCompleted(taskDetails) {
-    return taskDetails.every((task) => task.data.isCompleted === true);
-  }
+
   return (
     <div className="App">
       <div className="home">
@@ -78,29 +33,11 @@ function Projectlist() {
 
           <div className="font-bold text-2xl ml-10 mt-6">List of projects</div>
           <div className="m-10 flex items-center justify-center flex-row flex-wrap rounded-lg border border-dashed border-gray-900/25 py-6">
-            {taskDetails &&
-              taskDetails
+            {data &&
+              data
                 .slice()
                 .reverse()
                 .map((item) => {
-                  const isAllTasksCompleted = item.taskDetails.every(
-                    (task) => task.isCompleted
-                  );
-
-                  {
-                    /* for (const project of taskDetails) {
-                    var isAllTasksCompleted = areAllTasksCompleted(
-                      project.taskDetails
-                    );
-
-                    console.log(
-                      `Project "${project.projectName}" - All Tasks Completed: ${isAllTasksCompleted}`
-                    );
-                    {
-                     
-                    }
-                  } */
-                  }
                   return (
                     <div key={item._id}>
                       <div className="block w-[320px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
@@ -109,7 +46,7 @@ function Projectlist() {
                             {item.companyName}
                           </p>
                           <p>
-                            {isAllTasksCompleted === false && (
+                            {item.isCompleted === false && (
                               <button
                                 type="button"
                                 className="inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto"
@@ -118,7 +55,7 @@ function Projectlist() {
                               </button>
                             )}
 
-                            {isAllTasksCompleted === true && (
+                            {item.isCompleted === true && (
                               <button
                                 type="button"
                                 className="inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"

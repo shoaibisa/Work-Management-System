@@ -4,6 +4,7 @@ import {
   SINGLE_TASK_SUCCESS,
   SINGLE_TASK_REQUEST,
 } from "../constants/task";
+import { Co2Sharp } from "@mui/icons-material";
 
 export const singleTaskView = (projectId) => async (dispatch) => {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
@@ -20,7 +21,7 @@ export const singleTaskView = (projectId) => async (dispatch) => {
         },
       }
     );
-
+    console.log(data);
     dispatch({
       type: SINGLE_TASK_SUCCESS,
       payload: data,
