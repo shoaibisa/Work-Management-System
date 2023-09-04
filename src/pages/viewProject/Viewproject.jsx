@@ -6,11 +6,13 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import { dummyProjectList } from "../../dummyprojectlist";
 import { viewProject } from "../../actions/projectlistAction";
 import { viewTasks } from "../../actions/projectlistAction";
-
 import { useDispatch, useSelector } from "react-redux";
 import { EyeIcon, PlusIcon, TrashIcon } from "@heroicons/react/20/solid";
+import { toast } from "react-hot-toast";
+
 function Viewproject() {
   const { projectId } = useParams();
+  
   const dispatch = useDispatch();
   const projectView = useSelector((state) => state.projectView);
   const { loading, error, project } = projectView;

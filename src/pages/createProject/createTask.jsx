@@ -13,6 +13,7 @@ import { useState } from "react";
 import { viewProject, viewTask } from "../../actions/projectlistAction";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
 const CreateTask = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [targetURL, setTargetURL] = useState([{ lable: "", link: "" }]);
@@ -152,13 +153,15 @@ const CreateTask = () => {
       });
 
       if (response.ok) {
+        toast.success("Task created..")
         setMessage("Successfully Task Created");
       } else {
         setMessage("Failed to create task");
       }
     } catch (error) {
+      toast.error("Error while creating task..")
       console.error("Error submitting form:", error);
-      setMessage("An error occurred while creating the task");
+      setMessage("An error occurred while creating zthe task");
     }
     setMessage("Sucessfully Task Created");
     Navigate("/projectlist");

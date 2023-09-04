@@ -7,6 +7,7 @@ import { viewTasks } from "../../actions/projectlistAction";
 import { useDispatch, useSelector } from "react-redux";
 import { PaperClipIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 function Viewtask() {
   const { projectId, taskID } = useParams();
 
@@ -23,6 +24,7 @@ function Viewtask() {
     ios = mobileData.ios !== "";
     //console.log(mobileData);
   }
+  
 
   const handleDownloadClicks = () => {
     // Code to prepare the URL of the Excel file
@@ -96,6 +98,10 @@ function Viewtask() {
         }
       );
 
+      if (response.ok) {
+        toast.success("Task completed..");
+      }
+
       if (!response.ok) {
         throw new Error("Failed to update task status");
       }
@@ -147,10 +153,14 @@ function Viewtask() {
     }
   };
 
+  const [btn, hidebtn] = useState(false);
+
   const handleGrcButtonClick = async () => {
     try {
       await updateTaskStatus(taskID, "grc");
       setGrcIsCompleted(true);
+
+      //
     } catch (error) {
       console.error("Error updating GRC task status:", error);
     }
@@ -172,7 +182,7 @@ function Viewtask() {
             <div>
               <div className=" flex flex-row overflow-hidden flex-wrap ">
                 {data && data.webData && data.webData.webotherRemarks ? (
-                  <div className="block w-[300px] rounded-lg shadow-xl bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                  <div className="block w-[300px] rounded-lg  bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                     <div className=" flex  justify-between">
                       <h1>For web</h1>
                       <p>
@@ -252,7 +262,7 @@ function Viewtask() {
                 {data &&
                 data.mobileData &&
                 data.mobileData.mobileotherRemarks ? (
-                  <div className="block w-[300px]  shadow-xl rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                  <div className="block w-[300px]   rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                     <div className=" flex  justify-between">
                       <h1>For Mobile</h1>
                       <p>
@@ -338,7 +348,7 @@ function Viewtask() {
                   </div>
                 ) : null}
                 {data && data.apiData && data.apiData.apiotherRemarks ? (
-                  <div className="block w-[300px] shadow-xl rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                  <div className="block w-[300px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                     <div className=" flex  justify-between">
                       <h1>For API</h1>
                       <p>
@@ -409,7 +419,7 @@ function Viewtask() {
                 {data &&
                 data.networkData &&
                 data.networkData.networkotherRemarks ? (
-                  <div className="block w-[300px]  shadow-xl rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                  <div className="block w-[300px]  rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                     <div className=" flex  justify-between">
                       <h1>For Network</h1>
                       <p>
@@ -481,7 +491,7 @@ function Viewtask() {
                   </div>
                 ) : null}
                 {data && data.grcData && data.grcData.grcotherRemarks ? (
-                  <div className="block w-[300px]  shadow-xl rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                  <div className="block w-[300px]   rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                     <div className=" flex  justify-between">
                       <h1>For GRC</h1>
                       <p>
@@ -521,7 +531,7 @@ function Viewtask() {
                           className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
                           disabled={grcIsCompleted}
                         >
-                          {grcIsCompleted ? "Completed" : "Mark as Completed"}
+                          {grcIsCompleted ? "completed" : "Mark as Completed"}
                         </button>
                       )}
                       <Link
