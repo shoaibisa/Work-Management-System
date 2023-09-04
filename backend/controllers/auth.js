@@ -228,10 +228,65 @@ const getForgotPassword = async (req, res) => {
   employee.resetToken = token;
   await employee.save();
   const uri = `${process.env.BACKEND_URL}/auth/resetPassword/${employee._id}/${token}`;
-  const bodypart = `<h1>Hi ${employee.name}</h1>
-
-    <h3>Click on the link below to reset your password</h3>
-    <a href="${uri}">Click here to reset</a>`;
+  const bodypart = `<!DOCTYPE html>
+  <html>
+  <head>
+      <style>
+          body {
+              font-family: Arial, sans-serif;
+              background-color: #f0f0f0;
+          }
+  
+          .container {
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 20px;
+              background-color: #ffffff;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+              border-radius: 5px;
+          }
+  
+          h1 {
+              color: #333333;
+              text-align: center;
+          }
+  
+          h3 {
+              color: #777777;
+              text-align: center;
+          }
+  
+          .button-container {
+              text-align: center;
+          }
+  
+          a.button {
+              display: inline-block;
+              margin: 20px auto;
+              padding: 10px 20px;
+              background-color: #7E57C2; /* Purple color */
+              color: #ffffff;
+              text-decoration: none;
+              border-radius: 5px;
+              transition: background-color 0.3s ease;
+          }
+  
+          a.button:hover {
+              background-color: #5D42A7; /* Darker shade of purple on hover */
+          }
+      </style>
+  </head>
+  <body>
+      <div class="container">
+          <h1>Hi ${employee.name}</h1>
+          <h3>Click on the link below to verify your email</h3>
+          <div class="button-container">
+              <a href="${uri}" class="button">Click here to verify</a>
+          </div>
+      </div>
+  </body>
+  </html>
+  `;
   const callFun = await mailSender(
     employee.email,
     "Reset your password",
