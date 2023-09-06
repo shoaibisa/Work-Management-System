@@ -190,12 +190,10 @@ const signUp = async (req, res) => {
     });
     await notification.save();
 
-    const userAdmins = await Employee.find({ role: "admin" });
+    const userAdmins = await Employee.find({ role: "Admin" });
     userAdmins.forEach(async (admin) => {
-      if (admin.notifications) {
-        admin.notifications.push(notification._id);
-        await admin.save();
-      }
+      admin.notifications.push(notification._id);
+      await admin.save();
     });
 
     await employee.save();
