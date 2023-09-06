@@ -27,96 +27,192 @@ function generateEmployeeId(fullname, department) {
 }
 
 // for Signup
+// const signUp = async (req, res) => {
+//   const errors = validationResult(req);
+//   if (!errors.isEmpty()) {
+//     return res.status(201).send({
+//       title: "Error",
+//       message: errors.array(),
+//       isError: true,
+//     });
+//   }
+
+//   if (await Employee.findOne({ email: req.body.email })) {
+//     return res.status(208).send({
+//       title: "Error",
+//       message: "The email is already registered. Redirecting to signin page!",
+//       isError: true,
+//     });
+//   }
+
+//   if (await Employee.findOne({ phone: req.body.phone })) {
+//     console.log("number registered");
+//     return res.status(208).send({
+//       title: "Error",
+//       message: "The phone number is already registered",
+//       isError: true,
+//     });
+//   }
+
+//   const EmployeeId = generateEmployeeId(
+//     req.body.name,
+//     req.body.selectedDepartment
+//   );
+//   const password = req.body.password;
+//   let payLoad;
+
+//   const token = crypto.randomBytes(32).toString("hex");
+
+//   const encryptedPassword = await bcrypt.hash(password, 10);
+//   payLoad = {
+//     email: req.body.email,
+//     name: req.body.name,
+//     userId: EmployeeId,
+//     password: encryptedPassword,
+//     role: req.body.role,
+//     phone: req.body.phone,
+//     department: req.body.selectedDepartment.toLowerCase(),
+//     userToken: token,
+//   };
+
+//   const employee = new Employee(payLoad);
+
+//   const uri = `${process.env.BACKEND_URL}/auth/verifyUser/${employee._id}/${token}`;
+
+//   const bodypart = `<h1>Hi ${employee.name}</h1>
+//     <h3>Click on the link below to verify your email</h3>
+//     <a href="${uri}">Click here to verify</a>`;
+
+//   const callFun = await mailSender(
+//     employee.email,
+//     "Verify your email",
+//     bodypart
+//   );
+
+//   const notification = new Notification({
+//     notification: `${employee.name} has joined the company`,
+//     employee: employee._id,
+//     link: "/employee",
+//   });
+//   await notification.save();
+
+//   const userAdmins = await Employee.find({ role: "admin" });
+//   userAdmins.forEach(async (admin) => {
+//     admin.notifications.push(notification._id);
+//     await admin.save();
+//   });
+
+//   employee
+//     .save()
+//     .then(() => {
+//       console.log("user registered to db!");
+//       return res.status(200).send({
+//         title: "Success",
+//         message: "Redirecting to gmail in 3s...",
+//       });
+//     })
+//     .catch((err) => {
+//       return res.status(400).json({
+//         isError: true,
+//         title: "Error",
+//         message: err,
+//       });
+//     });
+// };
 const signUp = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(201).send({
-      title: "Error",
-      message: errors.array(),
-      isError: true,
-    });
-  }
-
-  if (await Employee.findOne({ email: req.body.email })) {
-    return res.status(208).send({
-      title: "Error",
-      message: "The email is already registered. Redirecting to signin page!",
-      isError: true,
-    });
-  }
-
-  if (await Employee.findOne({ phone: req.body.phone })) {
-    console.log("number registered");
-    return res.status(208).send({
-      title: "Error",
-      message: "The phone number is already registered",
-      isError: true,
-    });
-  }
-
-  const EmployeeId = generateEmployeeId(
-    req.body.name,
-    req.body.selectedDepartment
-  );
-  const password = req.body.password;
-  let payLoad;
-
-  const token = crypto.randomBytes(32).toString("hex");
-
-  const encryptedPassword = await bcrypt.hash(password, 10);
-  payLoad = {
-    email: req.body.email,
-    name: req.body.name,
-    userId: EmployeeId,
-    password: encryptedPassword,
-    role: req.body.role,
-    phone: req.body.phone,
-    department: req.body.selectedDepartment.toLowerCase(),
-    userToken: token,
-  };
-
-  const employee = new Employee(payLoad);
-  const uri = `${process.env.BACKEND_URL}/auth/verifyUser/${employee._id}/${token}`;
-
-  const bodypart = `<h1>Hi ${employee.name}</h1>
-    <h3>Click on the link below to verify your email</h3>
-    <a href="${uri}">Click here to verify</a>`;
-
-  const callFun = await mailSender(
-    employee.email,
-    "Verify your email",
-    bodypart
-  );
-
-  const notification = new Notification({
-    notification: `${employee.name} has joined the company`,
-    employee: employee._id,
-    link: "/employee",
-  });
-  await notification.save();
-
-  const userAdmins = await Employee.find({ role: "admin" });
-  userAdmins.forEach(async (admin) => {
-    admin.notifications.push(notification._id);
-    await admin.save();
-  });
-
-  employee
-    .save()
-    .then(() => {
-      console.log("user registered to db!");
-      return res.status(200).send({
-        title: "Success",
-        message: "Redirecting to gmail in 3s...",
-      });
-    })
-    .catch((err) => {
-      return res.status(400).json({
-        isError: true,
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(201).send({
         title: "Error",
-        message: err,
+        message: errors.array(),
+        isError: true,
       });
+    }
+
+    const emailExists = await Employee.findOne({ email: req.body.email });
+    if (emailExists) {
+      return res.status(208).send({
+        title: "Error",
+        message: "The email is already registered. Redirecting to signin page!",
+        isError: true,
+      });
+    }
+
+    const phoneExists = await Employee.findOne({ phone: req.body.phone });
+    if (phoneExists) {
+      return res.status(208).send({
+        title: "Error",
+        message: "The phone number is already registered",
+        isError: true,
+      });
+    }
+
+    const EmployeeId = generateEmployeeId(
+      req.body.name,
+      req.body.selectedDepartment
+    );
+    const password = req.body.password;
+    let payLoad;
+
+    const token = crypto.randomBytes(32).toString("hex");
+
+    const encryptedPassword = await bcrypt.hash(password, 10);
+    payLoad = {
+      email: req.body.email,
+      name: req.body.name,
+      userId: EmployeeId,
+      password: encryptedPassword,
+      role: req.body.role,
+      phone: req.body.phone,
+      department: req.body.selectedDepartment.toLowerCase(),
+      userToken: token,
+    };
+
+    const employee = new Employee(payLoad);
+
+    const uri = `${process.env.BACKEND_URL}/auth/verifyUser/${employee._id}/${token}`;
+
+    const bodypart = `<h1>Hi ${employee.name}</h1>
+      <h3>Click on the link below to verify your email</h3>
+      <a href="${uri}">Click here to verify</a>`;
+
+    const callFun = await mailSender(
+      employee.email,
+      "Verify your email",
+      bodypart
+    );
+
+    const notification = new Notification({
+      notification: `${employee.name} has joined the company`,
+      employee: employee._id,
+      link: "/employee",
     });
+    await notification.save();
+
+    const userAdmins = await Employee.find({ role: "admin" });
+    userAdmins.forEach(async (admin) => {
+      if (admin.notifications) {
+        admin.notifications.push(notification._id);
+        await admin.save();
+      }
+    });
+
+    await employee.save();
+
+    console.log("User registered to db!");
+    return res.status(200).send({
+      title: "Success",
+      message: "Redirecting to gmail in 3s...",
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(400).json({
+      isError: true,
+      title: "Error",
+      message: err.message,
+    });
+  }
 };
 
 const verifyUser = async (req, res) => {

@@ -28,8 +28,8 @@ const Createproject = () => {
   const [companyName, setCompanyName] = useState("");
   const [clientName, setclientName] = useState("");
   const [clientEmail, setclientEmail] = useState("");
+  const [selectedId, setselectedId] = useState("");
 
-  console.log(clientEmail);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   const [submissionDate, setSubmissionDate] = useState(null);
@@ -39,7 +39,10 @@ const Createproject = () => {
   const location = useLocation();
   const Navigate = useNavigate();
   const dispatch = useDispatch();
-  const redirect = location.search ? location.search.split("=")[1] : "/";
+  const redirect = location.search
+    ? location.search.split("=")[1]
+    : "/projectlist";
+
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const manager = userData?.id;
 
@@ -48,12 +51,12 @@ const Createproject = () => {
 
   const clientsList = useSelector((state) => state.clientsList);
   const { clients } = clientsList;
-  console.log(clients);
+  // console.log(clients);
   useEffect(() => {
     dispatch(listClients());
     if (project) {
       if (!project.isError) {
-        //Navigate(redirect);
+        // Navigate(redirect);
       } else {
         setMessage(project.message);
       }
@@ -80,27 +83,51 @@ const Createproject = () => {
     }
   };
 
+  // const submitHandler = (e) => {
+  //   e.preventDefault();
+  //   dispatch(
+  //     createProject(
+  //       projectName,
+  //       companyName,
+  //       clientName,
+  //       clientEmail,
+  //       client,
+  //       manager,
+  //       submissionDate,
+  //       projectPriority
+  //     )
+  //   );
+
+  //   setMessage("Sucessfully Project Created");
+  //   window.history.back();
+  // };
   const submitHandler = (e) => {
     e.preventDefault();
+    // Split the selected client value into email and ID
+    // const [selectedEmail, selectedId] = clientEmail.split("-");
+    //console.log(selectedEmail, selectedId);
     dispatch(
       createProject(
         projectName,
         companyName,
         clientName,
-        clientEmail,
+        clientEmail, // Use selectedEmail here
+        selectedId, // Use selectedId here
         manager,
         submissionDate,
         projectPriority
       )
     );
 
-    setMessage("Sucessfully Project Created");
+    setMessage("Successfully Project Created");
     window.history.back();
   };
 
   useEffect(() => {
     initTE({ Select });
   }, []);
+
+  console.log(clientEmail, selectedId);
 
   return (
     <div className="home">
@@ -196,7 +223,7 @@ const Createproject = () => {
                       Client email
                     </label>
                     <div className="mt-2">
-                      <select
+                      {/* <select
                         data-te-select-init
                         data-te-select-filter="true"
                         value={clientEmail}
@@ -207,37 +234,42 @@ const Createproject = () => {
                         </option>
                         {clients.clients &&
                           clients.clients.map((employee) => (
-                            <option key={employee._id} value={employee._id}>
+                            <option
+                              key={employee._id}
+                              value={`${employee._id}-${employee.email}`}
+                            >
                               {employee.email}
                             </option>
                           ))}
+                      </select> */}
+                      <select
+                        data-te-select-init
+                        data-te-select-filter="true"
+                        value={clientEmail}
+                        onChange={(e) => {
+                          const selectedValue = e.target.value;
+                          const [selectedId, selectedEmail] =
+                            selectedValue.split("-");
+                          setclientEmail(selectedEmail);
+
+                          setselectedId(selectedId);
+                        }}
+                      >
+                        <option value="" disabled>
+                          Select an employee
+                        </option>
+                        {clients.clients &&
+                          clients.clients.map((employee) => (
+                            <option
+                              key={employee._id}
+                              value={`${employee._id}-${employee.email}`}
+                            >
+                              {employee.email} - {employee.name}
+                            </option>
+                          ))}
                       </select>
-                      {/* <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                        <input
-                          type="email"
-                          name="webclientEmail"
-                          autoComplete="username"
-                          className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                          placeholder="Enter Client email"
-                          required="true"
-                          value={clientEmail}
-                          onChange={(e) => setclientEmail(e.target.value)}
-                        />
-                      </div> */}
                     </div>
                   </div>
-                  {/* <div className="flex flex-col mx-5 mt-4">
-                    <select
-                      id="multiSelection"
-                      multiple
-                      data-te-select-init
-                      data-te-select-filter="true"
-                      //onChange={(e) => handleSelectdEmployee(e)}
-                    >
-                      <option>fdiosjfgoisd</option>
-                    </select>
-                    <label data-te-select-label-ref>Select Client Email</label>
-                  </div> */}
                 </div>
                 <div className="flex w-full">
                   <div className=" sm:col-span-4 w-1/2 mr-10  mt-6  mb-6 flex">

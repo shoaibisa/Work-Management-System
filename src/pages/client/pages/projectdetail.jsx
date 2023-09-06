@@ -16,6 +16,7 @@ function ClientProjectView() {
   const dispatch = useDispatch();
   const TaskView = useSelector((state) => state.tasksView);
   const { tasks } = TaskView;
+  console.log(tasks);
 
   useEffect(() => {
     dispatch(viewTasks(taskId));
@@ -188,12 +189,12 @@ function ClientProjectView() {
                           Android
                         </div>
                         <div className="ml-4 flex-shrink-0">
-                          <a
-                            href="#"
+                          <Link
+                            to={`/allreportforclient/${taskId}/android/`}
                             className="font-medium text-indigo-600 hover:text-indigo-500"
                           >
                             Download Report
-                          </a>
+                          </Link>
                         </div>
                       </div>
                       <div className=" pt-6 flex justify-between">
@@ -205,12 +206,12 @@ function ClientProjectView() {
                           Ios
                         </div>
                         <div className="ml-4 flex-shrink-0">
-                          <a
-                            href="#"
+                          <Link
+                            to={`/allreportforclient/${taskId}/ios/`}
                             className="font-medium text-indigo-600 hover:text-indigo-500"
                           >
                             Download Report
-                          </a>
+                          </Link>
                         </div>
                       </div>
                     </div>

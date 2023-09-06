@@ -82,27 +82,50 @@ const Navbar = () => {
               onClick={() => dispatchs({ type: "TOGGLE" })}
             />
           </div>
-          {/* <div className="item">
-            <FullscreenExitOutlinedIcon className="icon" />
-          </div> */}
-          {/* <div className="item">
-            <NotificationsNoneOutlinedIcon className="icon" />
-            <div className="counter">{unreadCount}</div>
-          </div> */}
-          {/* <div className="item">
-            <ChatBubbleOutlineOutlinedIcon className="icon" />
-            <div className="counter">2</div>
-          </div>
-          <div className="item">
-            <ListOutlinedIcon className="icon" />
-          </div> */}
+
           <div className="item" onClick={toggleNotificationPopup}>
             <NotificationsNoneOutlinedIcon className="icon" />
-            <div className="counter">{unreadCount}</div>
+            {unreadCount > 0 && <div className="counter">{unreadCount}</div>}
           </div>
 
+          {/* {showNotifications && notification && notification.data && (
+            <div className="notification-popup">
+              {notification.data.some(
+                (notification) => !notification.isRead
+              ) ? (
+                notification.data.map(
+                  (notification) =>
+                    !notification.isRead && (
+                      <button
+                        key={notification._id}
+                        onClick={() => markNotificationAsRead(notification._id)}
+                      >
+                        <div className="notification-item">
+                          <NotificationsNoneOutlinedIcon className="icon" />
+                          <div className="notification-text">
+                            {notification.notification}
+                          </div>
+                          <div className="notification-time">
+                            {formatDate(notification.createdAt)}
+                          </div>
+                        </div>
+                      </button>
+                    )
+                )
+              ) : (
+                <div className="no-notifications-message">
+                  No new notifications.
+                </div>
+              )}
+            </div>
+          )} */}
           {showNotifications && notification && notification.data && (
             <div className="notification-popup">
+              {notification.data.some(
+                (notification) => !notification.isRead
+              ) ? (
+                <div className="notification-indicator"></div>
+              ) : null}
               {notification.data.some(
                 (notification) => !notification.isRead
               ) ? (

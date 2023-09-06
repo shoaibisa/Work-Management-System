@@ -125,7 +125,7 @@ function AllPDF() {
   const PrintButton = () => {
     window.print();
   };
-
+  //console.log(report.data && report.data);
   return (
     <div className="wrapper">
       <div className="receipt-box">
@@ -149,20 +149,24 @@ function AllPDF() {
             {report.data &&
               report.data.map((items) => (
                 <div class="flex  m-auto mt-10  flex-col w-[1000px]  border-b-4 border-violet-600">
-                  <button class="btn btn-primary mb-3 pb-3">
-                    <Link
-                      class="receipt-modal-download-button rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                      to={
-                        items && items.reportFiles
-                          ? `http://localhost:5000/files/${items.reportFiles}`
-                          : "#"
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View Reports
-                    </Link>
-                  </button>
+                  {items &&
+                    items.reportFiles.map((f, fileIndex) => (
+                      <button class="btn btn-primary mb-3 pb-3">
+                        <Link
+                          key={fileIndex}
+                          class="receipt-modal-download-button rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          to={
+                            items && items.reportFiles
+                              ? `http://localhost:5000/files/${f}`
+                              : "#"
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          View Reports
+                        </Link>
+                      </button>
+                    ))}
                   <table
                     id="my-table"
                     className="table-auto border border-collapse border-gray-300"

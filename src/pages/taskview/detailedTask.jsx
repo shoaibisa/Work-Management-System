@@ -234,29 +234,27 @@ function DetailedViewtask() {
                     </div> */}
                     <div className="flex">
                       <h3> Assign To: </h3>
-                      {data.mobileData.forAndroid.assignEmployee.map(
-                        (employee) => {
-                          const filteredEmployees = employees.filter((emp) =>
-                            employee.employee.includes(emp._id)
-                          );
+                      {data.mobileData.forIos.assignEmployee.map((employee) => {
+                        const filteredEmployees = employees.filter((emp) =>
+                          employee.employee.includes(emp._id)
+                        );
 
-                          const employeeLinks = filteredEmployees.map((emp) => (
-                            <Link
-                              key={emp._id}
-                              to={`/singlereportview/${taskID}/ios/${emp._id}`}
-                              className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
-                            >
-                              {emp.name}
-                            </Link>
-                          ));
+                        const employeeLinks = filteredEmployees.map((emp) => (
+                          <Link
+                            key={emp._id}
+                            to={`/singlereportview/${taskID}/ios/${emp._id}`}
+                            className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
+                          >
+                            {emp.name}
+                          </Link>
+                        ));
 
-                          return (
-                            <>
-                              <div key={employee._id}>{employeeLinks}</div>
-                            </>
-                          );
-                        }
-                      )}
+                        return (
+                          <>
+                            <div key={employee._id}>{employeeLinks}</div>
+                          </>
+                        );
+                      })}
                     </div>
                   </>
                 )}

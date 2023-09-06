@@ -15,11 +15,12 @@ const createProject = async (req, res) => {
       isError: true,
     });
   }
+  // console.log(req.body);
   const project = new Project({
     projectName: req.body.projectName,
     companyName: req.body.companyName,
     clientName: req.body.clientName,
-    clientEmail: req.body.client,
+    clientEmail: req.body.clientEmail,
     projectPriority: req.body.projectPriority,
     manager: req.body.manager,
     client: req.body.client,
@@ -34,6 +35,7 @@ const createProject = async (req, res) => {
   await notification.save();
 
   const client = await Employee.findById(req.body.client).exec();
+  // return console.log(req.body.client, client);
   client.clientProjects.push(project._id);
   client.notifications.push(notification._id);
   await client.save();
@@ -409,6 +411,7 @@ const creatReport = async (req, res) => {
     }
   }
   const project = await Project.findOne({ _id: task.project }).exec();
+
   const notification = new Notification({
     notification: `New Report Created for ${task.project}`,
     employee: project.manager,
@@ -678,7 +681,7 @@ const assignEmployee = async (req, res) => {
       selectedOption: {
         name: selectedOption,
       },
-      assignedDate: Date.now(),
+      assignedDate: new Date().toISOString(),
     };
     var link;
     if (selectedOption === "web") {
@@ -708,14 +711,15 @@ const assignEmployee = async (req, res) => {
 const getReportsByUser = async (req, res) => {
   const taskId = req.body.taskId;
   const type = req.body.type;
-  // const url = req.body.webtargetUrls;
-  // console.log(taskId, type, url);
+  //  const url = req.body.webtargetUrls;
+  // return console.log(taskId, type, url);
   var reports = [];
   if (type === "web") {
+    //console.log("ssg");
     const task = await Task.findById(taskId)
       .populate("webData.webtargetUrls.assignEmployee.employee")
       .populate("webData.webtargetUrls.assignEmployee.report");
-
+    // return console.log(task);
     for (var i = 0; i < task.webData.webtargetUrls.length; i++) {
       if (
         task.webData.webtargetUrls[i]._id.toString() === req.body.webtargetUrls
@@ -804,6 +808,7 @@ const getReportsByUser = async (req, res) => {
     data: reports,
   });
 };
+
 const getReportsByUserId = async (req, res) => {
   const taskId = req.body.taskId;
   const type = req.body.type;
@@ -1011,7 +1016,7 @@ const getReportsByTaskId = async (req, res) => {
       for (
         var k = 0;
         k < task.mobileData.forIos.assignEmployee[i].report.length;
-        ki++
+        k++
       ) {
         if (task.mobileData.forIos.assignEmployee[i].report[k].isCompleted) {
           reports.push(task.mobileData.forIos.assignEmployee[i].report[k]);
@@ -1172,6 +1177,7 @@ const projectComplete = async (req, res) => {
     data: project,
   });
 };
+
 const getNotifications = async (req, res) => {
   const employeeId = req.body.employeeId;
   const employee = await Employee.findById(employeeId).populate(
@@ -1184,6 +1190,7 @@ const getNotifications = async (req, res) => {
     data: employee.notifications,
   });
 };
+
 const actionNotification = async (req, res) => {
   const notificationId = req.body.notificationId;
   const notification = await Notification.findById(notificationId);

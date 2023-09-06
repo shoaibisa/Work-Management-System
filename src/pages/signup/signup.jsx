@@ -25,10 +25,11 @@ const Signup = () => {
 
   const employeeregister = useSelector((state) => state.employeeregister);
   const { loading, error, employeeInfo } = employeeregister;
-  console.log(redirect);
+  //console.log(redirect);
   useEffect(() => {
     if (employeeInfo) {
       if (!employeeInfo.isError) {
+        toast.success("Siggned up..");
         Navigate(redirect);
       } else {
         setMessage(employeeInfo.message);
@@ -37,12 +38,35 @@ const Signup = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [employeeInfo, redirect]);
 
+  // const submitHandler = (e) => {
+  //   e.preventDefault();
+  //   if (password !== confirmPassword) {
+  //     console.log("Confirm Password  do not Match");
+  //     setMessage("Confirm Password  do not Match");
+  //   } else {
+  //     dispatch(
+  //       register(name, email, password, phone, selectedDepartment, selectedrole)
+  //     );
+  //   }
+  // };
+
   const submitHandler = (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      console.log("Confirm Password  do not Match");
+
+    if (
+      !name ||
+      !email ||
+      !password ||
+      !confirmPassword ||
+      !phone ||
+      !selectedDepartment ||
+      !selectedrole
+    ) {
+      setMessage("Please fill in all fields.");
+    } else if (password !== confirmPassword) {
       setMessage("Confirm Password  do not Match");
     } else {
+      setMessage(""); // Clear any previous error messages.
       dispatch(
         register(name, email, password, phone, selectedDepartment, selectedrole)
       );
@@ -172,6 +196,7 @@ const Signup = () => {
                   <option value="technical">Technical Team</option>
                   <option value="marketing">Marketing Team</option>
                   <option value="management">Management Team</option>
+                  <option value="client">Client</option>
                 </select>
               </div>
               <div className="my-5">

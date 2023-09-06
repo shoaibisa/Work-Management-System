@@ -100,7 +100,7 @@ const Reportsubmit = () => {
         report.reportId
       )
     );
-    // window.history.back();
+    window.history.back();
   };
 
   useEffect(() => {
@@ -308,7 +308,7 @@ const Reportsubmit = () => {
                     >
                       <option selected>Select Risk</option>
                       <option value="critical">Critical</option>
-                      <option value="high">Hign</option>
+                      <option value="high">High</option>
                       <option value="medium">Medium</option>
                       <option value="low">Low</option>
                     </select>

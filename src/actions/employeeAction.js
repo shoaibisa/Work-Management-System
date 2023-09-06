@@ -54,12 +54,7 @@ export const register =
         payload: data,
       });
 
-      // dispatch({
-      //   type: EMPLOYEE_LOGIN_SUCCESS,
-      //   payload: data,
-      // });
-      //localStorage.setItem("employeeInfo", JSON.stringify(data));
-      toast.success("Siggned up..");
+     // toast.success("Siggned up..");
     } catch (error) {
       dispatch({
         type: EMPLOYEE_REGISTER_FAIL,

@@ -12,7 +12,7 @@ import { toast } from "react-hot-toast";
 
 function Viewproject() {
   const { projectId } = useParams();
-  
+
   const dispatch = useDispatch();
   const projectView = useSelector((state) => state.projectView);
   const { loading, error, project } = projectView;
@@ -222,7 +222,7 @@ function Viewproject() {
             {/* 3 cards */}
             <h1 className="text-lg"> Task List:</h1>
             <div className="flex  flex-wrap ">
-              {data &&
+              {/* {data &&
                 data.task
                   .slice()
                   .reverse()
@@ -291,7 +291,81 @@ function Viewproject() {
                         </div>
                       </>
                     );
-                  })}
+                  })} */}
+              {data && data.task && data.task.length > 0 ? (
+                data.task
+                  .slice()
+                  .reverse()
+                  .map((taskId) => {
+                    const taskData = taskDetails[taskId];
+                    if (!taskData) {
+                      return null;
+                    }
+                    const taskName = taskData.data.taskName;
+                    const createdAt = taskData.data.createdAt;
+                    const selectedOptions = taskData.data.selectedOptions;
+
+                    const isAllCompleted = selectedOptions.every((option) => {
+                      if (option === "web") {
+                        return taskData.data.webData.isCompleted;
+                      } else if (option === "network") {
+                        return taskData.data.networkData.isCompleted;
+                      } else if (option === "api") {
+                        return taskData.data.apiData.isCompleted;
+                      } else if (option === "mobile") {
+                        return (
+                          taskData.data.mobileData.isCompleted &&
+                          taskData.data.mobileData.isCompleted
+                        );
+                      } else if (option === "grc") {
+                        return taskData.data.grcData.isCompleted;
+                      }
+                      return false;
+                    });
+
+                    const buttonClassName = isAllCompleted
+                      ? "inline-block rounded-full bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"
+                      : "inline-block rounded-full bg-warning px-2 text-xs uppercase leading-normal text-white cursor-auto";
+
+                    return (
+                      <>
+                        <div className="block w-[320px] rounded-lg bg-white p-6 m-2 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                          <div className="flex my-2 justify-between">
+                            <p className="font-semibold pr-4">
+                              Task Name: {taskName}
+                            </p>
+                            <p>
+                              <button className={buttonClassName}>
+                                <p>
+                                  {" "}
+                                  {isAllCompleted ? "Completed" : "Ongoing"}
+                                </p>
+                              </button>
+                            </p>
+                          </div>
+                          <div className="flex my-2">
+                            <p className="font-semibold">Task createdAt -</p>
+                            <p>{formatDate(createdAt)}</p>
+                          </div>
+
+                          <div className="flex">
+                            <Link
+                              to={`/viewproject/${projectId}/viewtask/${taskId}`}
+                              className="cursor-pointer text-center w-6/12 flex justify-center m-auto p-[7px] pointer-events-auto rounded-md bg-indigo-600 px-3 py-2 font-semibold leading-5 text-white hover:bg-indigo-500"
+                            >
+                              <EyeIcon className="w-5 mx-2" />
+                              View
+                            </Link>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })
+              ) : (
+                <div className="text-center text-gray-500 mt-4">
+                  No tasks listed.
+                </div>
+              )}
             </div>
 
             <div className="   sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">

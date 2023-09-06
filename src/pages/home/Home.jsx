@@ -65,7 +65,7 @@ const Home = () => {
         <div className="widgets ">
           <Widget type="user" datas={data && data.length} />
           <Widget type="order" datas={tCompleted && tCompleted} />
-          <Widget type="earning" datas={0} />
+          {/* <Widget type="earning" datas={0} /> */}
           <Widget type="balance" datas={0} />
         </div>
       </div>
