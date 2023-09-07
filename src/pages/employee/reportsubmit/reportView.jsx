@@ -155,7 +155,7 @@ function PDF() {
             <div>
               <h1 className=" text-center  bold text-2xl ">Report</h1>
             </div>
-            <div className="section1">
+            {/* <div className="section1">
               <div class="flex mx-auto mt-10 flex-col w-[1000px]">
                 <table className="table-auto border border-collapse border-gray-300">
                   <tbody>
@@ -354,7 +354,7 @@ function PDF() {
                   </tbody>
                 </table>
               </div>
-            </div>
+            </div> */}
 
             <div className="flex section2  m-auto mt-10 flex-row w-[1000px] mb-20">
               {data &&

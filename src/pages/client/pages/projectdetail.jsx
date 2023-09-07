@@ -260,12 +260,12 @@ function ClientProjectView() {
                           className="h-5 w-5 flex-shrink-0 text-gray-400"
                           aria-hidden="true"
                         />
-                        <a
-                          href="#"
+                        <Link
+                          to={`/allreportforclient/${taskId}/grc/`}
                           className="font-medium ml-4 text-indigo-600 hover:text-indigo-500"
                         >
                           Download Report
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   )}

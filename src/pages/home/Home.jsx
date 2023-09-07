@@ -58,7 +58,7 @@ const Home = () => {
               marginBottom: "20px",
             }}
           >
-            {" "}
+      
             Welcome {employeeInfo.name}
           </h1>
         </div>
