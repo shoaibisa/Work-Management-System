@@ -15,6 +15,8 @@ import {
   taskCreatedReducer,
   taskViewReducer,
   taskAssignReducer,
+  projectManagerList,
+  projectListByPM,
 } from "./reducers/projectListReducer";
 import {
   reportCreatedReducer,
@@ -58,6 +60,8 @@ const reducer = combineReducers({
   allReportByTask: allReportByTaskReducer,
   allNotification: notificationReducer,
   seeNotifications: seeNotificationReducer,
+  listofManagers: projectManagerList,
+  listofprojectbypm: projectListByPM,
 });
 const initialState = {
   employeeLogin: { employeeInfo: employeenfoFromStroge },

@@ -17,6 +17,12 @@ import {
   TASK_ASSIGN_REQUEST,
   TASK_ASSIGN_SUCCESS,
   TASK_ASSIGN_FAILS,
+  PROJECT_MANAGER_REQUEST,
+  PROJECT_MANAGER_SUCCESS,
+  PROJECT_MANAGER_FAILS,
+  PROJECT_LIST_BY_PM_REQUEST,
+  PROJECT_LIST_BY_PM_SUCCESS,
+  PROJECT_LIST_BY_PM_FAILS,
 } from "../constants/projectList.js";
 
 export const projectCreatedReducer = (state = { project: [] }, action) => {
@@ -105,6 +111,38 @@ export const taskAssignReducer = (state = { employees: [] }, action) => {
       return { loading: false, employees: action.payload };
 
     case TASK_ASSIGN_FAILS:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const projectManagerList = (state = { managers: [] }, action) => {
+  switch (action.type) {
+    case PROJECT_MANAGER_REQUEST:
+      return { loading: true, managers: [] };
+
+    case PROJECT_MANAGER_SUCCESS:
+      return { loading: false, managers: action.payload };
+
+    case PROJECT_MANAGER_FAILS:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const projectListByPM = (state = { projects: [] }, action) => {
+  switch (action.type) {
+    case PROJECT_LIST_BY_PM_REQUEST:
+      return { loading: true, projects: [] };
+
+    case PROJECT_LIST_BY_PM_SUCCESS:
+      return { loading: false, projects: action.payload };
+
+    case PROJECT_LIST_BY_PM_FAILS:
       return { loading: false, error: action.payload };
 
     default:

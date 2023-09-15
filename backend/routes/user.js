@@ -24,7 +24,7 @@ router.get("/all", getAllUsers);
 router.post("/department", getEmployeeByDepartment);
 router.post("/tasks", protect, getEmployeeTask);
 router.post("/reports", protect, getEmployeeReport);
-router.get("/managers", protect, listOfManagers);
+router.get("/managers", listOfManagers);
 router.get("/employees", protect, listOfEmployees);
 router.post("/getEmployeeById", protect, getEmployeeById);
 router.post("/getManagerById", protect, getManagerById);

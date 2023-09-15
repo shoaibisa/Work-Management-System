@@ -15,7 +15,9 @@ const Datatable = () => {
   useEffect(() => {
     dispatch(listEmployee());
   }, [dispatch]);
+
   console.log(employees);
+
   // for delete
   // const handleDelete = (id) => {
   //   setData(data.filter((item) => item.id !== id));
@@ -52,7 +54,7 @@ const Datatable = () => {
           pageSize={9}
           getRowId={(row) => row._id}
           rowsPerPageOptions={[9]}
-          checkboxSelection
+          // checkboxSelection
         />
       )}
     </div>

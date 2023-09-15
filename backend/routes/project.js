@@ -23,6 +23,7 @@ import {
   getNotifications,
   projectComplete,
   updateTask,
+  getAllProjectbypM,
 } from "../controllers/project.js";
 import { protect } from "../middleware/employeeMiddleware.js";
 import multer from "multer";
@@ -82,5 +83,6 @@ router.post("/actionnotification", protect, actionNotification);
 router.post("/getnotifications", protect, getNotifications);
 router.post("/projectcomplete", protect, projectComplete);
 router.post("/updateTask", protect, updateTask);
+router.post("/projectbyprojectmanager", protect, getAllProjectbypM);
 
 export default router;

@@ -41,6 +41,7 @@ const createProject = async (req, res) => {
   await client.save();
   const manager = await Employee.findById(req.body.manager).exec();
   manager.managerProjects.push(project._id);
+  await manager.save();
   project
     .save()
     .then(() => {
@@ -148,11 +149,34 @@ const getProject = async (req, res) => {
 };
 
 const getAllProject = async (req, res) => {
-  // based on the role of the employee, we will get the project
-  //console.log(req.user._id);
   try {
     // based on lates
     const project = await Project.find({ manager: req.user._id }).sort({
+      createdAt: -1,
+    });
+    //console.log(project);
+    if (!project) {
+      return res.status(208).send({
+        isError: true,
+        title: "Error",
+        message: "This project is not registered ",
+      });
+    }
+    return res.status(200).send({
+      title: "Success",
+      message: "project get sucessfully",
+      data: project,
+    });
+  } catch (error) {
+    return res.status(500);
+  }
+};
+
+const getAllProjectbypM = async (req, res) => {
+  const id = req.body.id;
+  try {
+    // based on lates
+    const project = await Project.find({ manager: id }).sort({
       createdAt: -1,
     });
     // console.log(project);
@@ -307,7 +331,7 @@ const updateTask = async (req, res) => {
 
 const getTaskByProject = async (req, res) => {
   const { project } = req.body;
-  console.log(project);
+  //console.log(project);
   try {
     const task = await Task.find({ project: project });
     console.log(task);
@@ -1231,4 +1255,5 @@ export {
   getNotifications,
   actionNotification,
   updateTask,
+  getAllProjectbypM,
 };

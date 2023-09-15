@@ -54,7 +54,7 @@ export const register =
         payload: data,
       });
 
-     // toast.success("Siggned up..");
+      // toast.success("Siggned up..");
     } catch (error) {
       dispatch({
         type: EMPLOYEE_REGISTER_FAIL,
@@ -100,9 +100,17 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 export const listEmployee = () => async (dispatch) => {
+  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+  const token = userData?.token;
   try {
     dispatch({ type: EMPLOYEE_LIST_REQUEST });
-    const { data } = await axios.get("http://localhost:5000/auth/allemployees");
+    const { data } = await axios.get("http://localhost:5000/user/employees", {
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log(data);
     dispatch({
       type: EMPLOYEE_LIST_SUCCESS,
       payload: data,

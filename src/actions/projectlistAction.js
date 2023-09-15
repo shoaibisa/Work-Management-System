@@ -14,6 +14,12 @@ import {
   TASK_ASSIGN_REQUEST,
   TASK_ASSIGN_SUCCESS,
   TASK_ASSIGN_FAILS,
+  PROJECT_MANAGER_REQUEST,
+  PROJECT_MANAGER_SUCCESS,
+  PROJECT_MANAGER_FAILS,
+  PROJECT_LIST_BY_PM_REQUEST,
+  PROJECT_LIST_BY_PM_SUCCESS,
+  PROJECT_LIST_BY_PM_FAILS,
 } from "../constants/projectList.js";
 
 import { toast } from "react-hot-toast";
@@ -170,6 +176,36 @@ export const listProject = () => async (dispatch) => {
   }
 };
 
+export const listProjectbyPM = (id) => async (dispatch) => {
+  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+  const token = userData?.token;
+
+  try {
+    dispatch({ type: PROJECT_LIST_BY_PM_REQUEST });
+    const { data } = await axios.post(
+      "http://localhost:5000/project/projectbyprojectmanager",
+      { id: id },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    dispatch({
+      type: PROJECT_LIST_BY_PM_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PROJECT_LIST_BY_PM_FAILS,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
 export const viewTasks = (taskId) => async (dispatch) => {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const token = userData?.token;
@@ -239,3 +275,26 @@ export const assignTask =
       });
     }
   };
+
+export const ManagersList = () => async (dispatch) => {
+  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+  const token = userData?.token;
+
+  try {
+    dispatch({ type: PROJECT_MANAGER_REQUEST });
+    const { data } = await axios.get("http://localhost:5000/user/managers", {});
+    console.log(data);
+    dispatch({
+      type: PROJECT_MANAGER_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PROJECT_MANAGER_FAILS,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

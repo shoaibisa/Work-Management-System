@@ -73,6 +73,7 @@ const getUserById = async (req, res) => {
 const getAllUsers = async (req, res) => {
   try {
     const employees = await Employee.find({}).exec();
+    console.log(employees);
     if (!employees) {
       return res.status(208).send({
         isError: true,
@@ -112,6 +113,7 @@ const getAllUsers = async (req, res) => {
 //     return res.status(500);
 //   }
 // };
+
 const getManagerById = async (req, res) => {
   const { id } = req.body;
   //console.log(id);
@@ -127,7 +129,7 @@ const getManagerById = async (req, res) => {
     }
 
     // This should be outside the if block
-    // console.log(employee);
+    console.log(employee);
 
     return res.status(200).send({
       employee: employee,
@@ -230,7 +232,7 @@ const getEmployeeReport = async (req, res) => {
 const listOfManagers = async (req, res) => {
   try {
     const managers = await Employee.find({ role: "Project Manager" }).exec();
-
+    // console.log(managers);
     return res.status(200).send({
       managers: managers,
       isError: false,
@@ -252,6 +254,7 @@ const listOfEmployees = async (req, res) => {
     return res.status(500);
   }
 };
+
 const listOfClients = async (req, res) => {
   try {
     const clients = await Employee.find({ role: "Client" }).exec();

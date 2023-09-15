@@ -37,6 +37,10 @@ import {
   AuthorizedClient,
 } from "./middleware/auth";
 import EditReportsubmit from "./pages/employee/reportsubmit/editreport";
+import ViewprojectManagerList from "./pages/watchman/projectmanagerList";
+import ViewEmployeeList from "./pages/watchman/employeelist";
+import ViewClientList from "./pages/watchman/clientList";
+
 function App() {
   const { darkMode } = useContext(DarkModeContext);
 
@@ -297,6 +301,12 @@ function App() {
               </AuthorizedUser>
             }
           />
+          <Route
+            path="/projectmanagerlist"
+            element={<ViewprojectManagerList />}
+          />
+          <Route path="/clientlist" element={<ViewClientList />} />
+          <Route path="/employeelist" element={<ViewEmployeeList />} />
 
           <Route path="*" element={<Error />} />
         </Routes>
