@@ -147,7 +147,9 @@ const getManagerById = async (req, res) => {
 const getEmployeeById = async (req, res) => {
   const { id } = req.body;
   try {
-    const employee = await Employee.findById(id).exec();
+    const employee = await Employee.findById(id)
+      .populate("managerProjects")
+      .exec();
     if (!employee) {
       return res.status(208).send({
         isError: true,
