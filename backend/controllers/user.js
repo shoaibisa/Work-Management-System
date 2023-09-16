@@ -213,6 +213,35 @@ const getEmployeeTask = async (req, res) => {
     return res.status(500);
   }
 };
+const getEmployeeTaskId = async (req, res) => {
+  const { id } = req.body;
+  try {
+    const employee = await Employee.findById(id)
+      .populate("tasks.taskid")
+      .exec();
+
+    var tasks = employee.tasks;
+    const final_tasks = [];
+    // get project manager name
+    for (const i of tasks) {
+      const project = await Project.findById(i.taskid.project)
+        .populate("manager")
+        .exec();
+      const task_val = {
+        tasks: i,
+        manager: project.manager.name,
+      };
+      final_tasks.push(task_val);
+    }
+    // console.log(final_tasks);
+    return res.status(200).send({
+      datas: final_tasks,
+      isError: false,
+    });
+  } catch (error) {
+    return res.status(500);
+  }
+};
 
 const getEmployeeReport = async (req, res) => {
   //console.log(req.body);
@@ -282,4 +311,5 @@ export {
   getEmployeeById,
   getManagerById,
   listOfClients,
+  getEmployeeTaskId,
 };
