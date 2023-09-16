@@ -14,7 +14,7 @@ function ViewprojectManagerList() {
   useEffect(() => {
     dispatch(ManagersList());
   }, [dispatch]);
-  console.log(managers && managers);
+  //console.log(managers && managers);
   return (
     <div className="App">
       <div className="home">
@@ -40,7 +40,7 @@ function ViewprojectManagerList() {
                       // Map and render clients if the array is not empty
                       managers &&
                       managers.managers.map((employee, index) => (
-                        <Link to={`/projectview/${employee._id}`}>
+                        <Link to={`/wmprojectlist/${employee._id}`}>
                           <div className="mb-12" key={index}>
                             <img
                               src="https://mdbcdn.b-cdn.net/img/new/avatars/2.jpg"

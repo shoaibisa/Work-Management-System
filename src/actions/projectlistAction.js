@@ -283,7 +283,6 @@ export const ManagersList = () => async (dispatch) => {
   try {
     dispatch({ type: PROJECT_MANAGER_REQUEST });
     const { data } = await axios.get("http://localhost:5000/user/managers", {});
-    console.log(data);
     dispatch({
       type: PROJECT_MANAGER_SUCCESS,
       payload: data,

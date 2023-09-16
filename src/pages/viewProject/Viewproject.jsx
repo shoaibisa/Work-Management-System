@@ -37,6 +37,8 @@ function Viewproject() {
 
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const token = userData?.token;
+  const role = userData?.userRole;
+  const isProjectManager = role === "Project Manager";
 
   const fetchTaskDetails = async (taskId) => {
     try {
@@ -165,14 +167,16 @@ function Viewproject() {
           <div className="font-bold text-2xl ml-10 mt-6">Project View</div>
           <div className="m-10 flex gap-4  flex-col   rounded-lg border border-dashed border-gray-900/25 p-6">
             <div className="flex  justify-end">
-              <Link
-                type="submit"
-                to={`/viewproject/${projectId}/c`}
-                className=" flex rounded-md w-1/8 bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                <PlusIcon className="w-5" />
-                Add Task
-              </Link>
+              {isProjectManager && (
+                <Link
+                  type="submit"
+                  to={`/viewproject/${projectId}/c`}
+                  className=" flex rounded-md w-1/8 bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  <PlusIcon className="w-5" />
+                  Add Task
+                </Link>
+              )}
             </div>
             <div className="   sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <div className="text-md font-medium leading-6 text-gray-900">

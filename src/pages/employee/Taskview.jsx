@@ -137,19 +137,23 @@ function Taskview() {
                           <div className="flex">
                             <h3> Assign To: </h3>
                             {url.assignEmployee.map((employee) => {
-                              const filteredEmployees = employees.filter(
-                                (emp) => employee.employee.includes(emp._id)
-                              );
-                              const namesOfFilteredEmployees =
-                                filteredEmployees.map((emp) => emp.name);
-                              return (
-                                <span
-                                  key={employee._id}
-                                  className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
-                                >
-                                  {namesOfFilteredEmployees.join(", ")}
-                                </span>
-                              );
+                              const filteredEmployees =
+                                employees.employees &&
+                                employees.employees.filter((emp) =>
+                                  employee.employee.includes(emp._id)
+                                );
+                              if (Array.isArray(filteredEmployees)) {
+                                const namesOfFilteredEmployees =
+                                  filteredEmployees.map((emp) => emp.name);
+                                return (
+                                  <span
+                                    key={employee._id}
+                                    className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
+                                  >
+                                    {namesOfFilteredEmployees.join(", ")}
+                                  </span>
+                                );
+                              }
                             })}
                           </div>
                         </div>
@@ -184,27 +188,33 @@ function Taskview() {
                       </div>
                       <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                         <a href={data.mobileData && data.mobileData.ios}>
-                          {data.mobileData && data.mobileData.ios}
+                          <PaperClipIcon
+                            className="h-5 w-5 flex-shrink-0 text-gray-400"
+                            aria-hidden="true"
+                          />
                         </a>
                       </div>
                     </div>
                     <div className="flex mt-4">
                       <h3> Assign To: </h3>
                       {data.mobileData.forIos.assignEmployee.map((employee) => {
-                        const filteredEmployees = employees.filter((emp) =>
-                          employee.employee.includes(emp._id)
-                        );
-                        const namesOfFilteredEmployees = filteredEmployees.map(
-                          (emp) => emp.name
-                        );
-                        return (
-                          <span
-                            key={employee._id}
-                            className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
-                          >
-                            {namesOfFilteredEmployees.join(", ")}
-                          </span>
-                        );
+                        const filteredEmployees =
+                          employees.employees &&
+                          employees.employees.filter((emp) =>
+                            employee.employee.includes(emp._id)
+                          );
+                        if (Array.isArray(filteredEmployees)) {
+                          const namesOfFilteredEmployees =
+                            filteredEmployees.map((emp) => emp.name);
+                          return (
+                            <span
+                              key={employee._id}
+                              className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
+                            >
+                              {namesOfFilteredEmployees.join(", ")}
+                            </span>
+                          );
+                        }
                       })}
                     </div>
                   </>
@@ -235,7 +245,10 @@ function Taskview() {
                       </div>
                       <div className="mt-1  flex text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                         <a href={data.mobileData && data.mobileData.android}>
-                          {data.mobileData && data.mobileData.android}
+                          <PaperClipIcon
+                            className="h-5 w-5 flex-shrink-0 text-gray-400"
+                            aria-hidden="true"
+                          />
                         </a>
                       </div>
                     </div>
@@ -243,19 +256,23 @@ function Taskview() {
                       <h3> Assign To: </h3>
                       {data.mobileData.forAndroid.assignEmployee.map(
                         (employee) => {
-                          const filteredEmployees = employees.filter((emp) =>
-                            employee.employee.includes(emp._id)
-                          );
-                          const namesOfFilteredEmployees =
-                            filteredEmployees.map((emp) => emp.name);
-                          return (
-                            <span
-                              key={employee._id}
-                              className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
-                            >
-                              {namesOfFilteredEmployees.join(", ")}
-                            </span>
-                          );
+                          const filteredEmployees =
+                            employees.employees &&
+                            employees.employees.filter((emp) =>
+                              employee.employee.includes(emp._id)
+                            );
+                          if (Array.isArray(filteredEmployees)) {
+                            const namesOfFilteredEmployees =
+                              filteredEmployees.map((emp) => emp.name);
+                            return (
+                              <span
+                                key={employee._id}
+                                className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
+                              >
+                                {namesOfFilteredEmployees.join(", ")}
+                              </span>
+                            );
+                          }
                         }
                       )}
                     </div>
@@ -298,20 +315,24 @@ function Taskview() {
                 <div className="flex">
                   <h3> Assign To: </h3>
                   {data.apiData.assignEmployee.map((employee) => {
-                    const filteredEmployees = employees.filter((emp) =>
-                      employee.employee.includes(emp._id)
-                    );
-                    const namesOfFilteredEmployees = filteredEmployees.map(
-                      (emp) => emp.name
-                    );
-                    return (
-                      <span
-                        key={employee._id}
-                        className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
-                      >
-                        {namesOfFilteredEmployees.join(", ")}
-                      </span>
-                    );
+                    const filteredEmployees =
+                      employees.employees &&
+                      employees.employees.filter((emp) =>
+                        employee.employee.includes(emp._id)
+                      );
+                    if (Array.isArray(filteredEmployees)) {
+                      const namesOfFilteredEmployees = filteredEmployees.map(
+                        (emp) => emp.name
+                      );
+                      return (
+                        <span
+                          key={employee._id}
+                          className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
+                        >
+                          {namesOfFilteredEmployees.join(", ")}
+                        </span>
+                      );
+                    }
                   })}
                 </div>
 
@@ -352,20 +373,24 @@ function Taskview() {
                 <div className="flex">
                   <h3> Assign To: </h3>
                   {data.networkData.assignEmployee.map((employee) => {
-                    const filteredEmployees = employees.filter((emp) =>
-                      employee.employee.includes(emp._id)
-                    );
-                    const namesOfFilteredEmployees = filteredEmployees.map(
-                      (emp) => emp.name
-                    );
-                    return (
-                      <span
-                        key={employee._id}
-                        className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
-                      >
-                        {namesOfFilteredEmployees.join(", ")}
-                      </span>
-                    );
+                    const filteredEmployees =
+                      employees.employees &&
+                      employees.employees.filter((emp) =>
+                        employee.employee.includes(emp._id)
+                      );
+                    if (Array.isArray(filteredEmployees)) {
+                      const namesOfFilteredEmployees = filteredEmployees.map(
+                        (emp) => emp.name
+                      );
+                      return (
+                        <span
+                          key={employee._id}
+                          className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
+                        >
+                          {namesOfFilteredEmployees.join(", ")}
+                        </span>
+                      );
+                    }
                   })}
                 </div>
                 <div className=" mt-4 flex flex-col">
@@ -389,20 +414,24 @@ function Taskview() {
                 <div className="flex">
                   <h3> Assign To: </h3>
                   {data.grcData.assignEmployee.map((employee) => {
-                    const filteredEmployees = employees.filter((emp) =>
-                      employee.employee.includes(emp._id)
-                    );
-                    const namesOfFilteredEmployees = filteredEmployees.map(
-                      (emp) => emp.name
-                    );
-                    return (
-                      <span
-                        key={employee._id}
-                        className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
-                      >
-                        {namesOfFilteredEmployees.join(", ")}
-                      </span>
-                    );
+                    const filteredEmployees =
+                      employees.employees &&
+                      employees.employees.filter((emp) =>
+                        employee.employee.includes(emp._id)
+                      );
+                    if (Array.isArray(filteredEmployees)) {
+                      const namesOfFilteredEmployees = filteredEmployees.map(
+                        (emp) => emp.name
+                      );
+                      return (
+                        <span
+                          key={employee._id}
+                          className="mx-2 list-none bg-green-500 py-1 px-2 rounded-full text-white inline-block no-underline font-[bold] bg-[linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.7372198879551821) 0%)] transition-[0.4s] hover:bg-[background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(5,223,89,0.9781162464985994) 0%);]"
+                        >
+                          {namesOfFilteredEmployees.join(", ")}
+                        </span>
+                      );
+                    }
                   })}
                 </div>
 

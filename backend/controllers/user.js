@@ -146,25 +146,24 @@ const getManagerById = async (req, res) => {
 
 const getEmployeeById = async (req, res) => {
   const { id } = req.body;
-  try {
-    const employee = await Employee.findById(id)
-      .populate("managerProjects")
-      .exec();
-    if (!employee) {
-      return res.status(208).send({
-        isError: true,
-        title: "Error",
-        message: "This email is not registered. Redirecting to Signup page!",
-      });
+  // console.log(id);
 
-      return res.status(200).send({
-        employee: employee,
-        isError: false,
-      });
-    }
-  } catch (error) {
-    return res.status(500);
+  const employee = await Employee.findById(id)
+    .populate("managerProjects")
+    .exec();
+  console.log(employee);
+  if (!employee) {
+    return res.status(208).send({
+      isError: true,
+      title: "Error",
+      message: "This email is not registered. Redirecting to Signup page!",
+    });
   }
+
+  return res.status(200).send({
+    employee: employee,
+    isError: false,
+  });
 };
 
 const getEmployeeByDepartment = async (req, res) => {

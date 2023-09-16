@@ -40,6 +40,7 @@ import EditReportsubmit from "./pages/employee/reportsubmit/editreport";
 import ViewprojectManagerList from "./pages/watchman/projectmanagerList";
 import ViewEmployeeList from "./pages/watchman/employeelist";
 import ViewClientList from "./pages/watchman/clientList";
+import WMProjectlist from "./pages/watchman/projectmanager/allprojectlist";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -305,8 +306,31 @@ function App() {
             path="/projectmanagerlist"
             element={<ViewprojectManagerList />}
           />
-          <Route path="/clientlist" element={<ViewClientList />} />
-          <Route path="/employeelist" element={<ViewEmployeeList />} />
+          <Route
+            path="/clientlist"
+            element={
+              <AuthorizedAdmin>
+                <ViewClientList />{" "}
+              </AuthorizedAdmin>
+            }
+          />
+          <Route
+            path="/employeelist"
+            element={
+              <AuthorizedAdmin>
+                {" "}
+                <ViewEmployeeList />
+              </AuthorizedAdmin>
+            }
+          />
+          <Route
+            path="/wmprojectlist/:id"
+            element={
+              <AuthorizedAdmin>
+                <WMProjectlist />
+              </AuthorizedAdmin>
+            }
+          />
 
           <Route path="*" element={<Error />} />
         </Routes>

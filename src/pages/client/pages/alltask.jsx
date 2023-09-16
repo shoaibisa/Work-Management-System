@@ -19,7 +19,6 @@ function ClientTasklist() {
   useEffect(() => {
     dispatch(singleTaskView(projectId));
   }, [dispatch]);
-  //console.log(task);
 
   useEffect(() => {
     fetch(`http://localhost:5000/project/getbyid`, {

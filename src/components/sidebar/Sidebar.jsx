@@ -67,8 +67,27 @@ const Sidebar = () => {
                   <span>Employee Request</span>
                 </li>
               </Link>
+              <Link to="/projectmanagerlist" style={{ textDecoration: "none" }}>
+                <li>
+                  <PersonOutlineIcon className="icon" />
+                  <span> Project Manger</span>
+                </li>
+              </Link>
+              <Link to="/employeelist" style={{ textDecoration: "none" }}>
+                <li>
+                  <PersonOutlineIcon className="icon" />
+                  <span>Employee </span>
+                </li>
+              </Link>
+              <Link to="/clientlist" style={{ textDecoration: "none" }}>
+                <li>
+                  <PersonOutlineIcon className="icon" />
+                  <span>Client</span>
+                </li>
+              </Link>
             </>
           )}
+
           {isPM && (
             <>
               <p className="title bg-transparent">Project</p>

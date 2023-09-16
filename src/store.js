@@ -7,6 +7,7 @@ import {
   employeeLoginReducer,
   employeeTaskReducer,
   userInfoReducer,
+  employeeDetailsReducer,
 } from "./reducers/employeeReducer";
 import {
   projectListReducer,
@@ -62,6 +63,7 @@ const reducer = combineReducers({
   seeNotifications: seeNotificationReducer,
   listofManagers: projectManagerList,
   listofprojectbypm: projectListByPM,
+  employeeDetails: employeeDetailsReducer,
 });
 const initialState = {
   employeeLogin: { employeeInfo: employeenfoFromStroge },

@@ -127,6 +127,8 @@ function TaskviewUser() {
     dispatch(viewReport(id, type, webtargetUrls));
     dispatch(reportsByUser(id, type, webtargetUrls, userid));
   }, [dispatch, id, type, webtargetUrls, userid]);
+  const role = userData?.userRole;
+  const isProjectManager = role === "Project Manager";
 
   return (
     <div className="App">
@@ -201,7 +203,10 @@ function TaskviewUser() {
                       </div>
                       <div className="mt-1 text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                         <a href={data.mobileData && data.mobileData.ios}>
-                          {data.mobileData && data.mobileData.ios}
+                          <PaperClipIcon
+                            className="h-5 w-5 flex-shrink-0 text-gray-400"
+                            aria-hidden="true"
+                          />
                         </a>
                       </div>
                     </div>
@@ -233,7 +238,10 @@ function TaskviewUser() {
                       </div>
                       <div className="mt-1  flex text-md leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                         <a href={data.mobileData && data.mobileData.android}>
-                          {data.mobileData && data.mobileData.android}
+                          <PaperClipIcon
+                            className="h-5 w-5 flex-shrink-0 text-gray-400"
+                            aria-hidden="true"
+                          />
                         </a>
                       </div>
                     </div>
@@ -356,15 +364,6 @@ function TaskviewUser() {
                   </div>
                 </div>
 
-                {/* <div className="px-4  sm:grid sm:grid-cols-3 sm:gap-4 sm:px-4">
-                  <dt className="text-sm font-semibold leading-6 text-gray-900">
-                    Name :
-                  </dt>
-                  <div className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {}
-                  </div>
-                </div> */}
-
                 <div className="px-6  sm:grid sm:grid-cols-3 sm:gap-4 sm:px-4">
                   <dt className="text-sm font-semibold leading-6 text-gray-900">
                     Pdf :
@@ -430,48 +429,6 @@ function TaskviewUser() {
                           )}
                         </div>
 
-                        {/* <div className="h-96 overflow-y-scroll">
-                          {items && items.remarks.length > 0 ? (
-                            items.remarks.map((data) => (
-                              <div className="mb-4" key={data.id}>
-                                {employeeInfo.id === data.user ? (
-                                  <>
-                                    <div className="flex items-end justify-end">
-                                      <div className="flex-shrink-0"></div>
-                                      <div className="ml-3">
-                                        <div className="bg-green-100 text-blue-600 p-2 rounded-lg">
-                                          {data.remark}
-                                        </div>
-                                        <p className="text-xs text-gray-500 mt-1">
-                                          {formatDate(data.date)}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </>
-                                ) : (
-                                  <>
-                                    <div className="flex items-start">
-                                      <div className="flex-shrink-0"></div>
-                                      <div className="ml-3">
-                                        <div className="bg-blue-100 text-blue-900 p-2 rounded-lg">
-                                          {data.remark}
-                                        </div>
-                                        <p className="text-xs text-gray-500 mt-1">
-                                          {formatDate(data.date)}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </>
-                                )}
-                              </div>
-                            ))
-                          ) : (
-                            <p className="text-gray-500 mt-2">
-                              No remarks to display.
-                            </p>
-                          )}
-                        </div> */}
-
                         <div className="flex items-center border-t mt-4 pt-4">
                           <input
                             type="text"
@@ -498,31 +455,19 @@ function TaskviewUser() {
                     </div>
                   </div>
                 </div>
-                {/* {items.isCompleted === false ? (
-                  <button
-                    onClick={() => handleButtonClick(items._id)}
-                    className="inline-block rounded-full w-24 ml-4 bg-success px-2 text-xs uppercase leading-normal text-white cursor-auto"
-                  >
-                    completed
-                  </button>
-                ) : (
-                  <button className="inline-block rounded-full w-24 ml-4 bg-danger px-2 text-xs uppercase leading-normal text-white cursor-auto">
-                    Done
-                  </button>
-                )} */}
 
-                <button
-                  type="button"
-                  className={`inline-block rounded-full w-24 ml-4 ${
-                    isCompleted ? "bg-gray-400" : "bg-success"
-                  } px-2 text-xs uppercase leading-normal text-white`}
-                  // onClick={handleButtonClick}
-                  onClick={() => handleButtonClick(items._id)}
-                >
-                  {/* {isCompleted ? "completed" : "mark as completed"} */}
-                  {(isCompleted || items.isCompleted) && "completed"}
-                  {!isCompleted && !items.isCompleted && "mark as completed"}
-                </button>
+                {isProjectManager && (
+                  <button
+                    type="button"
+                    className={`inline-block rounded-full w-24 ml-4 ${
+                      isCompleted ? "bg-gray-400" : "bg-success"
+                    } px-2 text-xs uppercase leading-normal text-white`}
+                    onClick={() => handleButtonClick(items._id)}
+                  >
+                    {(isCompleted || items.isCompleted) && "completed"}
+                    {!isCompleted && !items.isCompleted && "mark as completed"}
+                  </button>
+                )}
               </div>
             ))
           ) : (

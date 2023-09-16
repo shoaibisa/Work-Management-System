@@ -15,6 +15,9 @@ import {
   USER_INFO_REQUEST,
   USER_INFO_SUCCESS,
   USER_INFO_FAIL,
+  EMPLOYEE_DETAILS_REQUEST,
+  EMPLOYEE_DETAILS_SUCCESS,
+  EMPLOYEE_DETAILS_FAILS,
 } from "../constants/employee";
 
 import axios from "axios";
@@ -110,7 +113,7 @@ export const listEmployee = () => async (dispatch) => {
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log(data);
+
     dispatch({
       type: EMPLOYEE_LIST_SUCCESS,
       payload: data,
@@ -148,6 +151,36 @@ export const EmployeeTask = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: EMPLOYEE_TASK_DETAILS_FAILS,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+export const employeeDetail = (id) => async (dispatch) => {
+  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+  const token = userData?.token;
+
+  try {
+    dispatch({ type: EMPLOYEE_DETAILS_REQUEST });
+    const { data } = await axios.post(
+      "http://localhost:5000/user/getEmployeeById",
+      { id },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+    dispatch({
+      type: EMPLOYEE_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: EMPLOYEE_DETAILS_FAILS,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

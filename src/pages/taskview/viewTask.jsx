@@ -24,7 +24,6 @@ function Viewtask() {
     ios = mobileData.ios !== "";
     //console.log(mobileData);
   }
-  
 
   const handleDownloadClicks = () => {
     // Code to prepare the URL of the Excel file
@@ -165,6 +164,8 @@ function Viewtask() {
       console.error("Error updating GRC task status:", error);
     }
   };
+  const role = userData?.userRole;
+  const isProjectManager = role === "Project Manager";
 
   return (
     <div className="App">
@@ -239,7 +240,7 @@ function Viewtask() {
                     </div>
 
                     <div className=" mt-2 flex justify-between gap-x-6">
-                      {!data.webData.isCompleted && (
+                      {isProjectManager && !data.webData.isCompleted && (
                         <button
                           onClick={handleWebButtonClick}
                           className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
@@ -326,7 +327,7 @@ function Viewtask() {
                     </div>
 
                     <div className=" mt-2 flex  justify-between gap-x-6">
-                      {!data.mobileData.isCompleted && (
+                      {isProjectManager && !data.mobileData.isCompleted && (
                         <button
                           onClick={handleMobileButtonClick}
                           className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
@@ -397,7 +398,7 @@ function Viewtask() {
                     </div>
 
                     <div className=" mt-2 flex  justify-between gap-x-6">
-                      {!data.apiData.isCompleted && (
+                      {isProjectManager && !data.apiData.isCompleted && (
                         <button
                           onClick={handleApiButtonClick}
                           className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
@@ -469,7 +470,7 @@ function Viewtask() {
                     </div>
 
                     <div className=" mt-2 flex  justify-between gap-x-6">
-                      {!data.networkData.isCompleted && (
+                      {isProjectManager && !data.networkData.isCompleted && (
                         <button
                           onClick={handleNetworkButtonClick}
                           className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
@@ -525,7 +526,7 @@ function Viewtask() {
                     </div>
 
                     <div className=" mt-2 flex justify-between gap-x-6">
-                      {!data.grcData.isCompleted && (
+                      {isProjectManager && !data.grcData.isCompleted && (
                         <button
                           onClick={handleGrcButtonClick}
                           className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
