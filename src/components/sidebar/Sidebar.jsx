@@ -39,6 +39,7 @@ const Sidebar = () => {
   const isPM = role === "Project Manager";
   const isEmployee = role === "Employee";
   const isClient = role === "Client";
+  const isWatchman = role === "Watchman";
 
   return (
     <div className="sidebar  ">
@@ -67,6 +68,10 @@ const Sidebar = () => {
                   <span>Employee Request</span>
                 </li>
               </Link>
+            </>
+          )}
+          {isWatchman && (
+            <>
               <Link to="/projectmanagerlist" style={{ textDecoration: "none" }}>
                 <li>
                   <PersonOutlineIcon className="icon" />

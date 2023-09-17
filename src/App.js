@@ -35,6 +35,7 @@ import {
   AuthorizedAdmin,
   AuthorizedPM,
   AuthorizedClient,
+  AuthorizedWatchMan,
 } from "./middleware/auth";
 import EditReportsubmit from "./pages/employee/reportsubmit/editreport";
 import ViewprojectManagerList from "./pages/watchman/projectmanagerList";
@@ -306,55 +307,58 @@ function App() {
           />
           <Route
             path="/projectmanagerlist"
-            element={<ViewprojectManagerList />}
+            element={
+              <AuthorizedWatchMan>
+                <ViewprojectManagerList />
+              </AuthorizedWatchMan>
+            }
           />
           <Route
             path="/clientlist"
             element={
-              <AuthorizedAdmin>
+              <AuthorizedWatchMan>
                 <ViewClientList />{" "}
-              </AuthorizedAdmin>
+              </AuthorizedWatchMan>
             }
           />
           <Route
             path="/employeelist"
             element={
-              <AuthorizedAdmin>
-                {" "}
+              <AuthorizedWatchMan>
                 <ViewEmployeeList />
-              </AuthorizedAdmin>
+              </AuthorizedWatchMan>
             }
           />
           <Route
             path="/wmprojectlist/:id"
             element={
-              <AuthorizedAdmin>
+              <AuthorizedWatchMan>
                 <WMProjectlist />
-              </AuthorizedAdmin>
+              </AuthorizedWatchMan>
             }
           />
           <Route
             path="/wmtasklist/:id"
             element={
-              <AuthorizedAdmin>
+              <AuthorizedWatchMan>
                 <WMEmployeeTasksList />
-              </AuthorizedAdmin>
+              </AuthorizedWatchMan>
             }
           />
           <Route
             path="/wmtasklist/:id"
             element={
-              <AuthorizedAdmin>
+              <AuthorizedWatchMan>
                 <WMEmployeeTasksList />
-              </AuthorizedAdmin>
+              </AuthorizedWatchMan>
             }
           />
           <Route
             path="/wmclient/:id"
             element={
-              <AuthorizedAdmin>
+              <AuthorizedWatchMan>
                 <WMClientProjectlist />
-              </AuthorizedAdmin>
+              </AuthorizedWatchMan>
             }
           />
 

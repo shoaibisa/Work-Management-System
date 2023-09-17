@@ -48,8 +48,8 @@ const Signup = () => {
       !confirmPassword ||
       !phone ||
       !selectedDepartment ||
-      !selectedrole ||
-      !profile
+      !selectedrole //||
+      //!profile
     ) {
       setMessage("Please fill in all fields.");
     } else if (password !== confirmPassword) {
@@ -57,7 +57,15 @@ const Signup = () => {
     } else {
       setMessage(""); // Clear any previous error messages.
       dispatch(
-        register(name, email, password, phone, selectedDepartment, selectedrole,profile)
+        register(
+          name,
+          email,
+          password,
+          phone,
+          selectedDepartment,
+          selectedrole,
+          profile
+        )
       );
     }
   };
@@ -191,6 +199,7 @@ const Signup = () => {
                   <option value="marketing">Marketing Team</option>
                   <option value="management">Management Team</option>
                   <option value="client">Client</option>
+                  <option value="other">Other</option>
                 </select>
               </div>
               <div className="my-5">
@@ -204,6 +213,7 @@ const Signup = () => {
                   <option value="Employee">Employee</option>
                   <option value="Project Manager">Project Manager</option>
                   <option value="Client">Client</option>
+                  <option value="Watchman">Watch Man</option>
                 </select>
               </div>
             </div>
