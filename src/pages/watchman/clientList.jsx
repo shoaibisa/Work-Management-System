@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { listClients } from "../../actions/clientAction";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
+import { Link } from "react-router-dom";
 
 function ViewClientList() {
   const dispatch = useDispatch();
@@ -38,18 +39,20 @@ function ViewClientList() {
                       // Map and render clients if the array is not empty
                       clients &&
                       clients.clients.map((client, index) => (
-                        <div className="mb-12" key={index}>
-                          <img
-                            src="https://mdbcdn.b-cdn.net/img/new/avatars/2.jpg"
-                            className="mx-auto mb-4 rounded-full shadow-lg dark:shadow-black/20"
-                            alt=""
-                            style={{ maxWidth: 100 }}
-                          />
-                          <p className="mb-2 font-bold">{client.name}</p>
-                          <p className="text-neutral-500 dark:text-neutral-300">
-                            {client.email}
-                          </p>
-                        </div>
+                        <Link to={`/wmclient/${client._id}`}>
+                          <div className="mb-12" key={index}>
+                            <img
+                              src="https://mdbcdn.b-cdn.net/img/new/avatars/2.jpg"
+                              className="mx-auto mb-4 rounded-full shadow-lg dark:shadow-black/20"
+                              alt=""
+                              style={{ maxWidth: 100 }}
+                            />
+                            <p className="mb-2 font-bold">{client.name}</p>
+                            <p className="text-neutral-500 dark:text-neutral-300">
+                              {client.email}
+                            </p>
+                          </div>
+                        </Link>
                       ))
                     ) : (
                       // Handle the case where clients is empty

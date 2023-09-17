@@ -12,12 +12,18 @@ import {
   EMPLOYEE_TASK_DETAILS_REQUEST,
   EMPLOYEE_TASK_DETAILS_SUCCESS,
   EMPLOYEE_TASK_DETAILS_FAILS,
+  EMPLOYEE_TASK_DETAILSBYID_REQUEST,
+  EMPLOYEE_TASK_DETAILSBYID_SUCCESS,
+  EMPLOYEE_TASK_DETAILSBYID_FAILS,
   USER_INFO_REQUEST,
   USER_INFO_SUCCESS,
   USER_INFO_FAIL,
   EMPLOYEE_DETAILS_REQUEST,
   EMPLOYEE_DETAILS_SUCCESS,
   EMPLOYEE_DETAILS_FAILS,
+  USER_LIST_REQUEST,
+  USER_LIST_SUCCESS,
+  USER_LIST_FAILS,
 } from "../constants/employee";
 
 export const employeeLoginReducer = (state = {}, action) => {
@@ -78,6 +84,21 @@ export const employeeListReducer = (state = { employees: [] }, action) => {
       return state;
   }
 };
+export const userListReducer = (state = { user: [] }, action) => {
+  switch (action.type) {
+    case USER_LIST_REQUEST:
+      return { loading: true, user: [] };
+
+    case USER_LIST_SUCCESS:
+      return { loading: false, user: action.payload };
+
+    case USER_LIST_FAILS:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
 
 export const employeeTaskReducer = (state = { task: [] }, action) => {
   switch (action.type) {
@@ -88,6 +109,21 @@ export const employeeTaskReducer = (state = { task: [] }, action) => {
       return { loading: false, task: action.payload };
 
     case EMPLOYEE_TASK_DETAILS_FAILS:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+export const employeeTaskbyidReducer = (state = { task: [] }, action) => {
+  switch (action.type) {
+    case EMPLOYEE_TASK_DETAILSBYID_REQUEST:
+      return { loading: true, task: [] };
+
+    case EMPLOYEE_TASK_DETAILSBYID_SUCCESS:
+      return { loading: false, task: action.payload };
+
+    case EMPLOYEE_TASK_DETAILSBYID_FAILS:
       return { loading: false, error: action.payload };
 
     default:

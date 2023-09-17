@@ -118,15 +118,7 @@ export const userColumns = [
   {
     field: "name",
     headerName: "Name",
-    width: 120,
-    // renderCell: (params) => {
-    //   return (
-    //     <div className="cellWithImg">
-    //       <img className="cellImg" src={params.row.imageUrl} alt="avatar" />
-    //       {params.row.Name}
-    //     </div>
-    //   );
-    // },
+    width: 150,
   },
   {
     field: "email",
@@ -137,7 +129,7 @@ export const userColumns = [
   {
     field: "phone",
     headerName: "phone",
-    width: 110,
+    width: 150,
   },
   {
     field: "department",
@@ -150,6 +142,15 @@ export const userColumns = [
     headerName: "Role",
     width: 200,
     renderCell: RoleCellRenderer,
+  },
+  {
+    field: "isVerified",
+    headerName: "Email Verified",
+    width: 200,
+    renderCell: (params) => {
+      const isVerified = params.value;
+      return isVerified ? "Yes" : "No";
+    },
   },
 
   {

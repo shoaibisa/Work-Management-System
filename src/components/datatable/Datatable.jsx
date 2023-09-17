@@ -1,47 +1,25 @@
 import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
-// import { userColumns } from "../../data";
 import { userColumns } from "../../datatablesource";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
-import { listEmployee } from "../../actions/employeeAction";
+import { alluser } from "../../actions/employeeAction";
 import Spinner from "../spinner/spinner";
 
 const Datatable = () => {
   const dispatch = useDispatch();
-  const employeeList = useSelector((state) => state.employeeList);
-  const { loading, error, employees } = employeeList;
+  const userlist = useSelector((state) => state.userlist);
+  const { loading, error, user } = userlist;
   useEffect(() => {
-    dispatch(listEmployee());
+    dispatch(alluser());
   }, [dispatch]);
+  //const data = employees.employees && employees.employees;
 
-  console.log(employees);
+  const data = user.employees || [];
 
-  // for delete
-  // const handleDelete = (id) => {
-  //   setData(data.filter((item) => item.id !== id));
-  // };
-
-  const actionColumn = [
-    {
-      field: "action",
-      headerName: "Action",
-      width: 150,
-      renderCell: (params) => {
-        return (
-          <div className="cellAction">
-            <Link to="/users/test" style={{ textDecoration: "none" }}>
-              <div className="viewButton">View</div>
-            </Link>
-          </div>
-        );
-      },
-    },
-  ];
   return (
     <div className="datatable">
-      <div className="datatableTitle">All Employee</div>
+      <div className="datatableTitle">All Employees</div>
       {loading ? (
         <Spinner />
       ) : error ? (
@@ -49,12 +27,11 @@ const Datatable = () => {
       ) : (
         <DataGrid
           className="datagrid"
-          rows={employees}
-          columns={userColumns.concat(actionColumn)}
+          rows={data}
+          columns={userColumns}
           pageSize={9}
           getRowId={(row) => row._id}
           rowsPerPageOptions={[9]}
-          // checkboxSelection
         />
       )}
     </div>

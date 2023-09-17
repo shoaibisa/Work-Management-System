@@ -17,12 +17,6 @@ const AllProject = () => {
     dispatch(listProject());
   }, [dispatch]);
 
-  //console.log(employees);
-  // for delete
-  // const handleDelete = (id) => {
-  //   setData(data.filter((item) => item.id !== id));
-  // };
-  // const employee = [];
   const actionColumn = [
     {
       field: "action",

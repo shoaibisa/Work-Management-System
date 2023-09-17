@@ -8,6 +8,8 @@ import {
   employeeTaskReducer,
   userInfoReducer,
   employeeDetailsReducer,
+  employeeTaskbyidReducer,
+  userListReducer,
 } from "./reducers/employeeReducer";
 import {
   projectListReducer,
@@ -64,6 +66,8 @@ const reducer = combineReducers({
   listofManagers: projectManagerList,
   listofprojectbypm: projectListByPM,
   employeeDetails: employeeDetailsReducer,
+  taskbyemployeeid: employeeTaskbyidReducer,
+  userlist: userListReducer,
 });
 const initialState = {
   employeeLogin: { employeeInfo: employeenfoFromStroge },

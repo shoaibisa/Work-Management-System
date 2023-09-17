@@ -10,8 +10,6 @@ function WMProjectlist() {
   const employeeDetails = useSelector((state) => state.employeeDetails);
   const { loading, error, details } = employeeDetails;
   const employee = details?.employee;
-  console.log(employee);
-  //const { data } = employee?.managerProjects || {};
 
   const { id } = useParams();
   useEffect(() => {

@@ -16,7 +16,7 @@ function Taskview() {
   const TaskView = useSelector((state) => state.tasksView);
   const { tasks } = TaskView;
   const { data } = tasks;
-  console.log(data);
+
 
   const reportView = useSelector((state) => state.reportView);
   const { report } = reportView;

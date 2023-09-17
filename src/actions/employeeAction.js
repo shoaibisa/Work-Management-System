@@ -18,6 +18,9 @@ import {
   EMPLOYEE_DETAILS_REQUEST,
   EMPLOYEE_DETAILS_SUCCESS,
   EMPLOYEE_DETAILS_FAILS,
+  USER_LIST_REQUEST,
+  USER_LIST_SUCCESS,
+  USER_LIST_FAILS,
 } from "../constants/employee";
 
 import axios from "axios";
@@ -34,7 +37,7 @@ export const logout = () => (dispatch) => {
 
 //Register
 export const register =
-  (name, email, password, phone, selectedDepartment, selectedrole) =>
+  (name, email, password, phone, selectedDepartment, selectedrole, profile) =>
   async (dispatch) => {
     try {
       dispatch({ type: EMPLOYEE_REGISTER_REQUEST });
@@ -48,6 +51,7 @@ export const register =
           phone,
           selectedDepartment,
           role: selectedrole,
+          profile,
         },
         config
       );
@@ -129,6 +133,29 @@ export const listEmployee = () => async (dispatch) => {
   }
 };
 
+export const alluser = () => async (dispatch) => {
+  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+  const token = userData?.token;
+  try {
+    dispatch({ type: USER_LIST_REQUEST });
+    const { data } = await axios.get("http://localhost:5000/user/all");
+    console.log(data);
+
+    dispatch({
+      type: USER_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_LIST_FAILS,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
 export const EmployeeTask = () => async (dispatch) => {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const token = userData?.token;
@@ -137,6 +164,35 @@ export const EmployeeTask = () => async (dispatch) => {
     const { data } = await axios.post(
       "http://localhost:5000/user/tasks",
       {},
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+    dispatch({
+      type: EMPLOYEE_TASK_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: EMPLOYEE_TASK_DETAILS_FAILS,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+export const EmployeeTaskbyid = (id) => async (dispatch) => {
+  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+  const token = userData?.token;
+  try {
+    dispatch({ type: EMPLOYEE_TASK_DETAILS_REQUEST });
+    const { data } = await axios.post(
+      "http://localhost:5000/user/gettasksbyemployeeid",
+      { id },
       {
         headers: {
           Authorization: "Bearer " + token,

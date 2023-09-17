@@ -90,7 +90,6 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-// const getManagerById = async (req, res) => {
 //   const { id } = req.body;
 //   //console.log(id);
 //   try {

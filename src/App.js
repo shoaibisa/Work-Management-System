@@ -41,6 +41,8 @@ import ViewprojectManagerList from "./pages/watchman/projectmanagerList";
 import ViewEmployeeList from "./pages/watchman/employeelist";
 import ViewClientList from "./pages/watchman/clientList";
 import WMProjectlist from "./pages/watchman/projectmanager/allprojectlist";
+import WMEmployeeTasksList from "./pages/watchman/employee/alltask";
+import WMClientProjectlist from "./pages/watchman/client/allproject";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -328,6 +330,30 @@ function App() {
             element={
               <AuthorizedAdmin>
                 <WMProjectlist />
+              </AuthorizedAdmin>
+            }
+          />
+          <Route
+            path="/wmtasklist/:id"
+            element={
+              <AuthorizedAdmin>
+                <WMEmployeeTasksList />
+              </AuthorizedAdmin>
+            }
+          />
+          <Route
+            path="/wmtasklist/:id"
+            element={
+              <AuthorizedAdmin>
+                <WMEmployeeTasksList />
+              </AuthorizedAdmin>
+            }
+          />
+          <Route
+            path="/wmclient/:id"
+            element={
+              <AuthorizedAdmin>
+                <WMClientProjectlist />
               </AuthorizedAdmin>
             }
           />

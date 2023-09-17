@@ -15,6 +15,7 @@ const Signup = () => {
   const [phone, setPhone] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedrole, setSelectedrole] = useState("");
+  const [profile, setProfile] = useState("");
   const [message, setMessage] = useState("");
 
   const location = useLocation();
@@ -25,7 +26,6 @@ const Signup = () => {
 
   const employeeregister = useSelector((state) => state.employeeregister);
   const { loading, error, employeeInfo } = employeeregister;
-  //console.log(redirect);
   useEffect(() => {
     if (employeeInfo) {
       if (!employeeInfo.isError) {
@@ -38,18 +38,6 @@ const Signup = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [employeeInfo, redirect]);
 
-  // const submitHandler = (e) => {
-  //   e.preventDefault();
-  //   if (password !== confirmPassword) {
-  //     console.log("Confirm Password  do not Match");
-  //     setMessage("Confirm Password  do not Match");
-  //   } else {
-  //     dispatch(
-  //       register(name, email, password, phone, selectedDepartment, selectedrole)
-  //     );
-  //   }
-  // };
-
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -60,7 +48,8 @@ const Signup = () => {
       !confirmPassword ||
       !phone ||
       !selectedDepartment ||
-      !selectedrole
+      !selectedrole ||
+      !profile
     ) {
       setMessage("Please fill in all fields.");
     } else if (password !== confirmPassword) {
@@ -68,9 +57,14 @@ const Signup = () => {
     } else {
       setMessage(""); // Clear any previous error messages.
       dispatch(
-        register(name, email, password, phone, selectedDepartment, selectedrole)
+        register(name, email, password, phone, selectedDepartment, selectedrole,profile)
       );
     }
+  };
+
+  const handleFileInputChange = (event) => {
+    const selectedFiles = event.target.files;
+    setProfile(selectedFiles);
   };
 
   // Initialization for ES Users
@@ -211,6 +205,23 @@ const Signup = () => {
                   <option value="Project Manager">Project Manager</option>
                   <option value="Client">Client</option>
                 </select>
+              </div>
+            </div>
+            <div className="sm:col-span-4  ">
+              <label
+                htmlFor="Vulnerability"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Profile Picture
+              </label>
+              <div className="mt-2">
+                <input
+                  class="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
+                  type="file"
+                  onChange={handleFileInputChange}
+                  name="rofile"
+                  id="formFile"
+                />
               </div>
             </div>
             <button
