@@ -156,6 +156,8 @@ const signUp = async (req, res) => {
     let payLoad;
 
     const token = crypto.randomBytes(32).toString("hex");
+    const img = req.file ? req.file.filename : "";
+    // return console.log(req.files);
 
     const encryptedPassword = await bcrypt.hash(password, 10);
     payLoad = {
@@ -167,6 +169,7 @@ const signUp = async (req, res) => {
       phone: req.body.phone,
       department: req.body.selectedDepartment.toLowerCase(),
       userToken: token,
+      profileImage: img,
     };
 
     const employee = new Employee(payLoad);

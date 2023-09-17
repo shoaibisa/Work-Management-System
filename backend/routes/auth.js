@@ -16,9 +16,11 @@ import {
 import { createProject, createTask } from "../controllers/project.js";
 
 const router = Express.Router();
+const upload = multer({ dest: "uploads/" }); // Set the destination folder for storing the uploaded files
 
 router.post(
   "/sign-up",
+  upload.single("rofile"),
   [
     check("name", "Name is required").trim(),
     check("email", "Email is required").trim().isEmail().normalizeEmail(),
@@ -41,8 +43,6 @@ router.post(
   ],
   signIn
 );
-
-const upload = multer({ dest: "uploads/" }); // Set the destination folder for storing the uploaded files
 
 router.post("/createproject", protect, createProject);
 router.post("/createtask", upload.single("file"), protect, createTask);

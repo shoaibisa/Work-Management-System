@@ -20,6 +20,9 @@ const employeeSchema = new Schema(
       trim: true,
       required: true,
     },
+    profileImage: {
+      type: String,
+    },
 
     password: {
       type: String,

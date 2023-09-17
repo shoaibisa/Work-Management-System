@@ -149,6 +149,7 @@ const getEmployeeById = async (req, res) => {
 
   const employee = await Employee.findById(id)
     .populate("managerProjects")
+    .populate("profileImage")
     .exec();
   console.log(employee);
   if (!employee) {

@@ -1230,6 +1230,19 @@ const actionNotification = async (req, res) => {
   });
 };
 
+const someMoreDetails = async (req, res) => {
+  // get count of project and complete number of projects
+  const numberOfProjects = Project.find({}).count();
+  const numberOfCompletedProjects = Project.find({ isCompleted: true }).count();
+
+  res.send({
+    title: "Success",
+    message: "notifications get sucessfully",
+    numberOfProjects: numberOfProjects,
+    numberOfCompletedProjects: numberOfCompletedProjects,
+  });
+};
+
 export {
   createProject,
   actionProject,
@@ -1255,5 +1268,6 @@ export {
   getNotifications,
   actionNotification,
   updateTask,
+  someMoreDetails,
   getAllProjectbypM,
 };
