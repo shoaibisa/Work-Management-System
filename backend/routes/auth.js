@@ -20,7 +20,7 @@ const upload = multer({ dest: "uploads/" }); // Set the destination folder for s
 
 router.post(
   "/sign-up",
-  upload.single("rofile"),
+  upload.single("profileimg"),
   [
     check("name", "Name is required").trim(),
     check("email", "Email is required").trim().isEmail().normalizeEmail(),

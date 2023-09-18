@@ -15,8 +15,9 @@ const Signup = () => {
   const [phone, setPhone] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedrole, setSelectedrole] = useState("");
-  const [profile, setProfile] = useState("");
+  const [profileimg, setProfile] = useState(null);
   const [message, setMessage] = useState("");
+  const [processing, setProcessing] = useState(false);
 
   const location = useLocation();
   const Navigate = useNavigate();
@@ -38,8 +39,12 @@ const Signup = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [employeeInfo, redirect]);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
+
+    // Collect form data
+    const formData = new FormData();
+    formData.append("name", name);
 
     if (
       !name ||
@@ -48,31 +53,56 @@ const Signup = () => {
       !confirmPassword ||
       !phone ||
       !selectedDepartment ||
-      !selectedrole //||
-      //!profile
+      !selectedrole ||
+      !profileimg
     ) {
       setMessage("Please fill in all fields.");
     } else if (password !== confirmPassword) {
       setMessage("Confirm Password  do not Match");
     } else {
+      // Collect form data
+      setProcessing(true);
+
       setMessage(""); // Clear any previous error messages.
-      dispatch(
-        register(
-          name,
-          email,
-          password,
-          phone,
-          selectedDepartment,
-          selectedrole,
-          profile
-        )
-      );
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("phone", phone);
+      formData.append("selectedDepartment", selectedDepartment);
+      formData.append("selectedrole", selectedrole);
+      formData.append("profileimg", profileimg);
+
+      // dispatch(register(formData));
+
+      try {
+        const response = await fetch("http://localhost:5000/auth/sign-up", {
+          method: "POST",
+          headers: { "Contnet-Type": "application/json" },
+          body: formData,
+        });
+
+        if (response.ok) {
+          toast.success("Account created..");
+          setMessage("Successfully account Created");
+          Navigate("/login");
+        } else {
+          setMessage("Failed to create acc");
+        }
+      } catch (error) {
+        toast.error("Error while creating acc..");
+        console.error("Error acc form:", error);
+        setMessage("An error occurred while creating zthe task");
+      }
+      setProcessing(false);
     }
   };
 
-  const handleFileInputChange = (event) => {
-    const selectedFiles = event.target.files;
-    setProfile(selectedFiles);
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfile(file);
+    }
   };
 
   // Initialization for ES Users
@@ -95,7 +125,7 @@ const Signup = () => {
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
               Signup to create an account
             </h2>
-            <p className="mt-2 text-center text-sm text-gray-600 mt-5">
+            <p className=" text-center text-sm text-gray-600 mt-5">
               Already have an account?
               <Link
                 to="/login"
@@ -108,6 +138,7 @@ const Signup = () => {
           {error && <div className=" text-red-600">{employeeInfo.message}</div>}
           {message && <div className=" text-red-600">{message} </div>}
           <form
+            encType="multipart/form-data"
             className="mt-8 space-y-6"
             autoComplete="off"
             onSubmit={submitHandler}
@@ -219,7 +250,7 @@ const Signup = () => {
             </div>
             <div className="sm:col-span-4  ">
               <label
-                htmlFor="Vulnerability"
+                htmlFor="profileimg"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Profile Picture
@@ -228,17 +259,22 @@ const Signup = () => {
                 <input
                   class="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
                   type="file"
+                  accept=".jpg, .jpeg, .png, .gif"
+                  // onChange={handleFileInputChange}
                   onChange={handleFileInputChange}
-                  name="rofile"
-                  id="formFile"
+                  name="profileimg"
+                  id="profileimg"
                 />
               </div>
             </div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 mt-10"
+              disabled={processing}
+              className={`group ${
+                processing ? " bg-violet-400" : "bg-violet-600"
+              } relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white  hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 mt-10`}
             >
-              Signup
+              {!processing ? "Signup" : "Loading..."}
             </button>
           </form>
         </div>

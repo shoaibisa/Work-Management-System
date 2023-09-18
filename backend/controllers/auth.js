@@ -119,7 +119,10 @@ function generateEmployeeId(fullname, department) {
 //       });
 //     });
 // };
+
+// signup controller function
 const signUp = async (req, res) => {
+  //console.log("file",req.file);
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -156,8 +159,9 @@ const signUp = async (req, res) => {
     let payLoad;
 
     const token = crypto.randomBytes(32).toString("hex");
-    const img = req.file ? req.file.filename : "";
-    // return console.log(req.files);
+    
+    const img = req.files ? req.file.filename : "";
+   
 
     const encryptedPassword = await bcrypt.hash(password, 10);
     payLoad = {

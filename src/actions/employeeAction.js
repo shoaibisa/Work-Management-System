@@ -40,22 +40,23 @@ export const logout = () => (dispatch) => {
 
 //Register
 export const register =
-  (name, email, password, phone, selectedDepartment, selectedrole, profile) =>
+  (formData) =>
   async (dispatch) => {
-    //console.log(profile);
+    console.log(formData);
     try {
       dispatch({ type: EMPLOYEE_REGISTER_REQUEST });
       const config = { headers: { "Contnet-Type": "application/json" } };
       const { data } = await axios.post(
         "http://localhost:5000/auth/sign-up",
         {
-          name,
-          email,
-          password,
-          phone,
-          selectedDepartment,
-          role: selectedrole,
-          profile,
+          // name,
+          // email,
+          // password,
+          // phone,
+          // selectedDepartment,
+          // role: selectedrole,
+          // profile,
+          formData
         },
         config
       );
@@ -64,6 +65,8 @@ export const register =
         type: EMPLOYEE_REGISTER_SUCCESS,
         payload: data,
       });
+
+      // console.log(profile, phone);
 
       // toast.success("Siggned up..");
     } catch (error) {
