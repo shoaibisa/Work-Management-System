@@ -21,6 +21,9 @@ import {
   USER_LIST_REQUEST,
   USER_LIST_SUCCESS,
   USER_LIST_FAILS,
+  SOMEDETAILS_REQUEST,
+  SOMEDETAILS_SUCCESS,
+  SOMEDETAILS_FAILS,
 } from "../constants/employee";
 
 import axios from "axios";
@@ -269,6 +272,36 @@ export const infoUSer = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_INFO_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+export const someDetail = () => async (dispatch) => {
+  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+
+  const token = userData?.token;
+  try {
+    dispatch({ type: SOMEDETAILS_REQUEST });
+    const { data } = await axios.post(
+      "http://localhost:5000/project/somemoredetails",
+      {},
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    console.log(data);
+    dispatch({
+      type: SOMEDETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SOMEDETAILS_FAILS,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

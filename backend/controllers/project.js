@@ -1244,6 +1244,7 @@ const actionNotification = async (req, res) => {
 const someMoreDetails = async (req, res) => {
   // get count of project and complete number of projects
   const numberOfProjects = await Project.find({}).count();
+  const numberOfReport = await Report.find({}).count();
   const numberOfCompletedProjects = await Project.find({
     isCompleted: true,
   }).count();
@@ -1253,6 +1254,7 @@ const someMoreDetails = async (req, res) => {
     message: "notifications get sucessfully",
     numberOfProjects: numberOfProjects,
     numberOfCompletedProjects: numberOfCompletedProjects,
+    numberOfReport: numberOfReport,
   });
 };
 

@@ -5,7 +5,7 @@ import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalance
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 
-const Widget = ({ type, datas }) => {
+const Widget = ({ type, datas, title }) => {
   let data;
 
   //temporary
@@ -15,7 +15,7 @@ const Widget = ({ type, datas }) => {
   switch (type) {
     case "user":
       data = {
-        title: "ALL TASKS",
+        title: title,
 
         link: "view all Task",
         icon: (
@@ -31,7 +31,7 @@ const Widget = ({ type, datas }) => {
       break;
     case "order":
       data = {
-        title: "COMPLETED  TASKS",
+        title: title,
         isMoney: false,
         link: "View all  Completed Tasks",
         icon: (
