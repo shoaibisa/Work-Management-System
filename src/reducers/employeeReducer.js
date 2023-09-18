@@ -24,6 +24,9 @@ import {
   USER_LIST_REQUEST,
   USER_LIST_SUCCESS,
   USER_LIST_FAILS,
+  SOMEDETAILS_REQUEST,
+  SOMEDETAILS_SUCCESS,
+  SOMEDETAILS_FAILS
 } from "../constants/employee";
 
 export const employeeLoginReducer = (state = {}, action) => {
@@ -140,6 +143,21 @@ export const userInfoReducer = (state = { user: [] }, action) => {
       return { loading: false, user: action.payload };
 
     case USER_INFO_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+export const someDetailsReducer = (state = { some: [] }, action) => {
+  switch (action.type) {
+    case SOMEDETAILS_REQUEST:
+      return { loading: true, some: [] };
+
+    case SOMEDETAILS_SUCCESS:
+      return { loading: false, some: action.payload };
+
+    case SOMEDETAILS_FAILS:
       return { loading: false, error: action.payload };
 
     default:

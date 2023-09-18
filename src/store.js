@@ -10,6 +10,7 @@ import {
   employeeDetailsReducer,
   employeeTaskbyidReducer,
   userListReducer,
+  someDetailsReducer,
 } from "./reducers/employeeReducer";
 import {
   projectListReducer,
@@ -68,6 +69,7 @@ const reducer = combineReducers({
   employeeDetails: employeeDetailsReducer,
   taskbyemployeeid: employeeTaskbyidReducer,
   userlist: userListReducer,
+  someDetails: someDetailsReducer,
 });
 const initialState = {
   employeeLogin: { employeeInfo: employeenfoFromStroge },
