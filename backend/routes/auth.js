@@ -29,7 +29,6 @@ router.post(
       min: 3,
     }),
   ],
-
   signUp
 );
 
