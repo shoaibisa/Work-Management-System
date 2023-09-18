@@ -932,6 +932,17 @@ const getReportsByUserId = async (req, res) => {
   });
 };
 
+const getAllReportsByUserId = async (req, res) => {
+  const userId = req.body.userId;
+  const numberOfReports = await Report.find({ employee: userId }).count();
+
+  res.status(200).send({
+    title: "Success",
+    message: "project get sucessfully",
+    data: numberOfReports,
+  });
+};
+
 const getAllReportOfManager = async (req, res) => {
   const id = req.user._id;
   const projects = await Project.find({ manager: id });
@@ -1257,6 +1268,7 @@ export {
   addRemark,
   editReport,
   getReport,
+  getAllReportsByUserId,
   complteReport,
   assignEmployee,
   getTaskByProject,
