@@ -7,6 +7,8 @@ import { EmployeeTask } from "../../actions/employeeAction";
 import { employeeDetail } from "../../actions/employeeAction";
 import { useEffect } from "react";
 import { someDetail } from "../../actions/employeeAction";
+import { Co2Sharp } from "@mui/icons-material";
+import { useState } from "react";
 const Home = () => {
   const dispatch = useDispatch();
   const employeeLogin = useSelector((state) => state.employeeLogin);
@@ -30,11 +32,13 @@ const Home = () => {
         tcompletedproject++;
       }
     });
-
+  const [treport, setTreport] = useState(null);
   useEffect(() => {
     dispatch(EmployeeTask());
     dispatch(employeeDetail(id));
     dispatch(someDetail());
+    Employeereport();
+    somemoredetails();
   }, [dispatch]);
   var tCompleted = 0;
   data &&
@@ -71,6 +75,51 @@ const Home = () => {
         }
       }
     });
+
+  const Employeereport = async () => {
+    const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+    const token = userData?.token;
+    try {
+      const response = await fetch(
+        `http://localhost:5000/project/getallreportsofmanager`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const data = await response.json();
+      setTreport(data.data.length);
+      return data; // Return the fetched project data
+    } catch (error) {
+      console.error("Error fetching project details:", error);
+      return null;
+    }
+  };
+  const somemoredetails = async () => {
+    const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+    const token = userData?.token;
+    try {
+      const response = await fetch(
+        `http://localhost:5000/project/somemoredetails`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const data = await response.json();
+      setTreport(data.numberOfReport);
+      return data; // Return the fetched project data
+    } catch (error) {
+      console.error("Error fetching project details:", error);
+      return null;
+    }
+  };
 
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const isAdmin = role === "Admin";
@@ -110,6 +159,7 @@ const Home = () => {
                 title="Completed Project"
                 datas={tcompletedproject && tcompletedproject}
               />
+              <Widget type="balance" datas={treport} />
             </>
           )}
           {isEmployee && (
@@ -124,6 +174,7 @@ const Home = () => {
                 title="Completed Task"
                 datas={tCompleted && tCompleted}
               />
+              <Widget type="balance" datas={treport} />
             </>
           )}
           {isAdmin && (
