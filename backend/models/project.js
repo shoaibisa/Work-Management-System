@@ -3,19 +3,15 @@ const projectSchema = new mongoose.Schema(
   {
     projectName: {
       type: String,
-      required: true,
     },
     companyName: {
       type: String,
-      required: true,
     },
     clientName: {
       type: String,
-      required: true,
     },
     clientEmail: {
       type: String,
-      required: true,
     },
     selectedOptions: {
       type: [String],
