@@ -1258,7 +1258,16 @@ const someMoreDetails = async (req, res) => {
   });
 };
 
+const pdfview = (req,res)=>{
+  const doc = new PDFDocument();
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', 'inline; filename="dynamic.pdf"');
+  doc.pipe(res);
 
+  doc.fontSize(24).text('Hello, Dynamic PDF!', 100, 100);
+
+  doc.end();
+}
 
 export {
   createProject,
