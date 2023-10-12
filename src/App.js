@@ -46,6 +46,7 @@ import WMEmployeeTasksList from "./pages/watchman/employee/alltask";
 import WMClientProjectlist from "./pages/watchman/client/allproject";
 import ForgotPassword from "./pages/RenamePassword/ForgotPassword";
 import ResetPassword from "./pages/RenamePassword/ResetPassword";
+import PdfView from "./pages/pdfView";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -58,7 +59,11 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/auth/resetpassword/:userid/:token" element={<ResetPassword />} />
+          <Route
+            path="/auth/resetpassword/:userid/:token"
+            element={<ResetPassword />}
+          />
+          <Route path="/pdf" element={<PdfView/>}/>
 
           <Route path="/">
             <Route
