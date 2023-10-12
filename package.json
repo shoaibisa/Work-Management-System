@@ -26,6 +26,7 @@
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.31",
     "nodemailer": "^6.9.4",
+    "pdfkit": "^0.13.0",
     "react": "^17.0.2",
     "react-chartjs-2": "^5.2.0",
     "react-circular-progressbar": "^2.0.4",

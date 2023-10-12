@@ -161,7 +161,7 @@ const signUp = async (req, res) => {
 
     const token = crypto.randomBytes(32).toString("hex");
 
-    const img = req.files ? req.file.filename : "";
+    const img = req.file ? req.file.filename : "";
 
     const encryptedPassword = await bcrypt.hash(password, 10);
     payLoad = {
@@ -441,12 +441,12 @@ const getResetPassword = async (req, res) => {
 };
 
 const resetPassword = async (req, res) => {
-  const { userid, p1, token,  } = req.body;
-  console.log(req.body)
+  const { userid, p1, token } = req.body;
+  console.log(req.body);
   try {
-    const employee =  await Employee.findById(userid);
+    const employee = await Employee.findById(userid);
 
-    if (!employee || employee.resetToken!==token ) {
+    if (!employee || employee.resetToken !== token) {
       return res.status(400).send({
         isError: true,
         title: "Error",
@@ -457,14 +457,13 @@ const resetPassword = async (req, res) => {
     const encryptedPassword = await bcrypt.hash(p1, 10);
 
     employee.password = encryptedPassword;
-     employee.resetToken = "";
+    employee.resetToken = "";
     await employee.save();
     return res.status(200).send({
       success: true,
       message: "password changes success",
     });
   } catch (error) {
-    
     return res.status(500).send({
       success: false,
       message: "password changes failed",
@@ -486,15 +485,15 @@ const forgetPassword = async (req, res) => {
         success: false,
         message: "user not registred",
       });
-    }  
-      // mzil
-      const token = crypto.randomBytes(32).toString("hex");
-      user.resetToken= token
-      await user.save();
+    }
+    // mzil
+    const token = crypto.randomBytes(32).toString("hex");
+    user.resetToken = token;
+    await user.save();
 
-      const url = `http://localhost:3000/auth/resetpassword/${user._id}/${token}`;
+    const url = `http://localhost:3000/auth/resetpassword/${user._id}/${token}`;
 
-      const bodypart = ` <table style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; border-collapse: collapse;">
+    const bodypart = ` <table style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; border-collapse: collapse;">
       <tr>
         <td style="background-color: #fff; padding: 20px; text-align: center;">
           <h1 style="color: #7c3aed;">Hello ${user.name}</h1>
@@ -506,18 +505,13 @@ const forgetPassword = async (req, res) => {
       </body>
     </html>`;
 
-      const callFun = await mailSender(
-        user.email,
-        "Verify your email",
-        bodypart
-      );
+    const callFun = await mailSender(user.email, "Verify your email", bodypart);
 
-      return res.status(200).send({
-        success: true,
-        data: user,
-        message: "Password reset email sent. Check your inbox.",
-      });
-    
+    return res.status(200).send({
+      success: true,
+      data: user,
+      message: "Password reset email sent. Check your inbox.",
+    });
   } catch (error) {
     return res.status(500).send({
       isError: true,

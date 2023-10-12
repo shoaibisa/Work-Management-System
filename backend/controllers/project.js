@@ -6,6 +6,7 @@ import Report from "../models/report.js";
 import fs from "fs";
 import Employee from "../models/employee.js";
 import Notification from "../models/notification.js";
+import pdfkit from "pdfkit";
 const createProject = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -1258,20 +1259,25 @@ const someMoreDetails = async (req, res) => {
   });
 };
 
-const pdfview = (req,res)=>{
-  const doc = new PDFDocument();
-  res.setHeader('Content-Type', 'application/pdf');
-  res.setHeader('Content-Disposition', 'inline; filename="dynamic.pdf"');
+const pdfview = (req, res) => {
+  const doc = new pdfkit();
+  console.log("ho");
+  res.setHeader("Content-Type", "application/pdf");
+  res.setHeader("Content-Disposition", 'inline; filename="dynamic.pdf"');
   doc.pipe(res);
+  // from here
 
-  doc.fontSize(24).text('Hello, Dynamic PDF!', 100, 100);
+  doc.fontSize(24).text("Hello, Dynamic PDF!", 100, 100);
+
+  // to end pdf
 
   doc.end();
-}
+};
 
 export {
   createProject,
   actionProject,
+  pdfview,
   submitProject,
   createTask,
   getProject,

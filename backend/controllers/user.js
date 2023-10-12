@@ -166,6 +166,8 @@ const getEmployeeById = async (req, res) => {
   });
 };
 
+
+
 const getEmployeeByDepartment = async (req, res) => {
   try {
     const employees = await Employee.find({
