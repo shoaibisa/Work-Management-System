@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { v4 as uuidv4 } from "uuid";
+import toast from "react-hot-toast";
 
 const maxAge = 7 * 24 * 60 * 60;
 const createToken = (id, role) => {
@@ -159,9 +160,8 @@ const signUp = async (req, res) => {
     let payLoad;
 
     const token = crypto.randomBytes(32).toString("hex");
-    
+
     const img = req.files ? req.file.filename : "";
-   
 
     const encryptedPassword = await bcrypt.hash(password, 10);
     payLoad = {
@@ -180,9 +180,17 @@ const signUp = async (req, res) => {
 
     const uri = `${process.env.BACKEND_URL}/auth/verifyUser/${employee._id}/${token}`;
 
-    const bodypart = `<h1>Hi ${employee.name}</h1>
-      <h3>Click on the link below to verify your email</h3>
-      <a href="${uri}">Click here to verify</a>`;
+    const bodypart = ` <table style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; border-collapse: collapse;">
+    <tr>
+      <td style="background-color: #fff; padding: 20px; text-align: center;">
+        <h1 style="color: #7c3aed;">Hello ${employee.name}</h1>
+        <h3>Click on the button below to verify your email</h3>
+        <a href="${uri}" style="background-color: #7c3aed; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px; display: inline-block;">Click here to verify</a>
+      </td>
+    </tr>
+  </table>
+    </body>
+  </html>`;
 
     const callFun = await mailSender(
       employee.email,
@@ -302,6 +310,7 @@ const signIn = async (req, res) => {
     return res.status(500);
   }
 };
+
 const getAllEmployees = async (req, res) => {
   try {
     const employees = await Employee.find();
@@ -311,6 +320,7 @@ const getAllEmployees = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 const profile = async (req, res) => {
   res.send("Sucess");
 };
@@ -429,31 +439,85 @@ const getResetPassword = async (req, res) => {
     });
   }
 };
-const postResetPassword = async (req, res) => {
-  const { id, token } = req.params;
-  const { password } = req.body;
+
+const resetPassword = async (req, res) => {
+  const { userid, p1, token,  } = req.body;
+  console.log(req.body)
   try {
-    const employee = await Employee.findById(id);
-    if (!employee) {
+    const employee =  await Employee.findById(userid);
+
+    if (!employee || employee.resetToken!==token ) {
       return res.status(400).send({
         isError: true,
         title: "Error",
-        message: "Invalid token",
+        message: "user not found",
       });
     }
-    if (employee.resetToken === token) {
-      const encryptedPassword = await bcrypt.hash(password, 10);
-      employee.password = encryptedPassword;
-      employee.resetToken = "";
-      await employee.save();
-      return res.render("success");
-    } else {
+
+    const encryptedPassword = await bcrypt.hash(p1, 10);
+
+    employee.password = encryptedPassword;
+     employee.resetToken = "";
+    await employee.save();
+    return res.status(200).send({
+      success: true,
+      message: "password changes success",
+    });
+  } catch (error) {
+    
+    return res.status(500).send({
+      success: false,
+      message: "password changes failed",
+    });
+  }
+};
+
+const forgetPassword = async (req, res) => {
+  try {
+    // console.log("in backend function");
+    const { email } = req.body;
+    // console.log("backend me mail - ", req.body);
+    const user = await Employee.findOne({ email: email });
+
+    console.log(user);
+    if (!user) {
+      // user not registred yet
       return res.status(400).send({
-        isError: true,
-        title: "Error",
-        message: "Invalid token",
+        success: false,
+        message: "user not registred",
       });
-    }
+    }  
+      // mzil
+      const token = crypto.randomBytes(32).toString("hex");
+      user.resetToken= token
+      await user.save();
+
+      const url = `http://localhost:3000/auth/resetpassword/${user._id}/${token}`;
+
+      const bodypart = ` <table style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; border-collapse: collapse;">
+      <tr>
+        <td style="background-color: #fff; padding: 20px; text-align: center;">
+          <h1 style="color: #7c3aed;">Hello ${user.name}</h1>
+          <h3>Click on the button below to verify your email</h3>
+          <a href="${url}" style="background-color: #7c3aed; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px; display: inline-block;">Click here to verify</a>
+        </td>
+      </tr>
+    </table>
+      </body>
+    </html>`;
+
+      const callFun = await mailSender(
+        user.email,
+        "Verify your email",
+        bodypart
+      );
+
+      return res.status(200).send({
+        success: true,
+        data: user,
+        message: "Password reset email sent. Check your inbox.",
+      });
+    
   } catch (error) {
     return res.status(500).send({
       isError: true,
@@ -471,5 +535,7 @@ export {
   verifyUser,
   getForgotPassword,
   getResetPassword,
-  postResetPassword,
+  // postResetPassword,
+  forgetPassword,
+  resetPassword,
 };

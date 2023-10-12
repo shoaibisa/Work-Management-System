@@ -26,7 +26,7 @@ import {
   USER_LIST_FAILS,
   SOMEDETAILS_REQUEST,
   SOMEDETAILS_SUCCESS,
-  SOMEDETAILS_FAILS
+  SOMEDETAILS_FAILS,
 } from "../constants/employee";
 
 export const employeeLoginReducer = (state = {}, action) => {
@@ -72,6 +72,7 @@ export const employeeDetailsReducer = (state = { details: [] }, action) => {
       return state;
   }
 };
+
 export const employeeListReducer = (state = { employees: [] }, action) => {
   switch (action.type) {
     case EMPLOYEE_LIST_REQUEST:
@@ -87,6 +88,7 @@ export const employeeListReducer = (state = { employees: [] }, action) => {
       return state;
   }
 };
+
 export const userListReducer = (state = { user: [] }, action) => {
   switch (action.type) {
     case USER_LIST_REQUEST:
@@ -118,6 +120,7 @@ export const employeeTaskReducer = (state = { task: [] }, action) => {
       return state;
   }
 };
+
 export const employeeTaskbyidReducer = (state = { task: [] }, action) => {
   switch (action.type) {
     case EMPLOYEE_TASK_DETAILSBYID_REQUEST:
@@ -149,6 +152,7 @@ export const userInfoReducer = (state = { user: [] }, action) => {
       return state;
   }
 };
+
 export const someDetailsReducer = (state = { some: [] }, action) => {
   switch (action.type) {
     case SOMEDETAILS_REQUEST:

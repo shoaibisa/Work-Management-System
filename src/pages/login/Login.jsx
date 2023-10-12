@@ -18,7 +18,6 @@ const Login = () => {
   const dispatch = useDispatch();
   const employeeLogin = useSelector((state) => state.employeeLogin);
   const { loading, error, employeeInfo } = employeeLogin;
-  
 
   useEffect(() => {
     if (employeeInfo) {
@@ -51,10 +50,10 @@ const Login = () => {
               Login to your account
             </h2>
             <p className="text-center text-sm text-gray-600 mt-5">
-              Don't have an account yet?
+              Don't have an account yet.?
               <Link
                 to="/signup"
-                className="font-medium text-purple-600 hover:text-purple-500"
+                className="font-medium ml-2 text-purple-600 hover:text-purple-500"
               >
                 Signup
               </Link>
@@ -108,15 +107,13 @@ const Login = () => {
               </div>
 
               <div className="text-sm">
-                <a
-                  href="#"
-                  className="font-medium text-purple-600 hover:text-purple-500"
-                >
-                  Forgot your password?
-                </a>
+                <Link to={"/forgotpassword"}>
+                  <a className="font-medium text-purple-600 hover:text-purple-500">
+                    Forgot your password?
+                  </a>
+                </Link>
               </div>
-            </div>
-
+            </div>{" "}
             <button
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 mt-10"

@@ -28,6 +28,7 @@ import {
 
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { baseUrl } from "../middleware/connect";
 
 //Logout
 export const logout = () => (dispatch) => {
@@ -39,46 +40,44 @@ export const logout = () => (dispatch) => {
 };
 
 //Register
-export const register =
-  (formData) =>
-  async (dispatch) => {
-    console.log(formData);
-    try {
-      dispatch({ type: EMPLOYEE_REGISTER_REQUEST });
-      const config = { headers: { "Contnet-Type": "application/json" } };
-      const { data } = await axios.post(
-        "http://localhost:5000/auth/sign-up",
-        {
-          // name,
-          // email,
-          // password,
-          // phone,
-          // selectedDepartment,
-          // role: selectedrole,
-          // profile,
-          formData
-        },
-        config
-      );
+export const register = (formData) => async (dispatch) => {
+  console.log(formData);
+  try {
+    dispatch({ type: EMPLOYEE_REGISTER_REQUEST });
+    const config = { headers: { "Contnet-Type": "application/json" } };
+    const { data } = await axios.post(
+      "http://localhost:5000/auth/sign-up",
+      {
+        // name,
+        // email,
+        // password,
+        // phone,
+        // selectedDepartment,
+        // role: selectedrole,
+        // profile,
+        formData,
+      },
+      config
+    );
 
-      dispatch({
-        type: EMPLOYEE_REGISTER_SUCCESS,
-        payload: data,
-      });
+    dispatch({
+      type: EMPLOYEE_REGISTER_SUCCESS,
+      payload: data,
+    });
 
-      // console.log(profile, phone);
+    // console.log(profile, phone);
 
-      // toast.success("Siggned up..");
-    } catch (error) {
-      dispatch({
-        type: EMPLOYEE_REGISTER_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
-    }
-  };
+    // toast.success("Siggned up..");
+  } catch (error) {
+    dispatch({
+      type: EMPLOYEE_REGISTER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
 
 export const login = (email, password) => async (dispatch) => {
   // const toastId = toast.loading('Loading...');
@@ -140,6 +139,23 @@ export const listEmployee = () => async (dispatch) => {
   }
 };
 
+export const forgetPassword = async (email) => {
+  try {
+    console.log("in frontend function", email);
+    const { userMail } = await axios.get(baseUrl + "/auth/forgetpassword", {
+      email,
+    });
+    console.log("after fe call");
+    console.log(userMail);
+    if (!userMail) {
+      toast.error("User not found");
+    }
+  } catch (error) {
+    console.log(error);
+    toast.error("Error in reset password..");
+  }
+};
+
 export const alluser = () => async (dispatch) => {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const token = userData?.token;
@@ -192,6 +208,7 @@ export const EmployeeTask = () => async (dispatch) => {
     });
   }
 };
+
 export const EmployeeTaskbyid = (id) => async (dispatch) => {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const token = userData?.token;
@@ -221,6 +238,7 @@ export const EmployeeTaskbyid = (id) => async (dispatch) => {
     });
   }
 };
+
 export const employeeDetail = (id) => async (dispatch) => {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const token = userData?.token;
@@ -283,6 +301,7 @@ export const infoUSer = () => async (dispatch) => {
     });
   }
 };
+
 export const someDetail = () => async (dispatch) => {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
 

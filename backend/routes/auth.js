@@ -11,8 +11,12 @@ import {
   verifyUser,
   getForgotPassword,
   getResetPassword,
-  postResetPassword,
+  // postResetPassword,
+  forgetPassword,
+  resetPassword,
 } from "../controllers/auth.js";
+
+
 import { createProject, createTask } from "../controllers/project.js";
 
 const router = Express.Router();
@@ -48,8 +52,9 @@ router.post("/createtask", upload.single("file"), protect, createTask);
 router.get("/allemployees", getAllEmployees);
 router.get("/profile", protect, profile);
 router.get("/verifyUser/:id/:token", verifyUser);
-router.get("/forgotPassword", getForgotPassword);
-router.get("/resetPassword/:id/:token", getResetPassword);
-router.post("/resetPassword/:id/:token", postResetPassword);
+router.post("/forgetpassword", forgetPassword);
+// router.get("/forgotPassword", getForgotPassword);
+// router.get("/resetPassword/:id/:token", getResetPassword);
+router.post("/resetpassword", resetPassword);
 
 export default router;
