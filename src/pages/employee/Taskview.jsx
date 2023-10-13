@@ -17,7 +17,6 @@ function Taskview() {
   const { tasks } = TaskView;
   const { data } = tasks;
 
-
   const reportView = useSelector((state) => state.reportView);
   const { report } = reportView;
 
@@ -513,43 +512,6 @@ function Taskview() {
                     <div className=" flex flex-col  rounded-lg border border-dashed border-gray-900/25 w-[550px]">
                       <div className="container">
                         <div className="bg-white rounded-lg shadow-lg p-4">
-                          {/* Chat area */}
-                          {/* <div className=" h-[300px] overflow-y-scroll">
-                          {items &&
-                            items.remarks.map((data) => (
-                              <div className="mb-4 ">
-                                {employeeInfo.id === data.user ? (
-                                  <>
-                                    <div className="flex items-end  justify-end">
-                                      <div className="flex-shrink-0"></div>
-                                      <div className="ml-3">
-                                        <div className="bg-green-100 text-blue-600 p-2 rounded-lg">
-                                          {data.remark}
-                                        </div>
-                                        <p className="text-xs text-gray-500 mt-1">
-                                          {formatDate(data.date)}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </>
-                                ) : (
-                                  <>
-                                    <div className="flex items-start">
-                                      <div className="flex-shrink-0"></div>
-                                      <div className="ml-3">
-                                        <div className="bg-blue-100 text-blue-900 p-2 rounded-lg">
-                                          {data.remark}
-                                        </div>
-                                        <p className="text-xs text-gray-500 mt-1">
-                                          {formatDate(data.date)}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </>
-                                )}
-                              </div>
-                            ))}
-                        </div> */}
                           <div className=" h-96 overflow-y-scroll">
                             {items && items.remarks.length > 0 ? (
                               items.remarks.map((data) => (

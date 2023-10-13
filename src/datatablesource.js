@@ -137,11 +137,17 @@ export const userColumns = [
     width: 120,
   },
 
+  // {
+  //   field: "role",
+  //   headerName: "Role",
+  //   width: 200,
+  //   renderCell: RoleCellRenderer,
+  // },
   {
     field: "role",
     headerName: "Role",
     width: 200,
-    renderCell: RoleCellRenderer,
+    // renderCell: RoleCellRenderer,
   },
   {
     field: "isVerified",

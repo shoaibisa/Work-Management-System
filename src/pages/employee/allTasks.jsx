@@ -87,7 +87,7 @@ function EmployeeTasksList() {
     if (!task) {
       return false; // Task is undefined, return false
     }
-    console.log(task);
+    // console.log(task);
 
     if (selectedOptionName === "grc") {
       return task.grcData ? task.grcData.isCompleted : false;
@@ -108,7 +108,7 @@ function EmployeeTasksList() {
       return task.selectedOption[selectedOptionName].isCompleted;
     }
   };
-
+  console.log(currentTasks);
   return (
     <div className="App">
       <div className="home">

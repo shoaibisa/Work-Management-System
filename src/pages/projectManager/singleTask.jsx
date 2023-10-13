@@ -354,13 +354,13 @@ function TaskviewUser() {
                 </div>
                 <div className="px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-4">
                   <Link
-                    to={`/editreport/${items._id}`}
+                    // to={`/editreport/${items._id}`}
                     className="text-sm font-semibold leading-6 text-gray-900"
                   >
                     Edited :
                   </Link>
                   <div className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    10/12/2023
+                    {formatDate(items.updatedAt)}
                   </div>
                 </div>
 
@@ -428,29 +428,30 @@ function TaskviewUser() {
                             </p>
                           )}
                         </div>
+                        {isProjectManager && (
+                          <div className="flex items-center border-t mt-4 pt-4">
+                            <input
+                              type="text"
+                              value={remarksArray[index] || ""}
+                              onChange={(e) =>
+                                handleRemarkChange(e.target.value, index)
+                              }
+                              name="remark"
+                              id={items._id}
+                              className="w-full rounded-lg border-gray-300 px-4 py-2 focus:outline-none focus:border-blue-400"
+                              placeholder="Type your message..."
+                            />
 
-                        <div className="flex items-center border-t mt-4 pt-4">
-                          <input
-                            type="text"
-                            value={remarksArray[index] || ""}
-                            onChange={(e) =>
-                              handleRemarkChange(e.target.value, index)
-                            }
-                            name="remark"
-                            id={items._id}
-                            className="w-full rounded-lg border-gray-300 px-4 py-2 focus:outline-none focus:border-blue-400"
-                            placeholder="Type your message..."
-                          />
-
-                          <button
-                            //onClick={() => handleSendClick(items._id)}
-                            onClick={() => handleSendClick(items._id, index)}
-                            type="submit"
-                            className="ml-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg"
-                          >
-                            Send
-                          </button>
-                        </div>
+                            <button
+                              //onClick={() => handleSendClick(items._id)}
+                              onClick={() => handleSendClick(items._id, index)}
+                              type="submit"
+                              className="ml-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg"
+                            >
+                              Send
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
