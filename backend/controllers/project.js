@@ -24,6 +24,23 @@ const hearder = path.join(
   "image",
   "header.jpg"
 );
+const testingMethodology = path.join(
+  "D:",
+  "EmploymanagentSystem",
+  "Work-Management-System",
+  "backend",
+  "image",
+  "testingMethodology.png"
+);
+const abc = path.join(
+  "D:",
+  "EmploymanagentSystem",
+  "Work-Management-System",
+  "backend",
+  "image",
+  "abc.png"
+);
+
 const pdfview = (req, res) => {
   const doc = new pdfkit();
   res.setHeader("Content-Type", "application/pdf");
@@ -649,6 +666,326 @@ const pdfview = (req, res) => {
     x = 100; // Reset the X position for the next row
     y += cellHeighttable7; // Move to the next ro
   }
+  doc.addPage();
+  doc.image(hearder, {
+    x: 50, // Adjust the X position as needed
+    y: 20, // Adjust the Y position as needed
+    width: 100, // Adjust the width as needed
+  });
+  doc
+    .fontSize(headerFontSize)
+    .fillColor(color2)
+    .text("4. Testing Methodology and Approach", { align: "left" }, 60, 60);
+
+  doc
+    .fontSize(textsize)
+    .fillColor("black")
+    .text(
+      "\nG-Info Technology Solutions Security team was engaged to perform a manual security assessment against the target application. This assessment involved a deep automated scan using automated scanning tools to discover common vulnerabilities, as well as manual testing. Manual testing includes validation of all issue types covered under the automated scan as well as checks for problems not typically found by automated scanners such as authentication, authorization, and business logic flaws.\n\n\n",
+      80,
+      80,
+      { width: 500 }
+    );
+  doc
+    .fontSize(textsize)
+    .fillColor("black")
+    .text(
+      "\n A Vulnerability Assessment is a method of evaluating the security of an application by simulating an attack. The process involves an active analysis of the application for any weaknesses, functional flaws, and vulnerabilities. Any security issues that are identified will be explained with an assessment of their impact, with a solution for their mitigation. The OWASP Web Application Methodology is based on the ‘gray box’ approach. The testing model consists of following phases:\n\n",
+      80,
+      170,
+      { width: 500 }
+    );
+
+  doc.image(testingMethodology, {
+    x: 70, // Adjust the X position as needed
+    y: 270, // Adjust the Y position as needed
+    width: 500, // Adjust the width as needed
+    height: 200,
+  });
+  doc
+    .fontSize(headerFontSize)
+    .fillColor(color2)
+    .text(" Information Gathering", 60, 530, { align: "left" });
+  doc.moveDown(1);
+  doc
+    .fontSize(textsize)
+    .fillColor("black")
+    .text(
+      "\nGathering information is the first step where a hacker tries to get information about the target. Hackers use different sources and tools to get more information about the target.",
+      60,
+      550,
+      { align: "left" }
+    );
+
+  doc
+    .fontSize(headerFontSize)
+    .fillColor(color2)
+    .text(" Threat Modeling:", 60, 600, { align: "left" });
+  doc.moveDown(1);
+  doc
+    .fontSize(textsize)
+    .fillColor("black")
+    .text(
+      "\nThreat modelling is a process by which potential threats, such as structural vulnerabilities or the absence of appropriate safeguards, can be identified, enumerated, and mitigations can be prioritized.",
+      60,
+      610,
+      { align: "left" }
+    );
+  doc
+    .fontSize(headerFontSize)
+    .fillColor(color2)
+    .text(" Vulnerability Analysis", 60, 670, { align: "left" });
+  doc.moveDown(1);
+  doc
+    .fontSize(textsize)
+    .fillColor("black")
+    .text(
+      "\nA vulnerability assessment is an in-depth analysis of the building functions, systems, and site characteristics to identify building weaknesses and lack of redundancy, and determine mitigations or corrective actions that can be designed or implemented to reduce the vulnerabilities.",
+      60,
+      690,
+      { align: "left" }
+    );
+
+  // Add the new text here
+  doc.moveDown(1);
+  doc
+    .fontSize(headerFontSize)
+    .fillColor(color2)
+    .text("Exploitation:", 60, null, { align: "left" });
+
+  doc
+    .fontSize(textsize)
+    .fillColor("black")
+    .text(
+      "In computer security, a vulnerability is a weakness which can be exploited by a threat actor, such as an attacker, to perform unauthorized actions within a computer system. To exploit a vulnerability, an attacker must have at least one applicable tool or technique that can connect to a system weakness.",
+      60,
+      null,
+      { align: "left" }
+    );
+
+  doc.moveDown(1);
+  doc
+    .fontSize(headerFontSize)
+    .fillColor(color2)
+    .text("Post Exploitation:", 60, null, { align: "left" });
+
+  doc
+    .fontSize(textsize)
+    .fillColor("black")
+    .text(
+      "As the term suggests, post exploitation basically means the phases of operation once a victim's system has been compromised by the attacker. The value of the compromised system is determined by the value of the actual data stored in it and how an attacker may make use of it for malicious purposes. The concept of post exploitation has risen from this fact only as to how you can use the victim's compromised system's information. This phase actually deals with collecting sensitive information, documenting it, and having an idea of the configuration settings, network interfaces, and other communication channels. These may be used to maintain persistent access to the system as per the attacker's needs.",
+      60,
+      null,
+      { align: "left" }
+    );
+
+  doc.moveDown(1);
+  doc
+    .fontSize(headerFontSize)
+    .fillColor(color2)
+    .text("Reporting:", 60, null, { align: "left" });
+
+  doc
+    .fontSize(textsize)
+    .fillColor("black")
+    .text(
+      "Preparation of report as per severity along with remedial recommendation. Evidence against claims and recommendation after successfully exploit all vulnerabilities we prepare detail report including Proof of concept and recommendations.",
+      60,
+      null,
+      { align: "left" }
+    );
+
+  doc.addPage();
+  doc.image(hearder, {
+    x: 50, // Adjust the X position as needed
+    y: 20, // Adjust the Y position as needed
+    width: 100, // Adjust the width as needed
+  });
+
+  doc
+    .fontSize(headerFontSize)
+    .fillColor(color2)
+    .text("5.Web Apps Audit Test Standard followed:", 60, null, {
+      align: "left",
+    });
+
+  doc
+    .fontSize(textsize)
+    .fillColor("black")
+    .text(
+      "\n\nScanning tools used in the WAPT Test possess the capability to assess OWASP TOP 10 Risk as under: \n\n",
+      60,
+      null,
+      { align: "left" }
+    );
+  const color3 = [74, 22, 71];
+  doc
+    .fontSize(14)
+    .fillColor(color3)
+    .text("OWASP Top 10 Risks (2021) Scanned in the Report", 60, null, {
+      align: "left",
+    });
+
+  doc
+    .fontSize(textsize)
+    .fillColor("black")
+    .text(
+      "\n\n Attackers can potentially use many different paths through the applications to do harm to your business or organization. Each of these paths represents a risk that may, or may not, be serious enough to warrant attention.",
+      60,
+      null,
+      { align: "left" }
+    );
+  doc
+    .fontSize(textsize)
+    .fillColor("black")
+    .text(
+      "\n\nThe OWASP Top 10 list consists of the 10 most seen application vulnerabilities:",
+      60,
+      null,
+      {
+        align: "left",
+        underline: true, // This property underlines the text
+      }
+    );
+
+  const additionalText = `
+    -> Broken Access Control
+    -> Cryptographic Failures
+    -> Injection
+    -> Insecure Design
+    -> Security Misconfiguration
+    -> Vulnerable and Outdated Components
+    -> Identification and Authentication Failures
+    -> Software and Data Integrity Failures
+    -> Security Logging and Monitoring Failures
+    -> Server-Side Request Forgery (SSRF)\n\n\n
+`;
+
+  doc
+    .fontSize(textsize) // You can use the same font size as above
+    .fillColor("black") // You can use the same text color as above
+    .text(additionalText, 60, null, { align: "left" });
+
+  doc.image(abc, {
+    x: 70, // Adjust the X position as needed
+    y: doc.y, // Adjust the Y position as needed
+    width: 500, // Adjust the width as needed
+  });
+
+  doc.addPage();
+  doc.image(hearder, {
+    x: 50, // Adjust the X position as needed
+    y: 20, // Adjust the Y position as needed
+    width: 100, // Adjust the width as needed
+  });
+
+  doc
+    .fontSize(headerFontSize)
+    .fillColor(color2)
+    .text("6.Summary Report:\n\n", 60, null, {
+      align: "left",
+    });
+
+  doc
+    .fontSize(headerFontSize)
+    .fillColor(color2)
+    .text("6.1.Overall Summary of Findings", 80, null, {
+      align: "left",
+    });
+  doc
+    .fontSize(textsize)
+    .fillColor("black")
+    .text(
+      "\nThe table below provides summary of the vulnerabilities that were identified during the assessment. ",
+      80,
+      null,
+      {
+        align: "left",
+      }
+    );
+
+  // Add a table behind the text
+  // Define different background colors for each cell in the first row
+  const backgroundColors = [
+    [31, 73, 125],
+    "red",
+    "red",
+    [104, 104, 0],
+    [155, 187, 89],
+  ];
+
+  const tableData8 = [
+    ["  Total Findings  ", " CRITICAL  ", "  HIGH  ", "  Medium  ", "  Low  "],
+    ["     00  ", "     00 ", "    00 ", "    00 ", "    00 "],
+  ];
+
+  // Set font size and cell sizes
+  const firstColumnWidthtable8 = 100; // Width for the first column
+  const secondColumnWidthtable8 = 100;
+  const thirdColumnWidthtable8 = 100; // Width for the second column
+  const cellHeighttable8 = 30;
+  //const fontSize = 12; // Font size
+
+  // Set initial position and spacing
+  x = 50; // X position
+  y = 200; // Y position
+
+  for (let i = 0; i < tableData8.length; i++) {
+    for (let j = 0; j < tableData8[i].length; j++) {
+      let cellWidth;
+      if (j === 0) {
+        cellWidth = firstColumnWidthtable8;
+      } else if (j === 1) {
+        cellWidth = secondColumnWidthtable8;
+      } else {
+        cellWidth = thirdColumnWidthtable8;
+      }
+
+      // Draw cell border
+      doc.rect(x, y, cellWidth, cellHeighttable8).stroke();
+
+      // Fill background color for the first row
+      if (i === 0) {
+        doc.rect(x, y, cellWidth, cellHeighttable8).fill(backgroundColors[j]);
+        doc.fillColor("white"); // Set text color to white for the first row
+      } else {
+        doc.fillColor("black"); // Set text color to black for other rows
+      }
+
+      doc
+        .fontSize(fontSize)
+        .text(
+          tableData8[i][j],
+          x + 5,
+          y + 5,
+          { width: cellWidth - 10 },
+          { width: cellWidth, align: "center" }
+        );
+
+      x += cellWidth; // Move to the next column
+    }
+    x = 50; // Reset the X position for the next row
+    y += cellHeighttable8; // Move to the next row
+  }
+  y += cellHeighttable8 + 10;
+
+  doc
+    .fontSize(textsize)
+    .fillColor("black")
+    .text("Table 1: Category Listing", 80, doc.y + 30, {
+      align: "center",
+    });
+  doc
+    .fontSize(textsize)
+    .fillColor("black")
+    .text(
+      "The chart below, gives the overall summary of number of vulnerabilities discovered with their Risk Ratings. Zero (00) Critical Risk, Zero (00) High Risk, Zero (00) Medium Risk, Zero (00) Low Risk vulnerabilities were identified during the test.",
+      60,
+      doc.y + 30,
+      {
+        align: "left",
+      }
+    );
 
   doc.end();
 };
