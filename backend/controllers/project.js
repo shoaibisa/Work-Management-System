@@ -8,6 +8,9 @@ import Employee from "../models/employee.js";
 import Notification from "../models/notification.js";
 import pdfkit from "pdfkit";
 import path from "path";
+import QuickChart from "quickchart-js";
+import request from "request";
+import retry from "retry";
 const imagePath = path.join(
   "D:",
   "EmploymanagentSystem",
@@ -40,8 +43,140 @@ const abc = path.join(
   "image",
   "abc.png"
 );
+const table = path.join(
+  "D:",
+  "EmploymanagentSystem",
+  "Work-Management-System",
+  "backend",
+  "image",
+  "table.png"
+);
+
+const chartimagePaths = path.join(
+  "D:",
+  "EmploymanagentSystem",
+  "Work-Management-System",
+  "backend",
+  "Charts",
+  "chart.png"
+);
+const chartimagePaths2 = path.join(
+  "D:",
+  "EmploymanagentSystem",
+  "Work-Management-System",
+  "backend",
+  "Charts",
+  "chart2.png"
+);
+const tool = path.join(
+  "D:",
+  "EmploymanagentSystem",
+  "Work-Management-System",
+  "backend",
+  "image",
+  "tool.png"
+);
+const table2 = path.join(
+  "D:",
+  "EmploymanagentSystem",
+  "Work-Management-System",
+  "backend",
+  "image",
+  "chartectertable.png"
+);
+const chartt = () => {
+  const chart = new QuickChart();
+  // Add Dynamic Chart
+  chart
+    .setConfig({
+      type: "bar",
+      data: {
+        labels: ["High", "Medium", "low"],
+        datasets: [
+          {
+            label: "vulnerabilities",
+            data: [100, 19, 15],
+            backgroundColor: ["red", "#f4ca16", "#9BBA59"],
+          },
+        ],
+      },
+    })
+    .setWidth(600)
+    .setHeight(400);
+
+  // Generate the chart URL
+  const chartUrl = chart.getUrl();
+  // Define the folder where you want to save the image
+  const folderPath = path.join(
+    "D:",
+    "EmploymanagentSystem",
+    "Work-Management-System",
+    "backend",
+    "Charts"
+  ); // Change 'images' to your desired folder name
+
+  if (!fs.existsSync(folderPath)) {
+    fs.mkdirSync(folderPath, { recursive: true });
+  }
+  const chartimagePaths = path.join(folderPath, "chart.png"); // Full path to the image
+
+  // Download the chart image;
+  request.get(chartUrl, { encoding: "binary" }, (error, response, body) => {
+    if (!error && response.statusCode === 200) {
+      // Save the chart image to the specified folder
+      fs.writeFileSync(chartimagePaths, body, "binary");
+    }
+  });
+};
+const chart2 = () => {
+  const chart = new QuickChart();
+  // Add Dynamic Chart
+  chart
+    .setConfig({
+      type: "pie",
+      data: {
+        labels: ["High", "Medium", "low"],
+        datasets: [
+          {
+            label: "vulnerabilities",
+            data: [100, 19, 15],
+            backgroundColor: ["red", "#f4ca16", "#9BBA59"],
+          },
+        ],
+      },
+    })
+    .setWidth(600)
+    .setHeight(400);
+
+  // Generate the chart URL
+  const chartUrl = chart.getUrl();
+  // Define the folder where you want to save the image
+  const folderPath = path.join(
+    "D:",
+    "EmploymanagentSystem",
+    "Work-Management-System",
+    "backend",
+    "Charts"
+  ); // Change 'images' to your desired folder name
+
+  if (!fs.existsSync(folderPath)) {
+    fs.mkdirSync(folderPath, { recursive: true });
+  }
+  const chartimagePaths = path.join(folderPath, "chart2.png"); // Full path to the image
+
+  // Download the chart image;
+  request.get(chartUrl, { encoding: "binary" }, (error, response, body) => {
+    if (!error && response.statusCode === 200) {
+      // Save the chart image to the specified folder
+      fs.writeFileSync(chartimagePaths, body, "binary");
+    }
+  });
+};
 
 const pdfview = (req, res) => {
+  chartt();
+  chart2();
+
   const doc = new pdfkit();
   res.setHeader("Content-Type", "application/pdf");
   res.setHeader("Content-Disposition", 'inline; filename="dynamic.pdf"');
@@ -49,945 +184,1263 @@ const pdfview = (req, res) => {
   doc.pipe(res);
   // from here
 
-  doc.image(imagePath, {
-    x: 50, // Adjust the X position as needed
-    y: 30, // Adjust the Y position as needed
-    width: 500, // Adjust the width as needed
-  });
-  // Add some content to the body of the PDF
-  const topMargin = 200;
-  doc.y = topMargin;
-  doc.x = 50;
-  // Add the "Security Assessment" text
-  doc.fontSize(24).text("Security Assessment", 50, doc.y);
+  const delay = 2000; // 1 second
+  setTimeout(function () {
+    doc.image(imagePath, {
+      x: 50, // Adjust the X position as needed
+      y: 30, // Adjust the Y position as needed
+      width: 500, // Adjust the width as needed
+    });
+    // Add some content to the body of the PDF
+    const topMargin = 200;
+    doc.y = topMargin;
+    doc.x = 50;
+    // Add the "Security Assessment" text
+    doc.fontSize(24).text("Security Assessment", 50, doc.y);
 
-  // Reduce the space between lines
-  doc.moveDown(0.5); // Adjust the value as needed
+    // Reduce the space between lines
+    doc.moveDown(0.5); // Adjust the value as needed
 
-  // Add "FOR" text
-  doc.fontSize(16).text("REPORT FOR", doc.x, doc.y);
+    // Add "FOR" text
+    doc.fontSize(16).text("REPORT FOR", doc.x, doc.y);
 
-  // Reduce the space between lines
-  doc.moveDown(1); // Adjust the value as needed
+    // Reduce the space between lines
+    doc.moveDown(1); // Adjust the value as needed
 
-  // Add "Host company Name" text
-  doc.fontSize(16).text("Host company Name", doc.x, doc.y);
+    // Add "Host company Name" text
+    doc.fontSize(16).text("Host company Name", doc.x, doc.y);
 
-  // Reduce the space between lines
-  doc.moveDown(0.5); // Adjust the value as needed
+    // Reduce the space between lines
+    doc.moveDown(0.5); // Adjust the value as needed
 
-  // Add the "December 26th, 2022" text
-  doc.fontSize(16).text("December 26th, 2022", doc.x, doc.y);
+    // Add the "December 26th, 2022" text
+    doc.fontSize(16).text("December 26th, 2022", doc.x, doc.y);
 
-  doc.moveDown(2); // Adjust the value as needed for spacing
+    doc.moveDown(2); // Adjust the value as needed for spacing
 
-  // Add the left-aligned text
-  doc.fontSize(12).text("Report Prepared by:", doc.x, doc.y);
-  doc.fontSize(10).text("AUDITOR NAME Auditor Post", doc.x, doc.y);
-  doc.fontSize(10).text("auditor.email@gisconsulting.org", doc.x, doc.y);
-  doc.fontSize(10).text("(A CERT-IN Empaneled Company)", doc.x, doc.y);
-  doc.fontSize(10).text("(Empanelment no.: 3(15)/2004-CERT-In)", doc.x, doc.y);
-  doc.fontSize(10).text("info@gisconsulting.in", doc.x, doc.y);
+    // Add the left-aligned text
+    doc.fontSize(12).text("Report Prepared by:", doc.x, doc.y);
+    doc.fontSize(10).text("AUDITOR NAME Auditor Post", doc.x, doc.y);
+    doc.fontSize(10).text("auditor.email@gisconsulting.org", doc.x, doc.y);
+    doc.fontSize(10).text("(A CERT-IN Empaneled Company)", doc.x, doc.y);
+    doc
+      .fontSize(10)
+      .text("(Empanelment no.: 3(15)/2004-CERT-In)", doc.x, doc.y);
+    doc.fontSize(10).text("info@gisconsulting.in", doc.x, doc.y);
 
-  doc.x = 350; // Adjust the X position for the right-aligned text
+    doc.x = 350; // Adjust the X position for the right-aligned text
 
-  // Add the right-aligned text
-  doc.fontSize(12).text("Report reviewed by:", 350, 360);
-  doc.fontSize(10).text("NAVEEN DHAM Principal Consultant", doc.x, doc.y);
-  doc.fontSize(10).text("Principal Consultant", doc.x, doc.y);
-  doc
-    .fontSize(10)
-    .text(
-      "CISA certified MSc. Cyber Forensics & Information Security",
-      doc.x,
-      doc.y
-    );
-  doc.fontSize(10).text("naveen.dham@gisconsulting.in", doc.x, doc.y);
+    // Add the right-aligned text
+    doc.fontSize(12).text("Report reviewed by:", 350, 360);
+    doc.fontSize(10).text("NAVEEN DHAM Principal Consultant", doc.x, doc.y);
+    doc.fontSize(10).text("Principal Consultant", doc.x, doc.y);
+    doc
+      .fontSize(10)
+      .text(
+        "CISA certified MSc. Cyber Forensics & Information Security",
+        doc.x,
+        doc.y
+      );
+    doc.fontSize(10).text("naveen.dham@gisconsulting.in", doc.x, doc.y);
 
-  doc.moveDown(2);
-  const noteText =
-    "NOTE: The information contained within this report is considered proprietary and confidential to the {GIS Consulting}. Inappropriate and unauthorized disclosure of this report or portions of it could result in significant damage or loss to the {Host company Name}. This report should be distributed to individuals on a Need-to-Know basis only. Paper copies should be locked up when not in use. Electronic copies should be stored offline and protected appropriately.";
+    doc.moveDown(2);
+    const noteText =
+      "NOTE: The information contained within this report is considered proprietary and confidential to the {GIS Consulting}. Inappropriate and unauthorized disclosure of this report or portions of it could result in significant damage or loss to the {Host company Name}. This report should be distributed to individuals on a Need-to-Know basis only. Paper copies should be locked up when not in use. Electronic copies should be stored offline and protected appropriately.";
 
-  doc.fontSize(12).text(noteText, 50, 500, { width: 550 });
+    doc.fontSize(12).text(noteText, 50, 500, { width: 550 });
 
-  doc.moveDown(2); // Adjust the value as needed for spacing
+    doc.moveDown(2); // Adjust the value as needed for spacing
 
-  const corporateOfficeText =
-    "CORPORATE OFFICE \n Level 2, Augusta Point, Parsvnath Exotica, Sector 73, Golf Course, Gurgoan-122002\n" +
-    "CIN No. U72200DL2017PTC323914\n" +
-    "\n" +
-    "Toll-free: 1800 212 676767\n" +
-    "Web : www.gisconsulting.in\n" +
-    "Email:-info@gisconsulting.in";
+    const corporateOfficeText =
+      "CORPORATE OFFICE \n Level 2, Augusta Point, Parsvnath Exotica, Sector 73, Golf Course, Gurgoan-122002\n" +
+      "CIN No. U72200DL2017PTC323914\n" +
+      "\n" +
+      "Toll-free: 1800 212 676767\n" +
+      "Web : www.gisconsulting.in\n" +
+      "Email:-info@gisconsulting.in";
 
-  doc
-    .fontSize(14)
-    .text(corporateOfficeText.split("\n")[0], 50, 610, { width: 250 });
+    doc
+      .fontSize(14)
+      .text(corporateOfficeText.split("\n")[0], 50, 610, { width: 250 });
 
-  // Set a different font size for the rest of the text
-  doc
-    .fontSize(10)
-    .text(corporateOfficeText.split("\n").slice(1).join("\n"), { width: 250 });
+    // Set a different font size for the rest of the text
+    doc.fontSize(10).text(corporateOfficeText.split("\n").slice(1).join("\n"), {
+      width: 250,
+    });
 
-  // Add the United States office information to the right
-  doc.fontSize(12).text("UNITED STATES OFFICE ", 400, 620, { width: 300 });
-  doc.fontSize(10).text("13731 Monarch Vista Dr ", doc.x, doc.y);
-  doc.fontSize(10).text("Germantown MD 20874", doc.x, doc.y);
-  doc.moveDown(1.6);
-  doc.fontSize(10).text("CALL US :- +12407202889", doc.x, doc.y);
-  doc.fontSize(10).text("Web : www.gisconsulting.org", doc.x, doc.y);
-  doc.fontSize(10).text("Email:-info@gisconsulting.org", doc.x, doc.y);
+    // Add the United States office information to the right
+    doc.fontSize(12).text("UNITED STATES OFFICE ", 400, 620, { width: 300 });
+    doc.fontSize(10).text("13731 Monarch Vista Dr ", doc.x, doc.y);
+    doc.fontSize(10).text("Germantown MD 20874", doc.x, doc.y);
+    doc.moveDown(1.6);
+    doc.fontSize(10).text("CALL US :- +12407202889", doc.x, doc.y);
+    doc.fontSize(10).text("Web : www.gisconsulting.org", doc.x, doc.y);
+    doc.fontSize(10).text("Email:-info@gisconsulting.org", doc.x, doc.y);
 
-  // Add a new page
-  doc.addPage();
+    // Add a new page
+    doc.addPage();
 
-  doc.image(hearder, {
-    x: 50, // Adjust the X position as needed
-    y: 20, // Adjust the Y position as needed
-    width: 100, // Adjust the width as needed
-  });
-  // Draw the header text
-  // Define your header text
-  const headerText = "1. Document Control";
+    doc.image(hearder, {
+      x: 50, // Adjust the X position as needed
+      y: 20, // Adjust the Y position as needed
+      width: 100, // Adjust the width as needed
+    });
+    // Draw the header text
+    // Define your header text
+    const headerText = "1. Document Control";
 
-  // Set font size for the header
-  const headerFontSize = 16;
+    // Set font size for the header
+    const headerFontSize = 16;
 
-  doc.fontSize(headerFontSize).text(headerText, { align: "left" }, 60, 60);
+    doc.fontSize(headerFontSize).text(headerText, { align: "left" }, 60, 60);
 
-  const tableData = [
-    [
-      "    Document Type",
-      "    Web Application Penetration Testing Report for{ Host Name}",
-    ],
-    ["    Document Owner", "    G-INFO TECHNOLOGY SOLUTIONS PVT. LTD."],
-  ];
+    const tableData = [
+      [
+        "    Document Type",
+        "    Web Application Penetration Testing Report for{ Host Name}",
+      ],
+      ["    Document Owner", "    G-INFO TECHNOLOGY SOLUTIONS PVT. LTD."],
+    ];
 
-  // Set font size and cell sizes
-  const fontSize = 12;
-  const firstColumnWidth = 150; // Width for the first column
-  const secondColumnWidth = 350; // Width for the second column
-  const cellHeight = 30;
+    // Set font size and cell sizes
+    const fontSize = 12;
+    const firstColumnWidth = 150; // Width for the first column
+    const secondColumnWidth = 350; // Width for the second column
+    const cellHeight = 30;
 
-  // Set initial position and spacing
-  let x = 50; // X position
-  let y = 70; // Y position
+    // Set initial position and spacing
+    let x = 50; // X position
+    let y = 70; // Y position
 
-  // Background color for the first column
-  const firstColumnFillColor = [204, 236, 255];
-  // Loop through the data and draw the table with borders
-  // Move to the next line for the table
-  y += headerFontSize + 30;
-  for (let i = 0; i < tableData.length; i++) {
-    for (let j = 0; j < tableData[i].length; j++) {
-      const cellWidth = j === 0 ? firstColumnWidth : secondColumnWidth; // Adjust width based on the column
+    // Background color for the first column
+    const firstColumnFillColor = [204, 236, 255];
+    // Loop through the data and draw the table with borders
+    // Move to the next line for the table
+    y += headerFontSize + 30;
+    for (let i = 0; i < tableData.length; i++) {
+      for (let j = 0; j < tableData[i].length; j++) {
+        const cellWidth = j === 0 ? firstColumnWidth : secondColumnWidth; // Adjust width based on the column
 
-      // Draw cell border
-      doc.rect(x, y, cellWidth, cellHeight).stroke();
-      // Fill background color in the first column
-      if (j === 0) {
-        doc.rect(x, y, firstColumnWidth, cellHeight).fill(firstColumnFillColor);
+        // Draw cell border
+        doc.rect(x, y, cellWidth, cellHeight).stroke();
+        // Fill background color in the first column
+        if (j === 0) {
+          doc
+            .rect(x, y, firstColumnWidth, cellHeight)
+            .fill(firstColumnFillColor);
+        }
+        // Set text color to black for the first column
+        doc.fillColor("black");
+
+        // Draw text in the cell
+        doc
+          .fontSize(fontSize)
+          .text(
+            tableData[i][j],
+            x + 5,
+            y + 5,
+            { width: cellWidth - 10 },
+            "center"
+          );
+
+        x += cellWidth; // Move to the next column
       }
-      // Set text color to black for the first column
-      doc.fillColor("black");
-
-      // Draw text in the cell
-      doc
-        .fontSize(fontSize)
-        .text(
-          tableData[i][j],
-          x + 5,
-          y + 5,
-          { width: cellWidth - 10 },
-          "center"
-        );
-
-      x += cellWidth; // Move to the next column
+      x = 50; // Reset the X position for the next row
+      y += cellHeight; // Move to the next row
     }
-    x = 50; // Reset the X position for the next row
-    y += cellHeight; // Move to the next row
-  }
 
-  const tableData2 = [
-    [
-      "    Authors & Auditors",
-      "                                       Mail ID",
-    ],
-    ["    Auditor Name", "            Auditor.email@gisconsulting.org "],
+    const tableData2 = [
+      [
+        "    Authors & Auditors",
+        "                                       Mail ID",
+      ],
+      ["    Auditor Name", "            Auditor.email@gisconsulting.org "],
 
-    ["    GISC InfoSec Team", "            GISC InfoSec Team"],
-  ];
+      ["    GISC InfoSec Team", "            GISC InfoSec Team"],
+    ];
 
-  // Set font size and cell sizes
-  // const fontSize = 12;
-  const firstColumnWidthtabl2 = 150; // Width for the first column
-  const secondColumnWidthtable2 = 350; // Width for the second column
-  const cellHeighttable2 = 30;
+    // Set font size and cell sizes
+    // const fontSize = 12;
+    const firstColumnWidthtabl2 = 150; // Width for the first column
+    const secondColumnWidthtable2 = 350; // Width for the second column
+    const cellHeighttable2 = 30;
 
-  // Set initial position and spacing
-  x = 50; // X position
-  y = y + cellHeight; // Y position
+    // Set initial position and spacing
+    x = 50; // X position
+    y = y + cellHeight; // Y position
 
-  for (let i = 0; i < tableData2.length; i++) {
-    for (let j = 0; j < tableData2[i].length; j++) {
-      const cellWidth =
-        j === 0 ? firstColumnWidthtabl2 : secondColumnWidthtable2; // Adjust width based on the column
+    for (let i = 0; i < tableData2.length; i++) {
+      for (let j = 0; j < tableData2[i].length; j++) {
+        const cellWidth =
+          j === 0 ? firstColumnWidthtabl2 : secondColumnWidthtable2; // Adjust width based on the column
 
-      // Draw cell border
-      doc.rect(x, y, cellWidth, cellHeighttable2).stroke();
+        // Draw cell border
+        doc.rect(x, y, cellWidth, cellHeighttable2).stroke();
 
-      // Fill background color for the first row
-      if (i === 0) {
-        doc.rect(x, y, cellWidth, cellHeighttable2).fill(firstColumnFillColor);
+        // Fill background color for the first row
+        if (i === 0) {
+          doc
+            .rect(x, y, cellWidth, cellHeighttable2)
+            .fill(firstColumnFillColor);
+        }
+
+        // Set text color to white for the first row, and black for other rows
+        doc.fillColor(i === 0 ? "black" : "black");
+        doc
+          .fontSize(fontSize)
+          .text(
+            tableData2[i][j],
+            x + 5,
+            y + 5,
+            { width: cellWidth - 10 },
+            { width: cellWidth, align: "center" }
+          );
+
+        x += cellWidth; // Move to the next column
       }
-
-      // Set text color to white for the first row, and black for other rows
-      doc.fillColor(i === 0 ? "black" : "black");
-      doc
-        .fontSize(fontSize)
-        .text(
-          tableData2[i][j],
-          x + 5,
-          y + 5,
-          { width: cellWidth - 10 },
-          { width: cellWidth, align: "center" }
-        );
-
-      x += cellWidth; // Move to the next column
+      x = 50; // Reset the X position for the next row
+      y += cellHeighttable2; // Move to the next row
     }
-    x = 50; // Reset the X position for the next row
-    y += cellHeighttable2; // Move to the next row
-  }
 
-  // Third Table in
+    // Third Table in
 
-  const tableData3 = [
-    [
-      "    Reviewed and Verified by",
-      "                                       Mail ID",
-    ],
-    ["   Naveen Dham", "            Naveen Dham "],
-  ];
+    const tableData3 = [
+      [
+        "    Reviewed and Verified by",
+        "                                       Mail ID",
+      ],
+      ["   Naveen Dham", "            Naveen Dham "],
+    ];
 
-  // Set font size and cell sizes
-  // const fontSize = 12;
-  const firstColumnWidthtabl3 = 160; // Width for the first column
-  const secondColumnWidthtable3 = 350; // Width for the second column
-  const cellHeighttable3 = 30;
+    // Set font size and cell sizes
+    // const fontSize = 12;
+    const firstColumnWidthtabl3 = 160; // Width for the first column
+    const secondColumnWidthtable3 = 350; // Width for the second column
+    const cellHeighttable3 = 30;
 
-  // Set initial position and spacing
-  x = 50; // X position
-  y = y + cellHeight; // Y position
+    // Set initial position and spacing
+    x = 50; // X position
+    y = y + cellHeight; // Y position
 
-  for (let i = 0; i < tableData3.length; i++) {
-    for (let j = 0; j < tableData3[i].length; j++) {
-      const cellWidth =
-        j === 0 ? firstColumnWidthtabl3 : secondColumnWidthtable3; // Adjust width based on the column
+    for (let i = 0; i < tableData3.length; i++) {
+      for (let j = 0; j < tableData3[i].length; j++) {
+        const cellWidth =
+          j === 0 ? firstColumnWidthtabl3 : secondColumnWidthtable3; // Adjust width based on the column
 
-      // Draw cell border
-      doc.rect(x, y, cellWidth, cellHeighttable3).stroke();
+        // Draw cell border
+        doc.rect(x, y, cellWidth, cellHeighttable3).stroke();
 
-      // Fill background color for the first row
-      if (i === 0) {
-        doc.rect(x, y, cellWidth, cellHeighttable3).fill(firstColumnFillColor);
+        // Fill background color for the first row
+        if (i === 0) {
+          doc
+            .rect(x, y, cellWidth, cellHeighttable3)
+            .fill(firstColumnFillColor);
+        }
+
+        // Set text color to white for the first row, and black for other rows
+        doc.fillColor(i === 0 ? "black" : "black");
+        doc
+          .fontSize(fontSize)
+          .text(
+            tableData3[i][j],
+            x + 5,
+            y + 5,
+            { width: cellWidth - 10 },
+            { width: cellWidth, align: "center" }
+          );
+
+        x += cellWidth; // Move to the next column
       }
-
-      // Set text color to white for the first row, and black for other rows
-      doc.fillColor(i === 0 ? "black" : "black");
-      doc
-        .fontSize(fontSize)
-        .text(
-          tableData3[i][j],
-          x + 5,
-          y + 5,
-          { width: cellWidth - 10 },
-          { width: cellWidth, align: "center" }
-        );
-
-      x += cellWidth; // Move to the next column
+      x = 50; // Reset the X position for the next row
+      y += cellHeighttable3; // Move to the next row
     }
-    x = 50; // Reset the X position for the next row
-    y += cellHeighttable3; // Move to the next row
-  }
 
-  //Table no 4
-  const tableData4 = [
-    ["Version", "Date", "Description"],
-    [
-      "1.0",
-      " 26-12-2022",
-      "Web Application Penetration Testing Report for Host Name",
-    ],
-  ];
+    //Table no 4
+    const tableData4 = [
+      ["Version", "Date", "Description"],
+      [
+        "1.0",
+        " 26-12-2022",
+        "Web Application Penetration Testing Report for Host Name",
+      ],
+    ];
 
-  // Set font size and cell sizes
-  const firstColumnWidthtabl4 = 60; // Width for the first column
-  const secondColumnWidthtable4 = 100;
-  const thirdColumnWidthtable4 = 350; // Width for the second column
-  const cellHeighttable4 = 30;
-  const color = [204, 236, 255];
-  // Set initial position and spacing
-  x = 50; // X position
-  y = y + cellHeight; // Y position
+    // Set font size and cell sizes
+    const firstColumnWidthtabl4 = 60; // Width for the first column
+    const secondColumnWidthtable4 = 100;
+    const thirdColumnWidthtable4 = 350; // Width for the second column
+    const cellHeighttable4 = 30;
+    const color = [204, 236, 255];
+    // Set initial position and spacing
+    x = 50; // X position
+    y = y + cellHeight; // Y position
 
-  for (let i = 0; i < tableData4.length; i++) {
-    for (let j = 0; j < tableData4[i].length; j++) {
-      // const cellWidth = === 0 ? firstColumnWidthtabl4 : secondColumnWidthtable4 : thirdColumnWidthtable4; // Adjust width based on the column
-      let cellWidth;
-      let fillColor;
-      if (j === 0) {
-        cellWidth = firstColumnWidthtabl4;
-        fillColor = firstColumnFillColor;
-      } else if (j === 1) {
-        cellWidth = secondColumnWidthtable4;
-        fillColor = color;
-      } else {
-        cellWidth = thirdColumnWidthtable4;
-        fillColor = color;
+    for (let i = 0; i < tableData4.length; i++) {
+      for (let j = 0; j < tableData4[i].length; j++) {
+        // const cellWidth = === 0 ? firstColumnWidthtabl4 : secondColumnWidthtable4 : thirdColumnWidthtable4; // Adjust width based on the column
+        let cellWidth;
+        let fillColor;
+        if (j === 0) {
+          cellWidth = firstColumnWidthtabl4;
+          fillColor = firstColumnFillColor;
+        } else if (j === 1) {
+          cellWidth = secondColumnWidthtable4;
+          fillColor = color;
+        } else {
+          cellWidth = thirdColumnWidthtable4;
+          fillColor = color;
+        }
+        // Draw cell border
+        doc.rect(x, y, cellWidth, cellHeighttable4).stroke();
+
+        // Fill background color for the first row
+        if (i === 0) {
+          doc
+            .rect(x, y, cellWidth, cellHeighttable4)
+            .fill(firstColumnFillColor);
+        }
+
+        // Set text color to white for the first row, and black for other rows
+        doc.fillColor(i === 0 ? "black" : "black");
+        doc
+          .fontSize(fontSize)
+          .text(
+            tableData4[i][j],
+            x + 5,
+            y + 5,
+            { width: cellWidth - 10 },
+            { width: cellWidth, align: "center" }
+          );
+
+        x += cellWidth; // Move to the next column
       }
-      // Draw cell border
-      doc.rect(x, y, cellWidth, cellHeighttable4).stroke();
-
-      // Fill background color for the first row
-      if (i === 0) {
-        doc.rect(x, y, cellWidth, cellHeighttable4).fill(firstColumnFillColor);
-      }
-
-      // Set text color to white for the first row, and black for other rows
-      doc.fillColor(i === 0 ? "black" : "black");
-      doc
-        .fontSize(fontSize)
-        .text(
-          tableData4[i][j],
-          x + 5,
-          y + 5,
-          { width: cellWidth - 10 },
-          { width: cellWidth, align: "center" }
-        );
-
-      x += cellWidth; // Move to the next column
+      x = 50; // Reset the X position for the next row
+      y += cellHeighttable4; // Move to the next ro
     }
-    x = 50; // Reset the X position for the next row
-    y += cellHeighttable4; // Move to the next ro
-  }
 
-  //Table no 5
-  const tableData5 = [
-    ["Client", "Name", "Email ID"],
-    ["Client Company Name", "client  name", " Email"],
-  ];
+    //Table no 5
+    const tableData5 = [
+      ["Client", "Name", "Email ID"],
+      ["Client Company Name", "client  name", " Email"],
+    ];
 
-  // Set font size and cell sizes
-  const firstColumnWidthtabl5 = 100; // Width for the first column
-  const secondColumnWidthtable5 = 100;
-  const thirdColumnWidthtable5 = 300; // Width for the second column
-  const cellHeighttable5 = 30;
-  // Set initial position and spacing
-  x = 50; // X position
-  y = y + cellHeight; // Y position
+    // Set font size and cell sizes
+    const firstColumnWidthtabl5 = 100; // Width for the first column
+    const secondColumnWidthtable5 = 100;
+    const thirdColumnWidthtable5 = 300; // Width for the second column
+    const cellHeighttable5 = 30;
+    // Set initial position and spacing
+    x = 50; // X position
+    y = y + cellHeight; // Y position
 
-  for (let i = 0; i < tableData5.length; i++) {
-    for (let j = 0; j < tableData5[i].length; j++) {
-      // const cellWidth = === 0 ? firstColumnWidthtabl4 : secondColumnWidthtable4 : thirdColumnWidthtable4; // Adjust width based on the column
-      let cellWidth;
-      let fillColor;
-      if (j === 0) {
-        cellWidth = firstColumnWidthtabl5;
-        fillColor = firstColumnFillColor;
-      } else if (j === 1) {
-        cellWidth = secondColumnWidthtable5;
-        fillColor = color;
-      } else {
-        cellWidth = thirdColumnWidthtable5;
-        fillColor = color;
+    for (let i = 0; i < tableData5.length; i++) {
+      for (let j = 0; j < tableData5[i].length; j++) {
+        // const cellWidth = === 0 ? firstColumnWidthtabl4 : secondColumnWidthtable4 : thirdColumnWidthtable4; // Adjust width based on the column
+        let cellWidth;
+        let fillColor;
+        if (j === 0) {
+          cellWidth = firstColumnWidthtabl5;
+          fillColor = firstColumnFillColor;
+        } else if (j === 1) {
+          cellWidth = secondColumnWidthtable5;
+          fillColor = color;
+        } else {
+          cellWidth = thirdColumnWidthtable5;
+          fillColor = color;
+        }
+        // Draw cell border
+        doc.rect(x, y, cellWidth, cellHeighttable5).stroke();
+
+        // Fill background color for the first row
+        if (i === 0) {
+          doc.rect(x, y, cellWidth, cellHeighttable5).fill(color);
+        }
+
+        // Set text color to white for the first row, and black for other rows
+        doc.fillColor(i === 0 ? "black" : "black");
+        doc
+          .fontSize(fontSize)
+          .text(
+            tableData5[i][j],
+            x + 5,
+            y + 5,
+            { width: cellWidth - 10 },
+            { width: cellWidth, align: "center" }
+          );
+
+        x += cellWidth; // Move to the next column
       }
-      // Draw cell border
-      doc.rect(x, y, cellWidth, cellHeighttable5).stroke();
-
-      // Fill background color for the first row
-      if (i === 0) {
-        doc.rect(x, y, cellWidth, cellHeighttable5).fill(color);
-      }
-
-      // Set text color to white for the first row, and black for other rows
-      doc.fillColor(i === 0 ? "black" : "black");
-      doc
-        .fontSize(fontSize)
-        .text(
-          tableData5[i][j],
-          x + 5,
-          y + 5,
-          { width: cellWidth - 10 },
-          { width: cellWidth, align: "center" }
-        );
-
-      x += cellWidth; // Move to the next column
+      x = 50; // Reset the X position for the next row
+      y += cellHeighttable5; // Move to the next ro
     }
-    x = 50; // Reset the X position for the next row
-    y += cellHeighttable5; // Move to the next ro
-  }
-  y += cellHeighttable5 + 10; // Adjust the value as needed for spacing
+    y += cellHeighttable5 + 10; // Adjust the value as needed for spacing
 
-  // Define the text for "Notice of Confidentiality"
-  const confidentialityText =
-    "This document contains proprietary and confidential information of G-Info Technology Solutions PVT LTD. The recipient agrees to maintain this information in confidence and not to reproduce or to disclose this information to any person outside of the group directly responsible for the evaluation of its contents. There is no obligation to maintain the confidentiality of any information which was known to the recipient prior to the receipt of this document from G-Info Technology or which becomes publicly known through no fault of the recipient or is received without obligation of confidentiality from a third party owing to no obligation of confidentiality to G-Info Technology Solutions PVT LTD.";
+    // Define the text for "Notice of Confidentiality"
+    const confidentialityText =
+      "This document contains proprietary and confidential information of G-Info Technology Solutions PVT LTD. The recipient agrees to maintain this information in confidence and not to reproduce or to disclose this information to any person outside of the group directly responsible for the evaluation of its contents. There is no obligation to maintain the confidentiality of any information which was known to the recipient prior to the receipt of this document from G-Info Technology or which becomes publicly known through no fault of the recipient or is received without obligation of confidentiality from a third party owing to no obligation of confidentiality to G-Info Technology Solutions PVT LTD.";
 
-  // Set the font size for the "Notice of Confidentiality" title
-  const titleFontSize = 16;
+    // Set the font size for the "Notice of Confidentiality" title
+    const titleFontSize = 16;
 
-  // Set the font size for the rest of the text
-  const textFontSize = 10;
+    // Set the font size for the rest of the text
+    const textFontSize = 10;
 
-  // Set the position for the "Notice of Confidentiality" title
-  const titleX = 50; // X position
-  const titleY = y; // Y position
+    // Set the position for the "Notice of Confidentiality" title
+    const titleX = 50; // X position
+    const titleY = y; // Y position
 
-  // Draw the title with increased font size
-  doc
-    .fontSize(titleFontSize)
-    .text("Notice of Confidentiality:", titleX, titleY, {
+    // Draw the title with increased font size
+    doc
+      .fontSize(titleFontSize)
+      .text("Notice of Confidentiality:", titleX, titleY, {
+        width: 500,
+      });
+
+    // Set the position for the rest of the text
+    const textX = titleX; // X position
+    const textY = titleY + titleFontSize + 10; // Y position
+
+    // Draw the rest of the text with the regular font size
+    doc.fontSize(textFontSize).text(confidentialityText, textX, textY, {
       width: 500,
     });
 
-  // Set the position for the rest of the text
-  const textX = titleX; // X position
-  const textY = titleY + titleFontSize + 10; // Y position
-
-  // Draw the rest of the text with the regular font size
-  doc.fontSize(textFontSize).text(confidentialityText, textX, textY, {
-    width: 500,
-  });
-
-  // Add a new page for the table of contents
-  doc.addPage();
-  doc.image(hearder, {
-    x: 50, // Adjust the X position as needed
-    y: 20, // Adjust the Y position as needed
-    width: 100, // Adjust the width as needed
-  });
-  // Define the table of contents text
-  const tableOfContentsText =
-    "Table of Contents\n\n" +
-    "1. Document Control " +
-    ".".repeat(60) +
-    " 2\n\n" +
-    "2. Introduction " +
-    ".".repeat(60) +
-    " 4\n\n" +
-    "3. Web Application Platform Details" +
-    ".".repeat(30) +
-    " 4\n\n" +
-    "     3.1. Scope of Web Penetration Testing " +
-    ".".repeat(30) +
-    " 4\n\n" +
-    "             3.1.1. Target Website Details " +
-    ".".repeat(30) +
-    " 4\n\n" +
-    "             3.1.2. Websites Platform Details " +
-    ".".repeat(30) +
-    " 4\n\n" +
-    "4. Testing Methodology and Approach " +
-    ".".repeat(30) +
-    " 5\n\n" +
-    "5. Web Apps Audit Test Standard followed " +
-    ".".repeat(30) +
-    " 7\n\n" +
-    "6. Summary Report: " +
-    ".".repeat(30) +
-    " 9\n\n" +
-    "6.1. Overall Summary of Findings " +
-    ".".repeat(30) +
-    " 9\n\n" +
-    "6.2. Vulnerability Rating Definitions " +
-    ".".repeat(30) +
-    " 9\n\n" +
-    "7. Web Application Security Audit Executive Summary Report: " +
-    ".".repeat(30) +
-    " 10\n\n" +
-    "8. Application Security Observations based on OWASP Top 10: " +
-    ".".repeat(10) +
-    " 11\n\n" +
-    "9. Details Reports, POCs & Recommendations: " +
-    ".".repeat(30) +
-    " 12\n\n" +
-    "     9.1. “High Vulnerability Details” " +
-    ".".repeat(30) +
-    " 12\n\n" +
-    "        9.1.2 Insecure Communication " +
-    ".".repeat(30) +
-    " 12\n\n" +
-    "9. Tools Used during Assessment & Testing: " +
-    ".".repeat(30) +
-    " 13\n\n" +
-    "10. Appendix: " +
-    ".".repeat(30) +
-    " 13\n\n" +
-    "     11.1. CVSS 3 Rating definition " +
-    ".".repeat(30) +
-    " 13\n\n" +
-    "     11.2. General guidelines " +
-    ".".repeat(30) +
-    " 14\n\n" +
-    "12. G-Info Technology Solutions Contact: " +
-    ".".repeat(30) +
-    " 17\n\n";
-
-  // Set the font size for the table of contents
-  const tableOfContentsFontSize = 12;
-
-  // Set the position for the table of contents
-  const tableOfContentsX = 80; // X position
-  const tableOfContentsY = 80; // Y position
-
-  // Draw the table of contents
-  doc
-    .fontSize(tableOfContentsFontSize)
-    .text(tableOfContentsText, tableOfContentsX, tableOfContentsY, {
-      width: 500,
+    // Add a new page for the table of contents
+    doc.addPage();
+    doc.image(hearder, {
+      x: 50, // Adjust the X position as needed
+      y: 20, // Adjust the Y position as needed
+      width: 100, // Adjust the width as needed
     });
+    // Define the table of contents text
+    const tableOfContentsText =
+      "Table of Contents\n\n" +
+      "1. Document Control " +
+      ".".repeat(60) +
+      " 2\n\n" +
+      "2. Introduction " +
+      ".".repeat(60) +
+      " 4\n\n" +
+      "3. Web Application Platform Details" +
+      ".".repeat(30) +
+      " 4\n\n" +
+      "     3.1. Scope of Web Penetration Testing " +
+      ".".repeat(30) +
+      " 4\n\n" +
+      "             3.1.1. Target Website Details " +
+      ".".repeat(30) +
+      " 4\n\n" +
+      "             3.1.2. Websites Platform Details " +
+      ".".repeat(30) +
+      " 4\n\n" +
+      "4. Testing Methodology and Approach " +
+      ".".repeat(30) +
+      " 5\n\n" +
+      "5. Web Apps Audit Test Standard followed " +
+      ".".repeat(30) +
+      " 7\n\n" +
+      "6. Summary Report: " +
+      ".".repeat(30) +
+      " 9\n\n" +
+      "6.1. Overall Summary of Findings " +
+      ".".repeat(30) +
+      " 9\n\n" +
+      "6.2. Vulnerability Rating Definitions " +
+      ".".repeat(30) +
+      " 9\n\n" +
+      "7. Web Application Security Audit Executive Summary Report: " +
+      ".".repeat(30) +
+      " 10\n\n" +
+      "8. Application Security Observations based on OWASP Top 10: " +
+      ".".repeat(10) +
+      " 11\n\n" +
+      "9. Details Reports, POCs & Recommendations: " +
+      ".".repeat(30) +
+      " 12\n\n" +
+      "     9.1. “High Vulnerability Details” " +
+      ".".repeat(30) +
+      " 12\n\n" +
+      "        9.1.2 Insecure Communication " +
+      ".".repeat(30) +
+      " 12\n\n" +
+      "9. Tools Used during Assessment & Testing: " +
+      ".".repeat(30) +
+      " 13\n\n" +
+      "10. Appendix: " +
+      ".".repeat(30) +
+      " 13\n\n" +
+      "     11.1. CVSS 3 Rating definition " +
+      ".".repeat(30) +
+      " 13\n\n" +
+      "     11.2. General guidelines " +
+      ".".repeat(30) +
+      " 14\n\n" +
+      "12. G-Info Technology Solutions Contact: " +
+      ".".repeat(30) +
+      " 17\n\n";
 
-  // 4 th page
+    // Set the font size for the table of contents
+    const tableOfContentsFontSize = 12;
 
-  const textsize = 12;
-  doc.addPage();
-  doc.image(hearder, {
-    x: 50, // Adjust the X position as needed
-    y: 20, // Adjust the Y position as needed
-    width: 100, // Adjust the width as needed
-  });
-  const color2 = [54, 95, 145];
+    // Set the position for the table of contents
+    const tableOfContentsX = 80; // X position
+    const tableOfContentsY = 80; // Y position
 
-  doc
-    .fontSize(headerFontSize)
-    .fillColor(color2)
-    .text("2. Introduction", { align: "left" }, 60, 60);
-  doc
-    .fontSize(textsize)
-    .fillColor("black")
-    .text(
-      "G-Info Technology Solutions Inc. has been contracted to conduct a Web Application Security Assessment test against <host_name>, UP Web Applications defined in the scope. The objective of this assessment was to assess the overall security posture of the application from a Black-box perspective. This includes determining the application’s ability to resist common attack patterns and identifying vulnerable areas in the internal or external interfaces that may be exploited by a malicious user.\n\n",
-      80,
-      90,
-      {
+    // Draw the table of contents
+    doc
+      .fontSize(tableOfContentsFontSize)
+      .text(tableOfContentsText, tableOfContentsX, tableOfContentsY, {
         width: 500,
-      }
-    );
+      });
 
-  doc
-    .fontSize(headerFontSize)
-    .fillColor(color2)
-    .text("3. Web Application Platform Details", 60, 180, { align: "left" });
-  // doc.moveDown(1);
-  doc
-    .fontSize(textsize)
-    .fillColor("black")
-    .text(
-      "The scope of the assessment was limited to performing a Web Application Testing on the URL mentioned below:",
-      80,
-      200,
-      {
-        width: 500,
-      }
-    );
-  doc
-    .fontSize(headerFontSize)
-    .fillColor(color2)
-    .text("3.1. Scope of Web Penetration Details", 80, 250, {
-      align: "left",
+    // 4 th page
+
+    const textsize = 12;
+    doc.addPage();
+    doc.image(hearder, {
+      x: 50, // Adjust the X position as needed
+      y: 20, // Adjust the Y position as needed
+      width: 100, // Adjust the width as needed
     });
-  doc
-    .fontSize(textsize)
-    .fillColor("black")
-    .text(
-      "The Vulnerability Assessment and Penetration Testing performed was focused on <host_name> websites, and its related Web Application",
-      80,
-      270,
-      {
-        width: 550,
+    const color2 = [54, 95, 145];
+
+    doc
+      .fontSize(headerFontSize)
+      .fillColor(color2)
+      .text("2. Introduction", { align: "left" }, 60, 60);
+    doc
+      .fontSize(textsize)
+      .fillColor("black")
+      .text(
+        "G-Info Technology Solutions Inc. has been contracted to conduct a Web Application Security Assessment test against <host_name>, UP Web Applications defined in the scope. The objective of this assessment was to assess the overall security posture of the application from a Black-box perspective. This includes determining the application’s ability to resist common attack patterns and identifying vulnerable areas in the internal or external interfaces that may be exploited by a malicious user.\n\n",
+        80,
+        90,
+        {
+          width: 500,
+        }
+      );
+
+    doc
+      .fontSize(headerFontSize)
+      .fillColor(color2)
+      .text("3. Web Application Platform Details", 60, 180, { align: "left" });
+    // doc.moveDown(1);
+    doc
+      .fontSize(textsize)
+      .fillColor("black")
+      .text(
+        "The scope of the assessment was limited to performing a Web Application Testing on the URL mentioned below:",
+        80,
+        200,
+        {
+          width: 500,
+        }
+      );
+    doc
+      .fontSize(headerFontSize)
+      .fillColor(color2)
+      .text("3.1. Scope of Web Penetration Details", 80, 250, {
+        align: "left",
+      });
+    doc
+      .fontSize(textsize)
+      .fillColor("black")
+      .text(
+        "The Vulnerability Assessment and Penetration Testing performed was focused on <host_name> websites, and its related Web Application",
+        80,
+        270,
+        {
+          width: 550,
+        }
+      );
+    doc
+      .fontSize(headerFontSize)
+      .fillColor(color2)
+      .text("3.1.1 Target Website Details", 80, 310, { align: "left" });
+
+    //Table no 4
+    const tableData7 = [
+      [" Target Website URL’s ", " URL "],
+      [" Test Type ", " Black/Gray Box "],
+    ];
+
+    // Set font size and cell sizes
+    const firstColumnWidthtabl7 = 150; // Width for the first column
+    const secondColumnWidthtable7 = 300;
+    const thirdColumnWidthtable7 = 350; // Width for the second column
+    const cellHeighttable7 = 30;
+
+    // Set initial position and spacing
+    x = 100; // X position
+    y = 350; // Y position
+
+    for (let i = 0; i < tableData7.length; i++) {
+      for (let j = 0; j < tableData7[i].length; j++) {
+        let cellWidth;
+        let fillColor;
+        if (j === 0) {
+          cellWidth = firstColumnWidthtabl7;
+          fillColor = firstColumnFillColor;
+        } else if (j === 1) {
+          cellWidth = secondColumnWidthtable7;
+          fillColor = color;
+        } else {
+          cellWidth = thirdColumnWidthtable7;
+          fillColor = color;
+        }
+        // Draw cell border
+        doc.rect(x, y, cellWidth, cellHeighttable7).stroke();
+
+        // Fill background color for the first row
+        if (i === 0) {
+          doc
+            .rect(x, y, cellWidth, cellHeighttable7)
+            .fill(firstColumnFillColor);
+        }
+
+        // Set text color to white for the first row, and black for other rows
+        doc.fillColor(i === 0 ? "black" : "black");
+        doc
+          .fontSize(fontSize)
+          .text(
+            tableData7[i][j],
+            x + 5,
+            y + 5,
+            { width: cellWidth - 10 },
+            { width: cellWidth, align: "center" }
+          );
+
+        x += cellWidth; // Move to the next column
       }
-    );
-  doc
-    .fontSize(headerFontSize)
-    .fillColor(color2)
-    .text("3.1.1 Target Website Details", 80, 310, { align: "left" });
-
-  //Table no 4
-  const tableData7 = [
-    [" Target Website URL’s ", " URL "],
-    [" Test Type ", " Black/Gray Box "],
-  ];
-
-  // Set font size and cell sizes
-  const firstColumnWidthtabl7 = 150; // Width for the first column
-  const secondColumnWidthtable7 = 300;
-  const thirdColumnWidthtable7 = 350; // Width for the second column
-  const cellHeighttable7 = 30;
-
-  // Set initial position and spacing
-  x = 100; // X position
-  y = 350; // Y position
-
-  for (let i = 0; i < tableData7.length; i++) {
-    for (let j = 0; j < tableData7[i].length; j++) {
-      let cellWidth;
-      let fillColor;
-      if (j === 0) {
-        cellWidth = firstColumnWidthtabl7;
-        fillColor = firstColumnFillColor;
-      } else if (j === 1) {
-        cellWidth = secondColumnWidthtable7;
-        fillColor = color;
-      } else {
-        cellWidth = thirdColumnWidthtable7;
-        fillColor = color;
-      }
-      // Draw cell border
-      doc.rect(x, y, cellWidth, cellHeighttable7).stroke();
-
-      // Fill background color for the first row
-      if (i === 0) {
-        doc.rect(x, y, cellWidth, cellHeighttable7).fill(firstColumnFillColor);
-      }
-
-      // Set text color to white for the first row, and black for other rows
-      doc.fillColor(i === 0 ? "black" : "black");
-      doc
-        .fontSize(fontSize)
-        .text(
-          tableData7[i][j],
-          x + 5,
-          y + 5,
-          { width: cellWidth - 10 },
-          { width: cellWidth, align: "center" }
-        );
-
-      x += cellWidth; // Move to the next column
+      x = 100; // Reset the X position for the next row
+      y += cellHeighttable7; // Move to the next ro
     }
-    x = 100; // Reset the X position for the next row
-    y += cellHeighttable7; // Move to the next ro
-  }
-  doc.addPage();
-  doc.image(hearder, {
-    x: 50, // Adjust the X position as needed
-    y: 20, // Adjust the Y position as needed
-    width: 100, // Adjust the width as needed
-  });
-  doc
-    .fontSize(headerFontSize)
-    .fillColor(color2)
-    .text("4. Testing Methodology and Approach", { align: "left" }, 60, 60);
+    doc.addPage();
+    doc.image(hearder, {
+      x: 50, // Adjust the X position as needed
+      y: 20, // Adjust the Y position as needed
+      width: 100, // Adjust the width as needed
+    });
+    doc
+      .fontSize(headerFontSize)
+      .fillColor(color2)
+      .text("4. Testing Methodology and Approach", { align: "left" }, 60, 60);
 
-  doc
-    .fontSize(textsize)
-    .fillColor("black")
-    .text(
-      "\nG-Info Technology Solutions Security team was engaged to perform a manual security assessment against the target application. This assessment involved a deep automated scan using automated scanning tools to discover common vulnerabilities, as well as manual testing. Manual testing includes validation of all issue types covered under the automated scan as well as checks for problems not typically found by automated scanners such as authentication, authorization, and business logic flaws.\n\n\n",
-      80,
-      80,
-      { width: 500 }
-    );
-  doc
-    .fontSize(textsize)
-    .fillColor("black")
-    .text(
-      "\n A Vulnerability Assessment is a method of evaluating the security of an application by simulating an attack. The process involves an active analysis of the application for any weaknesses, functional flaws, and vulnerabilities. Any security issues that are identified will be explained with an assessment of their impact, with a solution for their mitigation. The OWASP Web Application Methodology is based on the ‘gray box’ approach. The testing model consists of following phases:\n\n",
-      80,
-      170,
-      { width: 500 }
-    );
+    doc
+      .fontSize(textsize)
+      .fillColor("black")
+      .text(
+        "\nG-Info Technology Solutions Security team was engaged to perform a manual security assessment against the target application. This assessment involved a deep automated scan using automated scanning tools to discover common vulnerabilities, as well as manual testing. Manual testing includes validation of all issue types covered under the automated scan as well as checks for problems not typically found by automated scanners such as authentication, authorization, and business logic flaws.\n\n\n",
+        80,
+        80,
+        { width: 500 }
+      );
+    doc
+      .fontSize(textsize)
+      .fillColor("black")
+      .text(
+        "\n A Vulnerability Assessment is a method of evaluating the security of an application by simulating an attack. The process involves an active analysis of the application for any weaknesses, functional flaws, and vulnerabilities. Any security issues that are identified will be explained with an assessment of their impact, with a solution for their mitigation. The OWASP Web Application Methodology is based on the ‘gray box’ approach. The testing model consists of following phases:\n\n",
+        80,
+        170,
+        { width: 500 }
+      );
 
-  doc.image(testingMethodology, {
-    x: 70, // Adjust the X position as needed
-    y: 270, // Adjust the Y position as needed
-    width: 500, // Adjust the width as needed
-    height: 200,
-  });
-  doc
-    .fontSize(headerFontSize)
-    .fillColor(color2)
-    .text(" Information Gathering", 60, 530, { align: "left" });
-  doc.moveDown(1);
-  doc
-    .fontSize(textsize)
-    .fillColor("black")
-    .text(
-      "\nGathering information is the first step where a hacker tries to get information about the target. Hackers use different sources and tools to get more information about the target.",
-      60,
-      550,
-      { align: "left" }
-    );
+    doc.image(testingMethodology, {
+      x: 70, // Adjust the X position as needed
+      y: 270, // Adjust the Y position as needed
+      width: 500, // Adjust the width as needed
+      height: 200,
+    });
+    doc
+      .fontSize(headerFontSize)
+      .fillColor(color2)
+      .text(" Information Gathering", 60, 530, { align: "left" });
+    doc.moveDown(1);
+    doc
+      .fontSize(textsize)
+      .fillColor("black")
+      .text(
+        "\nGathering information is the first step where a hacker tries to get information about the target. Hackers use different sources and tools to get more information about the target.",
+        60,
+        550,
+        { align: "left" }
+      );
 
-  doc
-    .fontSize(headerFontSize)
-    .fillColor(color2)
-    .text(" Threat Modeling:", 60, 600, { align: "left" });
-  doc.moveDown(1);
-  doc
-    .fontSize(textsize)
-    .fillColor("black")
-    .text(
-      "\nThreat modelling is a process by which potential threats, such as structural vulnerabilities or the absence of appropriate safeguards, can be identified, enumerated, and mitigations can be prioritized.",
-      60,
-      610,
-      { align: "left" }
-    );
-  doc
-    .fontSize(headerFontSize)
-    .fillColor(color2)
-    .text(" Vulnerability Analysis", 60, 670, { align: "left" });
-  doc.moveDown(1);
-  doc
-    .fontSize(textsize)
-    .fillColor("black")
-    .text(
-      "\nA vulnerability assessment is an in-depth analysis of the building functions, systems, and site characteristics to identify building weaknesses and lack of redundancy, and determine mitigations or corrective actions that can be designed or implemented to reduce the vulnerabilities.",
-      60,
-      690,
-      { align: "left" }
-    );
+    doc
+      .fontSize(headerFontSize)
+      .fillColor(color2)
+      .text(" Threat Modeling:", 60, 600, { align: "left" });
+    doc.moveDown(1);
+    doc
+      .fontSize(textsize)
+      .fillColor("black")
+      .text(
+        "\nThreat modelling is a process by which potential threats, such as structural vulnerabilities or the absence of appropriate safeguards, can be identified, enumerated, and mitigations can be prioritized.",
+        60,
+        610,
+        { align: "left" }
+      );
+    doc
+      .fontSize(headerFontSize)
+      .fillColor(color2)
+      .text(" Vulnerability Analysis", 60, 670, { align: "left" });
+    doc.moveDown(1);
+    doc
+      .fontSize(textsize)
+      .fillColor("black")
+      .text(
+        "\nA vulnerability assessment is an in-depth analysis of the building functions, systems, and site characteristics to identify building weaknesses and lack of redundancy, and determine mitigations or corrective actions that can be designed or implemented to reduce the vulnerabilities.",
+        60,
+        690,
+        { align: "left" }
+      );
 
-  // Add the new text here
-  doc.moveDown(1);
-  doc
-    .fontSize(headerFontSize)
-    .fillColor(color2)
-    .text("Exploitation:", 60, null, { align: "left" });
+    // Add the new text here
+    doc.moveDown(1);
+    doc
+      .fontSize(headerFontSize)
+      .fillColor(color2)
+      .text("Exploitation:", 60, null, { align: "left" });
 
-  doc
-    .fontSize(textsize)
-    .fillColor("black")
-    .text(
-      "In computer security, a vulnerability is a weakness which can be exploited by a threat actor, such as an attacker, to perform unauthorized actions within a computer system. To exploit a vulnerability, an attacker must have at least one applicable tool or technique that can connect to a system weakness.",
-      60,
-      null,
-      { align: "left" }
-    );
+    doc
+      .fontSize(textsize)
+      .fillColor("black")
+      .text(
+        "In computer security, a vulnerability is a weakness which can be exploited by a threat actor, such as an attacker, to perform unauthorized actions within a computer system. To exploit a vulnerability, an attacker must have at least one applicable tool or technique that can connect to a system weakness.",
+        60,
+        null,
+        { align: "left" }
+      );
 
-  doc.moveDown(1);
-  doc
-    .fontSize(headerFontSize)
-    .fillColor(color2)
-    .text("Post Exploitation:", 60, null, { align: "left" });
+    doc.moveDown(1);
+    doc
+      .fontSize(headerFontSize)
+      .fillColor(color2)
+      .text("Post Exploitation:", 60, null, { align: "left" });
 
-  doc
-    .fontSize(textsize)
-    .fillColor("black")
-    .text(
-      "As the term suggests, post exploitation basically means the phases of operation once a victim's system has been compromised by the attacker. The value of the compromised system is determined by the value of the actual data stored in it and how an attacker may make use of it for malicious purposes. The concept of post exploitation has risen from this fact only as to how you can use the victim's compromised system's information. This phase actually deals with collecting sensitive information, documenting it, and having an idea of the configuration settings, network interfaces, and other communication channels. These may be used to maintain persistent access to the system as per the attacker's needs.",
-      60,
-      null,
-      { align: "left" }
-    );
+    doc
+      .fontSize(textsize)
+      .fillColor("black")
+      .text(
+        "As the term suggests, post exploitation basically means the phases of operation once a victim's system has been compromised by the attacker. The value of the compromised system is determined by the value of the actual data stored in it and how an attacker may make use of it for malicious purposes. The concept of post exploitation has risen from this fact only as to how you can use the victim's compromised system's information. This phase actually deals with collecting sensitive information, documenting it, and having an idea of the configuration settings, network interfaces, and other communication channels. These may be used to maintain persistent access to the system as per the attacker's needs.",
+        60,
+        null,
+        { align: "left" }
+      );
 
-  doc.moveDown(1);
-  doc
-    .fontSize(headerFontSize)
-    .fillColor(color2)
-    .text("Reporting:", 60, null, { align: "left" });
+    doc.moveDown(1);
+    doc
+      .fontSize(headerFontSize)
+      .fillColor(color2)
+      .text("Reporting:", 60, null, { align: "left" });
 
-  doc
-    .fontSize(textsize)
-    .fillColor("black")
-    .text(
-      "Preparation of report as per severity along with remedial recommendation. Evidence against claims and recommendation after successfully exploit all vulnerabilities we prepare detail report including Proof of concept and recommendations.",
-      60,
-      null,
-      { align: "left" }
-    );
+    doc
+      .fontSize(textsize)
+      .fillColor("black")
+      .text(
+        "Preparation of report as per severity along with remedial recommendation. Evidence against claims and recommendation after successfully exploit all vulnerabilities we prepare detail report including Proof of concept and recommendations.",
+        60,
+        null,
+        { align: "left" }
+      );
 
-  doc.addPage();
-  doc.image(hearder, {
-    x: 50, // Adjust the X position as needed
-    y: 20, // Adjust the Y position as needed
-    width: 100, // Adjust the width as needed
-  });
-
-  doc
-    .fontSize(headerFontSize)
-    .fillColor(color2)
-    .text("5.Web Apps Audit Test Standard followed:", 60, null, {
-      align: "left",
+    doc.addPage();
+    doc.image(hearder, {
+      x: 50, // Adjust the X position as needed
+      y: 20, // Adjust the Y position as needed
+      width: 100, // Adjust the width as needed
     });
 
-  doc
-    .fontSize(textsize)
-    .fillColor("black")
-    .text(
-      "\n\nScanning tools used in the WAPT Test possess the capability to assess OWASP TOP 10 Risk as under: \n\n",
-      60,
-      null,
-      { align: "left" }
-    );
-  const color3 = [74, 22, 71];
-  doc
-    .fontSize(14)
-    .fillColor(color3)
-    .text("OWASP Top 10 Risks (2021) Scanned in the Report", 60, null, {
-      align: "left",
-    });
-
-  doc
-    .fontSize(textsize)
-    .fillColor("black")
-    .text(
-      "\n\n Attackers can potentially use many different paths through the applications to do harm to your business or organization. Each of these paths represents a risk that may, or may not, be serious enough to warrant attention.",
-      60,
-      null,
-      { align: "left" }
-    );
-  doc
-    .fontSize(textsize)
-    .fillColor("black")
-    .text(
-      "\n\nThe OWASP Top 10 list consists of the 10 most seen application vulnerabilities:",
-      60,
-      null,
-      {
+    doc
+      .fontSize(headerFontSize)
+      .fillColor(color2)
+      .text("5.Web Apps Audit Test Standard followed:", 60, null, {
         align: "left",
-        underline: true, // This property underlines the text
-      }
-    );
+      });
 
-  const additionalText = `
-    -> Broken Access Control
-    -> Cryptographic Failures
-    -> Injection
-    -> Insecure Design
-    -> Security Misconfiguration
-    -> Vulnerable and Outdated Components
-    -> Identification and Authentication Failures
-    -> Software and Data Integrity Failures
-    -> Security Logging and Monitoring Failures
-    -> Server-Side Request Forgery (SSRF)\n\n\n
-`;
-
-  doc
-    .fontSize(textsize) // You can use the same font size as above
-    .fillColor("black") // You can use the same text color as above
-    .text(additionalText, 60, null, { align: "left" });
-
-  doc.image(abc, {
-    x: 70, // Adjust the X position as needed
-    y: doc.y, // Adjust the Y position as needed
-    width: 500, // Adjust the width as needed
-  });
-
-  doc.addPage();
-  doc.image(hearder, {
-    x: 50, // Adjust the X position as needed
-    y: 20, // Adjust the Y position as needed
-    width: 100, // Adjust the width as needed
-  });
-
-  doc
-    .fontSize(headerFontSize)
-    .fillColor(color2)
-    .text("6.Summary Report:\n\n", 60, null, {
-      align: "left",
-    });
-
-  doc
-    .fontSize(headerFontSize)
-    .fillColor(color2)
-    .text("6.1.Overall Summary of Findings", 80, null, {
-      align: "left",
-    });
-  doc
-    .fontSize(textsize)
-    .fillColor("black")
-    .text(
-      "\nThe table below provides summary of the vulnerabilities that were identified during the assessment. ",
-      80,
-      null,
-      {
+    doc
+      .fontSize(textsize)
+      .fillColor("black")
+      .text(
+        "\n\nScanning tools used in the WAPT Test possess the capability to assess OWASP TOP 10 Risk as under: \n\n",
+        60,
+        null,
+        { align: "left" }
+      );
+    const color3 = [74, 22, 71];
+    doc
+      .fontSize(14)
+      .fillColor(color3)
+      .text("OWASP Top 10 Risks (2021) Scanned in the Report", 60, null, {
         align: "left",
+      });
+
+    doc
+      .fontSize(textsize)
+      .fillColor("black")
+      .text(
+        "\n\n Attackers can potentially use many different paths through the applications to do harm to your business or organization. Each of these paths represents a risk that may, or may not, be serious enough to warrant attention.",
+        60,
+        null,
+        { align: "left" }
+      );
+    doc
+      .fontSize(textsize)
+      .fillColor("black")
+      .text(
+        "\n\nThe OWASP Top 10 list consists of the 10 most seen application vulnerabilities:",
+        60,
+        null,
+        {
+          align: "left",
+          underline: true, // This property underlines the text
+        }
+      );
+
+    const additionalText = `
+      -> Broken Access Control
+      -> Cryptographic Failures
+      -> Injection
+      -> Insecure Design
+      -> Security Misconfiguration
+      -> Vulnerable and Outdated Components
+      -> Identification and Authentication Failures
+      -> Software and Data Integrity Failures
+      -> Security Logging and Monitoring Failures
+      -> Server-Side Request Forgery (SSRF)\n\n\n
+  `;
+
+    doc
+      .fontSize(textsize) // You can use the same font size as above
+      .fillColor("black") // You can use the same text color as above
+      .text(additionalText, 60, null, { align: "left" });
+
+    doc.image(abc, {
+      x: 70, // Adjust the X position as needed
+      y: doc.y, // Adjust the Y position as needed
+      width: 500, // Adjust the width as needed
+    });
+
+    doc.addPage();
+    doc.image(hearder, {
+      x: 50, // Adjust the X position as needed
+      y: 20, // Adjust the Y position as needed
+      width: 100, // Adjust the width as needed
+    });
+
+    doc
+      .fontSize(headerFontSize)
+      .fillColor(color2)
+      .text("6.Summary Report:\n\n", 60, null, {
+        align: "left",
+      });
+
+    doc
+      .fontSize(headerFontSize)
+      .fillColor(color2)
+      .text("6.1.Overall Summary of Findings", 80, null, {
+        align: "left",
+      });
+    doc
+      .fontSize(textsize)
+      .fillColor("black")
+      .text(
+        "\nThe table below provides summary of the vulnerabilities that were identified during the assessment. ",
+        80,
+        null,
+        {
+          align: "left",
+        }
+      );
+
+    // Add a table behind the text
+    // Define different background colors for each cell in the first row
+    const backgroundColors = [
+      [31, 73, 125],
+      "red",
+      "red",
+      "yellow",
+      [155, 187, 89],
+    ];
+
+    const tableData8 = [
+      [
+        "  Total Findings  ",
+        " CRITICAL  ",
+        "  HIGH  ",
+        "  Medium  ",
+        "  Low  ",
+      ],
+      ["     00  ", "     00 ", "    00 ", "    00 ", "    00 "],
+    ];
+
+    // Set font size and cell sizes
+    const firstColumnWidthtable8 = 100; // Width for the first column
+    const secondColumnWidthtable8 = 100;
+    const thirdColumnWidthtable8 = 100; // Width for the second column
+    const cellHeighttable8 = 30;
+    //const fontSize = 12; // Font size
+
+    // Set initial position and spacing
+    x = 50; // X position
+    y = 200; // Y position
+
+    for (let i = 0; i < tableData8.length; i++) {
+      for (let j = 0; j < tableData8[i].length; j++) {
+        let cellWidth;
+        if (j === 0) {
+          cellWidth = firstColumnWidthtable8;
+        } else if (j === 1) {
+          cellWidth = secondColumnWidthtable8;
+        } else {
+          cellWidth = thirdColumnWidthtable8;
+        }
+
+        // Draw cell border
+        doc.rect(x, y, cellWidth, cellHeighttable8).stroke();
+
+        // Fill background color for the first row
+        if (i === 0) {
+          doc.rect(x, y, cellWidth, cellHeighttable8).fill(backgroundColors[j]);
+          doc.fillColor("white"); // Set text color to white for the first row
+        } else {
+          doc.fillColor("black"); // Set text color to black for other rows
+        }
+
+        doc
+          .fontSize(fontSize)
+          .text(
+            tableData8[i][j],
+            x + 5,
+            y + 5,
+            { width: cellWidth - 10 },
+            { width: cellWidth, align: "center" }
+          );
+
+        x += cellWidth; // Move to the next column
       }
-    );
-
-  // Add a table behind the text
-  // Define different background colors for each cell in the first row
-  const backgroundColors = [
-    [31, 73, 125],
-    "red",
-    "red",
-    [104, 104, 0],
-    [155, 187, 89],
-  ];
-
-  const tableData8 = [
-    ["  Total Findings  ", " CRITICAL  ", "  HIGH  ", "  Medium  ", "  Low  "],
-    ["     00  ", "     00 ", "    00 ", "    00 ", "    00 "],
-  ];
-
-  // Set font size and cell sizes
-  const firstColumnWidthtable8 = 100; // Width for the first column
-  const secondColumnWidthtable8 = 100;
-  const thirdColumnWidthtable8 = 100; // Width for the second column
-  const cellHeighttable8 = 30;
-  //const fontSize = 12; // Font size
-
-  // Set initial position and spacing
-  x = 50; // X position
-  y = 200; // Y position
-
-  for (let i = 0; i < tableData8.length; i++) {
-    for (let j = 0; j < tableData8[i].length; j++) {
-      let cellWidth;
-      if (j === 0) {
-        cellWidth = firstColumnWidthtable8;
-      } else if (j === 1) {
-        cellWidth = secondColumnWidthtable8;
-      } else {
-        cellWidth = thirdColumnWidthtable8;
-      }
-
-      // Draw cell border
-      doc.rect(x, y, cellWidth, cellHeighttable8).stroke();
-
-      // Fill background color for the first row
-      if (i === 0) {
-        doc.rect(x, y, cellWidth, cellHeighttable8).fill(backgroundColors[j]);
-        doc.fillColor("white"); // Set text color to white for the first row
-      } else {
-        doc.fillColor("black"); // Set text color to black for other rows
-      }
-
-      doc
-        .fontSize(fontSize)
-        .text(
-          tableData8[i][j],
-          x + 5,
-          y + 5,
-          { width: cellWidth - 10 },
-          { width: cellWidth, align: "center" }
-        );
-
-      x += cellWidth; // Move to the next column
+      x = 50; // Reset the X position for the next row
+      y += cellHeighttable8; // Move to the next row
     }
-    x = 50; // Reset the X position for the next row
-    y += cellHeighttable8; // Move to the next row
-  }
-  y += cellHeighttable8 + 10;
+    y += cellHeighttable8 + 10;
 
-  doc
-    .fontSize(textsize)
-    .fillColor("black")
-    .text("Table 1: Category Listing", 80, doc.y + 30, {
-      align: "center",
-    });
-  doc
-    .fontSize(textsize)
-    .fillColor("black")
-    .text(
-      "The chart below, gives the overall summary of number of vulnerabilities discovered with their Risk Ratings. Zero (00) Critical Risk, Zero (00) High Risk, Zero (00) Medium Risk, Zero (00) Low Risk vulnerabilities were identified during the test.",
-      60,
-      doc.y + 30,
-      {
+    doc
+      .fontSize(textsize)
+      .fillColor("black")
+      .text("Table 1: Category Listing", 80, doc.y + 30, {
+        align: "center",
+      });
+    doc
+      .fontSize(textsize)
+      .fillColor("black")
+      .text(
+        "The chart below, gives the overall summary of number of vulnerabilities discovered with their Risk Ratings. Zero (00) Critical Risk, Zero (00) High Risk, Zero (00) Medium Risk, Zero (00) Low Risk vulnerabilities were identified during the test.",
+        60,
+        doc.y + 30,
+        {
+          align: "left",
+        }
+      );
+    doc
+      .fontSize(16)
+      .fillColor("black")
+      .text("Severity Wise Analysis", 60, 430, {
         align: "left",
-      }
-    );
+      });
+    doc.fontSize(16).fillColor("black").text("Overall Analysis %", 370, 430, {
+      align: "right",
+    });
 
-  doc.end();
+    // Set up your data for the bar char
+    doc.image(chartimagePaths, {
+      x: 60,
+      y: doc.y + 30,
+      width: 250, // Adjust the width as needed
+    });
+
+    doc.image(chartimagePaths2, {
+      x: 350,
+      y: doc.y + 30,
+      width: 250, // Adjust the width as needed
+    });
+    doc.addPage();
+
+    doc
+      .fontSize(headerFontSize)
+      .fillColor(color2)
+      .text("6.2. Vulnerability Rating Definitions", 80, 50);
+
+    const tableData9 = [
+      [
+        "  Vulnerability Levels",
+        "                                      Description",
+      ],
+      [
+        "    Critical",
+        "            Exploitation of the vulnerability may result in complete compromise of the Database server or Application server. It can have a major impact on business. (CVSS Score- 9.0-10.0) ",
+      ],
+      [
+        "    High",
+        "            Exploitation of the vulnerability may result in complete compromise of the Application / disclosure of sensitive information. Vulnerability is easily exploitable. (CVSS Score- 7.0-8.9) ",
+      ],
+
+      [
+        "    Medium",
+        "            Exploitation of the vulnerability may result in some control on the Application / disclosure of semi- sensitive information. Exploitation of this vulnerability is possible but difficult. (CVSS Score- 4.0-6.9)",
+      ],
+      [
+        "    Low",
+        "            Exploitation of the vulnerability may result in little or no impact on the application/ disclosure of less sensitive information. Exploitation of this vulnerability is extremely difficult. (CVSS Score- 0.0-3.9)",
+      ],
+    ];
+    // Set font size and cell sizes
+    // const fontSize = 12;
+    const firstColumnWidthtable9 = 150; // Width for the first column
+    const secondColumnWidthtable9 = 350; // Width for the second column
+    const cellHeighttable9 = 70;
+
+    // Set initial position and spacing
+    x = 50; // X position
+    y = doc.y + 10;
+
+    for (let i = 0; i < tableData9.length; i++) {
+      for (let j = 0; j < tableData9[i].length; j++) {
+        const cellWidth =
+          j === 0 ? firstColumnWidthtable9 : secondColumnWidthtable9; // Adjust width based on the column
+
+        // Draw cell border
+        doc.rect(x, y, cellWidth, cellHeighttable9).stroke();
+
+        // Fill background color for the first row
+        if (i === 0) {
+          doc.fillAndStroke([31, 73, 125], [31, 73, 125]);
+          doc.rect(x, y, cellWidth, cellHeighttable9).fillAndStroke();
+        }
+
+        // Set text color to white for the first row, and black for other rows
+        doc.fill(i === 0 ? "white" : "black");
+
+        if (j === 0) {
+          // doc.fillColor([31, 73, 125]);
+          doc.fillColor(backgroundColors[i]);
+          doc.rect(x, y, cellWidth, cellHeighttable9).fill();
+          doc.fillColor("white");
+        }
+
+        // Center text vertically within the cell
+        const textHeight = doc.heightOfString(tableData9[i][j], {
+          width: cellWidth - 10,
+        });
+        const verticalPosition = y + (cellHeighttable9 - textHeight) / 2;
+
+        doc
+          .fontSize(fontSize)
+          .text(
+            tableData9[i][j],
+            x + 5,
+            verticalPosition,
+            { width: cellWidth - 10 },
+            { width: cellWidth, align: "center" }
+          );
+
+        x += cellWidth; // Move to the next column
+      }
+
+      x = 50; // Reset the X position for the next row
+      y += cellHeighttable9; // Move to the next row
+    }
+    const textBelowTable =
+      "7. Application Security Observations based on OWASP Top 10:";
+    doc
+      .fontSize(14) // Set the font size as needed
+      .text(textBelowTable, 50, y + 30); // Adjust the position as needed
+    doc.addPage();
+
+    doc
+      .fontSize(headerFontSize)
+      .fillColor(color2)
+      .text("9.Tools Used during Assessment & Testing:", 50, 50);
+    doc.image(tool, {
+      x: 50,
+      y: doc.y + 30,
+      width: 500, // Adjust the width as needed
+    });
+    doc
+      .fontSize(headerFontSize)
+      .fillColor(color2)
+      .text("11.1. CVSS 3 Rating definition", 50, 350);
+    // Add the new text
+    const textCVSS3Definition =
+      "In order to help standardize the risk of information technology vulnerabilities, the industry created the Common Vulnerability Scoring System, commonly referred to as CVSS. The scores range from 0 to 10 – with 10 representing the most risk. There are several things that are considered in order to assign the CVSS score including but not limited to: the degree of difficulty to exploit the vulnerability, whether the vulnerability allows for remote execution, whether there is an official fix or patch to address the vulnerability, etc. Standardized methodology to prioritize vulnerability remediation, which leverages the CVSS assigned to the vulnerability.";
+
+    doc
+      .fontSize(12) // Set the font size as needed
+      .fillColor("black")
+      .text(textCVSS3Definition, 50, 380);
+
+    doc.image(table, {
+      x: 50,
+      y: doc.y + 30,
+      width: 500, // Adjust the width as needed
+    });
+    doc.addPage();
+
+    doc
+      .fontSize(headerFontSize)
+      .fillColor(color2)
+      .text("11.2.General guidelines", 50, 50);
+
+    const additionalText2 =
+      "                   Validate Input and Output\n\n" +
+      "The input that the server receives from the user can lead to malicious code entering the server. Similarly, the output shown to the user can transmit malicious code to the client system. All user input and output should be checked to ensure it is both, appropriate and expected.  Input validation should be done on the client-side as well as on the server-side.\n\n" +
+      "There are three main models to consider while designing a data validation strategy.\n\n" +
+      "                  1. Accept Only Known Valid Data\n\n" +
+      "A character set may be defined for each field where input from the user is accepted, e.g., “A-Z, a-z, @,., 0-9, _” is a character set for a field that accepts user email.\n" +
+      "Reject Known Bad Data\n" +
+      "A character set of bad data may be defined for the site that has to be rejected, e.g., “CREATE, DROP, OR”.\n\n" +
+      "                  2. Sanitize Known Bad Data\n\n" +
+      "A character set of bad data is defined and any input field that has such a character is modified, e.g., “If there is a single quote (‘) in the data, it is replaced with two single quotes.”\n" +
+      "All methods must check:\n" +
+      "        • Data Type\n" +
+      "        • Syntax\n" +
+      "        • Length\n\n" +
+      "It is recommended to use the strategy of “Accept only known data”. Further, all the allowed input/output data must be sanitized on the server side by replacing scripts tags, sent as part of user input/output, with appropriate representations.\n" +
+      "For example,\n" +
+      "        • “<” by &lt;\n" +
+      "        • “>” by &gt;\n" +
+      "        • “(“ by &#40\n\n" +
+      "This would avoid scripts from being executed on the client side.\n\n" +
+      "Client-side input must also be checked for URL encoded data. URL encoding, sometimes referred to as percent encoding, is the accepted method of representing characters within a URI that may need special syntax handling to be correctly interpreted. This is achieved by encoding the character to be interpreted with a sequence of three characters. This triplet sequence consists of the percentage character “%”, followed by the two hexadecimal digits representing the octet code of the original character. For example, the US-ASCII character set represents a space with octet code 32, or hexadecimal 20. Thus, its URL-encoded representation is %20.";
+
+    doc
+      .fontSize(12) // Set the font size as needed
+      .fillColor("black")
+      .text(additionalText2, 50, 80);
+
+    doc.addPage();
+    doc
+      .fontSize(12) // Set the font size as needed
+      .fillColor("black")
+      .text(
+        "Other common characters that can be used for malicious purposes and their URL encoded representations are: -",
+        50,
+        50
+      );
+
+    doc.image(table2, {
+      x: 50,
+      y: doc.y + 10,
+      width: 400,
+      height: 130, // Adjust the width as needed
+    });
+
+    const additionalText3 =
+      "All input validation checks should be completed after the data has been decoded and validated as acceptable content (e.g., maximum and minimum lengths, correct data type, does not contain any encoded data, textual data only contains the characters a-z and A-Z, etc.)\n\n" +
+      "A one-time check on the database is to be made for invalid malicious data.  This would enable removal of input that has not been validated in earlier sessions. Otherwise, the invalid data may cause script execution on the user’s browser.\n\n" +
+      "SESSION MANAGEMENT / STRONG SESSION TRACKING\n\n" +
+      "Session Tokens on Logout\n" +
+      "In shared computing environments, session tokens take on a new risk. If the session tokens are not invalidated after logout, they can be reused to gain access to the application. It is imperative for the application to remove the cookies from both the server and the client side after the user has logged out. The user session maintained on the server side must also be invalidated immediately after logout.\n\n" +
+      "Session Time-out\n" +
+      "All the user Session tokens must be timed-out after a certain interval of user inactivity.  The Session tokens that do not expire on the HTTP server can allow an attacker unlimited time to guess or brute force a valid authenticated session token. If a user's cookie file is captured or brute-forced, then an attacker can use these static-session tokens to gain access to that user's web accounts. Additionally, session tokens can be potentially logged and cached in proxy servers that, if broken into by an attacker, may contain similar sorts of information in logs that can be exploited if the particular session has not been expired on the HTTP server.\n\n" +
+      "SESSION TOKEN TRANSMISSION\n" +
+      "If a session token is captured in transit through network interception, a web application account is then trivially prone to a replay or hijacking attack. Typical web encryption technologies include Secure Sockets Layer (SSLv2/v3) and Transport Layer Security (TLS v1) protocols in order to safeguard the state mechanism token.\n\n" +
+      "Some more key points to remember:";
+
+    doc
+      .fontSize(12) // Set the font size as needed
+      .text(additionalText3, 50, 240);
+
+    doc.addPage();
+
+    const additionalText4 =
+      "Session ID’s that are used should have the following properties:\n" +
+      "1. Randomness\n" +
+      "a. Session Ids must be randomly generated.\n" +
+      "b. Session Ids must be unpredictable.\n" +
+      "c. Make use of non-linear algorithms to generate session ID’s\n\n" +
+      "2. Session ID Size\n" +
+      "a. The size of a session ID should be large enough to ensure that it is not vulnerable to a brute force attack.\n" +
+      "b. The character set used should be complex. i.e. Make use of special characters.\n" +
+      "c. A length of 70 random characters is advised.\n\n" +
+      "SALTED HASHING\n\n" +
+      "What is salted hashing?\n\n" +
+      "The process starts with 2 elements of data:\n" +
+      "1.) A clear text string (this could represent a password for instance).\n" +
+      "2.) The salt, a random seed of data. This is the value used to augment a hash in order to ensure that 2 hashes of identical data yield different output.\n\n" +
+      "In pseudocode we generate a salted hash as follows:\n" +
+      "1.) Get the source string and salt as separate binary objects\n" +
+      "2.) Concatenate the 2 binary values\n" +
+      "3.) SHA hash the concatenation into SaltedPasswordHash\n" +
+      "4.) Base64 Encode(concat(SaltedPasswordHash, Salt))\n\n" +
+      "Credentials should be encrypted using salted hashes, so that even if the hashes are sniffed the possibility of a replay attack does not exist.\n\n" +
+      "References: http://www.owasp.org/images/3/33/Salted_Hashes_Demystified.doc\n\n" +
+      "Cache Control Directives\n\n" +
+      "Pages that contain sensitive information should not be stored in the local cache of the browser. To enforce this, HTTP directives need to be specified in the response. These HTTP directives need to be used to prevent enlisting of links on the browser history. The following HTTP directives can be sent by the server along with the response to the client. This would direct the browser to send a new request to the server each time it is generated.\n" +
+      "Expires: <a previous date>, for e.g. Expires: Thu, 10 Jan 200419:20:00 GMT\n\n" +
+      "Cache-Control: private\n" +
+      "• Cache-Control: no-cache\n" +
+      "• Cache-Control: no-store\n" +
+      "• Cache-Control: must-revalidate\n" +
+      "• Pragma: no-cache\n\n" +
+      "The directive “Cache-Control: must-revalidate” directs the browser to fetch the pages from the server rather than picking it up from the local “Temporary Internet Folders”. It also directs the browser to remove the file from the temporary folders.";
+
+    doc
+      .fontSize(12) // Set the font size as needed
+      .text(additionalText4, 50, 50); // Adjust the position as needed
+    doc
+      .fontSize(headerFontSize)
+      .fillColor(color2)
+      .text("12. G-Info Technology Solutions Contact:", 50, 120);
+    const officeContactsTableData = [
+      [
+        "Office Contacts",
+        "Phone: 1800 212 676767\nEmail: info@gisconsulting.in",
+      ],
+      [
+        "1st Level",
+        "Name: Auditor Name\nemail: auditor.email@gisconsulting.org\nMob: +91 0000000000",
+      ],
+      [
+        "2nd Level",
+        "Name: Rishav Kumar\nEmail: rishav.kumar@gisconsulting.in\nMob: +91 70046 52649",
+      ],
+      [
+        "3rd Level",
+        "Name: Naveen Dham\nEmail: naveen.dham@gisconsulting.in\nMob: +91-9810976838",
+      ],
+    ];
+
+    // Set font size and cell sizes
+    // const fontSize = 12;
+    const columnWidth = 250; // Width for each column
+    const cellHeightt = 50;
+
+    // Set initial position and spacing
+    x = 50; // X position
+    y = 150;
+    for (let i = 0; i < officeContactsTableData.length; i++) {
+      for (let j = 0; j < officeContactsTableData[i].length; j++) {
+        // Draw cell border
+        doc.rect(x, y, columnWidth, cellHeightt).stroke();
+
+        doc
+          .fontSize(fontSize)
+          .fillColor("black")
+          .text(
+            officeContactsTableData[i][j],
+            x + 5,
+            y + 5,
+            { width: columnWidth - 10 },
+            { width: columnWidth, align: "left" }
+          );
+
+        x += columnWidth; // Move to the next column
+      }
+      x = 50; // Reset the X position for the next row
+      y += cellHeightt; // Move to the next row
+    }
+    doc.end();
+  }, delay);
 };
 
 const createProject = async (req, res) => {
@@ -1589,7 +2042,6 @@ const complteReport = async (req, res) => {
 
   try {
     const report = await Report.findById(id).exec();
-    //console.log(report);
     const notification = new Notification({
       notification: "Report is completed by manager",
       employee: report.employee,
