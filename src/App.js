@@ -47,6 +47,7 @@ import WMClientProjectlist from "./pages/watchman/client/allproject";
 import ForgotPassword from "./pages/RenamePassword/ForgotPassword";
 import ResetPassword from "./pages/RenamePassword/ResetPassword";
 import PdfView from "./pages/pdfView";
+import DownloadButton from "./pages/client/pages/download";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -63,7 +64,7 @@ function App() {
             path="/auth/resetpassword/:userid/:token"
             element={<ResetPassword />}
           />
-          <Route path="/pdf" element={<PdfView/>}/>
+          <Route path="/pdf" element={<PdfView />} />
 
           <Route path="/">
             <Route
@@ -307,7 +308,7 @@ function App() {
             }
           />
           <Route
-            path="/editreport/:id"
+            path="/editreport/:id/:type"
             element={
               <AuthorizedUser>
                 <EditReportsubmit />
@@ -370,6 +371,7 @@ function App() {
               </AuthorizedWatchMan>
             }
           />
+          <Route path="/download" element={<DownloadButton />} />
 
           <Route path="*" element={<Error />} />
         </Routes>

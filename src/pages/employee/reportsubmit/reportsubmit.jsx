@@ -75,8 +75,6 @@ const Reportsubmit = () => {
       )
     );
     setFiles([]);
-
-    // window.history.back();
   };
 
   const handleSubmits = (event) => {
@@ -109,7 +107,6 @@ const Reportsubmit = () => {
   //  Multiple file upload
   const [highlight, setHighlight] = useState(false);
   const [files, setFiles] = useState([]);
-  // console.log(files);
   const handleDragEnter = (e) => {
     e.preventDefault();
     setHighlight(true);
@@ -119,13 +116,6 @@ const Reportsubmit = () => {
     e.preventDefault();
     setHighlight(false);
   };
-
-  // const handleDrop = (e) => {
-  //   e.preventDefault();
-  //   setHighlight(false);
-  //   const droppedFiles = Array.from(e.dataTransfer.files);
-  //   validateAndAddFiles(droppedFiles);
-  // };
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -161,98 +151,98 @@ const Reportsubmit = () => {
       <Sidebar />
       <div className="homeContainer w-[70vw]">
         <Navbar />
-        {/* main code here */}
         <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight m-6">
           Submit Report
         </h2>
         <div className="flex-row gap-10 w-auto rounded-lg border border-dashed border-gray-900/25 p-6 m-6 mt-6">
-          {/* <FileUpload /> */}
-
           {/* Here  multiple file  upload Start*/}
-          <form
-            onSubmit={handleSubmit}
-            className="w-full"
-            enctype="multipart/form-data"
-          >
-            <div className=" flex-col   items-center  mb-5 pb-5">
-              <h1 className=" bold  text-2xl p-2 m-2  "> Upload Report Here</h1>
-              <div
-                className={`border-4  w-full ${
-                  highlight ? "border-blue-500" : "border-gray-300"
-                } border-dashed p-8 `}
-              >
+          {type === "network" && (
+            <form
+              onSubmit={handleSubmit}
+              className="w-full"
+              enctype="multipart/form-data"
+            >
+              <div className=" flex-col   items-center  mb-5 pb-5">
+                <h1 className=" bold  text-2xl p-2 m-2  ">
+                  {" "}
+                  Upload Report Here
+                </h1>
                 <div
-                  className="w-full h-32 flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-300 rounded-lg"
-                  onDragEnter={handleDragEnter}
-                  onDragOver={(e) => e.preventDefault()}
-                  onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
+                  className={`border-4  w-full ${
+                    highlight ? "border-blue-500" : "border-gray-300"
+                  } border-dashed p-8 `}
                 >
-                  <input
-                    type="file"
-                    className="hidden"
-                    onChange={handleFileInput}
-                    multiple
-                    required
-                    accept=".pdf, .xlsx, .xls"
-                    name="files"
-                  />
-                  <p>Drag & Drop PDF or Excel files here</p>
-                  <p>or</p>
-                  <p
-                    className="px-4 py-2 mt-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-                    onClick={() =>
-                      document.querySelector("input[type=file]").click()
-                    }
+                  <div
+                    className="w-full h-32 flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-300 rounded-lg"
+                    onDragEnter={handleDragEnter}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
                   >
-                    Browse Files
-                  </p>
-                </div>
-                <ul className="mt-4 space-y-2">
-                  {files.map((file) => (
-                    <li
-                      key={file.name}
-                      className="flex items-center justify-between space-x-2"
+                    <input
+                      type="file"
+                      className="hidden"
+                      onChange={handleFileInput}
+                      multiple
+                      required
+                      accept=".pdf, .xlsx, .xls"
+                      name="files"
+                    />
+                    <p>Drag & Drop PDF or Excel files here</p>
+                    <p>or</p>
+                    <p
+                      className="px-4 py-2 mt-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+                      onClick={() =>
+                        document.querySelector("input[type=file]").click()
+                      }
                     >
-                      <div className="flex items-center space-x-2">
-                        <span>{file.name}</span>
-                        <span className="text-sm text-gray-500">
-                          ({(file.size / 1024).toFixed(2)} KB)
-                        </span>
-                      </div>
-                      <button
-                        className="text-red-600 hover:text-red-800 focus:outline-none"
-                        onClick={() => removeFile(file.name)}
+                      Browse Files
+                    </p>
+                  </div>
+                  <ul className="mt-4 space-y-2">
+                    {files.map((file) => (
+                      <li
+                        key={file.name}
+                        className="flex items-center justify-between space-x-2"
                       >
-                        Remove
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+                        <div className="flex items-center space-x-2">
+                          <span>{file.name}</span>
+                          <span className="text-sm text-gray-500">
+                            ({(file.size / 1024).toFixed(2)} KB)
+                          </span>
+                        </div>
+                        <button
+                          className="text-red-600 hover:text-red-800 focus:outline-none"
+                          onClick={() => removeFile(file.name)}
+                        >
+                          Remove
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className=" flex items-center justify-end gap-x-6">
+                  <button
+                    type="button"
+                    className="text-sm font-semibold leading-6 text-gray-900"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Submit
+                  </button>
+                </div>
+                <div className="  text-green-500   text-md ">
+                  {report.message}
+                </div>
               </div>
-              <div className=" flex items-center justify-end gap-x-6">
-                <button
-                  type="button"
-                  className="text-sm font-semibold leading-6 text-gray-900"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Submit
-                </button>
-              </div>
-              <div className="  text-green-500   text-md ">
-                {report.message}
-              </div>
-            </div>
-          </form>
+            </form>
+          )}
 
-          {/* Here  multiple file  upload End*/}
-
-          <div className=" ">
+          {/* <div className=" ">
             <label className="  mx-2 mb-5 pb-5 text-red-600  bold  text-lg">
               <input
                 type="checkbox"
@@ -263,8 +253,9 @@ const Reportsubmit = () => {
               Would You Like to Fill the Form Of Vulnerability (First Submit the
               report File)
             </label>
-          </div>
-          {showForm && report.reportId && (
+          </div> */}
+
+          {(type === "android" || type === "ios" || type === "web") && (
             <form
               onSubmit={handleSubmits}
               className="w-full mt-5"

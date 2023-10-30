@@ -83,7 +83,7 @@ function Taskview() {
     dispatch(listEmployee());
     dispatch(viewReport(id, type, webtargetUrls));
   }, [dispatch, id, type, webtargetUrls]);
-
+  // console.log(report);
   return (
     <div className="App">
       <div className="home">
@@ -464,7 +464,7 @@ function Taskview() {
                 <div className="m-10 flex gap-4  flex-col   rounded-lg border border-dashed border-gray-900/25 p-4">
                   <div className="  flex  justify-end">
                     {items.isCompleted === false ? (
-                      <Link to={`/editreport/${items._id}`}>
+                      <Link to={`/editreport/${items._id}/${type}`}>
                         <Edit className="w-5 mx-2" />
                       </Link>
                     ) : null}
