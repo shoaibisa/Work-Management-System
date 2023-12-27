@@ -3177,6 +3177,8 @@ const creatReport = async (req, res) => {
 };
 
 const createReportWeb = async (req, res) => {
+  console.log(req.body);
+  // return;
   const payload = req.body;
   const images = req.files.map((f) => f.filename);
 

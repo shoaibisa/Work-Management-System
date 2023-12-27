@@ -21,6 +21,9 @@ import {
   ALLREPORT_VIEW_FAILS,
   ALLREPORT_VIEW_REQUEST,
   ALLREPORT_VIEW_SUCCESS,
+  REPORT_CREATEDFORWEB_FAILS,
+  REPORT_CREATEDFORWEB_SUCCESS,
+  REPORT_CREATEDFORWEB_REQUEST,
 } from "../constants/reportsubmit";
 import { toast } from "react-hot-toast";
 
@@ -43,7 +46,6 @@ export const reportCreate =
     files
   ) =>
   async (dispatch) => {
-    console.log(files);
     const payload = {
       vulnerability,
       risk,
@@ -95,6 +97,82 @@ export const reportCreate =
     } catch (error) {
       dispatch({
         type: REPORT_CREATED_FAILS,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const reportCreateForWeb =
+  (
+    vulnerability,
+    risk,
+    attributingFactor,
+    affectedUrl,
+    observation,
+    cwe,
+    impact,
+    mitigation,
+    pocFile,
+    brief,
+    employee,
+    taskID,
+    type,
+    webtargetUrlsId
+  ) =>
+  async (dispatch) => {
+    const payload = {
+      vulnerability,
+      risk,
+      attributingFactor,
+      affectedUrl,
+      observation,
+      cwe,
+      impact,
+      mitigation,
+      brief,
+      employee,
+      taskID,
+      type,
+      webtargetUrlsId,
+    };
+
+    try {
+      dispatch({ type: REPORT_CREATEDFORWEB_REQUEST });
+      const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+      const token = userData?.token;
+      const formData = new FormData();
+
+      for (const key in payload) {
+        formData.append(key, payload[key]);
+      }
+
+      for (const file of pocFile) {
+        formData.append("pocFiles", file);
+      }
+      console.log("Form Data:", JSON.stringify([...formData.entries()]));
+
+      console.log(token);
+      const { data } = await axios.post(
+        "http://localhost:5000/project/creatreportweb",
+        formData,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      dispatch({
+        type: REPORT_CREATEDFORWEB_SUCCESS,
+        payload: data,
+      });
+      toast.success("Report created..");
+    } catch (error) {
+      dispatch({
+        type: REPORT_CREATEDFORWEB_FAILS,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

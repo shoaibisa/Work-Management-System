@@ -20,6 +20,9 @@ import {
   ALLREPORT_VIEW_REQUEST,
   ALLREPORT_VIEW_SUCCESS,
   ALLREPORT_VIEW_FAILS,
+  REPORT_CREATEDFORWEB_FAILS,
+  REPORT_CREATEDFORWEB_SUCCESS,
+  REPORT_CREATEDFORWEB_REQUEST,
 } from "../constants/reportsubmit";
 
 export const reportCreatedReducer = (state = { report: [] }, action) => {
@@ -37,6 +40,26 @@ export const reportCreatedReducer = (state = { report: [] }, action) => {
       return state;
   }
 };
+
+export const reportCreatedForWebReducer = (
+  state = { Webreport: [] },
+  action
+) => {
+  switch (action.type) {
+    case REPORT_CREATEDFORWEB_REQUEST:
+      return { loading: true, Webreport: [] };
+
+    case REPORT_CREATEDFORWEB_SUCCESS:
+      return { loading: false, Webreport: action.payload };
+
+    case REPORT_CREATEDFORWEB_FAILS:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
 export const reportViewReducer = (state = { report: [] }, action) => {
   switch (action.type) {
     case REPORT_VIEW_REQUEST:

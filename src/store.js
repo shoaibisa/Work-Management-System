@@ -30,6 +30,7 @@ import {
   reportRemarkReducer,
   reportByUserReducer,
   allReportByTaskReducer,
+  reportCreatedForWebReducer,
 } from "./reducers/reportReducer";
 import {
   notificationReducer,
@@ -49,6 +50,7 @@ const reducer = combineReducers({
   projectCreated: projectCreatedReducer,
   taskCreated: taskCreatedReducer,
   reportCreated: reportCreatedReducer,
+  reportCreateForWeb: reportCreatedForWebReducer,
   projectView: projectViewReducer,
   tasksView: taskViewReducer,
   taskAssign: taskAssignReducer,

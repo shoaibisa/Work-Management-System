@@ -3,7 +3,11 @@ import Navbar from "../../../components/navbar/Navbar";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { reportCreate, reportUpdate } from "../../../actions/reportSubmit";
+import {
+  reportCreate,
+  reportUpdate,
+  reportCreateForWeb,
+} from "../../../actions/reportSubmit";
 import { initTE, Select } from "tw-elements";
 
 const Reportsubmit = () => {
@@ -75,6 +79,27 @@ const Reportsubmit = () => {
       )
     );
     setFiles([]);
+  };
+  const handleSubmitForWeb = (event) => {
+    event.preventDefault();
+    dispatch(
+      reportCreateForWeb(
+        vulnerability,
+        risk,
+        attributingFactor,
+        affectedUrl,
+        observation,
+        cwe,
+        impact,
+        mitigation,
+        pocFile,
+        brief,
+        employee,
+        taskID,
+        type,
+        webtargetUrlsId
+      )
+    );
   };
 
   const handleSubmits = (event) => {
@@ -257,7 +282,7 @@ const Reportsubmit = () => {
 
           {(type === "android" || type === "ios" || type === "web") && (
             <form
-              onSubmit={handleSubmits}
+              onSubmit={handleSubmitForWeb}
               className="w-full mt-5"
               enctype="multipart/form-data"
             >
