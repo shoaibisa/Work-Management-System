@@ -3176,6 +3176,81 @@ const creatReport = async (req, res) => {
     });
 };
 
+const createReportWeb = async (req, res) => {
+  const payload = req.body;
+  const images = req.files.map((f) => f.filename);
+
+  const task = await Task.findById(payload.taskID).exec();
+  for (var i = 0; i < task.webData.webtargetUrls.length; i++) {
+    if (
+      req.body.webtargetUrlsId === task.webData.webtargetUrls[i]._id.toString()
+    ) {
+      // find employee in it
+      for (
+        var j = 0;
+        j < task.webData.webtargetUrls[i].assignEmployee.length;
+        j++
+      ) {
+        if (
+          req.body.employee ===
+          task.webData.webtargetUrls[i].assignEmployee[j].employee.toString()
+        ) {
+          task.webData.webtargetUrls[i].assignEmployee[j].report.push(
+            report._id
+          );
+        }
+      }
+    }
+  }
+
+  const report = new Report({
+    project: task.project,
+    employee: payload.employee,
+    task: payload.taskID,
+    reportFiles: images,
+    vulnerability: payload.vulnerability,
+    risk: payload.risk,
+    affectedUrl: payload.affectedUrl,
+    observation: payload.observation,
+    attributingFactor: payload.attributingFactor,
+    cwe: payload.cwe,
+    impact: payload.impact,
+    mitigation: payload.mitigation,
+    brief: payload.brief,
+    files: images,
+  });
+
+  const project = await Project.findOne({ _id: task.project }).exec();
+
+  const notification = new Notification({
+    notification: `New Report Created for ${task.project}`,
+    employee: project.manager,
+    link: "pdf/" + report._id,
+  });
+  await notification.save();
+  const manager = await Employee.findOne({ _id: project.manager }).exec();
+  manager.notifications.push(notification._id);
+  await manager.save();
+  await task.save();
+
+  report
+    .save()
+    .then(() => {
+      console.log("Report  save to db!");
+      return res.status(200).send({
+        title: "Success",
+        reportId: report._id,
+        message: "Report created sucessfully",
+      });
+    })
+    .catch((err) => {
+      return res.status(400).json({
+        isError: true,
+        title: "Error",
+        message: err,
+      });
+    });
+};
 const addRemark = async (req, res) => {
   const { id, remark } = req.body;
   try {
@@ -3997,4 +4072,5 @@ export {
   updateTask,
   someMoreDetails,
   getAllProjectbypM,
+  createReportWeb,
 };

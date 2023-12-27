@@ -28,6 +28,7 @@ import {
   getAllReportsByUserId,
   pdfview,
   downloadReportById,
+  createReportWeb,
 } from "../controllers/project.js";
 import { protect } from "../middleware/employeeMiddleware.js";
 import multer from "multer";
@@ -70,6 +71,12 @@ router.post(
   protect,
   creatReport
 );
+router.post(
+  "/creatreportweb",
+  protect,
+  upload.array("pocFiles"),
+  createReportWeb
+);
 router.post("/gettaskbyproject", protect, getTaskByProject);
 router.post("/assignemployee", protect, assignEmployee);
 router.post("/reportsbyuser", protect, getReportsByUser);
@@ -92,5 +99,6 @@ router.post("/projectbyprojectmanager", protect, getAllProjectbypM);
 router.post("/somemoredetails", protect, someMoreDetails);
 
 router.get("/pdfview", pdfview);
+router.get("/downloadreportbyid/:rid", downloadReportById);
 
 export default router;
