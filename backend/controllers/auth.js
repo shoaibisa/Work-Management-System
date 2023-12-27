@@ -122,6 +122,7 @@ function generateEmployeeId(fullname, department) {
 // };
 
 // signup controller function
+
 const signUp = async (req, res) => {
   //console.log("file",req.file);
   try {

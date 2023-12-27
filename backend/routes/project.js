@@ -27,6 +27,7 @@ import {
   someMoreDetails,
   getAllReportsByUserId,
   pdfview,
+  downloadReportById,
 } from "../controllers/project.js";
 import { protect } from "../middleware/employeeMiddleware.js";
 import multer from "multer";
@@ -89,6 +90,7 @@ router.post("/projectcomplete", protect, projectComplete);
 router.post("/updateTask", protect, updateTask);
 router.post("/projectbyprojectmanager", protect, getAllProjectbypM);
 router.post("/somemoredetails", protect, someMoreDetails);
+
 router.get("/pdfview", pdfview);
 
 export default router;

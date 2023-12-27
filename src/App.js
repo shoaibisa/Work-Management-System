@@ -47,7 +47,7 @@ import WMClientProjectlist from "./pages/watchman/client/allproject";
 import ForgotPassword from "./pages/RenamePassword/ForgotPassword";
 import ResetPassword from "./pages/RenamePassword/ResetPassword";
 import PdfView from "./pages/pdfView";
-import DownloadButton from "./pages/client/pages/download";
+import ShowPdf from "./pages/pdf/ShowPdf";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -291,6 +291,14 @@ function App() {
             }
           />
           <Route
+            path="/showpdf/:id"
+            element={
+              <AuthorizedUser>
+                <ShowPdf />
+              </AuthorizedUser>
+            }
+          />
+          <Route
             path="/allpdf/:id"
             element={
               <AuthorizedUser>
@@ -308,7 +316,7 @@ function App() {
             }
           />
           <Route
-            path="/editreport/:id/:type"
+            path="/editreport/:id"
             element={
               <AuthorizedUser>
                 <EditReportsubmit />
@@ -371,7 +379,6 @@ function App() {
               </AuthorizedWatchMan>
             }
           />
-          <Route path="/download" element={<DownloadButton />} />
 
           <Route path="*" element={<Error />} />
         </Routes>
