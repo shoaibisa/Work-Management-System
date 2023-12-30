@@ -170,12 +170,14 @@ const signUp = async (req, res) => {
       name: req.body.name,
       userId: EmployeeId,
       password: encryptedPassword,
-      role: req.body.role,
+      role: req.body.selectedrole,
       phone: req.body.phone,
       department: req.body.selectedDepartment.toLowerCase(),
       userToken: token,
       profileImage: img,
     };
+    // console.log(payLoad);
+    // return;
 
     const employee = new Employee(payLoad);
 
