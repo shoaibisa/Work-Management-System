@@ -124,7 +124,6 @@ function generateEmployeeId(fullname, department) {
 // signup controller function
 
 const signUp = async (req, res) => {
-  //console.log("file",req.file);
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -176,14 +175,12 @@ const signUp = async (req, res) => {
       userToken: token,
       profileImage: img,
     };
-    // console.log(payLoad);
-    // return;
 
     const employee = new Employee(payLoad);
 
     const uri = `${process.env.BACKEND_URL}/auth/verifyUser/${employee._id}/${token}`;
 
-    const bodypart = ` <table style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; border-collapse: collapse;">
+    const bodypart = `<table style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; border-collapse: collapse;">
     <tr>
       <td style="background-color: #fff; padding: 20px; text-align: center;">
         <h1 style="color: #7c3aed;">Hello ${employee.name}</h1>
@@ -191,9 +188,7 @@ const signUp = async (req, res) => {
         <a href="${uri}" style="background-color: #7c3aed; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px; display: inline-block;">Click here to verify</a>
       </td>
     </tr>
-  </table>
-    </body>
-  </html>`;
+  </table>`;
 
     const callFun = await mailSender(
       employee.email,
@@ -210,6 +205,8 @@ const signUp = async (req, res) => {
 
     const userAdmins = await Employee.find({ role: "Admin" });
     userAdmins.forEach(async (admin) => {
+      // Ensure admin.notifications is initialized as an array
+      admin.notifications = admin.notifications || [];
       admin.notifications.push(notification._id);
       await admin.save();
     });

@@ -73,6 +73,7 @@ const reducer = combineReducers({
   userlist: userListReducer,
   someDetails: someDetailsReducer,
 });
+
 const initialState = {
   employeeLogin: { employeeInfo: employeenfoFromStroge },
 };
