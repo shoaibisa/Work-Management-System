@@ -50,6 +50,11 @@ app.use("/project", projectRoute);
 //   });
 // });
 
+//adding 404 error handler
+app.use((req, res, next) => {
+  res.status(404).send("404 error");
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is Runing on Port ${PORT}`);

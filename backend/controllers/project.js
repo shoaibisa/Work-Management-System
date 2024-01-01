@@ -1417,6 +1417,7 @@ const pdfview = (req, res) => {
 };
 
 const downloadReportById = async (req, res) => {
+  console.log(req.body);
   const rid = req.params.rid;
 
   const report = await Report.findById(rid)
@@ -3183,6 +3184,23 @@ const createReportWeb = async (req, res) => {
   const images = req.files.map((f) => f.filename);
 
   const task = await Task.findById(payload.taskID).exec();
+
+  const report = new Report({
+    project: task.project,
+    employee: payload.employee,
+    task: payload.taskID,
+    reportFiles: images,
+    vulnerability: payload.vulnerability,
+    risk: payload.risk,
+    affectedUrl: payload.affectedUrl,
+    observation: payload.observation,
+    attributingFactor: payload.attributingFactor,
+    cwe: payload.cwe,
+    impact: payload.impact,
+    mitigation: payload.mitigation,
+    brief: payload.brief,
+    files: images,
+  });
   for (var i = 0; i < task.webData.webtargetUrls.length; i++) {
     if (
       req.body.webtargetUrlsId === task.webData.webtargetUrls[i]._id.toString()
@@ -3204,23 +3222,6 @@ const createReportWeb = async (req, res) => {
       }
     }
   }
-
-  const report = new Report({
-    project: task.project,
-    employee: payload.employee,
-    task: payload.taskID,
-    reportFiles: images,
-    vulnerability: payload.vulnerability,
-    risk: payload.risk,
-    affectedUrl: payload.affectedUrl,
-    observation: payload.observation,
-    attributingFactor: payload.attributingFactor,
-    cwe: payload.cwe,
-    impact: payload.impact,
-    mitigation: payload.mitigation,
-    brief: payload.brief,
-    files: images,
-  });
 
   const project = await Project.findOne({ _id: task.project }).exec();
 

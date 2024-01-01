@@ -39,7 +39,23 @@ function DetailedViewtask() {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const role = userData?.userRole;
   const isProjectManager = role === "Project Manager";
+  const downloadPdf = () => {
+    // Access the dynamic PDF endpoint from your Node.js server.
+    const pdfUrl = "http://localhost:5000/project/pdfview/3";
 
+    fetch(pdfUrl)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.style.display = "none";
+        a.href = url;
+        a.download = "dynamic.pdf";
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      });
+  };
   return (
     <div className="App">
       <div className="home">
@@ -88,6 +104,7 @@ function DetailedViewtask() {
                           )}
                         </div>
                       </div>
+                      <h1>hi</h1>
                       <div className="flex">
                         <h3> Assign To: </h3>
 
@@ -283,6 +300,12 @@ function DetailedViewtask() {
                       FILE
                     </a>
                   </span>
+                </div>
+                {/* download pdf */}
+                <div>
+                  <button style={{ color: "red" }} onClick={downloadPdf}>
+                    Download Dynamic PDF
+                  </button>
                 </div>
                 <div className="flex">
                   <h3> Assign To: </h3>

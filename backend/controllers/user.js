@@ -73,7 +73,7 @@ const getUserById = async (req, res) => {
 const getAllUsers = async (req, res) => {
   try {
     const employees = await Employee.find({}).exec();
-    console.log(employees);
+    // console.log(employees);
     if (!employees) {
       return res.status(208).send({
         isError: true,
@@ -128,7 +128,7 @@ const getManagerById = async (req, res) => {
     }
 
     // This should be outside the if block
-    console.log(employee);
+    // console.log(employee);
 
     return res.status(200).send({
       employee: employee,
@@ -144,29 +144,35 @@ const getManagerById = async (req, res) => {
 };
 
 const getEmployeeById = async (req, res) => {
-  const { id } = req.body;
-  // console.log(id);
+  try {
+    const { id } = req.body;
+    // console.log(id);
 
-  const employee = await Employee.findById(id)
-    .populate("managerProjects")
-    .populate("profileImage")
-    .exec();
-  console.log(employee);
-  if (!employee) {
-    return res.status(208).send({
+    const employee = await Employee.findById(id)
+      .populate("managerProjects")
+      .populate("profileImage")
+      .exec();
+    // console.log(employee);
+    if (!employee) {
+      return res.status(208).send({
+        isError: true,
+        title: "Error",
+        message: "This email is not registered. Redirecting to Signup page!",
+      });
+    }
+
+    return res.status(200).send({
+      employee: employee,
+      isError: false,
+    });
+  } catch (error) {
+    return res.status(500).send({
       isError: true,
       title: "Error",
-      message: "This email is not registered. Redirecting to Signup page!",
+      message: "An error occurred while fetching employee details.",
     });
   }
-
-  return res.status(200).send({
-    employee: employee,
-    isError: false,
-  });
 };
-
-
 
 const getEmployeeByDepartment = async (req, res) => {
   try {
@@ -176,7 +182,7 @@ const getEmployeeByDepartment = async (req, res) => {
       status: true,
     }).exec();
 
-    // console.log(employees);
+    console.log(employees);
     return res.status(200).send({
       employees: employees,
       isError: false,
