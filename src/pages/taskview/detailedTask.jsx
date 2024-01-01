@@ -39,22 +39,22 @@ function DetailedViewtask() {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const role = userData?.userRole;
   const isProjectManager = role === "Project Manager";
-  const downloadPdf = () => {
+  const downloadPdf = (webtargetUrlsid) => {
     // Access the dynamic PDF endpoint from your Node.js server.
-    const pdfUrl = "http://localhost:5000/project/pdfview/3";
-
-    fetch(pdfUrl)
-      .then((response) => response.blob())
-      .then((blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.style.display = "none";
-        a.href = url;
-        a.download = "dynamic.pdf";
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-      });
+    const pdfUrl = `http://localhost:5000/project/pdfview/${projectId}?task_id=${taskID}&type=${type}&webtargetUrlsid=${webtargetUrlsid}`;
+    console.log(pdfUrl);
+    // fetch(pdfUrl)
+    //   .then((response) => response.blob())
+    //   .then((blob) => {
+    //     const url = window.URL.createObjectURL(blob);
+    //     const a = document.createElement("a");
+    //     a.style.display = "none";
+    //     a.href = url;
+    //     a.download = "dynamic.pdf";
+    //     document.body.appendChild(a);
+    //     a.click();
+    //     window.URL.revokeObjectURL(url);
+    //   });
   };
   return (
     <div className="App">
@@ -104,7 +104,14 @@ function DetailedViewtask() {
                           )}
                         </div>
                       </div>
-                      <h1>hi</h1>
+                      <button
+                        onClick={() => {
+                          downloadPdf(url._id);
+                        }}
+                      >
+                        {" "}
+                        View Full Report
+                      </button>
                       <div className="flex">
                         <h3> Assign To: </h3>
 
@@ -300,12 +307,6 @@ function DetailedViewtask() {
                       FILE
                     </a>
                   </span>
-                </div>
-                {/* download pdf */}
-                <div>
-                  <button style={{ color: "red" }} onClick={downloadPdf}>
-                    Download Dynamic PDF
-                  </button>
                 </div>
                 <div className="flex">
                   <h3> Assign To: </h3>
