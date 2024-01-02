@@ -4045,6 +4045,32 @@ const someMoreDetails = async (req, res) => {
   });
 };
 
+const uploadExcelTemplate = async (req, res) => {
+  try {
+    console.log("i am backend")
+    // Assuming the file is sent in the request with the key 'file'
+    const uploadedFile = req.file;
+
+    if (!uploadedFile) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    // Handle the file as needed (save to disk, process, etc.)
+    // For now, just log it to the console
+    console.log("File is - ",uploadedFile);
+
+    // Do further processing or save the file to disk/database
+
+    // Respond to the client
+    res.status(200).json({ message: 'File uploaded successfully' });
+  } catch (error) {
+    console.error('Error uploading file', error);
+    res.status(500).json({ error: 'Error uploading file' });
+  }
+};
+
+
+
 export {
   createProject,
   actionProject,
@@ -4076,4 +4102,5 @@ export {
   someMoreDetails,
   getAllProjectbypM,
   createReportWeb,
+  uploadExcelTemplate,
 };

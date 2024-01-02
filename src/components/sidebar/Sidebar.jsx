@@ -14,7 +14,7 @@ import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import { DarkModeContext } from "../../context/darkModeContext";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
@@ -32,6 +32,9 @@ const Sidebar = () => {
     return classes.filter(Boolean).join(" ");
   }
 
+  useEffect(()=>{
+      console.log("user data is - ", userData);
+  })
   const { dispatchs } = useContext(DarkModeContext);
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const role = userData?.userRole;
@@ -181,7 +184,20 @@ const Sidebar = () => {
               <Link to="/clientProject" style={{ textDecoration: "none" }}>
                 <li>
                   <PersonOutlineIcon className="icon" />
-                  <span>AllProject</span>
+                  <span>All Project</span>
+                </li>
+              </Link>
+            </>
+          )}
+          {isClient && (
+            <>
+              <Link
+                to={`/createtemplate/${userData?.id}`}
+                style={{ textDecoration: "none" }}
+              >
+                <li>
+                  <PersonOutlineIcon className="icon" />
+                  <span>Create Template</span>
                 </li>
               </Link>
             </>

@@ -29,6 +29,7 @@ import {
   pdfview,
   downloadReportById,
   createReportWeb,
+  uploadExcelTemplate,
 } from "../controllers/project.js";
 import { protect } from "../middleware/employeeMiddleware.js";
 import multer from "multer";
@@ -81,7 +82,6 @@ router.post("/gettaskbyproject", protect, getTaskByProject);
 router.post("/assignemployee", protect, assignEmployee);
 router.post("/reportsbyuser", protect, getReportsByUser);
 router.post("/editreport", protect, upload.array("pocFiles"), editReport);
-
 router.post("/addremark", protect, addRemark);
 router.post("/completetask", protect, complteReport);
 router.post("/getreport", protect, getReport);
@@ -100,5 +100,6 @@ router.post("/somemoredetails", protect, someMoreDetails);
 
 router.get("/pdfview", pdfview);
 router.get("/downloadreportbyid/:rid", downloadReportById);
+router.post("/uploadexceltemplate", uploadExcelTemplate);
 
 export default router;

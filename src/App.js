@@ -48,6 +48,7 @@ import ForgotPassword from "./pages/RenamePassword/ForgotPassword";
 import ResetPassword from "./pages/RenamePassword/ResetPassword";
 import PdfView from "./pages/pdfView";
 import ShowPdf from "./pages/pdf/ShowPdf";
+import CreateTemplate from "./pages/client/pages/CreateTemplate.jsx";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -167,6 +168,14 @@ function App() {
             element={
               <AuthorizedUser>
                 <Viewproject />
+              </AuthorizedUser>
+            }
+          />
+          <Route
+            path="/createtemplate/:userId"
+            element={
+              <AuthorizedUser>
+                <CreateTemplate />
               </AuthorizedUser>
             }
           />
