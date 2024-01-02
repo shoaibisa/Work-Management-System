@@ -28,20 +28,24 @@ const CreateTemplate = () => {
       const formData = new FormData();
       formData.append("projectFile", file);
       console.log("File in FormData:", formData.get("uploadExcelTemplate"));
-
-      const res = await fetch(
+      const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+      const token = userData?.token;
+      const resp = await fetch(
         "http://localhost:5000/project/uploadexceltemplate",
         {
           method: "POST",
           body: formData,
+          headers: {
+            Authorization: "Bearer " + token,
+          },
         }
       );
 
       // Assuming the server responds with JSON
-      const data = await res.json();
+      const data = await resp.json();
 
-      // console.log(res);
-      if (!res.ok) {
+      console.log(data);
+      if (!resp.ok) {
         toast.error("Something went erong..");
       }
 
