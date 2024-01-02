@@ -14,6 +14,7 @@ function DetailedViewtask() {
   const TaskView = useSelector((state) => state.tasksView);
   const { tasks } = TaskView;
   const { data } = tasks;
+  console.log(data);
 
   const employeeList = useSelector((state) => state.employeeList);
   const { loading, error, employees } = employeeList;
@@ -109,7 +110,6 @@ function DetailedViewtask() {
                           downloadPdf(url._id);
                         }}
                       >
-                        {" "}
                         View Full Report
                       </button>
                       <div className="flex">
@@ -132,7 +132,6 @@ function DetailedViewtask() {
                                 {emp.name}
                               </Link>
                             ));
-                            console.log(employeeLinks);
                             return (
                               <>
                                 <div key={employee._id}>{employeeLinks}</div>

@@ -100,6 +100,11 @@ router.post("/somemoredetails", protect, someMoreDetails);
 
 router.get("/pdfview", pdfview);
 router.get("/downloadreportbyid/:rid", downloadReportById);
-router.post("/uploadexceltemplate", uploadExcelTemplate);
+router.post(
+  "/uploadexceltemplate",
+  upload.single("projectFile"),
+  protect,
+  uploadExcelTemplate
+);
 
 export default router;

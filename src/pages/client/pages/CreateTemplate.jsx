@@ -13,48 +13,8 @@ const CreateTemplate = () => {
     }
   };
 
-  //   const submitHandler = async (e) => {
-  //     e.preventDefault();
-  //     const toastId = toast.loading("Loading..");
-
-  //     // Check if a file is selected
-  //     if (!file) {
-  //       toast.error("Please select a file", { id: toastId });
-  //       return;
-  //     }
-
-  //     try {
-  //       const formData = new FormData();
-  //       console.log(file)
-  //       formData.append("excelFile", file);
-
-  //       const res = await fetch(
-  //         "http://localhost:5000/project/uploadexceltemplate",
-  //         {
-  //           method: "POST",
-  //           headers: { "Content-Type": "application/json" },
-  //           body: formData,
-  //         }
-  //       );
-
-  //       // Assuming the server responds with JSON
-  //     //   const data = await res.json();
-  //       console.log(res);
-
-  //       // Close the loading toast
-  //       toast.success("File uploaded successfully", { id: toastId });
-  //     } catch (error) {
-  //       // Handle errors
-  //       toast.error("Error uploading file", { id: toastId });
-  //       console.error("Error uploading file", error);
-  //     }
-  //   };
   const submitHandler = async (e) => {
     e.preventDefault();
-
-    // Assuming 'file' is the input element representing the file
-    // const fileInput = document.querySelector('input[type="file"]');
-    // const file = fileInput.files[0];
 
     if (!file) {
       // Handle the case where no file is selected
@@ -66,8 +26,8 @@ const CreateTemplate = () => {
 
     try {
       const formData = new FormData();
-      formData.append("file", file);
-      console.log(formData);
+      formData.append("projectFile", file);
+      console.log("File in FormData:", formData.get("uploadExcelTemplate"));
 
       const res = await fetch(
         "http://localhost:5000/project/uploadexceltemplate",
@@ -80,7 +40,7 @@ const CreateTemplate = () => {
       // Assuming the server responds with JSON
       const data = await res.json();
 
-      console.log(res);
+      // console.log(res);
       if (!res.ok) {
         toast.error("Something went erong..");
       }

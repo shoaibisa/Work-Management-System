@@ -201,7 +201,7 @@ export const viewReport = (id, type, webtargetUrls) => async (dispatch) => {
         },
       }
     );
-    // console.log(data);
+    console.log(data);
     dispatch({
       type: REPORT_VIEW_SUCCESS,
       payload: data,

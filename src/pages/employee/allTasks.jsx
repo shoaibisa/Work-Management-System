@@ -108,7 +108,6 @@ function EmployeeTasksList() {
       return task.selectedOption[selectedOptionName].isCompleted;
     }
   };
-  console.log(currentTasks);
   return (
     <div className="App">
       <div className="home">

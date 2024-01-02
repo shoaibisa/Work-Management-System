@@ -150,7 +150,7 @@ function AllPDF() {
               report.data.map((items, index) => (
                 <div class="flex  m-auto mt-10  flex-col w-[1000px]  border-b-4 border-violet-600">
                   <span>Report no: {index + 1}</span>
-                  <div className="flex-row  mt-2">
+                  {/* <div className="flex-row  mt-2">
                     {items &&
                       items.reportFiles.map((f, fileIndex) => (
                         <button class="btn btn-primary mx-5 mb-3 pb-3">
@@ -169,7 +169,7 @@ function AllPDF() {
                           </Link>
                         </button>
                       ))}
-                  </div>
+                  </div> */}
 
                   {items && items.vulnerability ? (
                     <>

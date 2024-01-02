@@ -181,7 +181,7 @@ const Reportsubmit = () => {
         </h2>
         <div className="flex-row gap-10 w-auto rounded-lg border border-dashed border-gray-900/25 p-6 m-6 mt-6">
           {/* Here  multiple file  upload Start*/}
-          {type === "network" && (
+          {(type === "network" || type === "grc") && (
             <form
               onSubmit={handleSubmit}
               className="w-full"
@@ -280,7 +280,10 @@ const Reportsubmit = () => {
             </label>
           </div> */}
 
-          {(type === "android" || type === "ios" || type === "web") && (
+          {(type === "android" ||
+            type === "ios" ||
+            type === "web" ||
+            type === "api") && (
             <form
               onSubmit={handleSubmitForWeb}
               className="w-full mt-5"

@@ -356,7 +356,7 @@ function PDF() {
               </div>
             </div> */}
 
-            <div className="flex section2  m-auto mt-10 flex-row w-[1000px] mb-20">
+            {/* <div className="flex section2  m-auto mt-10 flex-row w-[1000px] mb-20">
               {data &&
                 data.reportFiles.map((fileName, index) => (
                   <div
@@ -380,7 +380,7 @@ function PDF() {
                     </button>
                   </div>
                 ))}
-            </div>
+            </div> */}
 
             {data && data.vulnerability ? (
               <div class="flex section2  m-auto mt-10 flex-col w-[1000px]">
