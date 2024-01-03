@@ -58,19 +58,19 @@ const table2 = path.join(
   "image",
   "chartectertable.png"
 );
-const chartt = () => {
+const chartt = (data) => {
   const chart = new QuickChart();
   // Add Dynamic Chart
   chart
     .setConfig({
       type: "bar",
       data: {
-        labels: ["High", "Medium", "low"],
+        labels: ["Critical", "High", "Medium", "low"],
         datasets: [
           {
             label: "vulnerabilities",
-            data: [100, 19, 15],
-            backgroundColor: ["red", "#f4ca16", "#9BBA59"],
+            data: data,
+            backgroundColor: ["#660000", "red", "#f4ca16", "#9BBA59"],
           },
         ],
       },
@@ -82,10 +82,9 @@ const chartt = () => {
   const chartUrl = chart.getUrl();
   // Define the folder where you want to save the image
   const folderPath = path.join(
-    "D:",
-    "EmploymanagentSystem",
-    "Work-Management-System",
-    "backend",
+    dirname(currentModulePath),
+    "..",
+
     "Charts"
   ); // Change 'images' to your desired folder name
 
@@ -102,19 +101,19 @@ const chartt = () => {
     }
   });
 };
-const chart2 = () => {
+const chart2 = (data) => {
   const chart = new QuickChart();
   // Add Dynamic Chart
   chart
     .setConfig({
       type: "pie",
       data: {
-        labels: ["High", "Medium", "low"],
+        labels: ["Critical", "High", "Medium", "low"],
         datasets: [
           {
             label: "vulnerabilities",
-            data: [100, 19, 15],
-            backgroundColor: ["red", "#f4ca16", "#9BBA59"],
+            data: data,
+            backgroundColor: ["#660000", "red", "#f4ca16", "#9BBA59"],
           },
         ],
       },
@@ -1417,24 +1416,119 @@ const pdfview = (req, res) => {
 };
 
 const downloadReportById = async (req, res) => {
-  console.log(req.body);
-  const rid = req.params.rid;
+  const { pid, tid, type, webtargetUrlsid } = req.params;
 
-  const report = await Report.findById(rid)
-    .populate("project")
-    .populate("employee");
-  const manager = await Employee.findById(report.project.manager);
+  const project = await Project.findById(pid);
+  const manager = await Employee.findById(project.manager);
+  const task = await Task.findById(tid);
+  const reports = [];
+  if (type === "web") {
+    for (let i = 0; i < task.webData.webtargetUrls.length; i++) {
+      if (task.webData.webtargetUrls[i]._id == webtargetUrlsid) {
+        for (
+          let j = 0;
+          j < task.webData.webtargetUrls[i].assignEmployee.length;
+          j++
+        ) {
+          for (
+            let k = 0;
+            k < task.webData.webtargetUrls[i].assignEmployee[j].report.length;
+            k++
+          ) {
+            reports.push(
+              task.webData.webtargetUrls[i].assignEmployee[j].report[k]
+            );
+          }
+        }
+      }
+    }
+  } else if (type === "api") {
+    for (let j = 0; j < task.apiData.assignEmployee.length; j++) {
+      for (let k = 0; k < task.apiData.assignEmployee[j].report.length; k++) {
+        reports.push(task.apiData.assignEmployee[j].report[k]);
+      }
+    }
+  } else if (type === "mobile") {
+    if (webtargetUrlsid === "android") {
+      for (
+        let j = 0;
+        j < task.mobileData.forAndroid.assignEmployee.length;
+        j++
+      ) {
+        for (
+          let k = 0;
+          k < task.mobileData.forAndroid.assignEmployee[j].report.length;
+          k++
+        ) {
+          reports.push(task.mobileData.forAndroid.assignEmployee[j].report[k]);
+        }
+      }
+    } else {
+      for (let j = 0; j < task.mobileData.forIos.assignEmployee.length; j++) {
+        for (
+          let k = 0;
+          k < task.mobileData.forIos.assignEmployee[j].report.length;
+          k++
+        ) {
+          reports.push(task.mobileData.forIos.assignEmployee[j].report[k]);
+        }
+      }
+    }
+  }
 
-  const date = new Date(report.createdAt);
+  const reports_data = [];
+
+  for (let i = 0; i < reports.length; i++) {
+    const r = await Report.findById(reports[i]).populate("employee");
+    if (r.isCompleted) {
+      reports_data.push(r);
+    }
+  }
+  if (reports_data.length < 1) {
+    return res.status(404).send("Not found reports");
+  }
+  // return console.log(reports_data[0][0].employee.name);
+  const date = new Date(reports_data[0].createdAt);
 
   const day = date.getUTCDate().toString().padStart(2, "0");
   const month = (date.getUTCMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
   const year = date.getUTCFullYear();
 
   const formattedDate = `${day}-${month}-${year}`;
+  const authorsAndAuditorsText = [
+    [
+      "    Authors & Auditors",
+      "                                       Mail ID",
+    ],
+  ];
 
-  chartt();
-  chart2();
+  let HIGH = 0,
+    CRITICAL = 0,
+    MEDIUM = 0,
+    LOW = 0;
+  for (let i = 0; i < reports_data.length; i++) {
+    let temp = [reports_data[i].employee.name, reports_data[i].employee.email];
+    authorsAndAuditorsText.push(temp);
+    if (reports_data[i].risk === "high") {
+      HIGH++;
+    } else if (reports_data[i].risk === "low") {
+      LOW++;
+    } else if (reports_data[i].risk === "critical") {
+      CRITICAL++;
+    } else {
+      MEDIUM++;
+    }
+  }
+  authorsAndAuditorsText.push(["GISC InfoSec Team", "GISC InfoSec Team"]);
+  const summary_finds = [
+    "    " + reports_data.length,
+    "    " + CRITICAL,
+    "    " + HIGH,
+    "    " + MEDIUM,
+    "    " + LOW,
+  ];
+  chartt([CRITICAL, HIGH, MEDIUM, LOW]);
+  chart2([CRITICAL, HIGH, MEDIUM, LOW]);
 
   const doc = new pdfkit();
   res.setHeader("Content-Type", "application/pdf");
@@ -1467,7 +1561,7 @@ const downloadReportById = async (req, res) => {
     doc.moveDown(1); // Adjust the value as needed
 
     // Add "Host company Name" text
-    doc.fontSize(16).text(report.project.companyName, doc.x, doc.y);
+    doc.fontSize(16).text(project.companyName, doc.x, doc.y);
 
     // Reduce the space between lines
     doc.moveDown(0.5); // Adjust the value as needed
@@ -1479,8 +1573,8 @@ const downloadReportById = async (req, res) => {
 
     // Add the left-aligned text
     doc.fontSize(12).text("Report Prepared by: ", doc.x, doc.y);
-    doc.fontSize(10).text(report.employee.name, doc.x, doc.y);
-    doc.fontSize(10).text(report.employee.email, doc.x, doc.y);
+    doc.fontSize(10).text(reports_data[0].employee.name, doc.x, doc.y);
+    doc.fontSize(10).text(reports_data[0].employee.email, doc.x, doc.y);
     doc.fontSize(10).text("(A CERT-IN Empaneled Company)", doc.x, doc.y);
     doc
       .fontSize(10)
@@ -1505,7 +1599,7 @@ const downloadReportById = async (req, res) => {
     doc.moveDown(2);
     const noteText =
       "NOTE: The information contained within this report is considered proprietary and confidential to the {GIS Consulting}. Inappropriate and unauthorized disclosure of this report or portions of it could result in significant damage or loss to the " +
-      report.project.companyName +
+      project.companyName +
       ". This report should be distributed to individuals on a Need-to-Know basis only. Paper copies should be locked up when not in use. Electronic copies should be stored offline and protected appropriately.";
 
     doc.fontSize(12).text(noteText, 50, 500, { width: 550 });
@@ -1610,18 +1704,7 @@ const downloadReportById = async (req, res) => {
       y += cellHeight; // Move to the next row
     }
 
-    const tableData2 = [
-      [
-        "    Authors & Auditors",
-        "                                       Mail ID",
-      ],
-      [
-        "    Auditor Name: " + report.employee.name,
-        "            " + report.employee.name,
-      ],
-
-      ["    GISC InfoSec Team", "            GISC InfoSec Team"],
-    ];
+    const tableData2 = authorsAndAuditorsText;
 
     // Set font size and cell sizes
     // const fontSize = 12;
@@ -1786,9 +1869,9 @@ const downloadReportById = async (req, res) => {
     const tableData5 = [
       ["Client", "Name", "Email ID"],
       [
-        report.project.companyName,
-        report.project.clientName,
-        " " + report.employee.email,
+        project.companyName,
+        project.clientName,
+        " " + reports_data[0].employee.email,
       ],
     ];
 
@@ -2339,7 +2422,7 @@ const downloadReportById = async (req, res) => {
         "  Medium  ",
         "  Low  ",
       ],
-      ["     00  ", "     00 ", "    00 ", "    00 ", "    00 "],
+      summary_finds,
     ];
 
     // Set font size and cell sizes
@@ -2667,11 +2750,11 @@ const downloadReportById = async (req, res) => {
       [
         "1st Level",
         "Name: " +
-          report.employee.name +
+          reports_data[0].employee.name +
           "\nemail: " +
-          report.employee.email +
+          reports_data[0].employee.email +
           "\nMob: " +
-          report.employee.phone +
+          reports_data[0].employee.phone +
           "",
       ],
       [

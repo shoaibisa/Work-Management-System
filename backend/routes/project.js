@@ -99,7 +99,10 @@ router.post("/projectbyprojectmanager", protect, getAllProjectbypM);
 router.post("/somemoredetails", protect, someMoreDetails);
 
 router.get("/pdfview", pdfview);
-router.get("/downloadreportbyid/:rid", downloadReportById);
+router.get(
+  "/downloadallreports/:pid/:tid/:type/:webtargetUrlsid",
+  downloadReportById
+);
 router.post(
   "/uploadexceltemplate",
   upload.single("projectFile"),

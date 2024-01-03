@@ -14,7 +14,6 @@ function DetailedViewtask() {
   const TaskView = useSelector((state) => state.tasksView);
   const { tasks } = TaskView;
   const { data } = tasks;
-  console.log(data);
 
   const employeeList = useSelector((state) => state.employeeList);
   const { loading, error, employees } = employeeList;
@@ -40,22 +39,22 @@ function DetailedViewtask() {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const role = userData?.userRole;
   const isProjectManager = role === "Project Manager";
-  const downloadPdf = (webtargetUrlsid) => {
+  const downloadPdf = (type, webtargetUrlsid) => {
     // Access the dynamic PDF endpoint from your Node.js server.
-    const pdfUrl = `http://localhost:5000/project/pdfview/${projectId}?task_id=${taskID}&type=${type}&webtargetUrlsid=${webtargetUrlsid}`;
+    const pdfUrl = `http://localhost:5000/project/downloadallreports/${projectId}/${taskID}/${type}/${webtargetUrlsid}`;
     console.log(pdfUrl);
-    // fetch(pdfUrl)
-    //   .then((response) => response.blob())
-    //   .then((blob) => {
-    //     const url = window.URL.createObjectURL(blob);
-    //     const a = document.createElement("a");
-    //     a.style.display = "none";
-    //     a.href = url;
-    //     a.download = "dynamic.pdf";
-    //     document.body.appendChild(a);
-    //     a.click();
-    //     window.URL.revokeObjectURL(url);
-    //   });
+    fetch(pdfUrl)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.style.display = "none";
+        a.href = url;
+        a.download = "dynamic.pdf";
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      });
   };
   return (
     <div className="App">
@@ -107,7 +106,7 @@ function DetailedViewtask() {
                       </div>
                       <button
                         onClick={() => {
-                          downloadPdf(url._id);
+                          downloadPdf("web", url._id);
                         }}
                       >
                         View Full Report
@@ -275,6 +274,13 @@ function DetailedViewtask() {
                   </>
                 )}
 
+                <button
+                  onClick={() => {
+                    downloadPdf("mobile", data.mobileData._id);
+                  }}
+                >
+                  View Full Report
+                </button>
                 <div className=" mt-4 flex flex-col">
                   <div className="text-md font-medium leading-6 text-gray-900">
                     Remarks :
@@ -334,6 +340,13 @@ function DetailedViewtask() {
                     }
                   })}
                 </div>
+                <button
+                  onClick={() => {
+                    downloadPdf("api", data.apiData._id);
+                  }}
+                >
+                  View Full Report
+                </button>
 
                 <div className=" mt-4 flex flex-col">
                   <div className="text-md font-medium leading-6 text-gray-900">
