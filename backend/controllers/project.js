@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 import { validationResult } from "express-validator";
 import Project from "../models/project.js";
 import Task from "../models/task.js";
@@ -13,8 +14,7 @@ import QuickChart from "quickchart-js";
 import request from "request";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-
-import sharp from "sharp";
+import report from "../models/report.js";
 
 const currentModuleURL = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleURL);
@@ -2633,7 +2633,7 @@ const downloadReportById = async (req, res) => {
       .fontSize(headerFontSize)
       .fillColor("black")
       .text("     9.1.2 Insecure Communication", 50, 90);
-
+    console.log(reports_data);
     // Add a gap between lines
     doc.moveDown();
     for (let i = 0; i < reports_data.length; i++) {
@@ -2816,57 +2816,37 @@ const downloadReportById = async (req, res) => {
       // Adjust Y-coordinate for the heading
       y += headingHeight;
       doc.moveDown();
+      // Iterate through each object in the 'reports_data' array
+      reports_data.forEach((entry) => {
+        entry.files.forEach((file) => {
+          // Log the file name to the console
+          console.log(file);
 
-      // // Array of dummy image URLs
+          // Construct the image path
+          const image = path.join(
+            dirname(currentModulePath),
+            "..",
+            "uploads",
+            file
+          );
 
-      // const imagePaths = [
-      //   "https://via.placeholder.com/400x200",
-      //   "https://via.placeholder.com/400x200",
-      // ];
+          // Embed the image into the PDF document
+          doc.image(image, {
+            x: x,
+            y: y,
+            width: 100, // Adjust the width as needed
+          });
 
-      function addImagesToDocument(imagePaths, doc) {
-        let y = 50; // Initial Y-coordinate
-        const pageHeight = 600; // Set the page height as needed
+          // Adjust the Y position for the next image
+          y += 120; // You can adjust this value as needed for spacing
 
-        for (let i = 0; i < imagePaths.length; i++) {
-          const imagePath = imagePaths[i];
-
-          // Check if there is enough space on the current page for the image
-          const imageHeight = 200; // Set the height of the image as needed
-          if (y + imageHeight > pageHeight) {
-            // Add a new page if there is not enough space
+          // Check if the Y position exceeds the page height, and start a new page if needed
+          if (y > doc.page.height - 50) {
             doc.addPage();
-            // Reset Y-coordinate
-            y = 50; // Adjust as needed
+            y = 20; // Reset Y position for the new page
           }
-
-          // Convert image to a supported format (PNG or JPEG)
-          const outputImagePath = `uploads/${imagePath.replace(
-            /\.[^/.]+$/,
-            ".png"
-          )}`;
-          sharp(`uploads/${imagePath}`)
-            .toFormat("png")
-            .toFile(outputImagePath, (err) => {
-              if (err) {
-                console.error(err);
-                return;
-              }
-              // Load the converted image from the file system
-              const imageData = fs.readFileSync(outputImagePath);
-              // Add the image to the document
-              doc.image(imageData, x, y, { width: 400 }); // Adjust width as needed
-
-              // Adjust Y-coordinate for the next element
-              y += imageHeight + 20; // Add some spacing between images
-            });
-        }
-      }
-      const imagePaths = reports_data[i].files;
-
-      // Call the function to add images to the document
-      addImagesToDocument(imagePaths, doc);
-
+        });
+      });
       doc.addPage();
     }
 
