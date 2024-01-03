@@ -110,6 +110,6 @@ router.post(
   protect,
   uploadExcelTemplate
 );
-router.get("/downloadexceltemplate",protect, downloadExcelTemplate);
+router.get("/downloadexceltemplate", protect, downloadExcelTemplate);
 
 export default router;

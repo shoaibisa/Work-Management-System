@@ -5,6 +5,7 @@ import SubmitProject from "../models/report.js";
 import Report from "../models/report.js";
 import fs from "fs";
 import Employee from "../models/employee.js";
+import axios from "axios";
 import Notification from "../models/notification.js";
 import pdfkit from "pdfkit";
 import path from "path";
@@ -14,7 +15,6 @@ import retry from "retry";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import toast from "react-hot-toast";
-
 const currentModuleURL = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleURL);
 const imagePath = path.join(
@@ -1166,6 +1166,7 @@ const pdfview = (req, res) => {
         "            Exploitation of the vulnerability may result in little or no impact on the application/ disclosure of less sensitive information. Exploitation of this vulnerability is extremely difficult. (CVSS Score- 0.0-3.9)",
       ],
     ];
+
     // Set font size and cell sizes
     // const fontSize = 12;
     const firstColumnWidthtable9 = 150; // Width for the first column
@@ -1227,6 +1228,7 @@ const pdfview = (req, res) => {
     doc
       .fontSize(14) // Set the font size as needed
       .text(textBelowTable, 50, y + 30); // Adjust the position as needed
+
     doc.addPage();
 
     doc
@@ -2606,7 +2608,248 @@ const downloadReportById = async (req, res) => {
     doc
       .fontSize(14) // Set the font size as needed
       .text(textBelowTable, 50, y + 30); // Adjust the position as needed
+
     doc.addPage();
+
+    // Add the text to the document with proper Y-coordinates
+    doc
+      .fontSize(headerFontSize)
+      .fillColor("black")
+      .text("8 Detail Reports POCs & Recommendations", 50, 50);
+
+    // Add a gap between lines
+    doc.moveDown();
+
+    doc
+      .fontSize(headerFontSize)
+      .fillColor("red")
+      .text("     8.1. “High Vulnerability Details”", 50, 70);
+
+    // Add a gap between lines
+    doc.moveDown();
+
+    doc
+      .fontSize(headerFontSize)
+      .fillColor("black")
+      .text("     9.1.2 Insecure Communication", 50, 90);
+
+    // Add a gap between lines
+    doc.moveDown();
+    for (let i = 0; i < 3; i++) {
+      const pageHeight = doc.page.height;
+      const tableData10 = [
+        ["DATE OF DISCOVERY", "26-12-2022"],
+        ["CVSS 3 SCORE", "8.6"],
+        ["CATEGORY", "Cryptographic Failures"],
+        ["STATUS", "OPEN"],
+        ["CVSS Vector", "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:L "],
+        ["Threat", "Insecure Communication"],
+        ["CVE, OWASP, CWE, REFERENCE", "A2"],
+      ];
+
+      // Set styling variables
+      const firstColumnWidthTable10 = 150;
+      const secondColumnWidthTable10 = 350;
+      const cellHeightTable10 = 50; // Adjusted cell height for better spacing
+
+      // Set initial position and spacing
+      x = 50;
+      y = 120; // Adjusted starting Y-coordinate
+
+      // Function to create a dynamically resizable table
+      function createResizableTable(data) {
+        for (let i = 0; i < data.length; i++) {
+          // Check if there is enough space on the current page
+          if (
+            y +
+              doc.heightOfString(data[i][0], {
+                width: firstColumnWidthTable10 - 10,
+              }) >
+            pageHeight
+          ) {
+            // Add a new page if there is not enough space
+            doc.addPage();
+            // Reset Y-coordinate
+            y = 50;
+          }
+
+          let maxCellHeight = 0;
+
+          for (let j = 0; j < data[i].length; j++) {
+            const cellWidth =
+              j === 0 ? firstColumnWidthTable10 : secondColumnWidthTable10;
+
+            // Calculate the height of the current cell based on content
+            const textHeight = doc.heightOfString(data[i][j], {
+              width: cellWidth - 10,
+            });
+            const cellHeight = Math.max(cellHeightTable10, textHeight + 10);
+
+            // Update the maximum cell height in the current row
+            maxCellHeight = Math.max(maxCellHeight, cellHeight);
+
+            doc.rect(x, y, cellWidth, cellHeight).stroke();
+
+            if (i === 0) {
+              doc.fillAndStroke("white", "black");
+              doc.rect(x, y, cellWidth, cellHeight).fillAndStroke();
+            }
+
+            doc.fill(i === 0 ? "black" : "black");
+
+            // Center text vertically within the cell
+            const verticalPosition = y + (cellHeight - textHeight) / 2;
+
+            doc.fontSize(fontSize).text(data[i][j], x + 5, verticalPosition, {
+              width: cellWidth - 10,
+              align: "left",
+            });
+
+            x += cellWidth;
+          }
+
+          // Adjust the Y-coordinate based on the maximum cell height in the current row
+          y += maxCellHeight;
+          x = 50;
+        }
+      }
+
+      // Call the function to create the resizable table
+      createResizableTable(tableData10);
+
+      // Set spacing for the new table
+      const singleColumnWidth = 500;
+      const singleCellHeight = 50;
+
+      // Set initial position for the new table
+      x = 50;
+
+      // Data for the new table with 3 rows and 1 column
+      const newTableData = [
+        [
+          "VULNERABILITY SUMMARY",
+          "This code assumes that the original y and x variables are still in scope and represent the starting coordinates for both tables. If you have any issues or if the context is different, please make sure to adapt the code accordingly.This code assumes that the original y and x variables are still in scope and represent the starting coordinates for both tables. If you have any issues or if the context is different, please make sure to adapt the code accordingly.This code assumes that the.",
+        ],
+        [
+          "IMPACT",
+          "This code assumes that the original y and x variables are still in scope and represent the starting coordinates for both tables. If you have any issues or if the context is different, please make sure to adapt the code accordingly.This code assumes that the original y and x variables are still in scope and represent the starting coordinates for both tables. If you have any issues or if the context is different, please make sure to adapt the code accordingly.",
+        ],
+        [
+          "RECOMMENDED SOLUTION",
+          "This code assumes that the original y and x variables are still in scope and represent the starting coordinates for both tables. If you have any issues or if the context is different, please make sure to adapt the code accordingly.This code assumes that the original y and x variables are still in scope and represent the starting coordinates for both tables. If you have any issues or if the context is different, please make sure to adapt the code accordingly.",
+        ],
+      ];
+      // Function to create a single-column table with headlines
+      function createSingleColumnTableWithHeadlines(data) {
+        for (let i = 0; i < data.length; i++) {
+          const headline = data[i][0];
+          const content = data[i][1];
+
+          // Calculate the height of the current cell based on content
+          const textHeightHeadline = doc.heightOfString(headline, {
+            width: singleColumnWidth - 10,
+          });
+          const textHeightContent = doc.heightOfString(content, {
+            width: singleColumnWidth - 10,
+          });
+
+          const cellHeight = Math.max(
+            singleCellHeight,
+            textHeightHeadline + textHeightContent + 20
+          );
+
+          // Check if there is enough space on the current page
+          if (y + cellHeight > pageHeight) {
+            // Add a new page if there is not enough space
+            doc.addPage();
+            // Reset Y-coordinate
+            y = 50; // Adjust as needed
+          }
+
+          doc.rect(x, y, singleColumnWidth, cellHeight).stroke();
+
+          doc.fill("black");
+
+          // Center text vertically within the cell for headline
+          const verticalPositionHeadline =
+            y + (cellHeight - textHeightHeadline - textHeightContent) / 2;
+          doc
+            .fontSize(fontSize)
+            .text(headline, x + 5, verticalPositionHeadline, {
+              width: singleColumnWidth - 10,
+              align: "left",
+            });
+
+          // Center text vertically within the cell for content
+          const verticalPositionContent =
+            verticalPositionHeadline + textHeightHeadline + 10;
+          doc.fontSize(fontSize).text(content, x + 5, verticalPositionContent, {
+            width: singleColumnWidth - 10,
+            align: "left",
+          });
+
+          // Adjust Y-coordinate for the next row
+          y += cellHeight;
+        }
+      }
+
+      // Call the function to create the new single-column table with headlines
+      createSingleColumnTableWithHeadlines(newTableData);
+
+      // Add the heading "PROOF OF CONCEPT" just below the table
+      const headingText = "PROOF OF CONCEPT";
+      const headingHeight = 30; // Adjust as needed
+
+      if (y + headingHeight > pageHeight) {
+        // Add a new page if there is not enough space
+        doc.addPage();
+        // Reset Y-coordinate
+        y = 50; // Adjust as needed
+      }
+
+      doc.fontSize(fontSize).text(headingText, x + 5, y + 10, {
+        width: singleColumnWidth - 10,
+        align: "left",
+      });
+
+      // Adjust Y-coordinate for the heading
+      y += headingHeight;
+      doc.moveDown();
+
+      // // Array of dummy image URLs
+      const imagePaths = [
+        "https://via.placeholder.com/400x200",
+        "https://via.placeholder.com/400x200",
+      ];
+      // Function to iterate through images and add them to the document
+      function addImagesToDocument(imagePaths) {
+        for (let i = 0; i < imagePaths.length; i++) {
+          const imagePath = imagePaths[i];
+
+          // Check if there is enough space on the current page for the image
+          const imageHeight = 200; // Set the height of the image as needed
+          if (y + imageHeight > pageHeight) {
+            // Add a new page if there is not enough space
+            doc.addPage();
+            // Reset Y-coordinate
+            y = 50; // Adjust as needed
+          }
+
+          // Assuming you have an image at imagePath, you can add it to the document
+          doc.image(hearder, x, y, { width: 400 }); // Adjust width as needed
+
+          // Adjust Y-coordinate for the next element
+          y += imageHeight + 20; // Add some spacing between images
+        }
+      }
+
+      // // Call the function to create the new single-column table with headlines
+      // createSingleColumnTableWithHeadlines(newTableData);
+
+      // Call the function to add images to the document
+      addImagesToDocument(imagePaths);
+      doc.addPage();
+    }
 
     doc
       .fontSize(headerFontSize)
@@ -4264,10 +4507,6 @@ const downloadExcelTemplate = async (req, res) => {
     }
   }
 };
-
-
-
-
 
 export {
   createProject,
