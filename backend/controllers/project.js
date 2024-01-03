@@ -11,10 +11,11 @@ import pdfkit from "pdfkit";
 import path from "path";
 import QuickChart from "quickchart-js";
 import request from "request";
-import retry from "retry";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-import toast from "react-hot-toast";
+
+import sharp from "sharp";
+
 const currentModuleURL = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleURL);
 const imagePath = path.join(
@@ -2635,10 +2636,10 @@ const downloadReportById = async (req, res) => {
 
     // Add a gap between lines
     doc.moveDown();
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < reports_data.length; i++) {
       const pageHeight = doc.page.height;
       const tableData10 = [
-        ["DATE OF DISCOVERY", "26-12-2022"],
+        ["DATE OF DISCOVERY", reports_data[i].createdAt],
         ["CVSS 3 SCORE", "8.6"],
         ["CATEGORY", "Cryptographic Failures"],
         ["STATUS", "OPEN"],
@@ -2817,12 +2818,16 @@ const downloadReportById = async (req, res) => {
       doc.moveDown();
 
       // // Array of dummy image URLs
-      const imagePaths = [
-        "https://via.placeholder.com/400x200",
-        "https://via.placeholder.com/400x200",
-      ];
-      // Function to iterate through images and add them to the document
-      function addImagesToDocument(imagePaths) {
+
+      // const imagePaths = [
+      //   "https://via.placeholder.com/400x200",
+      //   "https://via.placeholder.com/400x200",
+      // ];
+
+      function addImagesToDocument(imagePaths, doc) {
+        let y = 50; // Initial Y-coordinate
+        const pageHeight = 600; // Set the page height as needed
+
         for (let i = 0; i < imagePaths.length; i++) {
           const imagePath = imagePaths[i];
 
@@ -2835,19 +2840,33 @@ const downloadReportById = async (req, res) => {
             y = 50; // Adjust as needed
           }
 
-          // Assuming you have an image at imagePath, you can add it to the document
-          doc.image(hearder, x, y, { width: 400 }); // Adjust width as needed
+          // Convert image to a supported format (PNG or JPEG)
+          const outputImagePath = `uploads/${imagePath.replace(
+            /\.[^/.]+$/,
+            ".png"
+          )}`;
+          sharp(`uploads/${imagePath}`)
+            .toFormat("png")
+            .toFile(outputImagePath, (err) => {
+              if (err) {
+                console.error(err);
+                return;
+              }
+              // Load the converted image from the file system
+              const imageData = fs.readFileSync(outputImagePath);
+              // Add the image to the document
+              doc.image(imageData, x, y, { width: 400 }); // Adjust width as needed
 
-          // Adjust Y-coordinate for the next element
-          y += imageHeight + 20; // Add some spacing between images
+              // Adjust Y-coordinate for the next element
+              y += imageHeight + 20; // Add some spacing between images
+            });
         }
       }
-
-      // // Call the function to create the new single-column table with headlines
-      // createSingleColumnTableWithHeadlines(newTableData);
+      const imagePaths = reports_data[i].files;
 
       // Call the function to add images to the document
-      addImagesToDocument(imagePaths);
+      addImagesToDocument(imagePaths, doc);
+
       doc.addPage();
     }
 
