@@ -30,6 +30,7 @@ import {
   downloadReportById,
   createReportWeb,
   uploadExcelTemplate,
+  downloadExcelTemplate,
 } from "../controllers/project.js";
 import { protect } from "../middleware/employeeMiddleware.js";
 import multer from "multer";
@@ -106,5 +107,6 @@ router.post(
   protect,
   uploadExcelTemplate
 );
+router.get("/downloadexceltemplate",protect, downloadExcelTemplate);
 
 export default router;

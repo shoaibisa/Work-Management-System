@@ -13,6 +13,7 @@ import request from "request";
 import retry from "retry";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import toast from "react-hot-toast";
 
 const currentModuleURL = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleURL);
@@ -4058,16 +4059,132 @@ const uploadExcelTemplate = async (req, res) => {
     // Handle the file as needed (save to disk, process, etc.)
     // For now, just log it to the console
     console.log("File is - ", uploadedFile);
+    // save in database
+
+    const user = await Employee.findById(req.user._id).exec();
+
+    if (user && user.role === "Client") {
+      user.excelFile = {
+        filename: uploadedFile.filename,
+        path: uploadedFile.path,
+      };
+    }
+    await user.save();
 
     // Do further processing or save the file to disk/database
 
     // Respond to the client
     res.status(200).json({ message: "File uploaded successfully" });
+    // toast.success("File uploaded..")
   } catch (error) {
     console.error("Error uploading file", error);
     res.status(500).json({ error: "Error uploading file" });
   }
 };
+
+// const downloadExcelTemplate = async (req, res) => {
+//   try {
+//     console.log("backend download called");
+
+//     console.log("id is - ", req.user._id);
+//     // return
+//     const employee = await Employee.findById(req.user._id).exec();
+
+//     if (!employee) {
+//       return res.status(404).json({ error: "Employee not found" });
+//     }
+
+//     // Assuming the file path is stored in employee.excelFile.path
+//     const filePath = employee.excelFile.path;
+
+//     // Set the appropriate headers for download
+//     res.setHeader(
+//       "Content-Type",
+//       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+//     );
+//     res.setHeader(
+//       "Content-Disposition",
+//       "attachment; filename=downloaded-file.xlsx"
+//     );
+
+//     // Send the file to the client
+//     res.download(filePath, "downloaded-file.xlsx", (err) => {
+//       if (err) {
+//         console.error("Error downloading file:", err);
+//         res.status(500).json({ error: "Error downloading file" });
+//       }
+//     });
+//   } catch (error) {
+//     console.error("Error handling download request:", error);
+//     res.status(500).json({ error: "Error handling download request" });
+//   }
+// };
+
+const downloadExcelTemplate = async (req, res) => {
+  try {
+    console.log("backend download called");
+
+    // Ensure req.user is defined and has the _id property
+    if (!req.user || !req.user._id) {
+      console.error("Unauthorized: User or user ID not found");
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    console.log(req.user._id);
+
+    // Fetch the employee data using the logged-in user's ID
+    const employeeId = req.user._id; // Assuming the user's ID is available in req.user
+    const employee = await Employee.findById(employeeId);
+
+    if (!employee) {
+      console.error("Employee not found");
+      return res.status(404).json({ error: "Employee not found" });
+    }
+    console.log("here I am");
+
+    // Assuming the file path is stored in employee.excelFile.path
+    const filePath = employee.excelFile.path;
+
+    console.log("path is  - ", filePath);
+
+    // Set the appropriate headers for download
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=downloaded-file.xlsx"
+    );
+
+    // Create a readable stream from the file
+    const fileStream = fs.createReadStream(filePath);
+
+    // Pipe the file stream to the response stream
+    fileStream.pipe(res);
+
+    // Log when the download is complete
+    fileStream.on("end", () => {
+      console.log("File download completed");
+    });
+
+    // Handle any errors during streaming
+    fileStream.on("error", (error) => {
+      console.error("Error streaming file:", error);
+      res.status(500).json({ error: "Error streaming file" });
+    });
+  } catch (error) {
+    console.error("Error handling download request:", error);
+    // Check if the response is still writable before sending an error response
+    if (!res.writableEnded) {
+      res.status(500).json({ error: "Error handling download request" });
+    }
+  }
+};
+
+
+
+
 
 export {
   createProject,
@@ -4101,4 +4218,5 @@ export {
   getAllProjectbypM,
   createReportWeb,
   uploadExcelTemplate,
+  downloadExcelTemplate,
 };
