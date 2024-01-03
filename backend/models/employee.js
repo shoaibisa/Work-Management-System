@@ -93,6 +93,10 @@ const employeeSchema = new Schema(
         ref: "Notification",
       },
     ],
+    excelFile: {
+      filename: String,
+      path: String,
+    },
   },
 
   { timestamps: true }
