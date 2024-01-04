@@ -50,6 +50,7 @@ function AllReportPDF() {
                   <span>Report no: {index + 1}</span>
                   <div className="flex-row  mt-2">
                     {items.reportFiles &&
+                      !items.vulnerability &&
                       items.reportFiles.length > 0 &&
                       items.reportFiles.map((item, index) => (
                         <button

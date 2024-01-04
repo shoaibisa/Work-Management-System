@@ -15,7 +15,7 @@ import request from "request";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import report from "../models/report.js";
-// import sizeOf from "image-size";
+import sizeOf from "image-size";
 const currentModuleURL = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleURL);
 const imagePath = path.join(
@@ -3534,8 +3534,8 @@ const creatReport = async (req, res) => {
 
 const createReportWeb = async (req, res) => {
   try {
-    // console.log(req.body);
-    // return;
+    console.log(req.body);
+    return;
     const payload = req.body;
     const images = req.files.map((f) => f.filename);
 

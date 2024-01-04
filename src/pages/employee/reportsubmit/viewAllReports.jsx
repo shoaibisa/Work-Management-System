@@ -165,7 +165,7 @@ function AllPDF() {
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            View Reports
+                            View Reports1
                           </Link>
                         </button>
                       ))}

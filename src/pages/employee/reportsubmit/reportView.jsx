@@ -155,209 +155,10 @@ function PDF() {
             <div>
               <h1 className=" text-center  bold text-2xl ">Report</h1>
             </div>
-            {/* <div className="section1">
-              <div class="flex mx-auto mt-10 flex-col w-[1000px]">
-                <table className="table-auto border border-collapse border-gray-300">
-                  <tbody>
-                    <tr>
-                      <td
-                        className="px-4 w-[30%] text-blue-500 bg-blue-100 py-2 border  border-gray-300"
-                        colSpan={2}
-                      >
-                        ReportID
-                      </td>
-                      <td
-                        colSpan={6}
-                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
-                      >
-                        {data && data._id}
-                      </td>
-                    </tr>
 
-                    <tr>
-                      <td
-                        className="px-4 text-blue-500 bg-blue-100 py-2 border border-gray-300"
-                        colSpan={2}
-                      >
-                        Report Type
-                      </td>
-                      <td
-                        colSpan={6}
-                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
-                      ></td>
-                    </tr>
-
-                    <tr>
-                      <td
-                        className="px-4 text-blue-500 bg-blue-100 py-2 border border-gray-300"
-                        colSpan={2}
-                      >
-                        Document Type
-                      </td>
-                      <td
-                        colSpan={6}
-                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
-                      >
-                        PDF
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td
-                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
-                        colSpan={2}
-                      >
-                        Client Name
-                      </td>
-                      <td
-                        colSpan={6}
-                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
-                      ></td>
-                    </tr>
-
-                    <tr>
-                      <td
-                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
-                        colSpan={2}
-                      >
-                        Project Name/ID
-                      </td>
-                      <td
-                        colSpan={6}
-                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
-                      >
-                        {data && data.project}
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td
-                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
-                        colSpan={2}
-                      >
-                        Test Enviourment
-                      </td>
-                      <td
-                        colSpan={6}
-                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
-                      ></td>
-                    </tr>
-
-                    <tr>
-                      <td
-                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
-                        colSpan={2}
-                      >
-                        Test Method
-                      </td>
-                      <td
-                        colSpan={6}
-                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
-                      ></td>
-                    </tr>
-
-                    <tr>
-                      <td
-                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
-                        colSpan={2}
-                      >
-                        Web Application Verson Number / Build Number
-                      </td>
-                      <td
-                        colSpan={6}
-                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
-                      ></td>
-                    </tr>
-
-                    <tr>
-                      <td
-                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
-                        colSpan={2}
-                      >
-                        Refrence Document / Base Document
-                      </td>
-                      <td
-                        colSpan={6}
-                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
-                      ></td>
-                    </tr>
-
-                    <tr>
-                      <td
-                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
-                        colSpan={2}
-                      >
-                        Report Date
-                      </td>
-                      <td
-                        colSpan={6}
-                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
-                      ></td>
-                    </tr>
-
-                    <tr>
-                      <td
-                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
-                        colSpan={2}
-                      >
-                        Test Start Date
-                      </td>
-                      <td
-                        colSpan={4}
-                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
-                      ></td>
-                      <td
-                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
-                        colSpan={1}
-                      >
-                        Test End Date
-                      </td>
-                      <td
-                        colSpan={4}
-                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
-                      ></td>
-                    </tr>
-
-                    <tr>
-                      <td
-                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
-                        colSpan={2}
-                      >
-                        Testing Performed By
-                      </td>
-                      <td
-                        colSpan={6}
-                        className="px-4 py-2 border border-gray-300 h-20 col-span-6"
-                      ></td>
-                    </tr>
-
-                    <tr>
-                      <td
-                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
-                        colSpan={2}
-                      >
-                        Report Author
-                      </td>
-                      <td
-                        colSpan={3}
-                        className="px-4 py-2 border  text-blue-500 bg-blue-100 border-gray-300 h-20 col-span-6"
-                      >
-                        {data && data.employee}
-                      </td>
-                      <td
-                        className="px-4 py-2 text-blue-500 bg-blue-100 border border-gray-300"
-                        colSpan={4}
-                      >
-                        Date {formatDate(data && data.updatedAt)}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div> */}
-
-            {/* <div className="flex section2  m-auto mt-10 flex-row w-[1000px] mb-20">
+            <div className="flex section2  m-auto mt-10 flex-row w-[1000px] mb-20">
               {data &&
+                !data.vulnerability &&
                 data.reportFiles.map((fileName, index) => (
                   <div
                     key={index}
@@ -380,7 +181,7 @@ function PDF() {
                     </button>
                   </div>
                 ))}
-            </div> */}
+            </div>
 
             {data && data.vulnerability ? (
               <div class="flex section2  m-auto mt-10 flex-col w-[1000px]">
@@ -513,9 +314,6 @@ function PDF() {
             ) : null}
           </div>
         </div>
-        {/* end of actual receipt */}
-
-        {/* receipt action */}
       </div>
     </div>
   );

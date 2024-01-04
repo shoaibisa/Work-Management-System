@@ -42,7 +42,7 @@ function DetailedViewtask() {
   const downloadPdf = (type, webtargetUrlsid) => {
     // Access the dynamic PDF endpoint from your Node.js server.
     const pdfUrl = `http://localhost:5000/project/downloadallreports/${projectId}/${taskID}/${type}/${webtargetUrlsid}`;
-    // console.log(pdfUrl);
+    console.log(pdfUrl);
     fetch(pdfUrl)
       .then((response) => response.blob())
       .then((blob) => {
@@ -209,7 +209,7 @@ function DetailedViewtask() {
                                 {emp.name}
                               </Link>
                             ));
-                            console.log(employeeLinks);
+                            //console.log(employeeLinks);
                             return (
                               <>
                                 <div key={employee._id}>{employeeLinks}</div>
@@ -223,7 +223,7 @@ function DetailedViewtask() {
                       <button
                         className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         onClick={() => {
-                          downloadPdf("android", 989);
+                          downloadPdf("mobile", "android");
                         }}
                       >
                         View Full Report
@@ -290,7 +290,7 @@ function DetailedViewtask() {
                       <button
                         className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         onClick={() => {
-                          downloadPdf("mobile", data.mobileData._id);
+                          downloadPdf("mobile", "ios");
                         }}
                       >
                         View Full Report
@@ -365,13 +365,17 @@ function DetailedViewtask() {
                     }
                   })}
                 </div>
-                <button
-                  onClick={() => {
-                    downloadPdf("api", data.apiData._id);
-                  }}
-                >
-                  View Full Report
-                </button>
+
+                <div className=" flex  justify-end">
+                  <button
+                    className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    onClick={() => {
+                      downloadPdf("api", data.apiData._id);
+                    }}
+                  >
+                    View Full Report
+                  </button>
+                </div>
 
                 <div className=" mt-4 flex flex-col">
                   <div className="text-md font-medium leading-6 text-gray-900">

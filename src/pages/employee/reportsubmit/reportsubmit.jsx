@@ -27,6 +27,7 @@ const Reportsubmit = () => {
   // Multiple file upload
   const [highlight, setHighlight] = useState(false);
   const [files, setFiles] = useState([]);
+  const [mobiletype, setMobileType] = useState(type);
 
   const location = useLocation();
   const Navigate = useNavigate();
@@ -95,10 +96,9 @@ const Reportsubmit = () => {
     const selectedFiles = event.target.files;
     validateAndPOCFiles(selectedFiles);
   };
-
+  console.log(type);
   const handleSubmitForWeb = (event) => {
     event.preventDefault();
-
     if (
       !vulnerability ||
       !risk ||
@@ -114,6 +114,7 @@ const Reportsubmit = () => {
       toast.error("Please fill in all required fields.");
       return;
     }
+
     dispatch(
       reportCreateForWeb(
         vulnerability,
@@ -129,7 +130,8 @@ const Reportsubmit = () => {
         employee,
         taskID,
         type,
-        webtargetUrlsId
+        webtargetUrlsId,
+        mobiletype
       )
     );
     window.history.back();
