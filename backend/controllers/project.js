@@ -2648,9 +2648,10 @@ const downloadReportById = async (req, res) => {
         .fontSize(headerFontSize)
         .fillColor("black")
         .text("     9.1.2 Insecure Communication", 50, 90);
-      console.log(reports_data);
+
       // Add a gap between lines
       doc.moveDown();
+
       for (let i = 0; i < reports_data.length; i++) {
         const pageHeight = doc.page.height;
         const tableData10 = [
@@ -2835,36 +2836,33 @@ const downloadReportById = async (req, res) => {
         y += headingHeight;
         doc.moveDown();
         // Iterate through each object in the 'reports_data' array
-        reports_data.forEach((entry) => {
-          entry.files.forEach((file) => {
-            // Log the file name to the console
-            console.log(file);
 
-            // Construct the image path
-            const image = path.join(
-              dirname(currentModulePath),
-              "..",
-              "uploads",
-              file
-            );
+        reports_data[i].files.forEach((file) => {
+          // Construct the image path
+          const image = path.join(
+            dirname(currentModulePath),
+            "..",
+            "uploads",
+            file
+          );
 
-            // Embed the image into the PDF document
-            doc.image(image, {
-              x: x,
-              y: y,
-              width: 100, // Adjust the width as needed
-            });
-
-            // Adjust the Y position for the next image
-            y += 120; // You can adjust this value as needed for spacing
-
-            // Check if the Y position exceeds the page height, and start a new page if needed
-            if (y > doc.page.height - 50) {
-              doc.addPage();
-              y = 20; // Reset Y position for the new page
-            }
+          // Embed the image into the PDF document
+          doc.image(image, {
+            x: x,
+            y: y,
+            width: 100, // Adjust the width as needed
           });
+
+          // Adjust the Y position for the next image
+          y += 120; // You can adjust this value as needed for spacing
+
+          // Check if the Y position exceeds the page height, and start a new page if needed
+          if (y > doc.page.height - 50) {
+            doc.addPage();
+            y = 20; // Reset Y position for the new page
+          }
         });
+
         doc.addPage();
       }
 
@@ -3392,7 +3390,7 @@ const getTaskByProject = async (req, res) => {
   //console.log(project);
   try {
     const task = await Task.find({ project: project });
-    console.log(task);
+    // console.log(task);
     if (!task) {
       return res.status(208).send({
         isError: true,
@@ -3526,7 +3524,7 @@ const creatReport = async (req, res) => {
 
 const createReportWeb = async (req, res) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
     // return;
     const payload = req.body;
     const images = req.files.map((f) => f.filename);
@@ -4463,7 +4461,7 @@ const someMoreDetails = async (req, res) => {
 
 const uploadExcelTemplate = async (req, res) => {
   try {
-    console.log("i am backend");
+    // console.log("i am backend");
     // Assuming the file is sent in the request with the key 'file'
     const uploadedFile = req.file;
 
@@ -4473,7 +4471,7 @@ const uploadExcelTemplate = async (req, res) => {
 
     // Handle the file as needed (save to disk, process, etc.)
     // For now, just log it to the console
-    console.log("File is - ", uploadedFile);
+    // console.log("File is - ", uploadedFile);
     // save in database
 
     const user = await Employee.findById(req.user._id).exec();
@@ -4537,7 +4535,7 @@ const uploadExcelTemplate = async (req, res) => {
 
 const downloadExcelTemplate = async (req, res) => {
   try {
-    console.log("backend download called");
+    // console.log("backend download called");
 
     // Ensure req.user is defined and has the _id property
     if (!req.user || !req.user._id) {
@@ -4545,7 +4543,7 @@ const downloadExcelTemplate = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    console.log(req.user._id);
+    // console.log(req.user._id);
 
     // Fetch the employee data using the logged-in user's ID
     const employeeId = req.user._id; // Assuming the user's ID is available in req.user
@@ -4555,12 +4553,12 @@ const downloadExcelTemplate = async (req, res) => {
       console.error("Employee not found");
       return res.status(404).json({ error: "Employee not found" });
     }
-    console.log("here I am");
+    // console.log("here I am");
 
     // Assuming the file path is stored in employee.excelFile.path
     const filePath = employee.excelFile.path;
 
-    console.log("path is  - ", filePath);
+    // console.log("path is  - ", filePath);
 
     // Set the appropriate headers for download
     res.setHeader(

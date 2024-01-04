@@ -104,13 +104,17 @@ function DetailedViewtask() {
                           )}
                         </div>
                       </div>
-                      <button
-                        onClick={() => {
-                          downloadPdf("web", url._id);
-                        }}
-                      >
-                        View Full Report
-                      </button>
+                      <div className=" flex  justify-end">
+                        <button
+                          className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          onClick={() => {
+                            downloadPdf("web", url._id);
+                          }}
+                        >
+                          View Full Report
+                        </button>
+                      </div>
+
                       <div className="flex">
                         <h3> Assign To: </h3>
 
@@ -215,8 +219,19 @@ function DetailedViewtask() {
                         }
                       )}
                     </div>
+                    <div className=" flex  justify-end">
+                      <button
+                        className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        onClick={() => {
+                          downloadPdf("android", 989);
+                        }}
+                      >
+                        View Full Report
+                      </button>
+                    </div>
                   </>
                 )}
+
                 {ios && (
                   <>
                     <div className=" mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -270,6 +285,16 @@ function DetailedViewtask() {
                           );
                         }
                       })}
+                    </div>
+                    <div className=" flex  justify-end">
+                      <button
+                        className="  mx-3 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        onClick={() => {
+                          downloadPdf("mobile", data.mobileData._id);
+                        }}
+                      >
+                        View Full Report
+                      </button>
                     </div>
                   </>
                 )}

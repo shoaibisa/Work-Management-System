@@ -9,6 +9,7 @@ import {
   reportCreateForWeb,
 } from "../../../actions/reportSubmit";
 import { initTE, Select } from "tw-elements";
+import { toast } from "react-hot-toast";
 
 const Reportsubmit = () => {
   const { taskID, type, webtargetUrlsId } = useParams();
@@ -22,13 +23,10 @@ const Reportsubmit = () => {
   const [mitigation, setMitigation] = useState("");
   const [pocFile, setPocFile] = useState([]);
   const [brief, setBrief] = useState("");
-  // const [files, setFiles] = useState({});
   const [message, setMessage] = useState("");
-
-  const handleFileInputChange = (event) => {
-    const selectedFiles = event.target.files;
-    setPocFile(selectedFiles);
-  };
+  // Multiple file upload
+  const [highlight, setHighlight] = useState(false);
+  const [files, setFiles] = useState([]);
 
   const location = useLocation();
   const Navigate = useNavigate();
@@ -36,16 +34,12 @@ const Reportsubmit = () => {
   const redirect = location.search ? location.search.split("=")[1] : "/";
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const employee = userData?.id;
+
   const reportCreated = useSelector((state) => state.reportCreated);
   const { loading, error, report } = reportCreated;
 
   const updateReport = useSelector((state) => state.updateReport);
   const { updateReports } = updateReport;
-
-  const [showForm, setShowForm] = useState(false);
-  const handleCheckboxChange = () => {
-    setShowForm(!showForm); // Toggle the state when checkbox is clicked
-  };
 
   useEffect(() => {
     if (report) {
@@ -74,14 +68,63 @@ const Reportsubmit = () => {
         employee,
         taskID,
         type,
-        webtargetUrlsId,
-        files
+        webtargetUrlsId
       )
     );
-    setFiles([]);
   };
+
+  const validateAndPOCFiles = (selectedFiles) => {
+    const allowedTypes = ["image/jpeg", "image/png"];
+    const maxSize = 400 * 1024; // 400KB in bytes
+
+    const validFiles = Array.from(selectedFiles).filter((file) => {
+      // Check file type
+      if (!allowedTypes.includes(file.type)) {
+        toast.error(`${file.name} is not a valid file type.`);
+        return false;
+      }
+
+      // Check file size
+      if (file.size > maxSize) {
+        toast.error(`${file.name} exceeds the maximum allowed size (400KB).`);
+        return false;
+      }
+
+      return true;
+    });
+
+    // Display an error message if no valid files are selected
+    if (validFiles.length === 0) {
+      toast.error("No valid files selected.");
+      // You may want to set an error state or display a message to the user
+    }
+
+    setPocFile(validFiles);
+  };
+
+  const handleFileInputChangePocFile = (event) => {
+    const selectedFiles = event.target.files;
+    validateAndPOCFiles(selectedFiles);
+  };
+
   const handleSubmitForWeb = (event) => {
     event.preventDefault();
+
+    if (
+      !vulnerability ||
+      !risk ||
+      !attributingFactor ||
+      !affectedUrl ||
+      !observation ||
+      !cwe ||
+      !impact ||
+      !mitigation ||
+      !pocFile.length ||
+      !brief
+    ) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
     dispatch(
       reportCreateForWeb(
         vulnerability,
@@ -100,38 +143,13 @@ const Reportsubmit = () => {
         webtargetUrlsId
       )
     );
-  };
-
-  const handleSubmits = (event) => {
-    event.preventDefault();
-    dispatch(
-      reportUpdate(
-        vulnerability,
-        risk,
-        attributingFactor,
-        affectedUrl,
-        observation,
-        cwe,
-        impact,
-        mitigation,
-        pocFile,
-        brief,
-        employee,
-        taskID,
-        type,
-        webtargetUrlsId,
-        report.reportId
-      )
-    );
     window.history.back();
   };
 
   useEffect(() => {
     initTE({ Select });
   }, []);
-  //  Multiple file upload
-  const [highlight, setHighlight] = useState(false);
-  const [files, setFiles] = useState([]);
+
   const handleDragEnter = (e) => {
     e.preventDefault();
     setHighlight(true);
@@ -170,7 +188,12 @@ const Reportsubmit = () => {
     );
     setFiles([...files, ...validFiles]);
   };
-  //console.log(files);
+
+  const handleFileInputChange = (event) => {
+    const selectedFiles = event.target.files;
+    setPocFile(selectedFiles);
+  };
+
   return (
     <div className="home ">
       <Sidebar />
@@ -180,8 +203,8 @@ const Reportsubmit = () => {
           Submit Report
         </h2>
         <div className="flex-row gap-10 w-auto rounded-lg border border-dashed border-gray-900/25 p-6 m-6 mt-6">
-          {/* Here  multiple file  upload Start*/}
-          {(type === "network" || type === "grc") && (
+          {/* Here multiple file upload Start*/}
+          {["network", "grc"].includes(type) && (
             <form
               onSubmit={handleSubmit}
               className="w-full"
@@ -267,23 +290,7 @@ const Reportsubmit = () => {
             </form>
           )}
 
-          {/* <div className=" ">
-            <label className="  mx-2 mb-5 pb-5 text-red-600  bold  text-lg">
-              <input
-                type="checkbox"
-                onChange={handleCheckboxChange}
-                checked={showForm}
-                className="t"
-              />
-              Would You Like to Fill the Form Of Vulnerability (First Submit the
-              report File)
-            </label>
-          </div> */}
-
-          {(type === "android" ||
-            type === "ios" ||
-            type === "web" ||
-            type === "api") && (
+          {["android", "ios", "web", "api"].includes(type) && (
             <form
               onSubmit={handleSubmitForWeb}
               className="w-full mt-5"
@@ -442,7 +449,7 @@ const Reportsubmit = () => {
                   </label>
                   <div className="mt-2">
                     <input
-                      onChange={handleFileInputChange}
+                      onChange={handleFileInputChangePocFile}
                       class="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
                       type="file"
                       multiple
