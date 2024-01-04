@@ -31,6 +31,8 @@ import {
   createReportWeb,
   uploadExcelTemplate,
   downloadExcelTemplate,
+  assignedManager,
+  getCreateProjectRP,
 } from "../controllers/project.js";
 import { protect } from "../middleware/employeeMiddleware.js";
 import multer from "multer";
@@ -111,5 +113,7 @@ router.post(
   uploadExcelTemplate
 );
 router.get("/downloadexceltemplate", protect, downloadExcelTemplate);
+router.post("/assignedmanager", protect, assignedManager);
+router.get("/getcreatprojectforrp/:rid", protect, getCreateProjectRP);
 
 export default router;

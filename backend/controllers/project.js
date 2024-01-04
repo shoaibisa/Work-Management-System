@@ -14,8 +14,9 @@ import QuickChart from "quickchart-js";
 import request from "request";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-import report from "../models/report.js";
-import sizeOf from "image-size";
+import RequestProjects from "../models/RequestProjects.js";
+
+// import sizeOf from "image-size";
 const currentModuleURL = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleURL);
 const imagePath = path.join(
@@ -3075,57 +3076,73 @@ const downloadReportById = async (req, res) => {
 };
 
 const createProject = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(201).send({
-      title: "Error",
-      message: errors.array(),
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(201).send({
+        title: "Error",
+        message: errors.array(),
+        isError: true,
+      });
+    }
+    // console.log(req.body);
+    const project = new Project({
+      projectName: req.body.projectName,
+      companyName: req.body.companyName,
+      clientName: req.body.clientName,
+      clientEmail: req.body.clientEmail,
+      projectPriority: req.body.projectPriority,
+      manager: req.body.manager,
+      client: req.body.client,
+      submissionDate: req.body.submissionDate,
+    });
+
+    const notification = new Notification({
+      notification: `New project ${req.body.projectName} is created`,
+      employee: req.body.client,
+      link: `/clienttasks/${project._id}`,
+    });
+    await notification.save();
+
+    const client = await Employee.findById(req.body.client).exec();
+    // return console.log(req.body.client, client);
+    client.clientProjects.push(project._id);
+
+    client.notifications.push(notification._id);
+    //assinged to request project
+    if (req.body.rid !== null) {
+      const rp = await RequestProjects.findById(rid);
+      rp.project = project._id;
+      await rp.save();
+    }
+
+    await client.save();
+    const manager = await Employee.findById(req.body.manager).exec();
+    manager.managerProjects.push(project._id);
+    await manager.save();
+    project
+      .save()
+      .then(() => {
+        console.log("Project  save to db!");
+        return res.status(200).send({
+          title: "Success",
+          message: "project created sucessfully",
+        });
+      })
+      .catch((err) => {
+        return res.status(400).json({
+          isError: true,
+          title: "Error",
+          message: err,
+        });
+      });
+  } catch (err) {
+    return res.status(400).json({
       isError: true,
+      title: "Error",
+      message: err,
     });
   }
-  // console.log(req.body);
-  const project = new Project({
-    projectName: req.body.projectName,
-    companyName: req.body.companyName,
-    clientName: req.body.clientName,
-    clientEmail: req.body.clientEmail,
-    projectPriority: req.body.projectPriority,
-    manager: req.body.manager,
-    client: req.body.client,
-    submissionDate: req.body.submissionDate,
-  });
-
-  const notification = new Notification({
-    notification: `New project ${req.body.projectName} is created`,
-    employee: req.body.client,
-    link: `/clienttasks/${project._id}`,
-  });
-  await notification.save();
-
-  const client = await Employee.findById(req.body.client).exec();
-  // return console.log(req.body.client, client);
-  client.clientProjects.push(project._id);
-  client.notifications.push(notification._id);
-  await client.save();
-  const manager = await Employee.findById(req.body.manager).exec();
-  manager.managerProjects.push(project._id);
-  await manager.save();
-  project
-    .save()
-    .then(() => {
-      console.log("Project  save to db!");
-      return res.status(200).send({
-        title: "Success",
-        message: "project created sucessfully",
-      });
-    })
-    .catch((err) => {
-      return res.status(400).json({
-        isError: true,
-        title: "Error",
-        message: err,
-      });
-    });
 };
 
 const actionProject = async (req, res) => {
@@ -3534,8 +3551,8 @@ const creatReport = async (req, res) => {
 
 const createReportWeb = async (req, res) => {
   try {
-    console.log(req.body);
-    return;
+    // console.log(req.body);
+    // return;
     const payload = req.body;
     const images = req.files.map((f) => f.filename);
 
@@ -4274,7 +4291,11 @@ const getReportsByTaskId = async (req, res) => {
       .populate("grcData.assignEmployee.employee")
       .populate("grcData.assignEmployee.report");
     for (var i = 0; i < task.grcData.assignEmployee.length; i++) {
-      for (var k = 0; k < task.grcData.assignEmployee[i].report.length; k++) {
+      for (
+        var k = 0;
+        k < task.grcData.assignEmployee[i].employee._id.report.length;
+        k++
+      ) {
         if (task.grcData.assignEmployee[i].report[k].isCompleted) {
           reports.push(task.grcData.assignEmployee[i].report[k]);
         }
@@ -4485,18 +4506,27 @@ const uploadExcelTemplate = async (req, res) => {
     // save in database
 
     const user = await Employee.findById(req.user._id).exec();
-
-    if (user && user.role === "Client") {
-      user.excelFile.push({
-        filename: uploadedFile.filename,
-        path: uploadedFile.path,
+    if (!user || user.role !== "Client") {
+      return res.status(400).json({
+        isError: true,
+        title: "Error",
+        message: "You are not authorized to upload file",
       });
     }
+
+    const rp = RequestProjects({
+      name: req.body.name,
+      excelFile: {
+        filename: uploadedFile.filename,
+        path: uploadedFile.path,
+      },
+    });
+
+    await rp.save();
+
+    user.clientRequests.push(rp._id);
     await user.save();
 
-    // Do further processing or save the file to disk/database
-
-    // Respond to the client
     res.status(200).json({ message: "File uploaded successfully" });
     // toast.success("File uploaded..")
   } catch (error) {
@@ -4505,108 +4535,58 @@ const uploadExcelTemplate = async (req, res) => {
   }
 };
 
-// const downloadExcelTemplate = async (req, res) => {
-//   try {
-//     console.log("backend download called");
-
-//     console.log("id is - ", req.user._id);
-//     // return
-//     const employee = await Employee.findById(req.user._id).exec();
-
-//     if (!employee) {
-//       return res.status(404).json({ error: "Employee not found" });
-//     }
-
-//     // Assuming the file path is stored in employee.excelFile.path
-//     const filePath = employee.excelFile.path;
-
-//     // Set the appropriate headers for download
-//     res.setHeader(
-//       "Content-Type",
-//       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-//     );
-//     res.setHeader(
-//       "Content-Disposition",
-//       "attachment; filename=downloaded-file.xlsx"
-//     );
-
-//     // Send the file to the client
-//     res.download(filePath, "downloaded-file.xlsx", (err) => {
-//       if (err) {
-//         console.error("Error downloading file:", err);
-//         res.status(500).json({ error: "Error downloading file" });
-//       }
-//     });
-//   } catch (error) {
-//     console.error("Error handling download request:", error);
-//     res.status(500).json({ error: "Error handling download request" });
-//   }
-// };
-
 const downloadExcelTemplate = async (req, res) => {
   try {
     // console.log("backend download called");
 
     // Ensure req.user is defined and has the _id property
-    if (!req.user || !req.user._id) {
+    if (!req.user) {
       console.error("Unauthorized: User or user ID not found");
       return res.status(401).json({ error: "Unauthorized" });
     }
-
-    // console.log(req.user._id);
-
-    // Fetch the employee data using the logged-in user's ID
-    const employeeId = req.user._id; // Assuming the user's ID is available in req.user
-    const employee = await Employee.findById(employeeId);
-
-    if (!employee) {
-      console.error("Employee not found");
-      return res.status(404).json({ error: "Employee not found" });
-    }
-    // console.log("here I am");
-
-    // Assuming the file path is stored in employee.excelFile.path
-    const filePath = employee.excelFile.path;
-
-    // console.log("path is  - ", filePath);
-
-    // Set the appropriate headers for download
-    res.setHeader(
-      "Content-Type",
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    );
-    res.setHeader(
-      "Content-Disposition",
-      "attachment; filename=downloaded-file.xlsx"
-    );
-
-    // Create a readable stream from the file
-    const fileStream = fs.createReadStream(filePath);
-
-    // Pipe the file stream to the response stream
-    fileStream.pipe(res);
-
-    // Log when the download is complete
-    fileStream.on("end", () => {
-      console.log("File download completed");
-    });
-
-    // Handle any errors during streaming
-    fileStream.on("error", (error) => {
-      console.error("Error streaming file:", error);
-      res.status(500).json({ error: "Error streaming file" });
-    });
+    const rp = await RequestProjects.findById(req.body.rid);
+    const filePath = path.join(__dirname, "uploads", rp.excelFile.filename);
+    res.download(filePath);
   } catch (error) {
     console.error("Error handling download request:", error);
-    // Check if the response is still writable before sending an error response
-    if (!res.writableEnded) {
-      res.status(500).json({ error: "Error handling download request" });
+  }
+};
+
+const assignedManager = async (req, res) => {
+  try {
+    const { mid, rid } = req.body;
+    const manager = await Employee.findById(mid);
+    const rp = await RequestProjects.findById(rid);
+
+    manager.managerAssignedProject.push(rid);
+    rp.manager = mid;
+    rp.assigned = true;
+    await manager.save();
+    await rp.save();
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+};
+const getCreateProjectRP = async (req, res) => {
+  try {
+    const { rid } = req.params;
+    const rp = await RequestProjects.findById(rid).populate("client");
+
+    if (!rp || req.user.role !== "Project Manager") {
+      return res
+        .status(400)
+        .json({ error: "You are not authorized to access this page" });
     }
+
+    res.status(200).json({ data: rp, isError: false });
+  } catch (err) {
+    res.status(500).json({ error: err });
   }
 };
 
 export {
   createProject,
+  getCreateProjectRP,
   actionProject,
   downloadReportById,
   pdfview,
@@ -4638,4 +4618,5 @@ export {
   createReportWeb,
   uploadExcelTemplate,
   downloadExcelTemplate,
+  assignedManager,
 };

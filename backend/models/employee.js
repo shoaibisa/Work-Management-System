@@ -93,11 +93,16 @@ const employeeSchema = new Schema(
         ref: "Notification",
       },
     ],
-    excelFile: [
+    clientRequests: [
       {
-        filename: String,
-        path: String,
-        status: { type: String, default: "unassigned" },
+        type: Schema.Types.ObjectId,
+        ref: "RequestProject",
+      },
+    ],
+    managerAssignedProject: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "RequestProject",
       },
     ],
   },

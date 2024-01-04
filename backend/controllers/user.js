@@ -72,8 +72,15 @@ const getUserById = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   try {
-    const employees = await Employee.find({}).exec();
+    const employees = await Employee.find({}, { password: 0 }).exec();
     // console.log(employees);
+    // if (req.user.role !== "admin") {
+    //   return res.status(208).send({
+    //     isError: true,
+    //     title: "Error",
+    //     message: "Unauthorized",
+    //   });
+    // }
     if (!employees) {
       return res.status(208).send({
         isError: true,
@@ -170,6 +177,31 @@ const getEmployeeById = async (req, res) => {
       isError: true,
       title: "Error",
       message: "An error occurred while fetching employee details.",
+    });
+  }
+};
+
+const getClientById = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(208).send({
+        isError: true,
+        title: "Error",
+        message: "Not authorized!",
+      });
+    }
+    const id = req.params.id;
+    const client = await Employee.findById(id).populate("clientRequests");
+
+    res.status(200).send({
+      isError: false,
+      data: client,
+    });
+  } catch (err) {
+    return res.status(208).send({
+      isError: true,
+      title: "Error",
+      message: err,
     });
   }
 };
@@ -320,4 +352,5 @@ export {
   getManagerById,
   listOfClients,
   getEmployeeTaskId,
+  getClientById,
 };
