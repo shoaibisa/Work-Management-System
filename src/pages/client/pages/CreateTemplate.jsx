@@ -34,6 +34,7 @@ const CreateTemplate = () => {
       console.log("File in FormData:", formData.get("projectFile"));
       const userData = JSON.parse(localStorage.getItem("employeeInfo"));
       const token = userData?.token;
+      console.log("data is - ",userData);
       const resp = await fetch(
         "http://localhost:5000/project/uploadexceltemplate",
         {

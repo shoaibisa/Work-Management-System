@@ -32,9 +32,9 @@ const Sidebar = () => {
     return classes.filter(Boolean).join(" ");
   }
 
-  useEffect(()=>{
-      console.log("user data is - ", userData);
-  })
+  // useEffect(() => {
+  //   console.log("user data is - ", userData);
+  // });
   const { dispatchs } = useContext(DarkModeContext);
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const role = userData?.userRole;
@@ -69,6 +69,17 @@ const Sidebar = () => {
                 <li>
                   <PersonOutlineIcon className="icon" />
                   <span>Employee Request</span>
+                </li>
+              </Link>
+            </>
+          )}
+          {isAdmin && (
+            <>
+             
+              <Link to="/clients" style={{ textDecoration: "none" }}>
+                <li>
+                  <PersonOutlineIcon className="icon" />
+                  <span>All Clients</span>
                 </li>
               </Link>
             </>
