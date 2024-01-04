@@ -15,7 +15,7 @@ import request from "request";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import report from "../models/report.js";
-
+import sizeOf from "image-size";
 const currentModuleURL = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleURL);
 const imagePath = path.join(
@@ -2836,7 +2836,6 @@ const downloadReportById = async (req, res) => {
         y += headingHeight;
         doc.moveDown();
         // Iterate through each object in the 'reports_data' array
-
         reports_data[i].files.forEach((file) => {
           // Construct the image path
           const image = path.join(
@@ -2846,21 +2845,34 @@ const downloadReportById = async (req, res) => {
             file
           );
 
-          // Embed the image into the PDF document
-          doc.image(image, {
-            x: x,
-            y: y,
-            width: 100, // Adjust the width as needed
-          });
+          // Get image dimensions
+          const imageSize = sizeOf(image);
 
-          // Adjust the Y position for the next image
-          y += 120; // You can adjust this value as needed for spacing
+          // Calculate the aspect ratio
+          const aspectRatio = imageSize.width / imageSize.height;
 
-          // Check if the Y position exceeds the page height, and start a new page if needed
-          if (y > doc.page.height - 50) {
-            doc.addPage();
-            y = 20; // Reset Y position for the new page
+          // Calculate the width and height to fit the entire page while maintaining aspect ratio
+          let width, height;
+          if (aspectRatio > 1) {
+            // Landscape-oriented image
+            width = doc.page.width - 50; // Adjust margin
+            height = width / aspectRatio;
+          } else {
+            // Portrait-oriented image
+            height = doc.page.height - 50; // Adjust margin
+            width = height * aspectRatio;
           }
+
+          // Add a new page for each image
+          doc.addPage();
+
+          // Embed the image into the PDF document on the current page
+          doc.image(image, {
+            x: 0, // Center the image horizontally
+            y: 0, // Center the image vertically
+            width: width,
+            height: height,
+          });
         });
 
         doc.addPage();
