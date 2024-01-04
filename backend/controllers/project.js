@@ -3411,10 +3411,7 @@ const getTaskByProject = async (req, res) => {
 
 const creatReport = async (req, res) => {
   const payload = req.body;
-  // console.log(payload);
-
   const images = req.files.map((f) => f.filename);
-
   const task = await Task.findById(payload.taskID).exec();
   const report = new Report({
     project: task.project,
@@ -3422,6 +3419,7 @@ const creatReport = async (req, res) => {
     task: payload.taskID,
     reportFiles: images,
   });
+
   if (req.body.type === "web") {
     // find in webData webtargetUrls._id in task
     for (var i = 0; i < task.webData.webtargetUrls.length; i++) {

@@ -42,7 +42,7 @@ function DetailedViewtask() {
   const downloadPdf = (type, webtargetUrlsid) => {
     // Access the dynamic PDF endpoint from your Node.js server.
     const pdfUrl = `http://localhost:5000/project/downloadallreports/${projectId}/${taskID}/${type}/${webtargetUrlsid}`;
-    console.log(pdfUrl);
+    // console.log(pdfUrl);
     fetch(pdfUrl)
       .then((response) => response.blob())
       .then((blob) => {

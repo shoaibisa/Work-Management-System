@@ -28,39 +28,13 @@ import {
 import { toast } from "react-hot-toast";
 
 export const reportCreate =
-  (
-    vulnerability,
-    risk,
-    attributingFactor,
-    affectedUrl,
-    observation,
-    cwe,
-    impact,
-    mitigation,
-    pocFile,
-    brief,
-    employee,
-    taskID,
-    type,
-    webtargetUrlsId,
-    files
-  ) =>
-  async (dispatch) => {
+  (files, employee, taskID, type, webtargetUrlsId) => async (dispatch) => {
     const payload = {
-      vulnerability,
-      risk,
-      attributingFactor,
-      affectedUrl,
-      observation,
-      cwe,
-      impact,
-      mitigation,
-      brief,
+      files,
       employee,
       taskID,
       type,
       webtargetUrlsId,
-      files,
     };
     try {
       dispatch({ type: REPORT_CREATED_REQUEST });
@@ -72,9 +46,6 @@ export const reportCreate =
         formData.append(key, payload[key]);
       }
 
-      for (const file of pocFile) {
-        formData.append("pocFiles", file);
-      }
       for (const file of files) {
         formData.append("files", file);
       }

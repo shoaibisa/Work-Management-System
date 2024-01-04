@@ -53,24 +53,13 @@ const Reportsubmit = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(
-      reportCreate(
-        vulnerability,
-        risk,
-        attributingFactor,
-        affectedUrl,
-        observation,
-        cwe,
-        impact,
-        mitigation,
-        pocFile,
-        brief,
-        employee,
-        taskID,
-        type,
-        webtargetUrlsId
-      )
-    );
+    // return console.log("ejnfjr", files);
+    if (!files) {
+      toast.error("Please Select The File.");
+      return;
+    }
+    dispatch(reportCreate(files, employee, taskID, type, webtargetUrlsId));
+    window.history.back();
   };
 
   const validateAndPOCFiles = (selectedFiles) => {
@@ -283,9 +272,9 @@ const Reportsubmit = () => {
                     Submit
                   </button>
                 </div>
-                <div className="  text-green-500   text-md ">
+                {/* <div className="  text-green-500   text-md ">
                   {report.message}
-                </div>
+                </div> */}
               </div>
             </form>
           )}
