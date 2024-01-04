@@ -15,7 +15,7 @@ import request from "request";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import report from "../models/report.js";
-import sizeOf from "image-size";
+// import sizeOf from "image-size";
 const currentModuleURL = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleURL);
 const imagePath = path.join(

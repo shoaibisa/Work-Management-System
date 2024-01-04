@@ -50,6 +50,7 @@ import PdfView from "./pages/pdfView";
 import ShowPdf from "./pages/pdf/ShowPdf";
 import CreateTemplate from "./pages/client/pages/CreateTemplate.jsx";
 import AllClients from "./pages/client/pages/AllClients.jsx";
+import Clientdetails from "./pages/admin/Clientdetails.jsx";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -67,7 +68,6 @@ function App() {
             element={<ResetPassword />}
           />
           <Route path="/pdf" element={<PdfView />} />
-
           <Route path="/">
             <Route
               index
@@ -179,6 +179,14 @@ function App() {
                 <CreateTemplate />
               </AuthorizedUser>
             }
+          />{" "}
+          <Route
+            path="/clientprojects/:clientId"
+            element={
+              <AuthorizedUser>
+                <Clientdetails />
+              </AuthorizedUser>
+            }
           />
           <Route
             path="/clients"
@@ -188,7 +196,6 @@ function App() {
               </AuthorizedUser>
             }
           />
-
           <Route
             path="/viewproject/:projectId/createtask"
             element={<Viewproject />}
@@ -201,7 +208,6 @@ function App() {
             path="/viewproject/:projectId/viewtask/:taskID/detailedtask/:type"
             element={<DetailedViewtask />}
           />
-
           <Route
             path="/viewproject/:projectId/viewtask/:taskID/assign/:type/webtargetUrlsId/:url_id"
             element={
@@ -226,7 +232,6 @@ function App() {
               </AuthorizedUser>
             }
           />
-
           <Route
             path="/clientProject"
             element={
@@ -267,7 +272,6 @@ function App() {
               </AuthorizedClient>
             }
           />
-
           <Route
             path="/alltasks"
             element={
@@ -397,7 +401,6 @@ function App() {
               </AuthorizedWatchMan>
             }
           />
-
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>
