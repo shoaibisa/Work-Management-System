@@ -4479,10 +4479,10 @@ const uploadExcelTemplate = async (req, res) => {
     const user = await Employee.findById(req.user._id).exec();
 
     if (user && user.role === "Client") {
-      user.excelFile = {
+      user.excelFile.push({
         filename: uploadedFile.filename,
         path: uploadedFile.path,
-      };
+      });
     }
     await user.save();
 

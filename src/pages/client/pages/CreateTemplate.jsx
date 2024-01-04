@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import Navbar from "../../../components/navbar/Navbar";
 import toast from "react-hot-toast";
+// import * as XLSX from "xlsx";
+// import { saveAs } from "file-saver";
+// // import XLSX from "xlsx";
+import ExcelJS from "exceljs";
 
 const CreateTemplate = () => {
   const [file, setFile] = useState(null);
@@ -30,6 +34,7 @@ const CreateTemplate = () => {
       console.log("File in FormData:", formData.get("projectFile"));
       const userData = JSON.parse(localStorage.getItem("employeeInfo"));
       const token = userData?.token;
+      console.log("data is - ",userData);
       const resp = await fetch(
         "http://localhost:5000/project/uploadexceltemplate",
         {
@@ -107,54 +112,93 @@ const CreateTemplate = () => {
   //     toast.dismiss(toastId);
   //   }
   // };
-  const downloadHandler = async () => {
+  // const downloadHandler = async () => {
+  //   const toastId = toast.loading("Loading..");
+
+  //   try {
+  //     const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+
+  //     if (!userData || !userData.token) {
+  //       toast.error("Invalid user data or token");
+  //       return;
+  //     }
+
+  //     const resp = await fetch("http://localhost:5000/project/downloadexceltemplate", {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: "Bearer " + userData.token,
+  //       },
+  //     });
+
+  //     if (!resp.ok) {
+  //       toast.error("Something went wrong..");
+  //       return;
+  //     }
+
+  //     // Assuming the response contains the file data
+  //     const blob = await resp.blob();
+
+  //     // Create a Blob URL and trigger the download
+  //     const blobUrl = window.URL.createObjectURL(blob);
+  //     const downloadLink = document.createElement("a");
+  //     downloadLink.href = blobUrl;
+  //     downloadLink.download = "downloaded-file.xlsx";
+  //     document.body.appendChild(downloadLink);
+  //     downloadLink.click();
+
+  //     // Clean up
+  //     document.body.removeChild(downloadLink);
+  //     window.URL.revokeObjectURL(blobUrl);
+
+  //     toast.success("File downloaded successfully");
+  //   } catch (error) {
+  //     // Handle errors
+  //     toast.error("Error downloading file", { id: toastId });
+  //     console.error("Error downloading file", error);
+  //   } finally {
+  //     toast.dismiss(toastId);
+  //   };
+  // };
+  const downloadHandler = async (e) => {
+    e.preventDefault();
+
     const toastId = toast.loading("Loading..");
-  
+
     try {
-      const userData = JSON.parse(localStorage.getItem("employeeInfo"));
-  
-      if (!userData || !userData.token) {
-        toast.error("Invalid user data or token");
-        return;
-      }
-  
-      const resp = await fetch("http://localhost:5000/project/downloadexceltemplate", {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + userData.token,
-        },
-      });
-  
-      if (!resp.ok) {
-        toast.error("Something went wrong..");
-        return;
-      }
-  
-      // Assuming the response contains the file data
-      const blob = await resp.blob();
-  
+      // Create a new Excel workbook
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet("Sheet1");
+
+      // Add a dummy row to the worksheet (optional)
+      worksheet.addRow([]);
+
+      // Create a Blob from the workbook
+      const blob = await workbook.xlsx.writeBuffer();
+
       // Create a Blob URL and trigger the download
-      const blobUrl = window.URL.createObjectURL(blob);
+      const blobUrl = window.URL.createObjectURL(
+        new Blob([blob], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        })
+      );
       const downloadLink = document.createElement("a");
       downloadLink.href = blobUrl;
-      downloadLink.download = "downloaded-file.xlsx";
+      downloadLink.download = "document.xlsx";
       document.body.appendChild(downloadLink);
       downloadLink.click();
-  
+
       // Clean up
       document.body.removeChild(downloadLink);
       window.URL.revokeObjectURL(blobUrl);
-  
-      toast.success("File downloaded successfully");
+
+      toast.success("Downloaded");
     } catch (error) {
-      // Handle errors
       toast.error("Error downloading file", { id: toastId });
       console.error("Error downloading file", error);
     } finally {
       toast.dismiss(toastId);
-    };
+    }
   };
-  
 
   return (
     <div className="App">

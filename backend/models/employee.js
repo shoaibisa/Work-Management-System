@@ -93,10 +93,13 @@ const employeeSchema = new Schema(
         ref: "Notification",
       },
     ],
-    excelFile: {
-      filename: String,
-      path: String,
-    },
+    excelFile: [
+      {
+        filename: String,
+        path: String,
+        status: { type: String, default: "unassigned" },
+      },
+    ],
   },
 
   { timestamps: true }
