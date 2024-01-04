@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 import { validationResult } from "express-validator";
 import Project from "../models/project.js";
 import Task from "../models/task.js";
@@ -5,15 +6,15 @@ import SubmitProject from "../models/report.js";
 import Report from "../models/report.js";
 import fs from "fs";
 import Employee from "../models/employee.js";
+import axios from "axios";
 import Notification from "../models/notification.js";
 import pdfkit from "pdfkit";
 import path from "path";
 import QuickChart from "quickchart-js";
 import request from "request";
-import retry from "retry";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-import toast from "react-hot-toast";
+import report from "../models/report.js";
 
 const currentModuleURL = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleURL);
@@ -59,19 +60,19 @@ const table2 = path.join(
   "image",
   "chartectertable.png"
 );
-const chartt = () => {
+const chartt = (data) => {
   const chart = new QuickChart();
   // Add Dynamic Chart
   chart
     .setConfig({
       type: "bar",
       data: {
-        labels: ["High", "Medium", "low"],
+        labels: ["Critical", "High", "Medium", "low"],
         datasets: [
           {
             label: "vulnerabilities",
-            data: [100, 19, 15],
-            backgroundColor: ["red", "#f4ca16", "#9BBA59"],
+            data: data,
+            backgroundColor: ["#660000", "red", "#f4ca16", "#9BBA59"],
           },
         ],
       },
@@ -83,10 +84,9 @@ const chartt = () => {
   const chartUrl = chart.getUrl();
   // Define the folder where you want to save the image
   const folderPath = path.join(
-    "D:",
-    "EmploymanagentSystem",
-    "Work-Management-System",
-    "backend",
+    dirname(currentModulePath),
+    "..",
+
     "Charts"
   ); // Change 'images' to your desired folder name
 
@@ -103,19 +103,19 @@ const chartt = () => {
     }
   });
 };
-const chart2 = () => {
+const chart2 = (data) => {
   const chart = new QuickChart();
   // Add Dynamic Chart
   chart
     .setConfig({
       type: "pie",
       data: {
-        labels: ["High", "Medium", "low"],
+        labels: ["Critical", "High", "Medium", "low"],
         datasets: [
           {
             label: "vulnerabilities",
-            data: [100, 19, 15],
-            backgroundColor: ["red", "#f4ca16", "#9BBA59"],
+            data: data,
+            backgroundColor: ["#660000", "red", "#f4ca16", "#9BBA59"],
           },
         ],
       },
@@ -1167,6 +1167,7 @@ const pdfview = (req, res) => {
         "            Exploitation of the vulnerability may result in little or no impact on the application/ disclosure of less sensitive information. Exploitation of this vulnerability is extremely difficult. (CVSS Score- 0.0-3.9)",
       ],
     ];
+
     // Set font size and cell sizes
     // const fontSize = 12;
     const firstColumnWidthtable9 = 150; // Width for the first column
@@ -1228,6 +1229,7 @@ const pdfview = (req, res) => {
     doc
       .fontSize(14) // Set the font size as needed
       .text(textBelowTable, 50, y + 30); // Adjust the position as needed
+
     doc.addPage();
 
     doc
@@ -1418,24 +1420,119 @@ const pdfview = (req, res) => {
 };
 
 const downloadReportById = async (req, res) => {
-  console.log(req.body);
-  const rid = req.params.rid;
+  const { pid, tid, type, webtargetUrlsid } = req.params;
 
-  const report = await Report.findById(rid)
-    .populate("project")
-    .populate("employee");
-  const manager = await Employee.findById(report.project.manager);
+  const project = await Project.findById(pid);
+  const manager = await Employee.findById(project.manager);
+  const task = await Task.findById(tid);
+  const reports = [];
+  if (type === "web") {
+    for (let i = 0; i < task.webData.webtargetUrls.length; i++) {
+      if (task.webData.webtargetUrls[i]._id == webtargetUrlsid) {
+        for (
+          let j = 0;
+          j < task.webData.webtargetUrls[i].assignEmployee.length;
+          j++
+        ) {
+          for (
+            let k = 0;
+            k < task.webData.webtargetUrls[i].assignEmployee[j].report.length;
+            k++
+          ) {
+            reports.push(
+              task.webData.webtargetUrls[i].assignEmployee[j].report[k]
+            );
+          }
+        }
+      }
+    }
+  } else if (type === "api") {
+    for (let j = 0; j < task.apiData.assignEmployee.length; j++) {
+      for (let k = 0; k < task.apiData.assignEmployee[j].report.length; k++) {
+        reports.push(task.apiData.assignEmployee[j].report[k]);
+      }
+    }
+  } else if (type === "mobile") {
+    if (webtargetUrlsid === "android") {
+      for (
+        let j = 0;
+        j < task.mobileData.forAndroid.assignEmployee.length;
+        j++
+      ) {
+        for (
+          let k = 0;
+          k < task.mobileData.forAndroid.assignEmployee[j].report.length;
+          k++
+        ) {
+          reports.push(task.mobileData.forAndroid.assignEmployee[j].report[k]);
+        }
+      }
+    } else {
+      for (let j = 0; j < task.mobileData.forIos.assignEmployee.length; j++) {
+        for (
+          let k = 0;
+          k < task.mobileData.forIos.assignEmployee[j].report.length;
+          k++
+        ) {
+          reports.push(task.mobileData.forIos.assignEmployee[j].report[k]);
+        }
+      }
+    }
+  }
 
-  const date = new Date(report.createdAt);
+  const reports_data = [];
+
+  for (let i = 0; i < reports.length; i++) {
+    const r = await Report.findById(reports[i]).populate("employee");
+    if (r.isCompleted) {
+      reports_data.push(r);
+    }
+  }
+  if (reports_data.length < 1) {
+    return res.status(404).send("Not found reports");
+  }
+  // return console.log(reports_data[0][0].employee.name);
+  const date = new Date(reports_data[0].createdAt);
 
   const day = date.getUTCDate().toString().padStart(2, "0");
   const month = (date.getUTCMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
   const year = date.getUTCFullYear();
 
   const formattedDate = `${day}-${month}-${year}`;
+  const authorsAndAuditorsText = [
+    [
+      "    Authors & Auditors",
+      "                                       Mail ID",
+    ],
+  ];
 
-  chartt();
-  chart2();
+  let HIGH = 0,
+    CRITICAL = 0,
+    MEDIUM = 0,
+    LOW = 0;
+  for (let i = 0; i < reports_data.length; i++) {
+    let temp = [reports_data[i].employee.name, reports_data[i].employee.email];
+    authorsAndAuditorsText.push(temp);
+    if (reports_data[i].risk === "high") {
+      HIGH++;
+    } else if (reports_data[i].risk === "low") {
+      LOW++;
+    } else if (reports_data[i].risk === "critical") {
+      CRITICAL++;
+    } else {
+      MEDIUM++;
+    }
+  }
+  authorsAndAuditorsText.push(["GISC InfoSec Team", "GISC InfoSec Team"]);
+  const summary_finds = [
+    "    " + reports_data.length,
+    "    " + CRITICAL,
+    "    " + HIGH,
+    "    " + MEDIUM,
+    "    " + LOW,
+  ];
+  chartt([CRITICAL, HIGH, MEDIUM, LOW]);
+  chart2([CRITICAL, HIGH, MEDIUM, LOW]);
 
   const doc = new pdfkit();
   res.setHeader("Content-Type", "application/pdf");
@@ -1468,7 +1565,7 @@ const downloadReportById = async (req, res) => {
     doc.moveDown(1); // Adjust the value as needed
 
     // Add "Host company Name" text
-    doc.fontSize(16).text(report.project.companyName, doc.x, doc.y);
+    doc.fontSize(16).text(project.companyName, doc.x, doc.y);
 
     // Reduce the space between lines
     doc.moveDown(0.5); // Adjust the value as needed
@@ -1480,8 +1577,8 @@ const downloadReportById = async (req, res) => {
 
     // Add the left-aligned text
     doc.fontSize(12).text("Report Prepared by: ", doc.x, doc.y);
-    doc.fontSize(10).text(report.employee.name, doc.x, doc.y);
-    doc.fontSize(10).text(report.employee.email, doc.x, doc.y);
+    doc.fontSize(10).text(reports_data[0].employee.name, doc.x, doc.y);
+    doc.fontSize(10).text(reports_data[0].employee.email, doc.x, doc.y);
     doc.fontSize(10).text("(A CERT-IN Empaneled Company)", doc.x, doc.y);
     doc
       .fontSize(10)
@@ -1506,7 +1603,7 @@ const downloadReportById = async (req, res) => {
     doc.moveDown(2);
     const noteText =
       "NOTE: The information contained within this report is considered proprietary and confidential to the {GIS Consulting}. Inappropriate and unauthorized disclosure of this report or portions of it could result in significant damage or loss to the " +
-      report.project.companyName +
+      project.companyName +
       ". This report should be distributed to individuals on a Need-to-Know basis only. Paper copies should be locked up when not in use. Electronic copies should be stored offline and protected appropriately.";
 
     doc.fontSize(12).text(noteText, 50, 500, { width: 550 });
@@ -1611,18 +1708,7 @@ const downloadReportById = async (req, res) => {
       y += cellHeight; // Move to the next row
     }
 
-    const tableData2 = [
-      [
-        "    Authors & Auditors",
-        "                                       Mail ID",
-      ],
-      [
-        "    Auditor Name: " + report.employee.name,
-        "            " + report.employee.name,
-      ],
-
-      ["    GISC InfoSec Team", "            GISC InfoSec Team"],
-    ];
+    const tableData2 = authorsAndAuditorsText;
 
     // Set font size and cell sizes
     // const fontSize = 12;
@@ -1787,9 +1873,9 @@ const downloadReportById = async (req, res) => {
     const tableData5 = [
       ["Client", "Name", "Email ID"],
       [
-        report.project.companyName,
-        report.project.clientName,
-        " " + report.employee.email,
+        project.companyName,
+        project.clientName,
+        " " + reports_data[0].employee.email,
       ],
     ];
 
@@ -2340,7 +2426,7 @@ const downloadReportById = async (req, res) => {
         "  Medium  ",
         "  Low  ",
       ],
-      ["     00  ", "     00 ", "    00 ", "    00 ", "    00 "],
+      summary_finds,
     ];
 
     // Set font size and cell sizes
@@ -2523,7 +2609,246 @@ const downloadReportById = async (req, res) => {
     doc
       .fontSize(14) // Set the font size as needed
       .text(textBelowTable, 50, y + 30); // Adjust the position as needed
+
     doc.addPage();
+
+    // Add the text to the document with proper Y-coordinates
+    doc
+      .fontSize(headerFontSize)
+      .fillColor("black")
+      .text("8 Detail Reports POCs & Recommendations", 50, 50);
+
+    // Add a gap between lines
+    doc.moveDown();
+
+    doc
+      .fontSize(headerFontSize)
+      .fillColor("red")
+      .text("     8.1. “High Vulnerability Details”", 50, 70);
+
+    // Add a gap between lines
+    doc.moveDown();
+
+    doc
+      .fontSize(headerFontSize)
+      .fillColor("black")
+      .text("     9.1.2 Insecure Communication", 50, 90);
+    console.log(reports_data);
+    // Add a gap between lines
+    doc.moveDown();
+    for (let i = 0; i < reports_data.length; i++) {
+      const pageHeight = doc.page.height;
+      const tableData10 = [
+        ["DATE OF DISCOVERY", reports_data[i].createdAt],
+        ["CVSS 3 SCORE", "8.6"],
+        ["CATEGORY", "Cryptographic Failures"],
+        ["STATUS", "OPEN"],
+        ["CVSS Vector", "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:L "],
+        ["Threat", "Insecure Communication"],
+        ["CVE, OWASP, CWE, REFERENCE", "A2"],
+      ];
+
+      // Set styling variables
+      const firstColumnWidthTable10 = 150;
+      const secondColumnWidthTable10 = 350;
+      const cellHeightTable10 = 50; // Adjusted cell height for better spacing
+
+      // Set initial position and spacing
+      x = 50;
+      y = 120; // Adjusted starting Y-coordinate
+
+      // Function to create a dynamically resizable table
+      function createResizableTable(data) {
+        for (let i = 0; i < data.length; i++) {
+          // Check if there is enough space on the current page
+          if (
+            y +
+              doc.heightOfString(data[i][0], {
+                width: firstColumnWidthTable10 - 10,
+              }) >
+            pageHeight
+          ) {
+            // Add a new page if there is not enough space
+            doc.addPage();
+            // Reset Y-coordinate
+            y = 50;
+          }
+
+          let maxCellHeight = 0;
+
+          for (let j = 0; j < data[i].length; j++) {
+            const cellWidth =
+              j === 0 ? firstColumnWidthTable10 : secondColumnWidthTable10;
+
+            // Calculate the height of the current cell based on content
+            const textHeight = doc.heightOfString(data[i][j], {
+              width: cellWidth - 10,
+            });
+            const cellHeight = Math.max(cellHeightTable10, textHeight + 10);
+
+            // Update the maximum cell height in the current row
+            maxCellHeight = Math.max(maxCellHeight, cellHeight);
+
+            doc.rect(x, y, cellWidth, cellHeight).stroke();
+
+            if (i === 0) {
+              doc.fillAndStroke("white", "black");
+              doc.rect(x, y, cellWidth, cellHeight).fillAndStroke();
+            }
+
+            doc.fill(i === 0 ? "black" : "black");
+
+            // Center text vertically within the cell
+            const verticalPosition = y + (cellHeight - textHeight) / 2;
+
+            doc.fontSize(fontSize).text(data[i][j], x + 5, verticalPosition, {
+              width: cellWidth - 10,
+              align: "left",
+            });
+
+            x += cellWidth;
+          }
+
+          // Adjust the Y-coordinate based on the maximum cell height in the current row
+          y += maxCellHeight;
+          x = 50;
+        }
+      }
+
+      // Call the function to create the resizable table
+      createResizableTable(tableData10);
+
+      // Set spacing for the new table
+      const singleColumnWidth = 500;
+      const singleCellHeight = 50;
+
+      // Set initial position for the new table
+      x = 50;
+
+      // Data for the new table with 3 rows and 1 column
+      const newTableData = [
+        [
+          "VULNERABILITY SUMMARY",
+          "This code assumes that the original y and x variables are still in scope and represent the starting coordinates for both tables. If you have any issues or if the context is different, please make sure to adapt the code accordingly.This code assumes that the original y and x variables are still in scope and represent the starting coordinates for both tables. If you have any issues or if the context is different, please make sure to adapt the code accordingly.This code assumes that the.",
+        ],
+        [
+          "IMPACT",
+          "This code assumes that the original y and x variables are still in scope and represent the starting coordinates for both tables. If you have any issues or if the context is different, please make sure to adapt the code accordingly.This code assumes that the original y and x variables are still in scope and represent the starting coordinates for both tables. If you have any issues or if the context is different, please make sure to adapt the code accordingly.",
+        ],
+        [
+          "RECOMMENDED SOLUTION",
+          "This code assumes that the original y and x variables are still in scope and represent the starting coordinates for both tables. If you have any issues or if the context is different, please make sure to adapt the code accordingly.This code assumes that the original y and x variables are still in scope and represent the starting coordinates for both tables. If you have any issues or if the context is different, please make sure to adapt the code accordingly.",
+        ],
+      ];
+      // Function to create a single-column table with headlines
+      function createSingleColumnTableWithHeadlines(data) {
+        for (let i = 0; i < data.length; i++) {
+          const headline = data[i][0];
+          const content = data[i][1];
+
+          // Calculate the height of the current cell based on content
+          const textHeightHeadline = doc.heightOfString(headline, {
+            width: singleColumnWidth - 10,
+          });
+          const textHeightContent = doc.heightOfString(content, {
+            width: singleColumnWidth - 10,
+          });
+
+          const cellHeight = Math.max(
+            singleCellHeight,
+            textHeightHeadline + textHeightContent + 20
+          );
+
+          // Check if there is enough space on the current page
+          if (y + cellHeight > pageHeight) {
+            // Add a new page if there is not enough space
+            doc.addPage();
+            // Reset Y-coordinate
+            y = 50; // Adjust as needed
+          }
+
+          doc.rect(x, y, singleColumnWidth, cellHeight).stroke();
+
+          doc.fill("black");
+
+          // Center text vertically within the cell for headline
+          const verticalPositionHeadline =
+            y + (cellHeight - textHeightHeadline - textHeightContent) / 2;
+          doc
+            .fontSize(fontSize)
+            .text(headline, x + 5, verticalPositionHeadline, {
+              width: singleColumnWidth - 10,
+              align: "left",
+            });
+
+          // Center text vertically within the cell for content
+          const verticalPositionContent =
+            verticalPositionHeadline + textHeightHeadline + 10;
+          doc.fontSize(fontSize).text(content, x + 5, verticalPositionContent, {
+            width: singleColumnWidth - 10,
+            align: "left",
+          });
+
+          // Adjust Y-coordinate for the next row
+          y += cellHeight;
+        }
+      }
+
+      // Call the function to create the new single-column table with headlines
+      createSingleColumnTableWithHeadlines(newTableData);
+
+      // Add the heading "PROOF OF CONCEPT" just below the table
+      const headingText = "PROOF OF CONCEPT";
+      const headingHeight = 30; // Adjust as needed
+
+      if (y + headingHeight > pageHeight) {
+        // Add a new page if there is not enough space
+        doc.addPage();
+        // Reset Y-coordinate
+        y = 50; // Adjust as needed
+      }
+
+      doc.fontSize(fontSize).text(headingText, x + 5, y + 10, {
+        width: singleColumnWidth - 10,
+        align: "left",
+      });
+
+      // Adjust Y-coordinate for the heading
+      y += headingHeight;
+      doc.moveDown();
+      // Iterate through each object in the 'reports_data' array
+      reports_data.forEach((entry) => {
+        entry.files.forEach((file) => {
+          // Log the file name to the console
+          console.log(file);
+
+          // Construct the image path
+          const image = path.join(
+            dirname(currentModulePath),
+            "..",
+            "uploads",
+            file
+          );
+
+          // Embed the image into the PDF document
+          doc.image(image, {
+            x: x,
+            y: y,
+            width: 100, // Adjust the width as needed
+          });
+
+          // Adjust the Y position for the next image
+          y += 120; // You can adjust this value as needed for spacing
+
+          // Check if the Y position exceeds the page height, and start a new page if needed
+          if (y > doc.page.height - 50) {
+            doc.addPage();
+            y = 20; // Reset Y position for the new page
+          }
+        });
+      });
+      doc.addPage();
+    }
 
     doc
       .fontSize(headerFontSize)
@@ -2668,11 +2993,11 @@ const downloadReportById = async (req, res) => {
       [
         "1st Level",
         "Name: " +
-          report.employee.name +
+          reports_data[0].employee.name +
           "\nemail: " +
-          report.employee.email +
+          reports_data[0].employee.email +
           "\nMob: " +
-          report.employee.phone +
+          reports_data[0].employee.phone +
           "",
       ],
       [
@@ -4181,10 +4506,6 @@ const downloadExcelTemplate = async (req, res) => {
     }
   }
 };
-
-
-
-
 
 export {
   createProject,
