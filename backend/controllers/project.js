@@ -15,8 +15,7 @@ import request from "request";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import RequestProjects from "../models/RequestProjects.js";
-
-// import sizeOf from "image-size";
+import sizeOf from "image-size";
 const currentModuleURL = import.meta.url;
 const currentModulePath = fileURLToPath(currentModuleURL);
 const imagePath = path.join(
@@ -4492,18 +4491,12 @@ const someMoreDetails = async (req, res) => {
 
 const uploadExcelTemplate = async (req, res) => {
   try {
-    // console.log("i am backend");
-    // Assuming the file is sent in the request with the key 'file'
     const uploadedFile = req.file;
+    const filename = req.body.filename; // file name  coame hear
 
     if (!uploadedFile) {
       return res.status(400).json({ error: "No file uploaded" });
     }
-
-    // Handle the file as needed (save to disk, process, etc.)
-    // For now, just log it to the console
-    // console.log("File is - ", uploadedFile);
-    // save in database
 
     const user = await Employee.findById(req.user._id).exec();
     if (!user || user.role !== "Client") {
@@ -4569,7 +4562,8 @@ const assignedManager = async (req, res) => {
 };
 const getCreateProjectRP = async (req, res) => {
   try {
-    const { rid } = req.params;
+    const { rid, mid } = req.params;
+    console.log(rid, mid);
     const rp = await RequestProjects.findById(rid).populate("client");
 
     if (!rp || req.user.role !== "Project Manager") {

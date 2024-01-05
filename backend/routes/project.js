@@ -114,6 +114,6 @@ router.post(
 );
 router.get("/downloadexceltemplate", protect, downloadExcelTemplate);
 router.post("/assignedmanager", protect, assignedManager);
-router.get("/getcreatprojectforrp/:rid", protect, getCreateProjectRP);
+router.get("/getcreatprojectforrp/:rid/:mid", protect, getCreateProjectRP);
 
 export default router;

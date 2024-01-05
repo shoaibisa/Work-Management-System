@@ -34,8 +34,11 @@ const AllClients = () => {
                   key={person.email}
                   className="flex justify-between gap-x-6 py-5"
                 >
-                  {person.role == "Client" && (
-                    <a className=" w-[100%] " href={`/clientprojects/${person?._id}`}>
+                  {person.role === "Client" && (
+                    <a
+                      className=" w-[100%] "
+                      href={`/clientprojects/${person?._id}`}
+                    >
                       {" "}
                       <div className=" flex px-4  flex-col border-b border-dotted  justify-around w-[100%] hover:cursor-pointer  hover:bg-slate-100 ">
                         {" "}

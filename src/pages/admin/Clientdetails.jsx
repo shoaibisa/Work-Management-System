@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
@@ -7,6 +8,7 @@ import { useParams } from "react-router-dom";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import toast from "react-hot-toast";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -27,14 +29,55 @@ const Clientdetails = () => {
   useEffect(() => {
     if (user && user.employees) {
       const people = user.employees;
-      let m = people.filter((a) => a.role == "Project Manager");
+      let m = people.filter((a) => a.role === "Project Manager");
       setManagers(m);
-      console.log("managers  - ", m);
       let x = people.find((x) => x._id === clientId);
       setClientData(x);
-      console.log("manager data is - ", managers);
     }
   }, [user, clientId]);
+
+  const handleAssignManager = async (managerId, fileId) => {
+    try {
+      const formData = new FormData();
+      formData.append("managerId", managerId);
+      formData.append("fileId", fileId);
+      const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+      const token = userData?.token;
+
+      for (const entry of formData.entries()) {
+        console.log(entry[0], entry[1]);
+      }
+      const response = await fetch(
+        `http://localhost:5000/project/getcreatprojectforrp/${fileId}/${managerId}`,
+        {
+          method: "GET",
+          //  body: formData,
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      // console.log(response);
+
+      if (response.ok) {
+        toast.success("Project man ager assigned successfully");
+        // Update status from "unassigned" to "assigned"
+        setClientData((prevClientData) => {
+          const updatedExcelFile = prevClientData.excelFile.map((person) => {
+            if (person._id === fileId) {
+              return { ...person, status: "assigned" };
+            }
+            return person;
+          });
+          return { ...prevClientData, excelFile: updatedExcelFile };
+        });
+      } else {
+        toast.error("Error assigning project manager1");
+      }
+    } catch (error) {
+      toast.error("Error assigning project manager");
+    }
+  };
 
   return (
     <div className="App">
@@ -68,7 +111,7 @@ const Clientdetails = () => {
                       <div className="flex-none rounded-full bg-emerald-500/20 p-1">
                         <div
                           className={`h-1.5 w-1.5 rounded-full ${
-                            person.status == "unassigned"
+                            person.status === "unassigned"
                               ? "bg-orange-500"
                               : "bg-emerald-500"
                           } `}
@@ -79,9 +122,9 @@ const Clientdetails = () => {
                       </p>
                     </div>
                   </div>
-                  <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-1 px-2 rounded inline-flex items-center">
+                  <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-1 px-2 rounded inline-flex items-center">
                     <svg
-                      class="fill-current w-4 h-4 mr-2"
+                      className="fill-current w-4 h-4 mr-2"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 20 20"
                     >
@@ -113,10 +156,12 @@ const Clientdetails = () => {
                         <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                           <div className="py-1">
                             {managers.map((m) => (
-                              <Menu.Item>
+                              <Menu.Item key={m._id}>
                                 {({ active }) => (
                                   <a
-                                    href="#"
+                                    onClick={() =>
+                                      handleAssignManager(m._id, person._id)
+                                    }
                                     className={classNames(
                                       active
                                         ? "bg-gray-100 text-gray-900"

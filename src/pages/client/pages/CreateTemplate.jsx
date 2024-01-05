@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import Navbar from "../../../components/navbar/Navbar";
 import toast from "react-hot-toast";
-// import * as XLSX from "xlsx";
-// import { saveAs } from "file-saver";
-// // import XLSX from "xlsx";
 import ExcelJS from "exceljs";
 
 const CreateTemplate = () => {
   const [file, setFile] = useState(null);
+  const [filename, setFileName] = useState("");
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
     // console.log(file);
@@ -25,16 +23,21 @@ const CreateTemplate = () => {
       toast.error("Plese select a file..");
       return;
     }
+    if (!filename) {
+      // Handle the case where no file is selected
+      toast.error("Plese Enter  File Name.");
+      return;
+    }
 
     const toastId = toast.loading("Loading..");
 
     try {
       const formData = new FormData();
       formData.append("projectFile", file);
-      console.log("File in FormData:", formData.get("projectFile"));
+      formData.append("filename", filename);
+
       const userData = JSON.parse(localStorage.getItem("employeeInfo"));
       const token = userData?.token;
-      console.log("data is - ",userData);
       const resp = await fetch(
         "http://localhost:5000/project/uploadexceltemplate",
         {
@@ -49,7 +52,6 @@ const CreateTemplate = () => {
       // Assuming the server responds with JSON
       const data = await resp.json();
 
-      console.log(data);
       if (!resp.ok) {
         toast.error("Something went erong..");
       }
@@ -62,106 +64,8 @@ const CreateTemplate = () => {
     toast.dismiss(toastId);
   };
 
-  // const downloadHandler = async () => {
-  //   const toastId = toast.loading("Loading..");
-
-  //   try {
-  //     const userData = JSON.parse(localStorage.getItem("employeeInfo"));
-
-  //     if (!userData || !userData.token) {
-  //       toast.error("Invalid user data or token");
-  //       return;
-  //     }
-
-  //     const resp = await fetch(
-  //       "http://localhost:5000/project/downloadexceltemplate",
-  //       {
-  //         method: "GET",
-  //         headers: {
-  //           Authorization: "Bearer " + userData.token,
-  //         },
-  //       }
-  //     );
-
-  //     if (!resp.ok) {
-  //       toast.error("Something went wrong..");
-  //       return;
-  //     }
-
-  //     // Assuming the response contains the file data
-  //     const blob = await resp.blob();
-
-  //     // Create a Blob URL and trigger the download
-  //     const blobUrl = window.URL.createObjectURL(blob);
-  //     const downloadLink = document.createElement("a");
-  //     downloadLink.href = blobUrl;
-  //     downloadLink.download = "downloaded-file.xlsx";
-  //     document.body.appendChild(downloadLink);
-  //     downloadLink.click();
-
-  //     // Clean up
-  //     document.body.removeChild(downloadLink);
-  //     window.URL.revokeObjectURL(blobUrl);
-
-  //     toast.success("File downloaded successfully");
-  //   } catch (error) {
-  //     // Handle errors
-  //     toast.error("Error downloading file", { id: toastId });
-  //     console.error("Error downloading file", error);
-  //   } finally {
-  //     toast.dismiss(toastId);
-  //   }
-  // };
-  // const downloadHandler = async () => {
-  //   const toastId = toast.loading("Loading..");
-
-  //   try {
-  //     const userData = JSON.parse(localStorage.getItem("employeeInfo"));
-
-  //     if (!userData || !userData.token) {
-  //       toast.error("Invalid user data or token");
-  //       return;
-  //     }
-
-  //     const resp = await fetch("http://localhost:5000/project/downloadexceltemplate", {
-  //       method: "GET",
-  //       headers: {
-  //         Authorization: "Bearer " + userData.token,
-  //       },
-  //     });
-
-  //     if (!resp.ok) {
-  //       toast.error("Something went wrong..");
-  //       return;
-  //     }
-
-  //     // Assuming the response contains the file data
-  //     const blob = await resp.blob();
-
-  //     // Create a Blob URL and trigger the download
-  //     const blobUrl = window.URL.createObjectURL(blob);
-  //     const downloadLink = document.createElement("a");
-  //     downloadLink.href = blobUrl;
-  //     downloadLink.download = "downloaded-file.xlsx";
-  //     document.body.appendChild(downloadLink);
-  //     downloadLink.click();
-
-  //     // Clean up
-  //     document.body.removeChild(downloadLink);
-  //     window.URL.revokeObjectURL(blobUrl);
-
-  //     toast.success("File downloaded successfully");
-  //   } catch (error) {
-  //     // Handle errors
-  //     toast.error("Error downloading file", { id: toastId });
-  //     console.error("Error downloading file", error);
-  //   } finally {
-  //     toast.dismiss(toastId);
-  //   };
-  // };
   const downloadHandler = async (e) => {
     e.preventDefault();
-
     const toastId = toast.loading("Loading..");
 
     try {
@@ -211,6 +115,28 @@ const CreateTemplate = () => {
           <div className="m-10 flex items-center justify-center flex-row flex-wrap rounded-lg border border-dashed border-gray-900/25 py-6">
             <div className="m-10 flex items-center justify-center flex-col flex-wrap rounded-lg border border-dashed border-gray-900/25 px-6 py-6">
               <form onSubmit={submitHandler} action="">
+                <div className="sm:col-span-4 w-1/2 mr-10 mb-10">
+                  <label
+                    for="username"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    File Name
+                  </label>
+                  <div className="mt-2">
+                    <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                      <input
+                        type="text"
+                        name="filename"
+                        autoComplete="filename"
+                        className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                        placeholder="Enter File Name"
+                        required="true"
+                        value={filename}
+                        onChange={(e) => setFileName(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
                 <p className="font-bold text-xl">Upload template</p>{" "}
                 <input
                   class="relative mt-4 m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
