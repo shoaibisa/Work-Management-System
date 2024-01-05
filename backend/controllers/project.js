@@ -4171,21 +4171,27 @@ const getAllReportsByUserId = async (req, res) => {
 };
 
 const getAllReportOfManager = async (req, res) => {
-  const id = req.user._id;
-  const projects = await Project.find({ manager: id });
+  try {
+    const id = req.user._id;
+    const projects = await Project.find({ manager: id });
 
-  var reports = [];
+    var reports = [];
 
-  for (var i = 0; i < projects.length; i++) {
-    var r = await Report.find({ project: projects[i] });
-    reports.push(r);
+    for (var i = 0; i < projects.length; i++) {
+      var r = await Report.find({ project: projects[i] });
+      reports.push(r);
+    }
+
+    return res.status(200).send({
+      title: "Success",
+      message: "project get sucessfully",
+      data: reports,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      message: err,
+    });
   }
-
-  return res.status(200).send({
-    title: "Success",
-    message: "project get sucessfully",
-    data: reports,
-  });
 };
 
 const getReportsByTaskId = async (req, res) => {
