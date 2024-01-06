@@ -4519,8 +4519,8 @@ const uploadExcelTemplate = async (req, res) => {
         filename: uploadedFile.filename,
         path: uploadedFile.path,
       },
-      client:user._id;
-    })
+      client: user._id,
+    });
 
     await rp.save();
 
