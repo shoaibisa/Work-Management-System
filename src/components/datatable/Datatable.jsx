@@ -26,7 +26,14 @@ const Datatable = () => {
         { error }
       ) : (
         <DataGrid
-          className="datagrid"
+          // localeText={{
+          //   toolbarDensity: "Size",
+          //   toolbarDensityLabel: "Size",
+          //   toolbarDensityCompact: "Small",
+          //   toolbarDensityStandard: "Medium",
+          //   toolbarDensityComfortable: "Large",
+          // }}
+          className="datagrid  w-[85vw] "
           rows={data}
           columns={userColumns}
           pageSize={9}

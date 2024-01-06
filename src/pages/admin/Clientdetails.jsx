@@ -90,6 +90,7 @@ const Clientdetails = () => {
   };
   const clientRequests = clientData?.data?.clientRequests || [];
   const handleAssignManager = async (managerId, fileId) => {
+    // const toastId = toast.loading("Loading...");
     console.log(clientRequests);
     const alreadyAssigned = clientRequests.find(
       (person) => person._id === fileId && person.assigned === true
@@ -110,6 +111,7 @@ const Clientdetails = () => {
     }
 
     try {
+      // let toastid = toast.loading("Loading..");
       const formData = new FormData();
       formData.append("managerId", managerId);
       formData.append("fileId", fileId);
@@ -152,10 +154,13 @@ const Clientdetails = () => {
       } else {
         toast.error("Error assigning project manager");
       }
+      // toast.dismiss(toastid);
     } catch (error) {
       toast.error("Error assigning project manager");
     }
+
     window.location.reload();
+    // toast.dismiss(toastId);
   };
 
   return (
@@ -167,7 +172,7 @@ const Clientdetails = () => {
           <div className="font-bold text-2xl ml-10 mt-6">
             {clientData?.name} Projects
           </div>
-          <div className="flex w-fit px-5 mx-10 mt-10 items-center justify-center flex-row flex-wrap rounded-lg border border-dashed border-gray-900/25 py-6">
+          <div className="flex w-fit px-5 mx-10 my-10 items-center justify-center flex-row flex-wrap rounded-lg border border-dashed border-gray-900/25 py-6">
             {clientRequests ? (
               <ol
                 role="list"
@@ -177,11 +182,11 @@ const Clientdetails = () => {
                 {clientRequests.map((person) => (
                   <li
                     key={clientData._id}
-                    className="flex justify-between gap-x-6 py-5"
+                    className="flex justify-evenly gap-x-6 py-5"
                   >
                     <div className="flex min-w-0 gap-x-4">
                       <div className="min-w-0 flex-auto">
-                        <p className="text-sm font-semibold leading-6 text-gray-900">
+                        <p className="text-sm font-semibold  w-48 leading-6 text-gray-900">
                           {person.name}
                         </p>
                       </div>

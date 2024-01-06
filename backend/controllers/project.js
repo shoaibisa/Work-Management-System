@@ -4455,8 +4455,9 @@ const getNotifications = async (req, res) => {
   const employee = await Employee.findById(employeeId).populate(
     "notifications"
   );
+  // bhai conditional chaning kiya karo to prevent crashF
   var notification = [];
-  if (employee.notifications) {
+  if (employee?.notifications) {
     notification = employee.notifications;
   }
   res.send({

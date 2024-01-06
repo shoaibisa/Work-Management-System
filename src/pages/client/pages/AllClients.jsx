@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../../components/navbar/Navbar";
 import Sidebar from "../../../components/sidebar/Sidebar";
 // import { useSelect } from "@material-tailwind/react";
@@ -8,6 +8,7 @@ import { alluser } from "../../../actions/employeeAction";
 const AllClients = () => {
   const dispatch = useDispatch();
   const userlist = useSelector((state) => state.userlist);
+  const[assigned, setAssignes]=useState()
   const { loading, error, user } = userlist;
   useEffect(() => {
     dispatch(alluser());
@@ -21,22 +22,23 @@ const AllClients = () => {
         <Sidebar />
         <div className="homeContainer ">
           <Navbar />
+
           <div className=" text-2xl text-secondary-700 mt-10 ml-20 ">
             All Clients
           </div>
-          <div className="  flex justify-center mt-10 ">
+          <div className="flex w-fit px-5 mx-20  mt-8 items-center justify-center flex-row flex-wrap rounded-lg border border-dashed border-gray-900/25 ">
             <ul
               role="list"
-              className=" border border-dashed rounded-md -py-20  w-[40rem]"
+              className=" rounded-md w-[50rem]"
             >
               {people.map((person) => (
                 <li
                   key={person.email}
-                  className="flex justify-between gap-x-6 py-5"
+                  className="flex justify-between gap-x-6"
                 >
                   {person.role === "Client" && (
                     <a
-                      className=" w-[100%] "
+                      className=" w-[100%] my-5 "
                       href={`/clientprojects/${person?._id}`}
                     >
                       {" "}
@@ -121,6 +123,7 @@ const AllClients = () => {
               ))}
             </ul>
           </div>
+          {/* <div className="  flex justify-center mt-10 "></div> */}
         </div>
       </div>
     </div>

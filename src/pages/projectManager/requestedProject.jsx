@@ -70,7 +70,7 @@ const RequestedProject = () => {
           <div className="font-bold text-2xl ml-10 mt-6">
             {employeeData?.name} Projects
           </div>
-          <div className="flex w-fit px-5 mx-10 mt-10 items-center justify-center flex-row flex-wrap rounded-lg border border-dashed border-gray-900/25 py-6">
+          <div className="flex w-fit px-5 m-10 items-center justify-center flex-row flex-wrap rounded-lg border border-dashed border-gray-900/25 py-6">
             {clientRequests ? (
               <ol
                 role="list"
@@ -84,7 +84,7 @@ const RequestedProject = () => {
                   >
                     <div className="flex min-w-0 gap-x-4">
                       <div className="min-w-0 flex-auto">
-                        <p className="text-sm font-semibold leading-6 text-gray-900">
+                        <p className="text-sm font-semibold w-48 leading-6 text-gray-900">
                           {person.name}
                         </p>
                       </div>
