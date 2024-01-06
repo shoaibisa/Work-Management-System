@@ -4546,8 +4546,19 @@ const downloadExcelTemplate = async (req, res) => {
     }
     //console.log(req.b);
     const rp = await RequestProjects.findById(req.body.rid);
-    const filePath = path.join(__dirname, "uploads", rp.excelFile.filename);
-    res.download(filePath);
+
+    if (!rp) {
+      return res.status(400).json({
+        isError: true,
+        title: "Error",
+        message: "Not found!",
+      });
+    }
+    console.log(rp.excelFile.filename);
+    res.status(200).send({
+      data: rp.excelFile.filename,
+      isError: false,
+    });
   } catch (error) {
     console.error("Error handling download request:", error);
   }
