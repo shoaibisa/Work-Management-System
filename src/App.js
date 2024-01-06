@@ -103,6 +103,14 @@ function App() {
               }
             />
             <Route
+              path="/createproject/:mid/:rid"
+              element={
+                <AuthorizedPM>
+                  <Createproject />
+                </AuthorizedPM>
+              }
+            />
+            <Route
               path="/viewproject/:projectId/:createtask"
               element={
                 <AuthorizedPM>

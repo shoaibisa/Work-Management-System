@@ -5,7 +5,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { alluser } from "../../actions/employeeAction";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
@@ -79,7 +79,7 @@ const RequestedProject = () => {
               >
                 {managerAssignedProject.map((person) => (
                   <li
-                    key={clientData._id}
+                    key={person._id}
                     className="flex justify-between gap-x-6 py-5"
                   >
                     <div className="flex min-w-0 gap-x-4">
@@ -117,6 +117,12 @@ const RequestedProject = () => {
                       </svg>
                       <span>Download</span>
                     </button>
+                    <Link
+                      to={`/createproject/${employeeData._id}/${person?._id}`}
+                      className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-1 px-2 rounded inline-flex items-center"
+                    >
+                      Create Project
+                    </Link>
                   </li>
                 ))}
               </ol>

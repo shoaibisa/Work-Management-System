@@ -4519,7 +4519,8 @@ const uploadExcelTemplate = async (req, res) => {
         filename: uploadedFile.filename,
         path: uploadedFile.path,
       },
-    });
+      client:user._id;
+    })
 
     await rp.save();
 
@@ -4552,10 +4553,10 @@ const downloadExcelTemplate = async (req, res) => {
 };
 
 const assignedManager = async (req, res) => {
-  console.log("assignedManager");
+  //console.log("assignedManager");
   try {
     const { mid, rid } = req.body;
-    console.log(mid, rid);
+    // console.log(mid, rid);
     const manager = await Employee.findById(mid);
     const rp = await RequestProjects.findById(rid);
 
@@ -4571,8 +4572,8 @@ const assignedManager = async (req, res) => {
 const getCreateProjectRP = async (req, res) => {
   try {
     const { rid, mid } = req.params;
-
     const rp = await RequestProjects.findById(rid).populate("client");
+    console.log(rp);
 
     if (!rp || req.user.role !== "Project Manager") {
       return res

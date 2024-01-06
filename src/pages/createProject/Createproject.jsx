@@ -14,28 +14,21 @@ import { Select, initTE } from "tw-elements";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createProject } from "../../actions/projectlistAction";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { listClients } from "../../actions/clientAction";
 
-// import { Link } from "react-router-dom";
-// import { Menu, Transition } from "@headlessui/react";
-// import { ChevronDownIcon } from "@heroicons/react/20/solid";
-// import { AiFillPlusCircle, AiOutlinePlusCircle } from "react-icons/ai";
-// import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
-
 const Createproject = () => {
+  const { mid, rid } = useParams();
+  console.log(mid, rid);
   const [projectName, setProjectName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [clientName, setclientName] = useState("");
   const [clientEmail, setclientEmail] = useState("");
   const [selectedId, setselectedId] = useState("");
-
   const [selectedOptions, setSelectedOptions] = useState([]);
-
   const [submissionDate, setSubmissionDate] = useState(null);
   const [projectPriority, setProjectPriority] = useState("");
   const [message, setMessage] = useState("");
-
   const location = useLocation();
   const Navigate = useNavigate();
   const dispatch = useDispatch();
@@ -51,7 +44,6 @@ const Createproject = () => {
 
   const clientsList = useSelector((state) => state.clientsList);
   const { clients } = clientsList;
-  // console.log(clients);
   useEffect(() => {
     dispatch(listClients());
     if (project) {
@@ -82,30 +74,48 @@ const Createproject = () => {
       setSubmissionDate(null);
     }
   };
+  const [projectData, setProjectData] = useState([]);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
 
-  // const submitHandler = (e) => {
-  //   e.preventDefault();
-  //   dispatch(
-  //     createProject(
-  //       projectName,
-  //       companyName,
-  //       clientName,
-  //       clientEmail,
-  //       client,
-  //       manager,
-  //       submissionDate,
-  //       projectPriority
-  //     )
-  //   );
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // setLoading(true);
 
-  //   setMessage("Sucessfully Project Created");
-  //   window.history.back();
-  // };
+        const apiUrl = `http://localhost:5000/project/getcreatprojectforrp/${rid}/${mid}`;
+
+        const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+        const token = userData?.token;
+
+        const response = await fetch(apiUrl, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          setProjectData(result.projects);
+        } else {
+          throw new Error(`Failed to fetch data. Status: ${response.status}`);
+        }
+      } catch (error) {
+        // setError(error.message);
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  console.log(projectData);
   const submitHandler = (e) => {
     e.preventDefault();
-    // Split the selected client value into email and ID
-    // const [selectedEmail, selectedId] = clientEmail.split("-");
-    //console.log(selectedEmail, selectedId);
+
     dispatch(
       createProject(
         projectName,
@@ -223,25 +233,6 @@ const Createproject = () => {
                       Client email
                     </label>
                     <div className="mt-2">
-                      {/* <select
-                        data-te-select-init
-                        data-te-select-filter="true"
-                        value={clientEmail}
-                        onChange={(e) => setclientEmail(e.target.value)}
-                      >
-                        <option value="" disabled>
-                          Select an employee
-                        </option>
-                        {clients.clients &&
-                          clients.clients.map((employee) => (
-                            <option
-                              key={employee._id}
-                              value={`${employee._id}-${employee.email}`}
-                            >
-                              {employee.email}
-                            </option>
-                          ))}
-                      </select> */}
                       <select
                         data-te-select-init
                         data-te-select-filter="true"
@@ -280,7 +271,6 @@ const Createproject = () => {
                       <DatePicker
                         onChange={handleDateChange}
                         value={submissionDate}
-                        //   required="true"
                       />
                     </div>
                   </div>
