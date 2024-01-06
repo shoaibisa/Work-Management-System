@@ -23,12 +23,9 @@ const RequestedProject = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-
-        // Replace the URL with your API endpoint
         const apiUrl = "http://localhost:5000/user/getManagerById";
-
         const response = await fetch(apiUrl, {
-          method: "POST", // or "GET", "PUT", etc.
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,
@@ -55,11 +52,48 @@ const RequestedProject = () => {
     };
 
     fetchData();
-  }, []);
-  console.log(employeeData);
-  console.log(managerAssignedProject);
-  const clientRequests = data.employee || [];
-  const clientData = [];
+  }, [userData.id]);
+
+  const handleDownloadClick = async (rid) => {
+    try {
+      setLoading(true);
+      const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+      const token = userData?.token;
+      const apiUrl = "http://localhost:5000/project/managerAssignedProject"; // Replace with your actual download API endpoint
+
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify({
+          rid: rid,
+        }),
+      });
+
+      if (response.ok) {
+        console.log(response);
+        // Assuming the server sends the Excel file as a blob
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "project_data.xlsx");
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+        toast.success("Excel file downloaded successfully!");
+      } else {
+        throw new Error(`Failed to fetch data. Status: ${response.status}`);
+      }
+    } catch (error) {
+      setError(error.message);
+      toast.error("Error downloading Excel file");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="App">
@@ -71,7 +105,7 @@ const RequestedProject = () => {
             {employeeData?.name} Projects
           </div>
           <div className="flex w-fit px-5 m-10 items-center justify-center flex-row flex-wrap rounded-lg border border-dashed border-gray-900/25 py-6">
-            {clientRequests ? (
+            {managerAssignedProject ? (
               <ol
                 role="list"
                 className="divide-y list-decimal list-inside
@@ -107,7 +141,10 @@ const RequestedProject = () => {
                         </p>
                       </div>
                     </div>
-                    <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-1 px-2 rounded inline-flex items-center">
+                    <button
+                      className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-1 px-2 rounded inline-flex items-center"
+                      onClick={() => handleDownloadClick(person?._id)}
+                    >
                       <svg
                         className="fill-current w-4 h-4 mr-2"
                         xmlns="http://www.w3.org/2000/svg"

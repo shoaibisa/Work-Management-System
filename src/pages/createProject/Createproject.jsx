@@ -19,18 +19,21 @@ import { listClients } from "../../actions/clientAction";
 
 const Createproject = () => {
   const { mid, rid } = useParams();
-  console.log(mid, rid);
+
   const [projectName, setProjectName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [clientName, setclientName] = useState("");
   const [clientEmail, setclientEmail] = useState("");
   const [selectedId, setselectedId] = useState("");
-  const [selectedOptions, setSelectedOptions] = useState([]);
   const [submissionDate, setSubmissionDate] = useState(null);
   const [projectPriority, setProjectPriority] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [projectData, setProjectData] = useState([]);
+
   const location = useLocation();
-  const Navigate = useNavigate();
+  // const Navigate = useNavigate();
   const dispatch = useDispatch();
   const redirect = location.search
     ? location.search.split("=")[1]
@@ -40,7 +43,7 @@ const Createproject = () => {
   const manager = userData?.id;
 
   const projectCreated = useSelector((state) => state.projectCreated);
-  const { loading, error, project } = projectCreated;
+  const { project } = projectCreated;
 
   const clientsList = useSelector((state) => state.clientsList);
   const { clients } = clientsList;
@@ -53,17 +56,7 @@ const Createproject = () => {
         setMessage(project.message);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    initTE({ Select });
   }, [project, redirect]);
-
-  const handleOptionSelect = (event) => {
-    const selectedValues = Array.from(
-      event.target.selectedOptions,
-      (option) => option.value
-    );
-    setSelectedOptions(selectedValues);
-  };
 
   const handleDateChange = (d) => {
     if (d instanceof Date && !isNaN(d)) {
@@ -74,14 +67,11 @@ const Createproject = () => {
       setSubmissionDate(null);
     }
   };
-  const [projectData, setProjectData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // setLoading(true);
-
+        setLoading(true);
         const apiUrl = `http://localhost:5000/project/getcreatprojectforrp/${rid}/${mid}`;
-
         const userData = JSON.parse(localStorage.getItem("employeeInfo"));
         const token = userData?.token;
 
@@ -95,24 +85,23 @@ const Createproject = () => {
 
         if (response.ok) {
           const result = await response.json();
-          console.log(result);
-          setProjectData(result.data.client);
-          // setclientName(result && result.data.client.name);
-          // setclientEmail(result && result.data.client.email);
+          setProjectData(result?.data?.client);
+          setclientName(result?.data?.client?.name);
+          setclientEmail(result?.data?.client?.email);
+          setselectedId(result?.data?.client?._id);
         } else {
           throw new Error(`Failed to fetch data. Status: ${response.status}`);
         }
       } catch (error) {
-        // setError(error.message);
+        setError(error.message);
       } finally {
-        // setLoading(false);
+        setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [rid, mid]);
 
-  console.log(projectData);
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -125,7 +114,8 @@ const Createproject = () => {
         selectedId, // Use selectedId here
         manager,
         submissionDate,
-        projectPriority
+        projectPriority,
+        rid
       )
     );
 
@@ -133,12 +123,13 @@ const Createproject = () => {
     window.history.back();
   };
 
-  useEffect(() => {
-    initTE({ Select });
-  }, []);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-  console.log(clientEmail, selectedId);
-
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
   return (
     <div className="home">
       <Sidebar />
@@ -207,6 +198,28 @@ const Createproject = () => {
                       for="username"
                       className="block text-sm font-medium leading-6 text-gray-900"
                     >
+                      Client Email
+                    </label>
+                    <div className="mt-2">
+                      <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                        <input
+                          type="text"
+                          name="webclientName"
+                          autoComplete="username"
+                          className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                          placeholder="Enter Client Email"
+                          required="true"
+                          value={clientEmail}
+                          // onChange={(e) => setclientName(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="sm:col-span-4 w-1/2 mr-10 mb-10">
+                    <label
+                      for="username"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
                       Client Name
                     </label>
                     <div className="mt-2">
@@ -218,14 +231,15 @@ const Createproject = () => {
                           className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                           placeholder="Enter Client Name"
                           required="true"
-                          value={projectData.name}
+                          value={clientName}
                           onChange={(e) => setclientName(e.target.value)}
                         />
                       </div>
                     </div>
                   </div>
+
                   {/* 3 */}
-                  <div className="sm:col-span-4 w-1/2 mr-10 mb-10">
+                  {/* <div className="sm:col-span-4 w-1/2 mr-10 mb-10">
                     <label
                       for="username"
                       className="block text-sm font-medium leading-6 text-gray-900"
@@ -236,7 +250,7 @@ const Createproject = () => {
                       <select
                         data-te-select-init
                         data-te-select-filter="true"
-                        value={projectData.email}
+                        value={clientEmail}
                         onChange={(e) => {
                           const selectedValue = e.target.value;
                           const [selectedId, selectedEmail] =
@@ -248,18 +262,18 @@ const Createproject = () => {
                         <option value="" disabled>
                           Select an employee
                         </option>
-                        {/* {clients.clients && */}
-                        {/* clients.clients.map((employee) => ( */}
-                        <option
-                          key={projectData._id}
-                          value={`${projectData._id}-${projectData.email}`}
-                        >
-                          {projectData.email} - {projectData.name}
-                        </option>
-                        {/* ))} */}
+                        {clients.clients &&
+                          clients.clients.map((employee) => (
+                            <option
+                              key={employee._id}
+                              value={`${employee._id}-${employee.email}`}
+                            >
+                              {employee.email} - {employee.name}
+                            </option>
+                          ))}
                       </select>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="flex w-full">
                   <div className=" sm:col-span-4 w-1/2 mr-10  mt-6  mb-6 flex">

@@ -91,7 +91,7 @@ const Clientdetails = () => {
   const clientRequests = clientData?.data?.clientRequests || [];
   const handleAssignManager = async (managerId, fileId) => {
     // const toastId = toast.loading("Loading...");
-    console.log(clientRequests);
+    // console.log(clientRequests);
     const alreadyAssigned = clientRequests.find(
       (person) => person._id === fileId && person.assigned === true
     );
@@ -112,13 +112,6 @@ const Clientdetails = () => {
 
     try {
       // let toastid = toast.loading("Loading..");
-      const formData = new FormData();
-      formData.append("managerId", managerId);
-      formData.append("fileId", fileId);
-
-      for (const entry of formData.entries()) {
-        console.log(entry[0], entry[1]);
-      }
 
       const response = await fetch(
         `http://localhost:5000/project/assignedmanager`,

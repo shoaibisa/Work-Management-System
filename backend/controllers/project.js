@@ -25,7 +25,7 @@ const imagePath = path.join(
   "logo.png"
 );
 
-// const imagePath = path.join(__dirname, "..", "image", "logo.png");
+//const imagePath = path.join(__dirname, "..", "image", "logo.png");
 const hearder = path.join(
   dirname(currentModulePath),
   "..",
@@ -3084,7 +3084,8 @@ const createProject = async (req, res) => {
         isError: true,
       });
     }
-    // console.log(req.body);
+    const rid = req.body.rid;
+    console.log(req.body);
     const project = new Project({
       projectName: req.body.projectName,
       companyName: req.body.companyName,
@@ -3096,6 +3097,7 @@ const createProject = async (req, res) => {
       submissionDate: req.body.submissionDate,
     });
 
+    //console.log();
     const notification = new Notification({
       notification: `New project ${req.body.projectName} is created`,
       employee: req.body.client,
@@ -4538,13 +4540,11 @@ const uploadExcelTemplate = async (req, res) => {
 
 const downloadExcelTemplate = async (req, res) => {
   try {
-    // console.log("backend download called");
-
-    // Ensure req.user is defined and has the _id property
     if (!req.user) {
       console.error("Unauthorized: User or user ID not found");
       return res.status(401).json({ error: "Unauthorized" });
     }
+    //console.log(req.b);
     const rp = await RequestProjects.findById(req.body.rid);
     const filePath = path.join(__dirname, "uploads", rp.excelFile.filename);
     res.download(filePath);
