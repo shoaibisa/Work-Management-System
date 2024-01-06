@@ -4498,7 +4498,7 @@ const someMoreDetails = async (req, res) => {
 const uploadExcelTemplate = async (req, res) => {
   try {
     const uploadedFile = req.file;
-    const filename = req.body.filename; // file name  coame hear
+    // const name = req.body.name; // file name  coame hear
 
     if (!uploadedFile) {
       return res.status(400).json({ error: "No file uploaded" });

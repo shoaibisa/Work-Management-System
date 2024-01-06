@@ -183,13 +183,13 @@ const getEmployeeById = async (req, res) => {
 
 const getClientById = async (req, res) => {
   try {
-    if (req.user.role !== "admin") {
-      return res.status(208).send({
-        isError: true,
-        title: "Error",
-        message: "Not authorized!",
-      });
-    }
+    // if (req.user.role !== "admin") {
+    //   return res.status(208).send({
+    //     isError: true,
+    //     title: "Error",
+    //     message: "Not authorized!",
+    //   });
+    // }
     const id = req.params.id;
     const client = await Employee.findById(id).populate("clientRequests");
 

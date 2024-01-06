@@ -6,7 +6,7 @@ import ExcelJS from "exceljs";
 
 const CreateTemplate = () => {
   const [file, setFile] = useState(null);
-  const [filename, setFileName] = useState("");
+  const [name, setFileName] = useState("");
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
     // console.log(file);
@@ -23,7 +23,7 @@ const CreateTemplate = () => {
       toast.error("Plese select a file..");
       return;
     }
-    if (!filename) {
+    if (!name) {
       // Handle the case where no file is selected
       toast.error("Plese Enter  File Name.");
       return;
@@ -34,7 +34,7 @@ const CreateTemplate = () => {
     try {
       const formData = new FormData();
       formData.append("projectFile", file);
-      formData.append("filename", filename);
+      formData.append("name", name);
 
       const userData = JSON.parse(localStorage.getItem("employeeInfo"));
       const token = userData?.token;
@@ -62,6 +62,7 @@ const CreateTemplate = () => {
       console.error("Error uploading file", error);
     }
     toast.dismiss(toastId);
+    window.history.back();
   };
 
   const downloadHandler = async (e) => {
@@ -126,12 +127,12 @@ const CreateTemplate = () => {
                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                       <input
                         type="text"
-                        name="filename"
+                        name="name"
                         autoComplete="filename"
                         className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                         placeholder="Enter File Name"
                         required="true"
-                        value={filename}
+                        value={name}
                         onChange={(e) => setFileName(e.target.value)}
                       />
                     </div>

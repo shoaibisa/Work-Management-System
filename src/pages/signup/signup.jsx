@@ -92,7 +92,7 @@ const Signup = () => {
       } catch (error) {
         toast.error("Error while creating acc..");
         console.error("Error acc form:", error);
-        setMessage("An error occurred while creating zthe task");
+        setMessage("An error occurred while creating the Profile");
       }
       setProcessing(false);
     }
