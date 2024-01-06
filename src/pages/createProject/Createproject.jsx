@@ -75,9 +75,6 @@ const Createproject = () => {
     }
   };
   const [projectData, setProjectData] = useState([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -98,7 +95,10 @@ const Createproject = () => {
 
         if (response.ok) {
           const result = await response.json();
-          setProjectData(result.projects);
+          console.log(result);
+          setProjectData(result.data.client);
+          // setclientName(result && result.data.client.name);
+          // setclientEmail(result && result.data.client.email);
         } else {
           throw new Error(`Failed to fetch data. Status: ${response.status}`);
         }
@@ -218,7 +218,7 @@ const Createproject = () => {
                           className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                           placeholder="Enter Client Name"
                           required="true"
-                          value={clientName}
+                          value={projectData.name}
                           onChange={(e) => setclientName(e.target.value)}
                         />
                       </div>
@@ -236,28 +236,27 @@ const Createproject = () => {
                       <select
                         data-te-select-init
                         data-te-select-filter="true"
-                        value={clientEmail}
+                        value={projectData.email}
                         onChange={(e) => {
                           const selectedValue = e.target.value;
                           const [selectedId, selectedEmail] =
                             selectedValue.split("-");
                           setclientEmail(selectedEmail);
-
                           setselectedId(selectedId);
                         }}
                       >
                         <option value="" disabled>
                           Select an employee
                         </option>
-                        {clients.clients &&
-                          clients.clients.map((employee) => (
-                            <option
-                              key={employee._id}
-                              value={`${employee._id}-${employee.email}`}
-                            >
-                              {employee.email} - {employee.name}
-                            </option>
-                          ))}
+                        {/* {clients.clients && */}
+                        {/* clients.clients.map((employee) => ( */}
+                        <option
+                          key={projectData._id}
+                          value={`${projectData._id}-${projectData.email}`}
+                        >
+                          {projectData.email} - {projectData.name}
+                        </option>
+                        {/* ))} */}
                       </select>
                     </div>
                   </div>
