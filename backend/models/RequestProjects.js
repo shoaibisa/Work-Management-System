@@ -16,7 +16,7 @@ const requestProjectSchema = new mongoose.Schema(
 
     assigned: {
       type: Boolean,
-      required: false,
+      default: false,
     },
     manager: {
       type: mongoose.Schema.Types.ObjectId,

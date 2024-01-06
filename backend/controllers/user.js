@@ -124,7 +124,9 @@ const getManagerById = async (req, res) => {
   const { id } = req.body;
   //console.log(id);
   try {
-    const employee = await Employee.findById(id).exec();
+    const employee = await Employee.findById(id)
+      .populate("managerAssignedProject")
+      .exec();
 
     if (!employee) {
       return res.status(208).send({
@@ -192,7 +194,7 @@ const getClientById = async (req, res) => {
     // }
     const id = req.params.id;
     const client = await Employee.findById(id).populate("clientRequests");
-
+    // console.log(id);
     res.status(200).send({
       isError: false,
       data: client,

@@ -112,7 +112,7 @@ router.post(
   protect,
   uploadExcelTemplate
 );
-router.get("/downloadexceltemplate", protect, downloadExcelTemplate);
+router.post("/managerAssignedProject", protect, downloadExcelTemplate);
 router.post("/assignedmanager", protect, assignedManager);
 router.get("/getcreatprojectforrp/:rid/:mid", protect, getCreateProjectRP);
 

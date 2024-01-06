@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import toast from "react-hot-toast";
+import toast from "react-hot-toast"; // Import react-hot-toast
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -19,13 +19,34 @@ const Clientdetails = () => {
   const { clientId } = useParams();
   const dispatch = useDispatch();
   const userlist = useSelector((state) => state.userlist);
-  const { loading, error, user } = userlist;
+  const { user } = userlist;
+
   const [clientData, setClientData] = useState(null);
   const [managers, setManagers] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     dispatch(alluser());
   }, [dispatch]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        await fetchClientById(clientId);
+      } catch (error) {
+        setError(error.message);
+        toast.error("Error fetching client data"); // Use toast for error notification
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clientId]);
 
   useEffect(() => {
     if (user && user.employees) {
@@ -37,49 +58,106 @@ const Clientdetails = () => {
     }
   }, [user, clientId]);
 
-  const handleAssignManager = async (managerId, fileId) => {
-    try {
-      const formData = new FormData();
-      formData.append("managerId", managerId);
-      formData.append("fileId", fileId);
-      const userData = JSON.parse(localStorage.getItem("employeeInfo"));
-      const token = userData?.token;
+  const userData = JSON.parse(localStorage.getItem("employeeInfo"));
+  const token = userData?.token;
 
-      for (const entry of formData.entries()) {
-        console.log(entry[0], entry[1]);
-      }
+  const fetchClientById = async (clientId) => {
+    try {
       const response = await fetch(
-        `http://localhost:5000/project/getcreatprojectforrp/${fileId}/${managerId}`,
+        `http://localhost:5000/user/getclientbyid/${clientId}`,
         {
           method: "GET",
-          //  body: formData,
           headers: {
             Authorization: "Bearer " + token,
           },
         }
       );
-      // console.log(response);
 
       if (response.ok) {
-        toast.success("Project man ager assigned successfully");
-        // Update status from "unassigned" to "assigned"
-        setClientData((prevClientData) => {
-          const updatedExcelFile = prevClientData.excelFile.map((person) => {
-            if (person._id === fileId) {
-              return { ...person, status: "assigned" };
-            }
-            return person;
-          });
-          return { ...prevClientData, excelFile: updatedExcelFile };
-        });
+        const clientData = await response.json();
+        setClientData(clientData);
+        return;
       } else {
-        toast.error("Error assigning project manager1");
+        throw new Error(
+          `Failed to fetch client data. Status: ${response.status}`
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching client data:", error.message);
+      toast.error("Error fetching client data"); // Use toast for error notification
+      throw error;
+    }
+  };
+  const clientRequests = clientData?.data?.clientRequests || [];
+  const handleAssignManager = async (managerId, fileId) => {
+    console.log(clientRequests);
+    const alreadyAssigned = clientRequests.find(
+      (person) => person._id === fileId && person.assigned === true
+    );
+
+    if (alreadyAssigned) {
+      toast.error("Project is already assigned to a manager");
+      return;
+    }
+    // Display a confirmation dialog before proceeding
+    const confirmAssign = window.confirm(
+      "Do you want to assign this project to the selected manager?"
+    );
+
+    if (!confirmAssign) {
+      // User clicked "Cancel" in the confirmation dialog
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("managerId", managerId);
+      formData.append("fileId", fileId);
+
+      for (const entry of formData.entries()) {
+        console.log(entry[0], entry[1]);
+      }
+
+      const response = await fetch(
+        `http://localhost:5000/project/assignedmanager`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify({
+            mid: managerId,
+            rid: fileId,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        toast.success("Project manager assigned successfully");
+        setClientData((prevClientData) => {
+          const updatedClients = prevClientData.map((client) => {
+            const updatedExcelFile = client.excelFile.map((file) => {
+              if (file._id === fileId) {
+                return { ...file, assigned: true };
+              }
+              return file;
+            });
+            return { ...client, excelFile: updatedExcelFile };
+          });
+          return updatedClients;
+        });
+        // Reload the page after a successful assignment
+        window.location.reload();
+      } else {
+        toast.error("Error assigning project manager");
       }
     } catch (error) {
       toast.error("Error assigning project manager");
     }
+    window.location.reload();
   };
-  console.log(clientData);
+
   return (
     <div className="App">
       <div className="home">
@@ -90,13 +168,13 @@ const Clientdetails = () => {
             {clientData?.name} Projects
           </div>
           <div className="flex w-fit px-5 mx-10 mt-10 items-center justify-center flex-row flex-wrap rounded-lg border border-dashed border-gray-900/25 py-6">
-            {clientData && clientData.excelFile ? (
+            {clientRequests ? (
               <ol
                 role="list"
                 className="divide-y list-decimal list-inside
              divide-gray-100"
               >
-                {clientData?.excelFile.map((person) => (
+                {clientRequests.map((person) => (
                   <li
                     key={clientData._id}
                     className="flex justify-between gap-x-6 py-5"
@@ -104,7 +182,7 @@ const Clientdetails = () => {
                     <div className="flex min-w-0 gap-x-4">
                       <div className="min-w-0 flex-auto">
                         <p className="text-sm font-semibold leading-6 text-gray-900">
-                          {person.filename}
+                          {person.name}
                         </p>
                       </div>
                     </div>
@@ -113,14 +191,16 @@ const Clientdetails = () => {
                         <div className="flex-none rounded-full bg-emerald-500/20 p-1">
                           <div
                             className={`h-1.5 w-1.5 rounded-full ${
-                              person.status === "unassigned"
+                              person.assigned === false
                                 ? "bg-orange-500"
                                 : "bg-emerald-500"
                             } `}
                           />
                         </div>
                         <p className="text-xs leading-5 text-gray-500">
-                          {person.status}
+                          {person.assigned === false
+                            ? `Unassigned`
+                            : "Assigned"}
                         </p>
                       </div>
                     </div>
@@ -140,7 +220,10 @@ const Clientdetails = () => {
                         className="relative inline-block text-left"
                       >
                         <div>
-                          <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                          <Menu.Button
+                            // disabled={person.assigned} // Disable the button if already assigned
+                            className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                          >
                             Assign to manager
                             <ChevronDownIcon
                               className="-mr-1 h-5 w-5 text-gray-400"

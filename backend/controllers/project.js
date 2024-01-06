@@ -4552,8 +4552,10 @@ const downloadExcelTemplate = async (req, res) => {
 };
 
 const assignedManager = async (req, res) => {
+  console.log("assignedManager");
   try {
     const { mid, rid } = req.body;
+    console.log(mid, rid);
     const manager = await Employee.findById(mid);
     const rp = await RequestProjects.findById(rid);
 
@@ -4569,7 +4571,7 @@ const assignedManager = async (req, res) => {
 const getCreateProjectRP = async (req, res) => {
   try {
     const { rid, mid } = req.params;
-    console.log(rid, mid);
+
     const rp = await RequestProjects.findById(rid).populate("client");
 
     if (!rp || req.user.role !== "Project Manager") {

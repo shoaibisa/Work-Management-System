@@ -51,6 +51,7 @@ import ShowPdf from "./pages/pdf/ShowPdf";
 import CreateTemplate from "./pages/client/pages/CreateTemplate.jsx";
 import AllClients from "./pages/client/pages/AllClients.jsx";
 import Clientdetails from "./pages/admin/Clientdetails.jsx";
+import RequestedProject from "./pages/projectManager/requestedProject.jsx";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -399,6 +400,14 @@ function App() {
               <AuthorizedWatchMan>
                 <WMClientProjectlist />
               </AuthorizedWatchMan>
+            }
+          />
+          <Route
+            path="/requsetedProject"
+            element={
+              <AuthorizedPM>
+                <RequestedProject />
+              </AuthorizedPM>
             }
           />
           <Route path="*" element={<Error />} />

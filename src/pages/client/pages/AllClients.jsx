@@ -14,7 +14,7 @@ const AllClients = () => {
   }, [dispatch]);
 
   const people = user.employees || [];
-  console.log("maal - ", people);
+  // console.log("maal - ", people);
   return (
     <div className="App">
       <div className="home">
