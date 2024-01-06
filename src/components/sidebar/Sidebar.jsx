@@ -75,7 +75,6 @@ const Sidebar = () => {
           )}
           {isAdmin && (
             <>
-             
               <Link to="/clients" style={{ textDecoration: "none" }}>
                 <li>
                   <PersonOutlineIcon className="icon" />
@@ -143,7 +142,7 @@ const Sidebar = () => {
                           {({ active }) => (
                             // eslint-disable-next-line jsx-a11y/anchor-is-valid
                             <Link
-                              to="/createproject"
+                              to="/requsetedProject"
                               className={classNames(
                                 active
                                   ? "bg-gray-100 text-gray-900"
@@ -151,10 +150,11 @@ const Sidebar = () => {
                                 "block px-4 py-2 text-sm"
                               )}
                             >
-                              Create Project
+                              Request Project
                             </Link>
                           )}
                         </Menu.Item>
+
                         <Menu.Item>
                           {({ active }) => (
                             // eslint-disable-next-line jsx-a11y/anchor-is-valid
