@@ -1491,6 +1491,7 @@ const downloadReportById = async (req, res) => {
         reports_data.push(r);
       }
     }
+
     if (reports_data.length < 1) {
       return res.status(404).send({
         message: "No report found",
@@ -2657,12 +2658,11 @@ const downloadReportById = async (req, res) => {
         const tableData10 = [
           ["DATE OF DISCOVERY", reports_data[i].createdAt],
           ["VULNERABILITY NAME", reports_data[i].vulnerability],
-          ["CVSS 3 SCORE", reports_data[i].cwe],
-          ["CATEGORY", "Cryptographic Failures"],
-          ["STATUS", "OPEN"],
-          ["CVSS Vector", "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:L "],
-          ["Threat", "Insecure Communication"],
-          ["CVE, OWASP, CWE, REFERENCE", "A2"],
+          ["CWE", reports_data[i].cwe],
+          ["Attribute Factor", reports_data[i].attributingFactor],
+          ["Mitigation", reports_data[i].mitigation],
+          ["Affected URL", reports_data[i].affectedUrl],
+          ["Impact", reports_data[i].impact],
         ];
 
         // Set styling variables
@@ -2744,18 +2744,10 @@ const downloadReportById = async (req, res) => {
 
         // Data for the new table with 3 rows and 1 column
         const newTableData = [
-          [
-            "VULNERABILITY SUMMARY",
-            "This code assumes that the original y and x variables are still in scope and represent the starting coordinates for both tables. If you have any issues or if the context is different, please make sure to adapt the code accordingly.This code assumes that the original y and x variables are still in scope and represent the starting coordinates for both tables. If you have any issues or if the context is different, please make sure to adapt the code accordingly.This code assumes that the.",
-          ],
-          [
-            "IMPACT",
-            "This code assumes that the original y and x variables are still in scope and represent the starting coordinates for both tables. If you have any issues or if the context is different, please make sure to adapt the code accordingly.This code assumes that the original y and x variables are still in scope and represent the starting coordinates for both tables. If you have any issues or if the context is different, please make sure to adapt the code accordingly.",
-          ],
-          [
-            "RECOMMENDED SOLUTION",
-            "This code assumes that the original y and x variables are still in scope and represent the starting coordinates for both tables. If you have any issues or if the context is different, please make sure to adapt the code accordingly.This code assumes that the original y and x variables are still in scope and represent the starting coordinates for both tables. If you have any issues or if the context is different, please make sure to adapt the code accordingly.",
-          ],
+          ["VULNERABILITY SUMMARY", reports_data[i].brief],
+
+          ["Observation", reports_data[i].observation],
+          ["Risk", reports_data[i].risk],
         ];
         // Function to create a single-column table with headlines
         function createSingleColumnTableWithHeadlines(data) {
@@ -3085,7 +3077,7 @@ const createProject = async (req, res) => {
       });
     }
     const rid = req.body.rid;
-    console.log(req.body);
+
     const project = new Project({
       projectName: req.body.projectName,
       companyName: req.body.companyName,
@@ -3552,8 +3544,6 @@ const creatReport = async (req, res) => {
 
 const createReportWeb = async (req, res) => {
   try {
-    // console.log(req.body);
-    // return;
     const payload = req.body;
     const images = req.files.map((f) => f.filename);
 
@@ -3612,30 +3602,26 @@ const createReportWeb = async (req, res) => {
           task.apiData.assignEmployee[i].report.push(report._id);
         }
       }
-    } else if (req.body.type === "mobile") {
-      if (req.body.mobileType === "android") {
-        for (
-          var i = 0;
-          i < task.mobileData.forAndroid.assignEmployee.length;
-          i++
+    } else if (req.body.mobiletype === "android") {
+      for (
+        var i = 0;
+        i < task.mobileData.forAndroid.assignEmployee.length;
+        i++
+      ) {
+        if (
+          req.body.employee ===
+          task.mobileData.forAndroid.assignEmployee[i].employee.toString()
         ) {
-          if (
-            req.body.employee ===
-            task.mobileData.forAndroid.assignEmployee[i].employee.toString()
-          ) {
-            task.mobileData.forAndroid.assignEmployee[i].report.push(
-              report._id
-            );
-          }
+          task.mobileData.forAndroid.assignEmployee[i].report.push(report._id);
         }
-      } else if (req.body.mobileType === "ios") {
-        for (var i = 0; i < task.mobileData.forIos.assignEmployee.length; i++) {
-          if (
-            req.body.employee ===
-            task.mobileData.forIos.assignEmployee[i].employee.toString()
-          ) {
-            task.mobileData.forIos.assignEmployee[i].report.push(report._id);
-          }
+      }
+    } else if (req.body.mobiletype === "ios") {
+      for (var i = 0; i < task.mobileData.forIos.assignEmployee.length; i++) {
+        if (
+          req.body.employee ===
+          task.mobileData.forIos.assignEmployee[i].employee.toString()
+        ) {
+          task.mobileData.forIos.assignEmployee[i].report.push(report._id);
         }
       }
 
@@ -4141,7 +4127,8 @@ const getReportsByUserId = async (req, res) => {
         .populate("grcData.assignEmployee.report");
       for (var i = 0; i < task.grcData.assignEmployee.length; i++) {
         if (
-          task.grcData.assignEmployee[i].id.toString() === userId.toString()
+          task.grcData.assignEmployee[i].employee._id.toString() ===
+          userId.toString()
         ) {
           reports = task.grcData.assignEmployee[i].report;
         }
