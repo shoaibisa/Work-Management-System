@@ -7,6 +7,8 @@ import { PaperClipIcon } from "@heroicons/react/20/solid";
 import { viewTasks } from "../../actions/projectlistAction";
 import { listEmployee } from "../../actions/employeeAction";
 import { EmployeeTask } from "../../actions/employeeAction.js";
+import { toast } from "react-hot-toast";
+
 function DetailedViewtask() {
   const { projectId, taskID, type } = useParams();
 
@@ -39,30 +41,58 @@ function DetailedViewtask() {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const role = userData?.userRole;
   const isProjectManager = role === "Project Manager";
+  // const downloadPdf = (type, webtargetUrlsid) => {
+  //   // Access the dynamic PDF endpoint from your Node.js server.
+  //   const pdfUrl = `http://localhost:5000/project/downloadallreports/${projectId}/${taskID}/${type}/${webtargetUrlsid}`;
+  //   // console.log(pdfUrl);
+  //   fetch(pdfUrl)
+  //     .then((response) => response.blob())
+  //     .then((blob) => {
+  //       const url = window.URL.createObjectURL(blob);
+  //       const a = document.createElement("a");
+  //       a.style.display = "none";
+  //       a.href = url;
+  //       a.download = "dynamic.pdf";
+  //       document.body.appendChild(a);
+  //       a.click();
+  //       window.URL.revokeObjectURL(url);
+  //     });
+  // };
+
   const downloadPdf = (type, webtargetUrlsid) => {
+    // Show loading toast
+    const loadingToastId = toast.loading("Downloading PDF...");
+
     // Access the dynamic PDF endpoint from your Node.js server.
     const pdfUrl = `http://localhost:5000/project/downloadallreports/${projectId}/${taskID}/${type}/${webtargetUrlsid}`;
-    console.log(pdfUrl);
-    fetch(pdfUrl)
-      .then((response) => response.blob())
-      .then((blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.style.display = "none";
-        a.href = url;
-        a.download = "dynamic.pdf";
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-      });
+
+      fetch(pdfUrl)
+        .then((response) => response.blob())
+        .then((blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.style.display = "none";
+          a.href = url;
+          a.download = "dynamic.pdf";
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+
+          // Hide loading toast and show success toast
+          toast.success("PDF downloaded successfully!", { id: loadingToastId });
+        })
+        .catch((error) => {
+          // Hide loading toast and show error toast
+          toast.error("Error downloading PDF", { id: loadingToastId });
+        });
   };
+
   return (
     <div className="App">
       <div className="home">
         <Sidebar />
         <div className="homeContainer">
           <Navbar />
-
           {/* main code  */}
           <div className="font-bold text-2xl ml-10 mt-6">
             {data && data.taskName}

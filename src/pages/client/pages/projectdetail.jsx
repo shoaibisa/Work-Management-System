@@ -8,6 +8,8 @@ import { Pie } from "react-chartjs-2";
 import { PaperClipIcon } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { viewTasks } from "../../../actions/projectlistAction";
+import { toast } from "react-hot-toast";
+
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
 function ClientProjectView() {
@@ -105,6 +107,35 @@ function ClientProjectView() {
     //console.log("Selected option:", option);
     setShowOptions(false); // Hide the options after selection (you can change this behavior as needed)
   };
+
+  const downloadPdf = (type, webtargetUrlsid) => {
+    // Show loading toast
+    const loadingToastId = toast.loading("Downloading PDF...");
+
+    // Access the dynamic PDF endpoint from your Node.js server.
+    const pdfUrl = `http://localhost:5000/project/downloadallreports/${projectId}/${taskId}/${type}/${webtargetUrlsid}`;
+
+    fetch(pdfUrl)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.style.display = "none";
+        a.href = url;
+        a.download = "dynamic.pdf";
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+
+        // Hide loading toast and show success toast
+        toast.success("PDF downloaded successfully!", { id: loadingToastId });
+      })
+      .catch((error) => {
+        // Hide loading toast and show error toast
+        toast.error("Error downloading PDF", { id: loadingToastId });
+      });
+  };
+
   return (
     <div className="App">
       <div className="home">
@@ -167,7 +198,9 @@ function ClientProjectView() {
                           </div>
                           <div className="ml-4 flex-shrink-0">
                             <Link
-                              to={`/allreportforclient/${taskId}/web/${url._id}`}
+                              onClick={() => {
+                                downloadPdf("web", url._id);
+                              }}
                               className="font-medium text-indigo-600 hover:text-indigo-500"
                               rel="noopener noreferrer"
                             >
@@ -225,7 +258,10 @@ function ClientProjectView() {
                             aria-hidden="true"
                           />
                           <Link
-                            to={`/allreportforclient/${taskId}/api/`}
+                            //  to={`/allreportforclient/${taskId}/api/`}
+                            onClick={() => {
+                              downloadPdf("api", 78);
+                            }}
                             className="font-medium ml-4 text-indigo-600 hover:text-indigo-500"
                           >
                             Download Report
