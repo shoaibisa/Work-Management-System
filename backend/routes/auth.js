@@ -16,15 +16,24 @@ import {
   resetPassword,
 } from "../controllers/auth.js";
 
-
 import { createProject, createTask } from "../controllers/project.js";
 
 const router = Express.Router();
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Specify the destination folder where files will be saved.
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${Date.now()}_${file.originalname}`); // Use the original file name for storing the file.
+  },
+});
+
+const upload1 = multer({ storage: storage });
 const upload = multer({ dest: "uploads/" }); // Set the destination folder for storing the uploaded files
 
 router.post(
   "/sign-up",
-  upload.single("profileimg"),
+  upload1.single("profileimg"),
   [
     check("name", "Name is required").trim(),
     check("email", "Email is required").trim().isEmail().normalizeEmail(),
