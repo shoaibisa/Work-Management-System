@@ -10,6 +10,7 @@ import {
 } from "../../../actions/reportSubmit";
 import { initTE, Select } from "tw-elements";
 import { toast } from "react-hot-toast";
+import { Input, Timepicker } from "tw-elements";
 
 const Reportsubmit = () => {
   const { taskID, type, webtargetUrlsId } = useParams();
@@ -139,6 +140,7 @@ const Reportsubmit = () => {
 
   useEffect(() => {
     initTE({ Select });
+    initTE({ Input, Timepicker });
   }, []);
 
   const handleDragEnter = (e) => {
@@ -343,6 +345,54 @@ const Reportsubmit = () => {
                       type="text"
                       className="block w-[260px]   rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
+                  </div>
+                </div>
+              </div>
+              <div className=" flex ">
+                <div
+                  class="relative  h-[35px] mt-10 "
+                  data-te-datepicker-init
+                  data-te-input-wrapper-init
+                >
+                  <div
+                    class="relative"
+                    data-te-timepicker-init
+                    data-te-input-wrapper-init
+                  >
+                    <input
+                      type="text"
+                      class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      id="form1"
+                    />
+                    <label
+                      for="form1"
+                      class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+                    >
+                      Select start time
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="relative ml-5 h-[35px] mt-10 "
+                  data-te-datepicker-init
+                  data-te-input-wrapper-init
+                >
+                  <div
+                    class="relative"
+                    data-te-timepicker-init
+                    data-te-input-wrapper-init
+                  >
+                    <input
+                      type="text"
+                      class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      id="form1"
+                    />
+                    <label
+                      for="form1"
+                      class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+                    >
+                      Select end time
+                    </label>
                   </div>
                 </div>
               </div>

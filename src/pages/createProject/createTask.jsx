@@ -8,7 +8,7 @@ import {
 import React, { useEffect } from "react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
-import { Select, initTE } from "tw-elements";
+import { Select, initTE, Input, Datepicker } from "tw-elements";
 import { useState } from "react";
 import { viewProject, viewTask } from "../../actions/projectlistAction";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -85,6 +85,8 @@ const CreateTask = () => {
     initTE({ Select }, "#select1");
     // Initialize the second multi-select
     initTE({ Select }, "#select2");
+    initTE({ Select }, "#select3");
+    initTE({ Datepicker, Input });
   }, []);
 
   const handleOptionSelect = (event) => {
@@ -280,7 +282,7 @@ const CreateTask = () => {
                               {targetURL.map((x, i) => {
                                 return (
                                   <>
-                                    <div className=" mt-2 flex flex-row">
+                                    <div className=" mt-2 w-full flex flex-row">
                                       <div className=" sm:col-span-4 mb-10 w-[240px] mr-6">
                                         <label
                                           for="username"
@@ -305,7 +307,6 @@ const CreateTask = () => {
                                           </div>
                                         </div>
                                       </div>
-
                                       <div className="sm:col-span-4 mb-10 w-[240px]">
                                         <label
                                           for="username"
@@ -329,22 +330,47 @@ const CreateTask = () => {
                                             />
                                           </div>
                                         </div>
-                                      </div>
-                                      <div className="col-span-full">
-                                        <div className="mt-5">
+                                      </div>{" "}
+                                      <div className="sm:col-span-4 ml-5 mb-10 w-[240px]">
+                                        <label
+                                          for="username"
+                                          className="block text-sm font-medium leading-6 text-gray-900"
+                                        >
+                                          Type
+                                        </label>
+                                        <div className="mt-2">
                                           <select
+                                            className=" pt-2  "
                                             data-te-select-init
                                             multiple
-                                            id="select2"
+                                            id="select3"
+                                            // onChange={(e) =>
+                                            //   handleOptionSelect(e)
+                                            // }
                                           >
-                                            <option value="Black">Black</option>
-                                            <option value="White">White</option>
-                                            <option value="Gray">Gray</option>
+                                            <option value="black">Black</option>
+                                            <option value="red">Red</option>
+                                            <option value="grey">Grey</option>
                                           </select>
-                                          <label data-te-select-label-ref>
-                                            Choose Testing Type
-                                          </label>
                                         </div>
+                                      </div>
+                                      {/* datepicker  */}
+                                      <div
+                                        class="relative ml-5 h-[35px] mt-8 "
+                                        data-te-datepicker-init
+                                        data-te-input-wrapper-init
+                                      >
+                                        <input
+                                          type="text"
+                                          class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                          placeholder="Select a date"
+                                        />
+                                        <label
+                                          for="floatingInput"
+                                          class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+                                        >
+                                          Select a date
+                                        </label>
                                       </div>
                                       {targetURL.length !== 1 && (
                                         <div
@@ -364,7 +390,6 @@ const CreateTask = () => {
                                           )}
                                         </div>
                                       )}
-
                                       {targetURL.length - 1 === i && (
                                         <div
                                           onClick={handleAddClick}
@@ -446,6 +471,47 @@ const CreateTask = () => {
               "
                               />
                             </label>
+                            <div className="sm:col-span-4 ml-5 mb-10 w-[240px]">
+                              <label
+                                for="username"
+                                className="block text-sm font-medium leading-6 text-gray-900"
+                              >
+                                Type
+                              </label>
+                              <div className="mt-2">
+                                <select
+                                  className=" pt-2  "
+                                  data-te-select-init
+                                  multiple
+                                  id="select3"
+                                  // onChange={(e) =>
+                                  //   handleOptionSelect(e)
+                                  // }
+                                >
+                                  <option value="black">Black</option>
+                                  <option value="red">Red</option>
+                                  <option value="grey">Grey</option>
+                                </select>
+                              </div>
+                            </div>
+                            {/* datepicker  */}
+                            <div
+                              class="relative ml-5 h-[35px] mt-8 "
+                              data-te-datepicker-init
+                              data-te-input-wrapper-init
+                            >
+                              <input
+                                type="text"
+                                class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                placeholder="Select a date"
+                              />
+                              <label
+                                for="floatingInput"
+                                class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+                              >
+                                Select a date
+                              </label>
+                            </div>
                           </div>
 
                           {/* remarks section  */}
@@ -507,6 +573,47 @@ const CreateTask = () => {
                                 "
                               />
                             </label>
+                            <div className="sm:col-span-4 ml-5 mb-10 w-[240px]">
+                              <label
+                                for="username"
+                                className="block text-sm font-medium leading-6 text-gray-900"
+                              >
+                                Type
+                              </label>
+                              <div className="mt-2">
+                                <select
+                                  className=" pt-2  "
+                                  data-te-select-init
+                                  multiple
+                                  id="select3"
+                                  // onChange={(e) =>
+                                  //   handleOptionSelect(e)
+                                  // }
+                                >
+                                  <option value="black">Black</option>
+                                  <option value="red">Red</option>
+                                  <option value="grey">Grey</option>
+                                </select>
+                              </div>
+                            </div>
+                            {/* datepicker  */}
+                            <div
+                              class="relative ml-5 h-[35px] mt-8 "
+                              data-te-datepicker-init
+                              data-te-input-wrapper-init
+                            >
+                              <input
+                                type="text"
+                                class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                placeholder="Select a date"
+                              />
+                              <label
+                                for="floatingInput"
+                                class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+                              >
+                                Select a date
+                              </label>
+                            </div>
                           </div>
 
                           {/* remarks section  */}
@@ -543,7 +650,7 @@ const CreateTask = () => {
                         >
                           For Mobile
                         </label>
-                        <div className="mt-2 flex flex-col rounded-lg border border-dashed border-gray-900/25 p-4">
+                        <div className="mt-2 flex rounded-lg border border-dashed border-gray-900/25 p-4">
                           {/* os url input field wala section  */}
                           <div>
                             <label
@@ -609,9 +716,32 @@ const CreateTask = () => {
                               </div>
                             </div>
                           </div>
+                          <div className="sm:col-span-4 ml-5 mt-10 mb-10 w-[240px]">
+                            <label
+                              for="username"
+                              className="block text-sm font-medium leading-6 text-gray-900"
+                            >
+                              Type
+                            </label>
+                            <div className="mt-2">
+                              <select
+                                className=" pt-2  "
+                                data-te-select-init
+                                multiple
+                                id="select3"
+                                // onChange={(e) =>
+                                //   handleOptionSelect(e)
+                                // }
+                              >
+                                <option value="black">Black</option>
+                                <option value="red">Red</option>
+                                <option value="grey">Grey</option>
+                              </select>
+                            </div>
+                          </div>
 
                           {/* remarks section  */}
-                          <div class="col-span-full">
+                          <div class="col-span-full mt-10 ml-5">
                             <label
                               for="about"
                               class="block text-sm font-medium leading-6 text-gray-900"
@@ -621,7 +751,7 @@ const CreateTask = () => {
                             <div class="mt-2">
                               <textarea
                                 name="mobileotherRemarks"
-                                rows="3"
+                                rows="5"
                                 required
                                 value={mobileotherRemarks}
                                 onChange={(e) =>
@@ -630,6 +760,24 @@ const CreateTask = () => {
                                 class=" p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                               ></textarea>
                             </div>
+                          </div>
+                          {/* datepicker  */}
+                          <div
+                            class="relative ml-5 h-[35px] mt-20 "
+                            data-te-datepicker-init
+                            data-te-input-wrapper-init
+                          >
+                            <input
+                              type="text"
+                              class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                              placeholder="Select a date"
+                            />
+                            <label
+                              for="floatingInput"
+                              class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+                            >
+                              Select a date
+                            </label>
                           </div>
                         </div>
                       </div>
@@ -645,6 +793,47 @@ const CreateTask = () => {
                           For Grc
                         </label>
                         <div className="mt-2 flex flex-col rounded-lg border border-dashed border-gray-900/25 p-4">
+                          <div className="sm:col-span-4 mb-10 w-[240px]">
+                            <label
+                              for="username"
+                              className="block text-sm font-medium leading-6 text-gray-900"
+                            >
+                              Type
+                            </label>
+                            <div className="mt-2">
+                              <select
+                                className=" pt-2  "
+                                data-te-select-init
+                                multiple
+                                id="select3"
+                                // onChange={(e) =>
+                                //   handleOptionSelect(e)
+                                // }
+                              >
+                                <option value="black">Black</option>
+                                <option value="red">Red</option>
+                                <option value="grey">Grey</option>
+                              </select>
+                            </div>
+                          </div>
+                          {/* datepicker  */}
+                          <div
+                              class="relative w-[240px]  h-[35px]  "
+                              data-te-datepicker-init
+                              data-te-input-wrapper-init
+                            >
+                              <input
+                                type="text"
+                                class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                placeholder="Select a date"
+                              />
+                              <label
+                                for="floatingInput"
+                                class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+                              >
+                                Select a date
+                              </label>
+                            </div>
                           <div class="col-span-full">
                             <label
                               for="about"
