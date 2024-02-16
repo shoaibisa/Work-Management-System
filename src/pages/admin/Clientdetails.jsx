@@ -197,8 +197,7 @@ const Clientdetails = () => {
     }
   };
 
-
-  
+  console.log(clientData);
 
   return (
     <div className="App">
@@ -207,10 +206,10 @@ const Clientdetails = () => {
         <div className="homeContainer ">
           <Navbar />
           <div className="font-bold text-2xl ml-10 mt-6">
-            {clientData?.name} Projects
+            {clientData?.data?.name} Projects
           </div>
-          <div className="flex w-fit px-5 mx-10 my-10 items-center justify-center flex-row flex-wrap rounded-lg border border-dashed border-gray-900/25 py-6">
-            {clientRequests ? (
+          {clientRequests.length > 0 ? (
+            <div className="flex w-fit px-5 mx-10 my-10 items-center justify-center flex-row flex-wrap rounded-lg border border-dashed border-gray-900/25 py-6">
               <ol
                 role="list"
                 className="divide-y list-decimal list-inside
@@ -315,10 +314,10 @@ const Clientdetails = () => {
                   </li>
                 ))}
               </ol>
-            ) : (
-              <p>No data available</p>
-            )}
-          </div>
+            </div>
+          ) : (
+            <p>No data available</p>
+          )}
         </div>
       </div>
     </div>

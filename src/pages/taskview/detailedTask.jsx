@@ -65,26 +65,26 @@ function DetailedViewtask() {
 
     // Access the dynamic PDF endpoint from your Node.js server.
     const pdfUrl = `http://localhost:5000/project/downloadallreports/${projectId}/${taskID}/${type}/${webtargetUrlsid}`;
+    console.log(pdfUrl);
+    fetch(pdfUrl)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.style.display = "none";
+        a.href = url;
+        a.download = "dynamic.pdf";
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
 
-      fetch(pdfUrl)
-        .then((response) => response.blob())
-        .then((blob) => {
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.style.display = "none";
-          a.href = url;
-          a.download = "dynamic.pdf";
-          document.body.appendChild(a);
-          a.click();
-          window.URL.revokeObjectURL(url);
-
-          // Hide loading toast and show success toast
-          toast.success("PDF downloaded successfully!", { id: loadingToastId });
-        })
-        .catch((error) => {
-          // Hide loading toast and show error toast
-          toast.error("Error downloading PDF", { id: loadingToastId });
-        });
+        // Hide loading toast and show success toast
+        toast.success("PDF downloaded successfully!", { id: loadingToastId });
+      })
+      .catch((error) => {
+        // Hide loading toast and show error toast
+        toast.error("Error downloading PDF", { id: loadingToastId });
+      });
   };
 
   return (

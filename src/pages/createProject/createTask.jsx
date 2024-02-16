@@ -14,6 +14,7 @@ import { viewProject, viewTask } from "../../actions/projectlistAction";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
+
 const CreateTask = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [targetURL, setTargetURL] = useState([{ lable: "", link: "" }]);
@@ -78,9 +79,13 @@ const CreateTask = () => {
   const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const createdBY = userData?.id;
   const { projectId } = useParams();
+
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [redirect]);
+    // Initialize the first multi-select
+    initTE({ Select }, "#select1");
+    // Initialize the second multi-select
+    initTE({ Select }, "#select2");
+  }, []);
 
   const handleOptionSelect = (event) => {
     const selectedValues = Array.from(
@@ -89,8 +94,16 @@ const CreateTask = () => {
     );
     setSelectedOptions(selectedValues);
   };
+  const [testingType, setTestingType] = useState([]);
+  const handletypeTesting = (event) => {
+    const selectedValues = Array.from(
+      event.target.selectedOptions,
+      (option) => option.value
+    );
+    setTestingType(selectedValues);
+  };
+  console.log(testingType);
 
-  //const userData = JSON.parse(localStorage.getItem("employeeInfo"));
   const token = userData?.token;
 
   const submitHandler = async (e) => {
@@ -153,23 +166,19 @@ const CreateTask = () => {
       });
 
       if (response.ok) {
-        toast.success("Task created..")
+        toast.success("Task created..");
         setMessage("Successfully Task Created");
       } else {
         setMessage("Failed to create task");
       }
     } catch (error) {
-      toast.error("Error while creating task..")
+      toast.error("Error while creating task..");
       console.error("Error submitting form:", error);
       setMessage("An error occurred while creating zthe task");
     }
     setMessage("Sucessfully Task Created");
     Navigate("/projectlist");
   };
-
-  useEffect(() => {
-    initTE({ Select });
-  }, []);
 
   const dispatch = useDispatch();
   const projectView = useSelector((state) => state.projectView);
@@ -238,6 +247,7 @@ const CreateTask = () => {
                     <select
                       data-te-select-init
                       multiple
+                      id="select1"
                       onChange={(e) => handleOptionSelect(e)}
                     >
                       <option value="web">For web</option>
@@ -320,6 +330,22 @@ const CreateTask = () => {
                                           </div>
                                         </div>
                                       </div>
+                                      <div className="col-span-full">
+                                        <div className="mt-5">
+                                          <select
+                                            data-te-select-init
+                                            multiple
+                                            id="select2"
+                                          >
+                                            <option value="Black">Black</option>
+                                            <option value="White">White</option>
+                                            <option value="Gray">Gray</option>
+                                          </select>
+                                          <label data-te-select-label-ref>
+                                            Choose Testing Type
+                                          </label>
+                                        </div>
+                                      </div>
                                       {targetURL.length !== 1 && (
                                         <div
                                           className="flex items-center text-2xl cursor-pointer ml-6"
@@ -363,14 +389,14 @@ const CreateTask = () => {
                               })}
                             </div>
                           </div>
-                          <div class="col-span-full">
+                          <div className="col-span-full">
                             <label
                               for="about"
-                              class="block text-sm font-medium leading-6 text-gray-900"
+                              className="block text-sm font-medium leading-6 text-gray-900"
                             >
                               Other Remarks
                             </label>
-                            <div class="mt-2">
+                            <div className="mt-2">
                               <textarea
                                 value={webotherRemarks} // Add this line
                                 onChange={(e) =>
@@ -379,7 +405,7 @@ const CreateTask = () => {
                                 name="webotherRemarks"
                                 rows="3"
                                 required
-                                class=" p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                className=" p-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                               ></textarea>
                             </div>
                           </div>
@@ -387,6 +413,7 @@ const CreateTask = () => {
                       </div>
                     </>
                   )}
+                  {/* PasteHere */}
                   {selectedOptions.includes("api") && (
                     <>
                       <div className="col-span-full mt-12">
@@ -642,6 +669,7 @@ const CreateTask = () => {
                       </div>
                     </>
                   )}
+
                   <input name="createdBy" value={createdBY} hidden></input>
                   <div className="flex w-full">
                     <div className="w-11/12  mt-4 flex items-center justify-end gap-x-6">
