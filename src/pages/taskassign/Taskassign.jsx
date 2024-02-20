@@ -54,7 +54,7 @@ const Taskassign = ({ history }) => {
 
           {/* date */}
           <p className="text-lg mt-3 flex font-semibold leading-2 text-gray-900 sm:truncate sm:text-lg sm:tracking-tight">
-            Deadline Date - <div className="pl-2">5/Aug/2023</div>
+            Deadline Date - <div className="pl-2">5/Aug/2024</div>
           </p>
 
           {/* checkbox */}
