@@ -2580,14 +2580,12 @@ const assignEmployee = async (req, res) => {
         task.webData.webtargetUrls[i]._id.toString() === req.body.webtargetUrls
       ) {
         // if employee already exist then not push
-
         if (
           task.webData.webtargetUrls[i].assignEmployee.indexOf(
             assignEmployee
           ) === -1
         ) {
           // if employee already exist then not push
-
           task.webData.webtargetUrls[i].assignEmployee.push(...assignEmployee);
         }
       }

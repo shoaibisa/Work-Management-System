@@ -17,33 +17,135 @@ import { toast } from "react-hot-toast";
 
 const CreateTask = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [targetURL, setTargetURL] = useState([{ lable: "", link: "" }]);
+  const [targetURL, setTargetURL] = useState([
+    { lable: "", link: "", testingType: [], deadlinedateofweb: null },
+  ]);
   const [isHoveredplus, setIsHoveredplus] = useState(false);
   const [isHoveredminus, setIsHoveredminus] = useState(false);
   const [webotherRemarks, setwebotherRemarks] = useState("");
 
-  // handle click event of the Remove button
+  const handleOptionSelect = (event) => {
+    event.preventDefault();
+    const selectedValues = Array.from(
+      event.target.selectedOptions,
+      (option) => option.value
+    );
+    setSelectedOptions(selectedValues);
+  };
+
+  //const [testingType, setTestingType] = useState([]);
+  // const handletypeTesting = (event) => {
+  //   const selectedValues = Array.from(
+  //     event.target.selectedOptions,
+  //     (option) => option.value
+  //   );
+  //   setTestingType(selectedValues);
+  // };
+
+  //console.log(testingType);
+  // // handle click event of the Remove button
+  // const handleRemoveClick = (index) => {
+  //   const list = [...targetURL];
+  //   list.splice(index, 1);
+  //   setTargetURL(list);
+  // };
+  // // handle click event of the Add button
+  // const handleAddClick = () => {
+  //   setTargetURL([
+  //     ...targetURL,
+  //     { lable: "", link: "", testingType: [], deadlinedate: "" },
+  //   ]);
+  // };
+  // const handleInputChanges = (e, index) => {
+  //   const { name, value } = e.target;
+  //   const updatedTargetURL = targetURL.map((item, i) => {
+  //     if (index === i) {
+  //       return { ...item, [name]: value };
+  //     }
+  //     return item;
+  //   });
+  //   console.log(updatedTargetURL);
+  //   setTargetURL(updatedTargetURL);
+  // };
+
   const handleRemoveClick = (index) => {
     const list = [...targetURL];
     list.splice(index, 1);
     setTargetURL(list);
   };
-  // handle click event of the Add button
+
   const handleAddClick = () => {
-    setTargetURL([...targetURL, { lable: "", link: "" }]);
-  };
-  const handleInputChanges = (e, index) => {
-    const { name, value } = e.target;
-    const updatedTargetURL = targetURL.map((item, i) => {
-      if (index === i) {
-        return { ...item, [name]: value };
-      }
-      return item;
-    });
-    setTargetURL(updatedTargetURL);
+    setTargetURL([
+      ...targetURL,
+      { label: "", link: "", testingType: [], deadlinedateofweb: null },
+    ]);
   };
 
+  const handleInputChanges = (e, index) => {
+    console.log("df");
+    const { name, value } = e.target;
+    console.log(name, value);
+    if (name === "testingType") {
+      // Handle the testingType field separately to store all selected values in an array
+      const selectedTypes = Array.from(
+        e.target.selectedOptions,
+        (option) => option.value
+      );
+      const updatedTargetURL = targetURL.map((item, i) => {
+        if (index === i) {
+          return { ...item, [name]: selectedTypes };
+        }
+        return item;
+      });
+      setTargetURL(updatedTargetURL);
+    } else {
+      // Handle other fields
+      const updatedTargetURL = targetURL.map((item, i) => {
+        if (index === i) {
+          return { ...item, [name]: value };
+        }
+        return item;
+      });
+      setTargetURL(updatedTargetURL);
+    }
+  };
+
+  // console.log(targetURL);
+
+  // const handleInputChanges = (e, index) => {
+  //   const { name, value } = e.target;
+  //   console.log(e.target);
+
+  //   if (name === "testingType") {
+  //     // Handle the testingType field separately to store all selected values in an array
+  //     const selectedTypes = Array.from(
+  //       e.target.selectedOptions,
+  //       (option) => option.value
+  //     );
+  //     const updatedTargetURL = targetURL.map((item, i) => {
+  //       if (index === i) {
+  //         return { ...item, [name]: selectedTypes };
+  //       }
+  //       return item;
+  //     });
+  //     console.log(updatedTargetURL);
+  //     setTargetURL(updatedTargetURL);
+  //   } else {
+  //     // Handle other fields
+  //     const updatedTargetURL = targetURL.map((item, i) => {
+  //       if (index === i) {
+  //         return { ...item, [name]: value };
+  //       }
+  //       return item;
+  //     });
+  //     console.log(updatedTargetURL);
+
+  //     setTargetURL(updatedTargetURL);
+  //   }
+  // };
+
   // For Api
+
   const [apiselectedFile, setApiselectedFile] = useState(null);
   const [apiotherRemarks, setapiotherRemarks] = useState("");
 
@@ -60,7 +162,6 @@ const CreateTask = () => {
     const file = e.target.files[0];
     setNetworkselectedFile(file);
   };
-  //console.log(networkselectedFile);
   // For Mobile
   const [mobileotherRemarks, setMobileotherRemarks] = useState("");
   const [androidUrl, setAndroidUrl] = useState("");
@@ -81,31 +182,9 @@ const CreateTask = () => {
   const { projectId } = useParams();
 
   useEffect(() => {
-    // Initialize the first multi-select
-    initTE({ Select }, "#select1");
-    // Initialize the second multi-select
-    initTE({ Select }, "#select2");
-    initTE({ Select }, "#select3");
+    initTE({ Select });
     initTE({ Datepicker, Input });
   }, [selectedOptions, targetURL]);
-
-  const handleOptionSelect = (event) => {
-    event.preventDefault();
-    const selectedValues = Array.from(
-      event.target.selectedOptions,
-      (option) => option.value
-    );
-    setSelectedOptions(selectedValues);
-  };
-  const [testingType, setTestingType] = useState([]);
-  const handletypeTesting = (event) => {
-    const selectedValues = Array.from(
-      event.target.selectedOptions,
-      (option) => option.value
-    );
-    setTestingType(selectedValues);
-  };
-  //console.log(testingType);
 
   const token = userData?.token;
 
@@ -264,7 +343,6 @@ const CreateTask = () => {
 
                   {selectedOptions.includes("web") && (
                     <>
-                      {/* <Forweb webData={webData} setWebData={setWebData} /> */}
                       <div className="col-span-full mt-6">
                         <label
                           for="cover-photo"
@@ -331,7 +409,7 @@ const CreateTask = () => {
                                             />
                                           </div>
                                         </div>
-                                      </div>{" "}
+                                      </div>
                                       <div className="sm:col-span-4 ml-5 mb-10 w-[240px]">
                                         <label
                                           for="username"
@@ -342,12 +420,13 @@ const CreateTask = () => {
                                         <div className="mt-2">
                                           <select
                                             className=" pt-2  "
+                                            name="testingType"
                                             data-te-select-init
                                             multiple
                                             id="select3"
-                                            // onChange={(e) =>
-                                            //   handleOptionSelect(e)
-                                            // }
+                                            onChange={(e) =>
+                                              handleInputChanges(e, i)
+                                            }
                                           >
                                             <option value="black">Black</option>
                                             <option value="red">Red</option>
@@ -355,24 +434,22 @@ const CreateTask = () => {
                                           </select>
                                         </div>
                                       </div>
-                                      {/* datepicker  */}
-                                      <div
-                                        class="relative ml-5 h-[35px] mt-8 "
-                                        data-te-datepicker-init
-                                        data-te-input-wrapper-init
-                                      >
+                                      <div class="relative ml-5 h-[35px] mt-8 ">
                                         <input
-                                          type="text"
+                                          type="date"
+                                          name="deadlinedateofweb"
                                           class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                           placeholder="Select a date"
+                                          onChange={(e) =>
+                                            handleInputChanges(e)
+                                          }
                                         />
                                         <label
                                           for="floatingInput"
                                           class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
-                                        >
-                                          Select a date
-                                        </label>
+                                        ></label>
                                       </div>
+
                                       {targetURL.length !== 1 && (
                                         <div
                                           className="flex items-center text-2xl cursor-pointer ml-6"
@@ -439,7 +516,6 @@ const CreateTask = () => {
                       </div>
                     </>
                   )}
-                  {/* PasteHere */}
                   {selectedOptions.includes("api") && (
                     <>
                       <div className="col-span-full mt-12">

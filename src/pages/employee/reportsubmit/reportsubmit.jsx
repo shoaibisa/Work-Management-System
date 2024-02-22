@@ -1,3 +1,5 @@
+/* eslint-disable no-unreachable */
+/* eslint-disable react/jsx-no-duplicate-props */
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../components/navbar/Navbar";
 import Sidebar from "../../../components/sidebar/Sidebar";
@@ -10,7 +12,6 @@ import {
 } from "../../../actions/reportSubmit";
 import { initTE, Select } from "tw-elements";
 import { toast } from "react-hot-toast";
-import { Input, Timepicker } from "tw-elements";
 
 const Reportsubmit = () => {
   const { taskID, type, webtargetUrlsId } = useParams();
@@ -25,6 +26,9 @@ const Reportsubmit = () => {
   const [pocFile, setPocFile] = useState([]);
   const [brief, setBrief] = useState("");
   const [message, setMessage] = useState("");
+  const [startTime, setStartTime] = useState();
+  const [endTime, setEndTime] = useState();
+  const [hours, setHours] = useState();
   // Multiple file upload
   const [highlight, setHighlight] = useState(false);
   const [files, setFiles] = useState([]);
@@ -52,6 +56,9 @@ const Reportsubmit = () => {
       }
     }
   }, [report]);
+  useEffect(() => {
+    initTE({ Select });
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -97,9 +104,21 @@ const Reportsubmit = () => {
     const selectedFiles = event.target.files;
     validateAndPOCFiles(selectedFiles);
   };
-  console.log(type);
+  const parseTimeStringToDate = (timeString) => {
+    // Split the time string into hours and minutes
+    const [hours, minutes] = timeString.split(":").map(Number);
+
+    // Create a new Date object with today's date and the parsed hours and minutes
+    const date = new Date();
+    date.setHours(hours);
+    date.setMinutes(minutes);
+
+    return date;
+  };
+
   const handleSubmitForWeb = (event) => {
     event.preventDefault();
+
     if (
       !vulnerability ||
       !risk ||
@@ -110,10 +129,27 @@ const Reportsubmit = () => {
       !impact ||
       !mitigation ||
       !pocFile.length ||
-      !brief
+      !brief ||
+      !startTime ||
+      !endTime
     ) {
       toast.error("Please fill in all required fields.");
       return;
+    }
+
+    const start = parseTimeStringToDate(startTime);
+    const end = parseTimeStringToDate(endTime);
+    if (end < start) {
+      toast.error("End time must be greater than start time");
+      return null; // Or handle the error in your application logic
+    }
+    let time;
+    // Perform calculations if both start and end are valid Date objects
+    if (!isNaN(start.getTime()) && !isNaN(end.getTime())) {
+      time = Math.abs(end - start) / 36e5;
+    } else {
+      toast.error("Invalid startTime or endTime format");
+      return null;
     }
 
     dispatch(
@@ -132,16 +168,12 @@ const Reportsubmit = () => {
         taskID,
         type,
         webtargetUrlsId,
-        mobiletype
+        mobiletype,
+        time
       )
     );
     window.history.back();
   };
-
-  useEffect(() => {
-    initTE({ Select });
-    initTE({ Input, Timepicker });
-  }, []);
 
   const handleDragEnter = (e) => {
     e.preventDefault();
@@ -348,51 +380,38 @@ const Reportsubmit = () => {
                   </div>
                 </div>
               </div>
-              <div className=" flex ">
-                <div
-                  class="relative  h-[35px] mt-10 "
-                  data-te-datepicker-init
-                  data-te-input-wrapper-init
-                >
-                  <div
-                    class="relative"
-                    data-te-timepicker-init
-                    data-te-input-wrapper-init
-                  >
-                    <input
-                      type="text"
-                      class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                      id="form1"
-                    />
+
+              <div className=" flex  gap-3">
+                <div class="relative ml-5 h-[35px] mt-10 ">
+                  <div class="relative">
                     <label
-                      for="form1"
-                      class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
-                    >
-                      Select start time
-                    </label>
-                  </div>
-                </div>
-                <div
-                  class="relative ml-5 h-[35px] mt-10 "
-                  data-te-datepicker-init
-                  data-te-input-wrapper-init
-                >
-                  <div
-                    class="relative"
-                    data-te-timepicker-init
-                    data-te-input-wrapper-init
-                  >
-                    <input
-                      type="text"
-                      class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                      id="form1"
-                    />
-                    <label
-                      for="form1"
-                      class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+                      for="form2"
+                      className="block text-sm font-medium leading-6 text-gray-900"
                     >
                       Select end time
                     </label>
+                    <input
+                      class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      name="endTime"
+                      type="time"
+                      onChange={(e) => setStartTime(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div class="relative ml-5 h-[35px] mt-10 ">
+                  <div class="relative">
+                    <label
+                      for="form1"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Select end time
+                    </label>
+                    <input
+                      class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      name="endTime"
+                      type="time"
+                      onChange={(e) => setEndTime(e.target.value)}
+                    />
                   </div>
                 </div>
               </div>
