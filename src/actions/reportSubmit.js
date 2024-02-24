@@ -92,7 +92,8 @@ export const reportCreateForWeb =
     taskID,
     type,
     webtargetUrlsId,
-    mobiletype
+    mobiletype,
+    time
   ) =>
   async (dispatch) => {
     const payload = {
@@ -110,6 +111,7 @@ export const reportCreateForWeb =
       type,
       webtargetUrlsId,
       mobiletype,
+      time,
     };
 
     try {

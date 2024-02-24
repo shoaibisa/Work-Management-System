@@ -50,7 +50,7 @@ export const createProject =
         {
           projectName,
           companyName,
-          clientName, 
+          clientName,
           clientEmail: selectedEmail,
           client: selectedId,
           manager,

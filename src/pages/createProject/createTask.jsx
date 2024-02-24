@@ -84,7 +84,7 @@ const CreateTask = () => {
   const handleInputChanges = (e, index) => {
     console.log("df");
     const { name, value } = e.target;
-    console.log(name, value);
+    // console.log(name, value);
     if (name === "testingType") {
       // Handle the testingType field separately to store all selected values in an array
       const selectedTypes = Array.from(
@@ -110,7 +110,7 @@ const CreateTask = () => {
     }
   };
 
-  // console.log(targetURL);
+  console.log(targetURL);
 
   // const handleInputChanges = (e, index) => {
   //   const { name, value } = e.target;

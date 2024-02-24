@@ -30,19 +30,29 @@ const Employee = (props) => {
     const selectedValues = Array.from(event.target.selectedOptions, (option) =>
       employees.find((emp) => emp._id === option.value)
     );
+    // console.log(selectedValues._id);
     setSelectedEmployees(selectedValues);
   };
 
+  // const handleSelectEmployee = (event) => {
+  //   const selectedIds = Array.from(
+  //     event.target.selectedOptions,
+  //     (option) => option.value
+  //   );
+  //   console.log(selectedIds);
+  //   setSelectedEmployees(selectedIds);
+  // };
+
   const handleAssignHours = (event, employee) => {
     const { value } = event.target;
-    setHoursAssigned((prev) => ({ ...prev, [employee._id]: value }));
+    setHoursAssigned((prev) => ({ ...prev, [employee]: value }));
     // Update data with new hours assigned
     const updatedEmployees = selectedEmployees.map((emp) => {
-      if (emp._id === employee._id) {
-        return { ...emp, hours: value };
+      if (emp._id === employee) {
+        return { id: emp._id, assignedHours: value };
       }
       // Retain existing hours data for other employees
-      return { ...emp, hours: hoursAssigned[emp._id] || 0 };
+      return { id: emp._id, assignedHours: hoursAssigned[emp._id] || 0 };
     });
     props.onDataUpdate(updatedEmployees);
   };
@@ -86,7 +96,7 @@ const Employee = (props) => {
               type="Number"
               id={`assignHours-${employee._id}`}
               className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-              onChange={(e) => handleAssignHours(e, employee)}
+              onChange={(e) => handleAssignHours(e, employee._id)}
             />
             <label
               htmlFor={`exampleFormControlInputNumber-${key}`}
