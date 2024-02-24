@@ -65,7 +65,6 @@ function EmployeeTasksList() {
   const indexOfLastTask = currentPage * tasksPerPage;
   const indexOfFirstTask = indexOfLastTask - tasksPerPage;
   const currentTasks = filteredTasks.slice(indexOfFirstTask, indexOfLastTask);
-  console.log(currentTasks);
 
   function formatDate(timestamp) {
     const date = new Date(timestamp);

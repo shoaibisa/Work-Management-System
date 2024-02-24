@@ -161,6 +161,25 @@ const chart2 = (data) => {
 const pdfview = (req, res) => {};
 
 const downloadReportById = async (req, res) => {
+  function numberToWords(num) {
+    const words = [
+      "Zero",
+      "One",
+      "Two",
+      "Three",
+      "Four",
+      "Five",
+      "Six",
+      "Seven",
+      "Eight",
+      "Nine",
+    ];
+    if (num < 10) {
+      return words[num];
+    } else {
+      return num.toString();
+    }
+  }
   try {
     const { pid, tid, type, webtargetUrlsid } = req.params;
 
@@ -247,12 +266,7 @@ const downloadReportById = async (req, res) => {
     const year = date.getUTCFullYear();
 
     const formattedDate = `${day}-${month}-${year}`;
-    const authorsAndAuditorsText = [
-      [
-        "    Authors & Auditors",
-        "                                       Mail ID",
-      ],
-    ];
+    const authorsAndAuditorsText = [["    Authors & Auditors", "     Mail ID"]];
 
     let HIGH = 0,
       CRITICAL = 0,
@@ -274,7 +288,7 @@ const downloadReportById = async (req, res) => {
         MEDIUM++;
       }
     }
-    authorsAndAuditorsText.push(["GISC InfoSec Team", "GISC InfoSec Team"]);
+    authorsAndAuditorsText.push(["GISC InfoSec Team", "info@gisconsulting.in"]);
     const summary_finds = [
       "    " + reports_data.length,
       "    " + CRITICAL,
@@ -291,9 +305,17 @@ const downloadReportById = async (req, res) => {
 
     doc.pipe(res);
     // from here
-
     const delay = 2000; // 1 second
     setTimeout(function () {
+      const borderWidth = 10;
+      doc
+        .rect(
+          borderWidth,
+          borderWidth,
+          doc.page.width - 2 * borderWidth,
+          doc.page.height - 2 * borderWidth
+        )
+        .stroke("#000000");
       doc.image(imagePath, {
         x: 50, // Adjust the X position as needed
         y: 30, // Adjust the Y position as needed
@@ -340,7 +362,7 @@ const downloadReportById = async (req, res) => {
 
       // Add the right-aligned text
       doc.fontSize(12).text("Report reviewed by: ", 350, 360);
-      doc.fontSize(10).text(manager.name, doc.x, doc.y);
+      doc.fontSize(10).text("NAVEEN DHAM", doc.x, doc.y);
       doc.fontSize(10).text("Principal Consultant", doc.x, doc.y);
       doc
         .fontSize(10)
@@ -359,7 +381,10 @@ const downloadReportById = async (req, res) => {
 
       doc.fontSize(12).text(noteText, 50, 500, { width: 550 });
 
-      doc.moveDown(2); // Adjust the value as needed for spacing
+      doc.moveDown(3); // Adjust the value as needed for spacing
+      doc
+        .rect(11, 600, doc.page.width - 10, doc.page.height - 20)
+        .fill("#808080");
 
       const corporateOfficeText =
         "CORPORATE OFFICE \n Level 2, Augusta Point, Parsvnath Exotica, Sector 73, Golf Course, Gurgoan-122002\n" +
@@ -371,17 +396,22 @@ const downloadReportById = async (req, res) => {
 
       doc
         .fontSize(14)
+        .fillColor("white")
         .text(corporateOfficeText.split("\n")[0], 50, 610, { width: 250 });
 
       // Set a different font size for the rest of the text
       doc
         .fontSize(10)
+        .fillColor("white")
         .text(corporateOfficeText.split("\n").slice(1).join("\n"), {
           width: 250,
         });
 
       // Add the United States office information to the right
-      doc.fontSize(12).text("UNITED STATES OFFICE ", 400, 620, { width: 300 });
+      doc
+        .fontSize(12)
+        .fillColor("white")
+        .text("UNITED STATES OFFICE ", 400, 620, { width: 300 });
       doc.fontSize(10).text("13731 Monarch Vista Dr ", doc.x, doc.y);
       doc.fontSize(10).text("Germantown MD 20874", doc.x, doc.y);
       doc.moveDown(1.6);
@@ -391,12 +421,20 @@ const downloadReportById = async (req, res) => {
 
       // Add a new page
       doc.addPage();
-
+      doc
+        .rect(
+          borderWidth,
+          borderWidth,
+          doc.page.width - 2 * borderWidth,
+          doc.page.height - 2 * borderWidth
+        )
+        .stroke("#000000");
       doc.image(hearder, {
         x: 50, // Adjust the X position as needed
-        y: 20, // Adjust the Y position as needed
+        y: 15, // Adjust the Y position as needed
         width: 100, // Adjust the width as needed
       });
+
       // Draw the header text
       // Define your header text
       const headerText = "1. Document Control";
@@ -409,7 +447,7 @@ const downloadReportById = async (req, res) => {
       const tableData = [
         [
           "    Document Type",
-          "    Web Application Penetration Testing Report for{ Host Name}",
+          ` Web Application Penetration Testing Report for ${project.clientName} `,
         ],
         ["    Document Owner", "    G-INFO TECHNOLOGY SOLUTIONS PVT. LTD."],
       ];
@@ -513,7 +551,7 @@ const downloadReportById = async (req, res) => {
           "    Reviewed and Verified by",
           "                                       Mail ID",
         ],
-        ["   " + manager.name, "            " + manager.email],
+        ["    Naveen Dham", "naveen.dham@gisconsulting.in"],
       ];
 
       // Set font size and cell sizes
@@ -565,7 +603,7 @@ const downloadReportById = async (req, res) => {
         [
           "1.0",
           " " + formattedDate,
-          "Web Application Penetration Testing Report for Host Name",
+          `Web Application Penetration Testing Report for ${project.clientName} `,
         ],
       ];
 
@@ -715,9 +753,17 @@ const downloadReportById = async (req, res) => {
 
       // Add a new page for the table of contents
       doc.addPage();
+      doc
+        .rect(
+          borderWidth,
+          borderWidth,
+          doc.page.width - 2 * borderWidth,
+          doc.page.height - 2 * borderWidth
+        )
+        .stroke("#000000");
       doc.image(hearder, {
         x: 50, // Adjust the X position as needed
-        y: 20, // Adjust the Y position as needed
+        y: 15, // Adjust the Y position as needed
         width: 100, // Adjust the width as needed
       });
       // Define the table of contents text
@@ -762,19 +808,19 @@ const downloadReportById = async (req, res) => {
         "8. Application Security Observations based on OWASP Top 10: " +
         ".".repeat(10) +
         " 11\n\n" +
-        "9. Details Reports, POCs & Recommendations: " +
-        ".".repeat(30) +
-        " 12\n\n" +
-        "     9.1. “High Vulnerability Details” " +
-        ".".repeat(30) +
-        " 12\n\n" +
-        "        9.1.2 Insecure Communication " +
-        ".".repeat(30) +
-        " 12\n\n" +
-        "9. Tools Used during Assessment & Testing: " +
+        // "9. Details Reports, POCs & Recommendations: " +
+        // ".".repeat(30) +
+        // " 12\n\n" +
+        // "     9.1. “High Vulnerability Details” " +
+        // ".".repeat(30) +
+        // " 12\n\n" +
+        // "        9.1.2 Insecure Communication " +
+        // ".".repeat(30) +
+        // " 12\n\n" +
+        "10. Tools Used during Assessment & Testing: " +
         ".".repeat(30) +
         " 13\n\n" +
-        "10. Appendix: " +
+        "11. Appendix: " +
         ".".repeat(30) +
         " 13\n\n" +
         "     11.1. CVSS 3 Rating definition " +
@@ -803,11 +849,19 @@ const downloadReportById = async (req, res) => {
 
       // 4 th page
 
-      const textsize = 12;
+      const textsize = 10;
       doc.addPage();
+      doc
+        .rect(
+          borderWidth,
+          borderWidth,
+          doc.page.width - 2 * borderWidth,
+          doc.page.height - 2 * borderWidth
+        )
+        .stroke("#000000");
       doc.image(hearder, {
         x: 50, // Adjust the X position as needed
-        y: 20, // Adjust the Y position as needed
+        y: 14, // Adjust the Y position as needed
         width: 100, // Adjust the width as needed
       });
       const color2 = [54, 95, 145];
@@ -820,7 +874,7 @@ const downloadReportById = async (req, res) => {
         .fontSize(textsize)
         .fillColor("black")
         .text(
-          "G-Info Technology Solutions Inc. has been contracted to conduct a Web Application Security Assessment test against <host_name>, UP Web Applications defined in the scope. The objective of this assessment was to assess the overall security posture of the application from a Black-box perspective. This includes determining the application’s ability to resist common attack patterns and identifying vulnerable areas in the internal or external interfaces that may be exploited by a malicious user.\n\n",
+          `G-Info Technology Solutions Inc. has been contracted to conduct a Web Application Security Assessment test against ${project.clientName} , UP Web Applications defined in the scope. The objective of this assessment was to assess the overall security posture of the application from a Black-box perspective. This includes determining the application’s ability to resist common attack patterns and identifying vulnerable areas in the internal or external interfaces that may be exploited by a malicious user.\n\n`,
           80,
           90,
           {
@@ -856,7 +910,7 @@ const downloadReportById = async (req, res) => {
         .fontSize(textsize)
         .fillColor("black")
         .text(
-          "The Vulnerability Assessment and Penetration Testing performed was focused on <host_name> websites, and its related Web Application",
+          `The Vulnerability Assessment and Penetration Testing performed was focused on ${project.clientName}  websites, and its related Web Application`,
           80,
           270,
           {
@@ -870,8 +924,9 @@ const downloadReportById = async (req, res) => {
 
       //Table no 4
       const tableData7 = [
-        [" Target Website URL’s ", " URL "],
-        [" Test Type ", " Black/Gray Box "],
+        [" Target Website URL’s ", `Enter Url Dynamic`],
+        [" Test Type ", " Enter Test Type Dymamic "],
+        [" Web Server ", " Apache 2.4.25 "],
       ];
 
       // Set font size and cell sizes
@@ -926,9 +981,17 @@ const downloadReportById = async (req, res) => {
         y += cellHeighttable7; // Move to the next ro
       }
       doc.addPage();
+      doc
+        .rect(
+          borderWidth,
+          borderWidth,
+          doc.page.width - 2 * borderWidth,
+          doc.page.height - 2 * borderWidth
+        )
+        .stroke("#000000");
       doc.image(hearder, {
         x: 50, // Adjust the X position as needed
-        y: 20, // Adjust the Y position as needed
+        y: 15, // Adjust the Y position as needed
         width: 100, // Adjust the width as needed
       });
       doc
@@ -937,7 +1000,7 @@ const downloadReportById = async (req, res) => {
         .text("4. Testing Methodology and Approach", { align: "left" }, 60, 60);
 
       doc
-        .fontSize(textsize)
+        .fontSize(10)
         .fillColor("black")
         .text(
           "\nG-Info Technology Solutions Security team was engaged to perform a manual security assessment against the target application. This assessment involved a deep automated scan using automated scanning tools to discover common vulnerabilities, as well as manual testing. Manual testing includes validation of all issue types covered under the automated scan as well as checks for problems not typically found by automated scanners such as authentication, authorization, and business logic flaws.\n\n\n",
@@ -946,7 +1009,7 @@ const downloadReportById = async (req, res) => {
           { width: 500 }
         );
       doc
-        .fontSize(textsize)
+        .fontSize(10)
         .fillColor("black")
         .text(
           "\n A Vulnerability Assessment is a method of evaluating the security of an application by simulating an attack. The process involves an active analysis of the application for any weaknesses, functional flaws, and vulnerabilities. Any security issues that are identified will be explained with an assessment of their impact, with a solution for their mitigation. The OWASP Web Application Methodology is based on the ‘gray box’ approach. The testing model consists of following phases:\n\n",
@@ -964,72 +1027,84 @@ const downloadReportById = async (req, res) => {
       doc
         .fontSize(headerFontSize)
         .fillColor(color2)
-        .text(" Information Gathering", 60, 530, { align: "left" });
-      doc.moveDown(1);
+        .text(" Information Gathering", 60, 500, { align: "left" });
       doc
-        .fontSize(textsize)
+        .fontSize(10)
         .fillColor("black")
         .text(
           "\nGathering information is the first step where a hacker tries to get information about the target. Hackers use different sources and tools to get more information about the target.",
           60,
-          550,
+          510,
           { align: "left" }
         );
 
       doc
         .fontSize(headerFontSize)
         .fillColor(color2)
-        .text(" Threat Modeling:", 60, 600, { align: "left" });
+        .text(" Threat Modeling:", 60, 560, { align: "left" });
       doc.moveDown(1);
       doc
-        .fontSize(textsize)
+        .fontSize(10)
         .fillColor("black")
         .text(
           "\nThreat modelling is a process by which potential threats, such as structural vulnerabilities or the absence of appropriate safeguards, can be identified, enumerated, and mitigations can be prioritized.",
           60,
-          610,
+          570,
           { align: "left" }
         );
       doc
         .fontSize(headerFontSize)
         .fillColor(color2)
-        .text(" Vulnerability Analysis", 60, 670, { align: "left" });
+        .text(" Vulnerability Analysis", 60, 620, { align: "left" });
       doc.moveDown(1);
       doc
-        .fontSize(textsize)
+        .fontSize(10)
         .fillColor("black")
         .text(
           "\nA vulnerability assessment is an in-depth analysis of the building functions, systems, and site characteristics to identify building weaknesses and lack of redundancy, and determine mitigations or corrective actions that can be designed or implemented to reduce the vulnerabilities.",
           60,
-          690,
+          630,
           { align: "left" }
         );
 
       // Add the new text here
-      doc.moveDown(1);
+      doc.addPage();
+      doc
+        .rect(
+          borderWidth,
+          borderWidth,
+          doc.page.width - 2 * borderWidth,
+          doc.page.height - 2 * borderWidth
+        )
+        .stroke("#000000");
+      doc.image(hearder, {
+        x: 50, // Adjust the X position as needed
+        y: 15, // Adjust the Y position as needed
+        width: 100, // Adjust the width as needed
+      });
       doc
         .fontSize(headerFontSize)
         .fillColor(color2)
-        .text("Exploitation:", 60, null, { align: "left" });
+        .text("Exploitation:", 60, 60, { align: "left" });
 
       doc
-        .fontSize(textsize)
+        .fontSize(10)
         .fillColor("black")
         .text(
           "In computer security, a vulnerability is a weakness which can be exploited by a threat actor, such as an attacker, to perform unauthorized actions within a computer system. To exploit a vulnerability, an attacker must have at least one applicable tool or technique that can connect to a system weakness.",
           60,
-          null,
+          80,
           { align: "left" }
         );
-
       doc.moveDown(1);
+
       doc
         .fontSize(headerFontSize)
         .fillColor(color2)
         .text("Post Exploitation:", 60, null, { align: "left" });
 
       doc
-        .fontSize(textsize)
+        .fontSize(10)
         .fillColor("black")
         .text(
           "As the term suggests, post exploitation basically means the phases of operation once a victim's system has been compromised by the attacker. The value of the compromised system is determined by the value of the actual data stored in it and how an attacker may make use of it for malicious purposes. The concept of post exploitation has risen from this fact only as to how you can use the victim's compromised system's information. This phase actually deals with collecting sensitive information, documenting it, and having an idea of the configuration settings, network interfaces, and other communication channels. These may be used to maintain persistent access to the system as per the attacker's needs.",
@@ -1055,9 +1130,17 @@ const downloadReportById = async (req, res) => {
         );
 
       doc.addPage();
+      doc
+        .rect(
+          borderWidth,
+          borderWidth,
+          doc.page.width - 2 * borderWidth,
+          doc.page.height - 2 * borderWidth
+        )
+        .stroke("#000000");
       doc.image(hearder, {
         x: 50, // Adjust the X position as needed
-        y: 20, // Adjust the Y position as needed
+        y: 15, // Adjust the Y position as needed
         width: 100, // Adjust the width as needed
       });
 
@@ -1078,6 +1161,13 @@ const downloadReportById = async (req, res) => {
           { align: "left" }
         );
       const color3 = [74, 22, 71];
+      // doc.font("Helvetica-Bold");
+      // doc
+      //   .fontSize(14)
+      //   .font("Helvetica-Bold")
+      //   .text("OWASP Top 10 Risks (2021) Scanned in the Report", 60, null, {
+      //     align: "left",
+      //   });
       doc
         .fontSize(14)
         .fillColor(color3)
@@ -1134,9 +1224,17 @@ const downloadReportById = async (req, res) => {
       doc.addPage();
       doc.image(hearder, {
         x: 50, // Adjust the X position as needed
-        y: 20, // Adjust the Y position as needed
+        y: 15, // Adjust the Y position as needed
         width: 100, // Adjust the width as needed
       });
+      doc
+        .rect(
+          borderWidth,
+          borderWidth,
+          doc.page.width - 2 * borderWidth,
+          doc.page.height - 2 * borderWidth
+        )
+        .stroke("#000000");
 
       doc
         .fontSize(headerFontSize)
@@ -1188,12 +1286,12 @@ const downloadReportById = async (req, res) => {
       const firstColumnWidthtable8 = 100; // Width for the first column
       const secondColumnWidthtable8 = 100;
       const thirdColumnWidthtable8 = 100; // Width for the second column
-      const cellHeighttable8 = 30;
+      const cellHeighttable8 = 20;
       //const fontSize = 12; // Font size
 
       // Set initial position and spacing
       x = 50; // X position
-      y = 200; // Y position
+      y = 155; // Y position
 
       for (let i = 0; i < tableData8.length; i++) {
         for (let j = 0; j < tableData8[i].length; j++) {
@@ -1239,29 +1337,40 @@ const downloadReportById = async (req, res) => {
       doc
         .fontSize(textsize)
         .fillColor("black")
-        .text("Table 1: Category Listing", 80, doc.y + 30, {
+        .text("Table 1: Category Listing", 80, doc.y + 10, {
           align: "center",
         });
-      doc
-        .fontSize(textsize)
-        .fillColor("black")
-        .text(
-          "The chart below, gives the overall summary of number of vulnerabilities discovered with their Risk Ratings. Zero (00) Critical Risk, Zero (00) High Risk, Zero (00) Medium Risk, Zero (00) Low Risk vulnerabilities were identified during the test.",
-          60,
-          doc.y + 30,
-          {
-            align: "left",
-          }
-        );
+
+      doc.text(
+        `The chart below, gives the overall summary of number of vulnerabilities discovered with their
+Risk Ratings. ${numberToWords(CRITICAL)} (${
+          CRITICAL < 10 ? "0" + CRITICAL : CRITICAL
+        }) Critical Risk, ${numberToWords(HIGH)} (${
+          HIGH < 10 ? "0" + HIGH : HIGH
+        }) High Risk, ${numberToWords(MEDIUM)} (${
+          MEDIUM < 10 ? "0" + MEDIUM : MEDIUM
+        }) Medium Risk, ${numberToWords(LOW)} (${
+          LOW < 10 ? "0" + LOW : LOW
+        }) Low Risk vulnerabilities were identified during the test.`,
+        60,
+        null,
+        {
+          align: "left",
+        }
+      );
+      doc.moveDown(1);
       doc
         .fontSize(16)
         .fillColor("black")
-        .text("Severity Wise Analysis", 60, 430, {
+        .text("Severity Wise Analysis", 60, null, {
           align: "left",
         });
-      doc.fontSize(16).fillColor("black").text("Overall Analysis %", 370, 430, {
-        align: "right",
-      });
+      doc
+        .fontSize(16)
+        .fillColor("black")
+        .text("Overall Analysis %", 370, null, {
+          align: "right",
+        });
 
       // Set up your data for the bar char
       doc.image(chartimagePaths, {
@@ -1275,41 +1384,38 @@ const downloadReportById = async (req, res) => {
         y: doc.y + 30,
         width: 250, // Adjust the width as needed
       });
-      doc.addPage();
 
       doc
         .fontSize(headerFontSize)
         .fillColor(color2)
-        .text("6.2. Vulnerability Rating Definitions", 80, 50);
+        .text("6.2. Vulnerability Rating Definitions", 80, doc.y + 220);
 
       const tableData9 = [
+        ["Vulnerability Levels", "  Description"],
         [
-          "  Vulnerability Levels",
-          "                                      Description",
+          "Critical",
+          "Exploitation of the vulnerability may result in complete compromise of the Database server or Application server. It can have a major impact on business. (CVSS Score- 9.0-10.0) ",
         ],
         [
-          "    Critical",
-          "            Exploitation of the vulnerability may result in complete compromise of the Database server or Application server. It can have a major impact on business. (CVSS Score- 9.0-10.0) ",
-        ],
-        [
-          "    High",
-          "            Exploitation of the vulnerability may result in complete compromise of the Application / disclosure of sensitive information. Vulnerability is easily exploitable. (CVSS Score- 7.0-8.9) ",
+          "High",
+          "Exploitation of the vulnerability may result in complete compromise of the Application / disclosure of sensitive information. Vulnerability is easily exploitable. (CVSS Score- 7.0-8.9) ",
         ],
 
         [
-          "    Medium",
-          "            Exploitation of the vulnerability may result in some control on the Application / disclosure of semi- sensitive information. Exploitation of this vulnerability is possible but difficult. (CVSS Score- 4.0-6.9)",
+          "Medium",
+          " Exploitation of the vulnerability may result in some control on the Application / disclosure of semi- sensitive information. Exploitation of this vulnerability is possible but difficult. (CVSS Score- 4.0-6.9)",
         ],
         [
-          "    Low",
-          "            Exploitation of the vulnerability may result in little or no impact on the application/ disclosure of less sensitive information. Exploitation of this vulnerability is extremely difficult. (CVSS Score- 0.0-3.9)",
+          "Low",
+          "Exploitation of the vulnerability may result in little or no impact on the application/ disclosure of less sensitive information. Exploitation of this vulnerability is extremely difficult. (CVSS Score- 0.0-3.9)",
         ],
       ];
+
       // Set font size and cell sizes
       // const fontSize = 12;
-      const firstColumnWidthtable9 = 150; // Width for the first column
-      const secondColumnWidthtable9 = 350; // Width for the second column
-      const cellHeighttable9 = 70;
+      const firstColumnWidthtable9 = 100; // Width for the first column
+      const secondColumnWidthtable9 = 420; // Width for the second column
+      const cellHeighttable9 = 35;
 
       // Set initial position and spacing
       x = 50; // X position
@@ -1346,7 +1452,7 @@ const downloadReportById = async (req, res) => {
           const verticalPosition = y + (cellHeighttable9 - textHeight) / 2;
 
           doc
-            .fontSize(fontSize)
+            .fontSize(9)
             .text(
               tableData9[i][j],
               x + 5,
@@ -1361,19 +1467,26 @@ const downloadReportById = async (req, res) => {
         x = 50; // Reset the X position for the next row
         y += cellHeighttable9; // Move to the next row
       }
-      const textBelowTable =
-        "7. Application Security Observations based on OWASP Top 10:";
-      doc
-        .fontSize(14) // Set the font size as needed
-        .text(textBelowTable, 50, y + 30); // Adjust the position as needed
 
       doc.addPage();
+      doc.image(hearder, {
+        x: 50, // Adjust the X position as needed
+        y: 15, // Adjust the Y position as needed
+        width: 100, // Adjust the width as needed
+      });
+      doc
+        .rect(
+          borderWidth,
+          borderWidth,
+          doc.page.width - 2 * borderWidth,
+          doc.page.height - 2 * borderWidth
+        )
+        .stroke("#000000");
 
-      // Add the text to the document with proper Y-coordinates
       doc
         .fontSize(headerFontSize)
         .fillColor("black")
-        .text("8 Detail Reports POCs & Recommendations", 50, 50);
+        .text("9 Detail Reports POCs & Recommendations", 50, 50);
 
       // Add a gap between lines
       doc.moveDown();
@@ -1381,7 +1494,7 @@ const downloadReportById = async (req, res) => {
       doc
         .fontSize(headerFontSize)
         .fillColor("red")
-        .text("     8.1. “High Vulnerability Details”", 50, 70);
+        .text("     9.1. “High Vulnerability Details”", 70, 70);
 
       // Add a gap between lines
       doc.moveDown();
@@ -1389,7 +1502,7 @@ const downloadReportById = async (req, res) => {
       doc
         .fontSize(headerFontSize)
         .fillColor("black")
-        .text("     9.1.2 Insecure Communication", 50, 90);
+        .text("     9.1.2 Insecure Communication", 90, 90);
 
       // Add a gap between lines
       doc.moveDown();
@@ -1401,10 +1514,7 @@ const downloadReportById = async (req, res) => {
           ["CWE", reports_data[i].cwe],
           ["Threat", reports_data[i].vulnerability],
           ["Risk", reports_data[i].risk],
-          // ["Attribute Factor", reports_data[i].attributingFactor],
-          // ["Mitigation", reports_data[i].mitigation],
           ["Affected URL", reports_data[i].affectedUrl],
-          // ["Impact", reports_data[i].impact],
         ];
 
         // Set styling variables
@@ -1549,24 +1659,48 @@ const downloadReportById = async (req, res) => {
         // Call the function to create the new single-column table with headlines
         createSingleColumnTableWithHeadlines(newTableData);
         doc.addPage();
+        doc.image(hearder, {
+          x: 50, // Adjust the X position as needed
+          y: 15, // Adjust the Y position as needed
+          width: 100, // Adjust the width as needed
+        });
+        doc
+          .rect(
+            borderWidth,
+            borderWidth,
+            doc.page.width - 2 * borderWidth,
+            doc.page.height - 2 * borderWidth
+          )
+          .stroke("#000000");
+        doc.image(hearder, {
+          x: 50, // Adjust the X position as needed
+          y: 15, // Adjust the Y position as needed
+          width: 100, // Adjust the width as needed
+        });
+
         // Add the heading "PROOF OF CONCEPT" just below the table
         const headingText = "PROOF OF CONCEPT";
-        const headingHeight = 30; // Adjust as needed
-        x = 20;
 
-        doc.fontSize(fontSize).text(headingText, x, 50, {
+        doc.fontSize(fontSize).text(headingText, 50, 50, {
           //width: singleColumnWidth - 10,
           align: "left",
         });
         // Adjust Y-coordinate for the heading
-        y += headingHeight;
-        doc.moveDown();
+        // y += headingHeight;
+        // doc.moveDown();
 
         // // Iterate through each object in the 'reports_data' array
-        let countimage = 0;
 
-        reports_data[i].files.forEach((file) => {
+        let countImage = 0;
+        x = 80;
+        y = 80;
+        const imageWidth = 450;
+        const imageHeight = 200;
+        const imageSpacing = 20; // Spacing between images
+
+        reports_data[i].files.forEach((file, index) => {
           // Construct the image path
+
           const image = path.join(
             dirname(currentModulePath),
             "..",
@@ -1574,35 +1708,70 @@ const downloadReportById = async (req, res) => {
             file
           );
 
-          if (countimage === 0) {
-            x = 150;
-            y = 50;
-          } else if (countimage === 1) {
-            y += 360;
+          // Check if we need to start a new page
+          if (countImage === 0 && index !== 0) {
+            doc.addPage();
+            doc
+              .rect(
+                borderWidth,
+                borderWidth,
+                doc.page.width - 2 * borderWidth,
+                doc.page.height - 2 * borderWidth
+              )
+              .stroke("#000000");
+            doc.image(hearder, {
+              x: 50, // Adjust the X position as needed
+              y: 15, // Adjust the Y position as needed
+              width: 100, // Adjust the width as needed
+            });
+
+            y = 70; // Reset y position
           }
 
-          if (countimage === 2) {
-            countimage = 0;
-            y = 50;
-            doc.addPage();
-          }
-          countimage++;
-          // Add a border to each image
-          doc.rect(x, y, 300, 300).lineWidth(1).stroke(); // Border
-          doc.image(image, x, y, {
-            fit: [300, 300],
+          // Calculate new coordinates for the image
+          const newX = x;
+          const newY = countImage === 0 ? y : y + imageHeight + imageSpacing;
+          y = newY;
+
+          // Add the image to the document
+          doc.image(image, newX, newY, {
+            width: imageWidth,
+            height: imageHeight,
             align: "center",
             valign: "center",
           });
+          doc.rect(x, y, 450, 200).lineWidth(1).stroke(); // Border
+
+          // Increment image count
+          countImage++;
+
+          // Reset count and update y position when reaching the maximum images per page
+          if (countImage === 3) {
+            countImage = 0;
+            y = newY + imageHeight + imageSpacing;
+          }
         });
 
         doc.addPage();
       }
+      doc
+        .rect(
+          borderWidth,
+          borderWidth,
+          doc.page.width - 2 * borderWidth,
+          doc.page.height - 2 * borderWidth
+        )
+        .stroke("#000000");
+      doc.image(hearder, {
+        x: 50, // Adjust the X position as needed
+        y: 15, // Adjust the Y position as needed
+        width: 100, // Adjust the width as needed
+      });
 
       doc
         .fontSize(headerFontSize)
         .fillColor(color2)
-        .text("9.Tools Used during Assessment & Testing:", 50, 50);
+        .text("9.Tools Used during Assessment & Testing:", 50, null);
       doc.image(tool, {
         x: 50,
         y: doc.y + 30,
@@ -1617,7 +1786,7 @@ const downloadReportById = async (req, res) => {
         "In order to help standardize the risk of information technology vulnerabilities, the industry created the Common Vulnerability Scoring System, commonly referred to as CVSS. The scores range from 0 to 10 – with 10 representing the most risk. There are several things that are considered in order to assign the CVSS score including but not limited to: the degree of difficulty to exploit the vulnerability, whether the vulnerability allows for remote execution, whether there is an official fix or patch to address the vulnerability, etc. Standardized methodology to prioritize vulnerability remediation, which leverages the CVSS assigned to the vulnerability.";
 
       doc
-        .fontSize(12) // Set the font size as needed
+        .fontSize(10) // Set the font size as needed
         .fillColor("black")
         .text(textCVSS3Definition, 50, 380);
 
@@ -1627,6 +1796,19 @@ const downloadReportById = async (req, res) => {
         width: 500, // Adjust the width as needed
       });
       doc.addPage();
+      doc
+        .rect(
+          borderWidth,
+          borderWidth,
+          doc.page.width - 2 * borderWidth,
+          doc.page.height - 2 * borderWidth
+        )
+        .stroke("#000000");
+      doc.image(hearder, {
+        x: 50, // Adjust the X position as needed
+        y: 15, // Adjust the Y position as needed
+        width: 100, // Adjust the width as needed
+      });
 
       doc
         .fontSize(headerFontSize)
@@ -1656,13 +1838,26 @@ const downloadReportById = async (req, res) => {
         "Client-side input must also be checked for URL encoded data. URL encoding, sometimes referred to as percent encoding, is the accepted method of representing characters within a URI that may need special syntax handling to be correctly interpreted. This is achieved by encoding the character to be interpreted with a sequence of three characters. This triplet sequence consists of the percentage character “%”, followed by the two hexadecimal digits representing the octet code of the original character. For example, the US-ASCII character set represents a space with octet code 32, or hexadecimal 20. Thus, its URL-encoded representation is %20.";
 
       doc
-        .fontSize(12) // Set the font size as needed
+        .fontSize(10) // Set the font size as needed
         .fillColor("black")
         .text(additionalText2, 50, 80);
 
       doc.addPage();
       doc
-        .fontSize(12) // Set the font size as needed
+        .rect(
+          borderWidth,
+          borderWidth,
+          doc.page.width - 2 * borderWidth,
+          doc.page.height - 2 * borderWidth
+        )
+        .stroke("#000000");
+      doc.image(hearder, {
+        x: 50, // Adjust the X position as needed
+        y: 15, // Adjust the Y position as needed
+        width: 100, // Adjust the width as needed
+      });
+      doc
+        .fontSize(10) // Set the font size as needed
         .fillColor("black")
         .text(
           "Other common characters that can be used for malicious purposes and their URL encoded representations are: -",
@@ -1690,50 +1885,77 @@ const downloadReportById = async (req, res) => {
         "Some more key points to remember:";
 
       doc
-        .fontSize(12) // Set the font size as needed
+        .fontSize(10) // Set the font size as needed
         .text(additionalText3, 50, 240);
 
       doc.addPage();
+      doc
+        .rect(
+          borderWidth,
+          borderWidth,
+          doc.page.width - 2 * borderWidth,
+          doc.page.height - 2 * borderWidth
+        )
+        .stroke("#000000");
+      doc.image(hearder, {
+        x: 50, // Adjust the X position as needed
+        y: 15, // Adjust the Y position as needed
+        width: 100, // Adjust the width as needed
+      });
 
       const additionalText4 =
         "Session ID’s that are used should have the following properties:\n" +
         "1. Randomness\n" +
-        "a. Session Ids must be randomly generated.\n" +
-        "b. Session Ids must be unpredictable.\n" +
-        "c. Make use of non-linear algorithms to generate session ID’s\n\n" +
+        "       a. Session Ids must be randomly generated.\n" +
+        "       b. Session Ids must be unpredictable.\n" +
+        "       c. Make use of non-linear algorithms to generate session ID’s\n\n" +
         "2. Session ID Size\n" +
-        "a. The size of a session ID should be large enough to ensure that it is not vulnerable to a brute force attack.\n" +
-        "b. The character set used should be complex. i.e. Make use of special characters.\n" +
-        "c. A length of 70 random characters is advised.\n\n" +
-        "SALTED HASHING\n\n" +
+        "       a. The size of a session ID should be large enough to ensure that it is not vulnerable to a brute force attack.\n" +
+        "       b. The character set used should be complex. i.e. Make use of special characters.\n" +
+        "      c. A length of 70 random characters is advised.\n\n" +
+        "   SALTED HASHING\n\n" +
         "What is salted hashing?\n\n" +
         "The process starts with 2 elements of data:\n" +
         "1.) A clear text string (this could represent a password for instance).\n" +
         "2.) The salt, a random seed of data. This is the value used to augment a hash in order to ensure that 2 hashes of identical data yield different output.\n\n" +
         "In pseudocode we generate a salted hash as follows:\n" +
-        "1.) Get the source string and salt as separate binary objects\n" +
-        "2.) Concatenate the 2 binary values\n" +
-        "3.) SHA hash the concatenation into SaltedPasswordHash\n" +
-        "4.) Base64 Encode(concat(SaltedPasswordHash, Salt))\n\n" +
+        "      1.) Get the source string and salt as separate binary objects\n" +
+        "      2.) Concatenate the 2 binary values\n" +
+        "      3.) SHA hash the concatenation into SaltedPasswordHash\n" +
+        "      4.) Base64 Encode(concat(SaltedPasswordHash, Salt))\n\n" +
         "Credentials should be encrypted using salted hashes, so that even if the hashes are sniffed the possibility of a replay attack does not exist.\n\n" +
         "References: http://www.owasp.org/images/3/33/Salted_Hashes_Demystified.doc\n\n" +
         "Cache Control Directives\n\n" +
         "Pages that contain sensitive information should not be stored in the local cache of the browser. To enforce this, HTTP directives need to be specified in the response. These HTTP directives need to be used to prevent enlisting of links on the browser history. The following HTTP directives can be sent by the server along with the response to the client. This would direct the browser to send a new request to the server each time it is generated.\n" +
         "Expires: <a previous date>, for e.g. Expires: Thu, 10 Jan 200419:20:00 GMT\n\n" +
         "Cache-Control: private\n" +
-        "• Cache-Control: no-cache\n" +
-        "• Cache-Control: no-store\n" +
-        "• Cache-Control: must-revalidate\n" +
-        "• Pragma: no-cache\n\n" +
+        "     • Cache-Control: no-cache\n" +
+        "     • Cache-Control: no-store\n" +
+        "     • Cache-Control: must-revalidate\n" +
+        "     • Pragma: no-cache\n\n" +
         "The directive “Cache-Control: must-revalidate” directs the browser to fetch the pages from the server rather than picking it up from the local “Temporary Internet Folders”. It also directs the browser to remove the file from the temporary folders.";
 
       doc
-        .fontSize(12) // Set the font size as needed
+        .fontSize(10) // Set the font size as needed
         .text(additionalText4, 50, 50); // Adjust the position as needed
+      doc.addPage();
+      doc
+        .rect(
+          borderWidth,
+          borderWidth,
+          doc.page.width - 2 * borderWidth,
+          doc.page.height - 2 * borderWidth
+        )
+        .stroke("#000000");
+      doc.image(hearder, {
+        x: 50, // Adjust the X position as needed
+        y: 15, // Adjust the Y position as needed
+        width: 100, // Adjust the width as needed
+      });
       doc
         .fontSize(headerFontSize)
         .fillColor(color2)
-        .text("12. G-Info Technology Solutions Contact:", 50, 120);
+        .text("12. G-Info Technology Solutions Contact:", 50, 50);
       const officeContactsTableData = [
         [
           "Office Contacts",
@@ -1749,10 +1971,10 @@ const downloadReportById = async (req, res) => {
             reports_data[0].employee.phone +
             "",
         ],
-        [
-          "2nd Level",
-          "Name: Rishav Kumar\nEmail: rishav.kumar@gisconsulting.in\nMob: +91 70046 52649",
-        ],
+        // [
+        //   "2nd Level",
+        //   "Name: Rishav Kumar\nEmail: rishav.kumar@gisconsulting.in\nMob: +91 70046 52649",
+        // ],
         [
           "3rd Level",
           "Name: Naveen Dham\nEmail: naveen.dham@gisconsulting.in\nMob: +91-9810976838",
@@ -1766,14 +1988,14 @@ const downloadReportById = async (req, res) => {
 
       // Set initial position and spacing
       x = 50; // X position
-      y = 150;
+      y = 100;
       for (let i = 0; i < officeContactsTableData.length; i++) {
         for (let j = 0; j < officeContactsTableData[i].length; j++) {
           // Draw cell border
           doc.rect(x, y, columnWidth, cellHeightt).stroke();
 
           doc
-            .fontSize(fontSize)
+            .fontSize(10)
             .fillColor("black")
             .text(
               officeContactsTableData[i][j],
@@ -1805,6 +2027,7 @@ const createProject = async (req, res) => {
         isError: true,
       });
     }
+
     const rid = req.body.rid;
 
     const project = new Project({
@@ -2006,7 +2229,7 @@ const getAllProjectbypM = async (req, res) => {
 
 const createTask = async (req, res) => {
   const selectedOptions = JSON.parse(req.body.selectedOptions);
-
+  return console.log(req.body, "Create Task");
   var taskLoady = {
     project: req.body.project,
     selectedOptions: selectedOptions,
