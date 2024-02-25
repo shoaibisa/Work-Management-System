@@ -2257,12 +2257,16 @@ const createTask = async (req, res) => {
         taskLoady.apiData = {
           apifile: file1.filename,
           apiotherRemarks: req.body["apiotherRemarks"],
+          types: req.body["apiTestingType"],
+          deadline: req.body[" apideadlineDate"],
         };
       }
       if (selectedOptions[t] === "network") {
         taskLoady["networkData"] = {
           networkfileUpload: file2.filename,
           networkotherRemarks: req.body["networkotherRemarks"],
+          types: req.body["networkTestingType"],
+          deadline: req.body["networkDeadlineDate"],
         };
       }
       if (selectedOptions[t] === "mobile") {
@@ -2275,6 +2279,8 @@ const createTask = async (req, res) => {
       if (selectedOptions[t] === "grc") {
         taskLoady.grcData = {
           grcotherRemarks: req.body["grcotherRemarks"],
+          types: req.body["grcTestingType"],
+          deadline: req.body["grcDeadlineDate"],
         };
       }
     }
