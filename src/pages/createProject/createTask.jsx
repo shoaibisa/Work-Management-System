@@ -18,7 +18,7 @@ import { toast } from "react-hot-toast";
 const CreateTask = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [targetURL, setTargetURL] = useState([
-    { lable: "", link: "", testingType: [], deadlinedateofweb: null },
+    { lable: "", link: "", types: [], deadline: null },
   ]);
   const [isHoveredplus, setIsHoveredplus] = useState(false);
   const [isHoveredminus, setIsHoveredminus] = useState(false);
@@ -82,38 +82,10 @@ const CreateTask = () => {
     ]);
   };
 
-  // const handleInputChanges = (e, index) => {
-  //   const { name, value } = e.target;
-  //   if (name === "testingType") {
-  //     // Handle the testingType field separately to store all selected values in an array
-  //     const selectedTypes = Array.from(
-  //       e.target.selectedOptions,
-  //       (option) => option.value
-  //     );
-  //     const updatedTargetURL = targetURL.map((item, i) => {
-  //       if (index === i) {
-  //         return { ...item, [name]: selectedTypes };
-  //       }
-  //       return item;
-  //     });
-  //     setTargetURL(updatedTargetURL);
-  //   } else {
-  //     // Handle other fields
-  //     const updatedTargetURL = targetURL.map((item, i) => {
-  //       if (index === i) {
-  //         return { ...item, [name]: value };
-  //       }
-  //       return item;
-  //     });
-  //     setTargetURL(updatedTargetURL);
-  //   }
-  // };
-
   const handleInputChanges = (e, index) => {
     const { name, value } = e.target;
     if (name === "testingType") {
       console.log("testingType");
-      // Handle the testingType field separately to store all selected values in an array
       const selectedTypes = Array.from(
         e.target.selectedOptions,
         (option) => option.value
@@ -128,7 +100,6 @@ const CreateTask = () => {
     } else {
       // Handle other fields
       console.log("other fields");
-
       const updatedTargetURL = targetURL.map((item, i) => {
         if (index === i) {
           return { ...item, [name]: value };
@@ -149,7 +120,6 @@ const CreateTask = () => {
   //   });
   //   setTargetURL(updatedTargetURL);
   // };
-  console.log(targetURL);
 
   // const handleInputChanges = (e, index) => {
   //   const { name, value } = e.target;
@@ -189,6 +159,7 @@ const CreateTask = () => {
   const [apiTestingType, setApiTestingType] = useState([]);
   const [apideadlineDate, setApiDeadlineDate] = useState("");
   const [apiotherRemarks, setapiotherRemarks] = useState("");
+  console.log(apiTestingType);
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setApiselectedFile(file);
@@ -235,7 +206,6 @@ const CreateTask = () => {
   }, [selectedOptions, targetURL]);
 
   const token = userData?.token;
-  console.log(grcDeadlineDate, grcTestingType, grcotherRemarks);
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -258,7 +228,7 @@ const CreateTask = () => {
     if (selectedOptions.includes("api")) {
       // Add api-related data to formData
       formData.append("apiselectedFile", apiselectedFile);
-      formData.append("apiTestingType", apiTestingType);
+      formData.append("apiTestingType", JSON.stringify(apiTestingType));
       formData.append("apideadlineDate", apideadlineDate);
       formData.append("apiotherRemarks", apiotherRemarks);
     }
@@ -268,7 +238,7 @@ const CreateTask = () => {
       // Add network-related data to formData
       formData.append("networkselectedFile", networkselectedFile);
       formData.append("networkotherRemarks", networkotherRemarks);
-      formData.append("networkTestingType", networkTestingType);
+      formData.append("networkTestingType", JSON.stringify(networkTestingType));
       formData.append("networkDeadlineDate", networkDeadlineDate);
     }
 
@@ -280,23 +250,25 @@ const CreateTask = () => {
       formData.append("mobileotherRemarks", mobileotherRemarks);
       formData.append("mobile_anoride_link", androidUrl);
       formData.append("androidDeadlineDate", androidDeadlineDate);
-      formData.append("androidTestingType", androidTestingType);
+      formData.append("androidTestingType", JSON.stringify(androidTestingType));
 
       formData.append("ios_link", iosUrl);
       formData.append("iosDeadlineDate", iosDeadlineDate);
-      formData.append("iosTestingType", iosTestingType);
+      formData.append("iosTestingType", JSON.stringify(iosTestingType));
     }
 
     if (selectedOptions.includes("grc")) {
       // Add grc-related data to formData
       formData.append("grcotherRemarks", grcotherRemarks);
       formData.append("grcDeadlineDate", grcDeadlineDate);
-      formData.append("grcTestingType", grcTestingType);
+      formData.append("grcTestingType", JSON.stringify(grcTestingType));
     }
 
     // Add createdBy
     formData.append("createdBy", createdBY);
-
+    for (const pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
     try {
       const response = await fetch("http://localhost:5000/project/createTask", {
         method: "POST",

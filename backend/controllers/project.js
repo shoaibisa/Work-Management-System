@@ -2229,7 +2229,7 @@ const getAllProjectbypM = async (req, res) => {
 
 const createTask = async (req, res) => {
   const selectedOptions = JSON.parse(req.body.selectedOptions);
-  return console.log(req.body, "Create Task");
+  console.log(req.body);
   var taskLoady = {
     project: req.body.project,
     selectedOptions: selectedOptions,
