@@ -33,40 +33,41 @@ const CreateTask = () => {
     setSelectedOptions(selectedValues);
   };
 
-  //const [testingType, setTestingType] = useState([]);
-  // const handletypeTesting = (event) => {
-  //   const selectedValues = Array.from(
-  //     event.target.selectedOptions,
-  //     (option) => option.value
-  //   );
-  //   setTestingType(selectedValues);
-  // };
-
-  //console.log(testingType);
-  // // handle click event of the Remove button
-  // const handleRemoveClick = (index) => {
-  //   const list = [...targetURL];
-  //   list.splice(index, 1);
-  //   setTargetURL(list);
-  // };
-  // // handle click event of the Add button
-  // const handleAddClick = () => {
-  //   setTargetURL([
-  //     ...targetURL,
-  //     { lable: "", link: "", testingType: [], deadlinedate: "" },
-  //   ]);
-  // };
-  // const handleInputChanges = (e, index) => {
-  //   const { name, value } = e.target;
-  //   const updatedTargetURL = targetURL.map((item, i) => {
-  //     if (index === i) {
-  //       return { ...item, [name]: value };
-  //     }
-  //     return item;
-  //   });
-  //   console.log(updatedTargetURL);
-  //   setTargetURL(updatedTargetURL);
-  // };
+  const handletypeTestingapi = (event) => {
+    const selectedValues = Array.from(
+      event.target.selectedOptions,
+      (option) => option.value
+    );
+    setApiTestingType(selectedValues);
+  };
+  const handletypeTestingnetwork = (event) => {
+    const selectedValues = Array.from(
+      event.target.selectedOptions,
+      (option) => option.value
+    );
+    setNetworkTestingType(selectedValues);
+  };
+  const handletypeTestinganorid = (event) => {
+    const selectedValues = Array.from(
+      event.target.selectedOptions,
+      (option) => option.value
+    );
+    setAndroidTestingType(selectedValues);
+  };
+  const handletypeTestingios = (event) => {
+    const selectedValues = Array.from(
+      event.target.selectedOptions,
+      (option) => option.value
+    );
+    setIosTestingType(selectedValues);
+  };
+  const handletypeTestinggrc = (event) => {
+    const selectedValues = Array.from(
+      event.target.selectedOptions,
+      (option) => option.value
+    );
+    setGrcTestingType(selectedValues);
+  };
 
   const handleRemoveClick = (index) => {
     const list = [...targetURL];
@@ -81,11 +82,37 @@ const CreateTask = () => {
     ]);
   };
 
+  // const handleInputChanges = (e, index) => {
+  //   const { name, value } = e.target;
+  //   if (name === "testingType") {
+  //     // Handle the testingType field separately to store all selected values in an array
+  //     const selectedTypes = Array.from(
+  //       e.target.selectedOptions,
+  //       (option) => option.value
+  //     );
+  //     const updatedTargetURL = targetURL.map((item, i) => {
+  //       if (index === i) {
+  //         return { ...item, [name]: selectedTypes };
+  //       }
+  //       return item;
+  //     });
+  //     setTargetURL(updatedTargetURL);
+  //   } else {
+  //     // Handle other fields
+  //     const updatedTargetURL = targetURL.map((item, i) => {
+  //       if (index === i) {
+  //         return { ...item, [name]: value };
+  //       }
+  //       return item;
+  //     });
+  //     setTargetURL(updatedTargetURL);
+  //   }
+  // };
+
   const handleInputChanges = (e, index) => {
-    console.log("df");
     const { name, value } = e.target;
-    // console.log(name, value);
     if (name === "testingType") {
+      console.log("testingType");
       // Handle the testingType field separately to store all selected values in an array
       const selectedTypes = Array.from(
         e.target.selectedOptions,
@@ -100,6 +127,8 @@ const CreateTask = () => {
       setTargetURL(updatedTargetURL);
     } else {
       // Handle other fields
+      console.log("other fields");
+
       const updatedTargetURL = targetURL.map((item, i) => {
         if (index === i) {
           return { ...item, [name]: value };
@@ -110,6 +139,16 @@ const CreateTask = () => {
     }
   };
 
+  // const handleInputChangesforother = (e, index) => {
+  //   const { name, value } = e.target;
+  //   const updatedTargetURL = targetURL.map((item, i) => {
+  //     if (index === i) {
+  //       return { ...item, [name]: value };
+  //     }
+  //     return item;
+  //   });
+  //   setTargetURL(updatedTargetURL);
+  // };
   console.log(targetURL);
 
   // const handleInputChanges = (e, index) => {
@@ -147,8 +186,9 @@ const CreateTask = () => {
   // For Api
 
   const [apiselectedFile, setApiselectedFile] = useState(null);
+  const [apiTestingType, setApiTestingType] = useState([]);
+  const [apideadlineDate, setApiDeadlineDate] = useState("");
   const [apiotherRemarks, setapiotherRemarks] = useState("");
-
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setApiselectedFile(file);
@@ -156,6 +196,8 @@ const CreateTask = () => {
   // for network
   const [networkselectedFile, setNetworkselectedFile] = useState(null);
   const [networkotherRemarks, setNetworkotherRemarks] = useState("");
+  const [networkDeadlineDate, setNetworkDeadlineDate] = useState("");
+  const [networkTestingType, setNetworkTestingType] = useState([]);
 
   const handleFileChange_network = (e) => {
     // Access the selected file from the input field
@@ -165,10 +207,16 @@ const CreateTask = () => {
   // For Mobile
   const [mobileotherRemarks, setMobileotherRemarks] = useState("");
   const [androidUrl, setAndroidUrl] = useState("");
+  const [androidTestingType, setAndroidTestingType] = useState([]);
+  const [androidDeadlineDate, setAndroidDeadlineDate] = useState("");
   const [iosUrl, setIosUrl] = useState("");
+  const [iosTestingType, setIosTestingType] = useState([]);
+  const [iosDeadlineDate, setIosDeadlineDate] = useState("");
 
   // For Grc
   const [grcotherRemarks, setGrcotherRemarks] = useState("");
+  const [grcTestingType, setGrcTestingType] = useState([]);
+  const [grcDeadlineDate, setGrcDeadlineDate] = useState("");
   //console.log(mobileData);
   const [message, setMessage] = useState("");
 
@@ -187,7 +235,7 @@ const CreateTask = () => {
   }, [selectedOptions, targetURL]);
 
   const token = userData?.token;
-
+  console.log(grcDeadlineDate, grcTestingType, grcotherRemarks);
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -210,6 +258,8 @@ const CreateTask = () => {
     if (selectedOptions.includes("api")) {
       // Add api-related data to formData
       formData.append("apiselectedFile", apiselectedFile);
+      formData.append("apiTestingType", apiTestingType);
+      formData.append("apideadlineDate", apideadlineDate);
       formData.append("apiotherRemarks", apiotherRemarks);
     }
 
@@ -218,6 +268,8 @@ const CreateTask = () => {
       // Add network-related data to formData
       formData.append("networkselectedFile", networkselectedFile);
       formData.append("networkotherRemarks", networkotherRemarks);
+      formData.append("networkTestingType", networkTestingType);
+      formData.append("networkDeadlineDate", networkDeadlineDate);
     }
 
     // Check if "mobile" is selected
@@ -227,12 +279,19 @@ const CreateTask = () => {
       // formData.append("ios_link", targetURL[1]?.link || ""); // Assuming the second link is for iOS
       formData.append("mobileotherRemarks", mobileotherRemarks);
       formData.append("mobile_anoride_link", androidUrl);
+      formData.append("androidDeadlineDate", androidDeadlineDate);
+      formData.append("androidTestingType", androidTestingType);
+
       formData.append("ios_link", iosUrl);
+      formData.append("iosDeadlineDate", iosDeadlineDate);
+      formData.append("iosTestingType", iosTestingType);
     }
 
     if (selectedOptions.includes("grc")) {
       // Add grc-related data to formData
       formData.append("grcotherRemarks", grcotherRemarks);
+      formData.append("grcDeadlineDate", grcDeadlineDate);
+      formData.append("grcTestingType", grcTestingType);
     }
 
     // Add createdBy
@@ -441,7 +500,7 @@ const CreateTask = () => {
                                           class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                           placeholder="Select a date"
                                           onChange={(e) =>
-                                            handleInputChanges(e)
+                                            handleInputChanges(e, i)
                                           }
                                         />
                                         <label
@@ -548,7 +607,7 @@ const CreateTask = () => {
               "
                               />
                             </label>
-                            <div className="sm:col-span-4 ml-5 mb-10 w-[240px]">
+                            {/* <div className="sm:col-span-4 ml-5 mb-10 w-[240px]">
                               <label
                                 for="username"
                                 className="block text-sm font-medium leading-6 text-gray-900"
@@ -561,9 +620,41 @@ const CreateTask = () => {
                                   data-te-select-init
                                   multiple
                                   id="select3"
-                                  // onChange={(e) =>
-                                  //   handleOptionSelect(e)
-                                  // }
+                                  onChange={(e, i) => handleOptionSelect(e, i)}
+                                >
+                                  <option value="black">Black</option>
+                                  <option value="red">Red</option>
+                                  <option value="grey">Grey</option>
+                                </select>
+                              </div>
+                            </div> */}
+                            {/* datepicker  */}
+                            {/* <div class="relative ml-5 h-[35px] mt-8 ">
+                              <input
+                                type="date"
+                                class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                placeholder="Select a date"
+                              />
+                              <label
+                                for="floatingInput"
+                                class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+                              ></label>
+                            </div> */}
+                            <div className="sm:col-span-4 ml-5 mb-10 w-[240px]">
+                              <label
+                                for="username"
+                                className="block text-sm font-medium leading-6 text-gray-900"
+                              >
+                                Type
+                              </label>
+                              <div className="mt-2">
+                                <select
+                                  className=" pt-2  "
+                                  name="testingType"
+                                  data-te-select-init
+                                  multiple
+                                  id="select3"
+                                  onChange={handletypeTestingapi}
                                 >
                                   <option value="black">Black</option>
                                   <option value="red">Red</option>
@@ -571,23 +662,20 @@ const CreateTask = () => {
                                 </select>
                               </div>
                             </div>
-                            {/* datepicker  */}
-                            <div
-                              class="relative ml-5 h-[35px] mt-8 "
-                              data-te-datepicker-init
-                              data-te-input-wrapper-init
-                            >
+                            <div class="relative ml-5 h-[35px] mt-8 ">
                               <input
-                                type="text"
+                                type="date"
+                                name="deadlinedateofweb"
                                 class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                 placeholder="Select a date"
+                                onChange={(e) =>
+                                  setApiDeadlineDate(e.target.value)
+                                }
                               />
                               <label
                                 for="floatingInput"
                                 class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
-                              >
-                                Select a date
-                              </label>
+                              ></label>
                             </div>
                           </div>
 
@@ -650,46 +738,35 @@ const CreateTask = () => {
                                 "
                               />
                             </label>
-                            <div className="sm:col-span-4 ml-5 mb-10 w-[240px]">
-                              <label
-                                for="username"
-                                className="block text-sm font-medium leading-6 text-gray-900"
+                            <div className="mt-2">
+                              <select
+                                className=" pt-2  "
+                                name="testingType"
+                                data-te-select-init
+                                multiple
+                                id="select3"
+                                onChange={handletypeTestingnetwork}
                               >
-                                Type
-                              </label>
-                              <div className="mt-2">
-                                <select
-                                  className=" pt-2  "
-                                  data-te-select-init
-                                  multiple
-                                  id="select3"
-                                  // onChange={(e) =>
-                                  //   handleOptionSelect(e)
-                                  // }
-                                >
-                                  <option value="black">Black</option>
-                                  <option value="red">Red</option>
-                                  <option value="grey">Grey</option>
-                                </select>
-                              </div>
+                                <option value="black">Black</option>
+                                <option value="red">Red</option>
+                                <option value="grey">Grey</option>
+                              </select>
                             </div>
-                            {/* datepicker  */}
-                            <div
-                              class="relative ml-5 h-[35px] mt-8 "
-                              data-te-datepicker-init
-                              data-te-input-wrapper-init
-                            >
+
+                            <div class="relative ml-5 h-[35px] mt-8 ">
                               <input
-                                type="text"
+                                type="date"
+                                name="deadlinedateofweb"
                                 class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                 placeholder="Select a date"
+                                onChange={(e) =>
+                                  setNetworkDeadlineDate(e.target.value)
+                                }
                               />
                               <label
                                 for="floatingInput"
                                 class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
-                              >
-                                Select a date
-                              </label>
+                              ></label>
                             </div>
                           </div>
 
@@ -870,46 +947,35 @@ const CreateTask = () => {
                           For Grc
                         </label>
                         <div className="mt-2 flex flex-col rounded-lg border border-dashed border-gray-900/25 p-4">
-                          <div className="sm:col-span-4 mb-10 w-[240px]">
-                            <label
-                              for="username"
-                              className="block text-sm font-medium leading-6 text-gray-900"
+                          <div className="mt-2">
+                            <select
+                              className=" pt-2  "
+                              name="testingType"
+                              data-te-select-init
+                              multiple
+                              id="select3"
+                              onChange={handletypeTestinggrc}
                             >
-                              Type
-                            </label>
-                            <div className="mt-2">
-                              <select
-                                className=" pt-2  "
-                                data-te-select-init
-                                multiple
-                                id="select3"
-                                // onChange={(e) =>
-                                //   handleOptionSelect(e)
-                                // }
-                              >
-                                <option value="black">Black</option>
-                                <option value="red">Red</option>
-                                <option value="grey">Grey</option>
-                              </select>
-                            </div>
+                              <option value="black">Black</option>
+                              <option value="red">Red</option>
+                              <option value="grey">Grey</option>
+                            </select>
                           </div>
-                          {/* datepicker  */}
-                          <div
-                            class="relative w-[240px]  h-[35px]  "
-                            data-te-datepicker-init
-                            data-te-input-wrapper-init
-                          >
+
+                          <div class="relative ml-5 h-[35px] mt-8 ">
                             <input
-                              type="text"
+                              type="date"
+                              name="deadlinedateofweb"
                               class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                               placeholder="Select a date"
+                              onChange={(e) =>
+                                setGrcDeadlineDate(e.target.value)
+                              }
                             />
                             <label
                               for="floatingInput"
                               class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
-                            >
-                              Select a date
-                            </label>
+                            ></label>
                           </div>
                           <div class="col-span-full">
                             <label
