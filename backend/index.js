@@ -8,7 +8,8 @@ import userRoute from "./routes/user.js";
 import cors from "cors";
 import projectRoute from "./routes/project.js";
 import bodyParser from "body-parser";
-
+import schedule from "node-schedule";
+import taskDeadline from "./utils/dealine.js";
 dotenv.config();
 connectDB();
 const app = express();
@@ -49,6 +50,16 @@ app.use("/project", projectRoute);
 //     },
 //   });
 // });
+// scheduling at 1:10 pm
+schedule.scheduleJob("12 13 * * *", function () {
+  console.log("The answer to life, the universe, and everything!");
+});
+
+// scheduling at each mid night 12:00 am check for task all deadline then mail
+schedule.scheduleJob("25 13 * * *", function () {
+  //cheking task deadline and send mail
+  taskDeadline();
+});
 
 //adding 404 error handler
 app.use((req, res, next) => {

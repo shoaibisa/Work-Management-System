@@ -2791,8 +2791,9 @@ const assignEmployee = async (req, res) => {
   const { taskid, employee, selectedOption } = req.body;
   const assignEmployee = employee.map((e) => {
     return {
-      employee: e,
+      employee: e.id,
       report: [],
+      assignedHours: e.assignedHours,
     };
   });
   const task = await Task.findById(taskid).exec();

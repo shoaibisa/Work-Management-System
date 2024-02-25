@@ -33,8 +33,13 @@ const taskSchema = new mongoose.Schema(
                   ref: "Report",
                 },
               ],
+              assignedHours: Number,
             },
           ],
+          types: [String],
+          deadline: {
+            type: Date,
+          },
         },
       ],
       webotherRemarks: {
@@ -69,8 +74,13 @@ const taskSchema = new mongoose.Schema(
               ref: "Report",
             },
           ],
+          assignedHours: Number,
         },
       ],
+      types: [String],
+      deadline: {
+        type: Date,
+      },
     },
     apiData: {
       isCompleted: {
@@ -95,8 +105,13 @@ const taskSchema = new mongoose.Schema(
               ref: "Report",
             },
           ],
+          assignedHours: Number,
         },
       ],
+      types: [String],
+      deadline: {
+        type: Date,
+      },
     },
     mobileData: {
       isCompleted: {
@@ -126,6 +141,7 @@ const taskSchema = new mongoose.Schema(
                 ref: "Report",
               },
             ],
+            assignedHours: Number,
           },
         ],
       },
@@ -146,8 +162,13 @@ const taskSchema = new mongoose.Schema(
                 ref: "Report",
               },
             ],
+            assignedHours: Number,
           },
         ],
+      },
+      types: [String],
+      deadline: {
+        type: Date,
       },
     },
     grcData: {
@@ -170,8 +191,13 @@ const taskSchema = new mongoose.Schema(
               ref: "Report",
             },
           ],
+          assignedHours: Number,
         },
       ],
+      types: [String],
+      deadline: {
+        type: Date,
+      },
     },
 
     submissionDate: {
